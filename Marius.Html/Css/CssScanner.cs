@@ -36,12 +36,13 @@ namespace Marius.Html.Css
     public class CssScanner
     {
         private const string kNewLine = @"(\r\n|\n|\r|\f)";
+        private const string kSingleWhitespace = @"([ \n\r\t\f])";
         private const string kWhitespace = @"([ \n\r\t\f]*)";
 
         private const string kNonAscii = @"[\u0080-\uFFFF]";
 
         private const string kHex = @"([0-9a-fA-F])";
-        private const string kUnicodeEscape = @"(\\" + kHex + @"{1,6}(" + kNewLine + @"|" + kWhitespace + @")?)";
+        private const string kUnicodeEscape = @"(\\" + kHex + @"{1,6}(\r\n|" + kSingleWhitespace + @")?)";
         private const string kSimpleEscape = @"(\\[^\n\r\f0-9a-fA-F])";
         private const string kNewlineEscape = @"(\\" + kNewLine + @")";
 

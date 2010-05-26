@@ -41,13 +41,13 @@ namespace Marius.Html.Tests.Css.Parsing
         public void TestIdentifiers()
         {
             CssScanner scanner = new CssScanner();
-            scanner.SetSource(@"simple with-dash \starting_with\_escape \30 _starting_with_unicodeescape \000030  fun( \34(", 0);
+            scanner.SetSource(@"simple with-dash \starting_with\_escape \30 _starting_with_unicodeescape \0000302  fun( \34(", 0);
 
-            Expecting(scanner, ID("simple"), W(), ID("with-dash"), W(), ID(@"\starting_with\_escape"),
-                W(), ID(@"\30 _starting_with_unicodeescape"), W(), ID(@"\000030 "), W(), F("fun("), W(), F(@"\34("));
+            Expecting(scanner, ID("simple"), W(), ID("with-dash"), W(), ID(@"starting_with_escape"),
+                W(), ID(@"0_starting_with_unicodeescape"), W(), ID(@"02"), W(), F("fun"), W(), F(@"4"));
 
             scanner.SetSource(@"\000030", 0);
-            Expecting(scanner, ID(@"\000030"));
+            Expecting(scanner, ID(@"0"));
         }
 
 
@@ -57,7 +57,7 @@ namespace Marius.Html.Tests.Css.Parsing
             CssScanner scanner = new CssScanner();
             scanner.SetSource(@"\20  \30  \031  \0032  \00033  \000034  @u(", 0);
 
-            Expecting(scanner, ID(@"\5 "), W(), ID(@"\01 "), W(), ID(@"\012 "), W(), ID(@"\abc0 "), W(), ID(@"\12345 "), W(), ID(@"\ffffff "), W(), AT("@u"), C(CssTokens.OpenParen));
+            Expecting(scanner, ID(@" "), W(), ID(@"0"), W(), ID(@"1"), W(), ID(@"2"), W(), ID(@"3"), W(), ID(@"4"), W(), AT("u"), C(CssTokens.OpenParen));
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Marius.Html.Tests.Css.Parsing
 ""ar mes ()@#$%^&*()_ ka=zko nesuprantame""
 
 )
-url() URl( http:// asd) \u\055 L(url(progra)
+url() URl( http:// asd) \u\072 L(url(progra)
 ", 0);
             Expecting(scanner, U("http://programuok.com"), W(), U(""), W(), U("ar mes ()@#$%^&*()_ ka=zko nesuprantame"),
                 W(), F("url"), C(CssTokens.CloseParen), W(), F("URl"), W(), ID("http"), C(CssTokens.Colon), C(CssTokens.Slash), C(CssTokens.Slash), W(), ID("asd"), C(CssTokens.CloseParen), W(), F("urL"),
@@ -107,8 +107,8 @@ url() URl( http:// asd) \u\055 L(url(progra)
             {
                 token = scanner.NextToken();
                 Assert.AreEqual(expected[i].Token, token);
-                //if (expected[i].Value != null)
-                //    Assert.AreEqual(expected[i].Value, scanner.Value);
+                if (expected[i].Value != null)
+                    Assert.AreEqual(expected[i].Value, scanner.Value.Value);
             }
         }
 
