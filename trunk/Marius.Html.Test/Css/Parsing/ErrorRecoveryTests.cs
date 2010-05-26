@@ -37,7 +37,7 @@ namespace Marius.Html.Tests.Css.Parsing
     public class ErrorRecoveryTests
     {
         [Test]
-        public void TestEvil()
+        public void UnexpectedSemicolonShouldBeConsideredPartOfNextRule_EvilTest()
         {
             var s = Stylesheet.Parse(@"
 .demo1 { color: green; };
@@ -107,8 +107,7 @@ p @here {color: red}     /* ruleset with unexpected at-keyword '@here' */
 }} {{ - }}               /* ruleset with unexpected right brace */
 ) ( {} ) p {color: red } /* ruleset with unexpected right parenthesis */
 ");
-            var e = Stylesheet.Parse(@"
-");
+            var e = Stylesheet.Parse(@"");
             AssertStylesheetsEqual(e, s);
         }
 
