@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Marius.Html.Css;
+using Marius.Html.Css.Parser;
 
 namespace Marius.Html.Tests.Css.Parsing
 {

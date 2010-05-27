@@ -30,31 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Dom
 {
-    public class CssSourceToken
+    public abstract class CssRule
     {
-        private object _value;
-
-        public object Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
-
-        public string String
-        {
-            get { return (string)_value; }
-        }
-
-        public double Double
-        {
-            get { return (double)_value; }
-        }
-
-        public Dimension Dimension
-        {
-            get { return (Dimension)_value; }
-        }
+        public abstract CssRuleType RuleType { get; }
     }
 }

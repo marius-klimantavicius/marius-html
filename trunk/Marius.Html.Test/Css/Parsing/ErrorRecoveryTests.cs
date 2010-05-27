@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Marius.Html.Css;
+using Marius.Html.Css.Dom;
 
 namespace Marius.Html.Tests.Css.Parsing
 {
@@ -39,22 +40,22 @@ namespace Marius.Html.Tests.Css.Parsing
         [Test]
         public void UnexpectedSemicolonShouldBeConsideredPartOfNextRule_EvilTest()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 .demo1 { color: green; };
 .demo1 { color: red; }
 ");
-            var e = Stylesheet.Parse(@".demo1 { color: green; }");
+            var e = CssStylesheet.Parse(@".demo1 { color: green; }");
             AssertStylesheetsEqual(e, s);
         }
 
         [Test]
         public void AllOpenConstructsShouldBeClosedOnEOF()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 @media screen {
     p:before { content: 'Hello\
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 @media screen {
     p:before { content: 'Hello' }
 }
@@ -65,13 +66,13 @@ namespace Marius.Html.Tests.Css.Parsing
         [Test]
         public void ShouldIgnoreRulesetWithInvalidTokenInSelectorList()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 h1, h2 {color: green }
 h3, h4 & h5 {color: red }
 h6 {color: black }
 h1 { color: red; rotation: 70minutes }
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 h1, h2 {color: green }
 h6 {color: black }
 h1 { color: red; rotation: 70minutes }
@@ -82,7 +83,7 @@ h1 { color: red; rotation: 70minutes }
         [Test]
         public void IgnoreUnknownAtRules()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 @three-dee {
   @background-lighting {
     azimuth: 30deg;
@@ -92,7 +93,7 @@ h1 { color: red; rotation: 70minutes }
 }
 h1 { color: blue }
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 h1 { color: blue }
 ");
             AssertStylesheetsEqual(e, s);
@@ -101,20 +102,20 @@ h1 { color: blue }
         [Test]
         public void IgnoreMalformedStatements()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 p @here {color: red}     /* ruleset with unexpected at-keyword '@here' */
 @foo @bar;               /* at-rule with unexpected at-keyword '@bar' */
 }} {{ - }}               /* ruleset with unexpected right brace */
 ) ( {} ) p {color: red } /* ruleset with unexpected right parenthesis */
 ");
-            var e = Stylesheet.Parse(@"");
+            var e = CssStylesheet.Parse(@"");
             AssertStylesheetsEqual(e, s);
         }
 
         [Test]
         public void IgnoreMalformedDeclarations()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 p { color:green }
 p { color:green; color }  /* malformed declaration missing ':', value */
 p { color:red;   color; color:green }  /* same with expected recovery */
@@ -123,7 +124,7 @@ p { color:red;   color:; color:green } /* same with expected recovery */
 p { color:green; color{;color:maroon} } /* unexpected tokens { } */
 p { color:red;   color{;color:maroon}; color:green } /* same with recovery */
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 p { color:green }
 p { color:green }
 p { color:red; color:green }
@@ -138,7 +139,7 @@ p { color:red; color:green }
         [Test]
         public void IgnoreMisplacedImports()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 @import 'subs.css';
 h1 { color: blue }
 
@@ -150,7 +151,7 @@ h1 {color: blue }
 
 @import 'list.css';
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 @import 'subs.css';
 h1 { color: blue }
 
@@ -165,13 +166,13 @@ h1 { color: blue }
         [Test]
         public void EnsureThatWhitespacesAreHandledCorrectly()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 P:first-letter{ color: blue; }
 P:first-letter:hover { color: blue; }
 P:first-letter { color: blue; } /* note the space */
 P:hover:first-letter { color: blue; } /* note the ordering */
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 P:first-letter { color: blue; }
 P:first-letter:hover { color: blue; }
 P:first-letter { color: blue; }
@@ -183,7 +184,7 @@ P:hover:first-letter { color: blue; }
         [Test]
         public void IgnoreStatementsWithSgmlCommentsInInvalidLocations()
         {
-            var s = Stylesheet.Parse(@"
+            var s = CssStylesheet.Parse(@"
 OL { list-style-type: lower-alpha; }
 
 <!--
@@ -225,7 +226,7 @@ OL { list-style-type: lower-alpha; }
   .xf { color: yellow; background: red none; }
 
 ");
-            var e = Stylesheet.Parse(@"
+            var e = CssStylesheet.Parse(@"
 OL { list-style-type: lower-alpha; }
 .a { color: green; background: white none; }
 .b { color: green; background: white none; }
@@ -245,8 +246,14 @@ OL { list-style-type: lower-alpha; }
             AssertStylesheetsEqual(e, s);
         }
 
+        private void AssertStylesheetsEqual(CssStylesheet e, CssStylesheet s)
+        {
+            Assert.Fail();
+        }
+
+        /*
         // must be identical (including order or rules and declarations)
-        private static void AssertStylesheetsEqual(Stylesheet expected, Stylesheet actual)
+        private static void AssertStylesheetsEqual(CssStylesheet expected, CssStylesheet actual)
         {
             Assert.AreEqual(expected.Charset, actual.Charset);
             Assert.AreEqual(expected.Imports.Length, actual.Imports.Length);
@@ -509,6 +516,6 @@ OL { list-style-type: lower-alpha; }
             {
                 Assert.AreEqual(expected[i], actual[i]);
             }
-        }
+        }*/
     }
 }
