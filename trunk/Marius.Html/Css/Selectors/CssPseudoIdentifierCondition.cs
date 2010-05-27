@@ -29,38 +29,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Selectors;
 
-namespace Marius.Html.Css.Dom
+namespace Marius.Html.Css.Selectors
 {
-    public class CssStyle: CssRule
+    public class CssPseudoIdentifierCondition: CssCondition
     {
-        public CssSelector[] Selectors { get; private set; }
-        public CssDeclaration[] Declarations { get; private set; }
+        public string Identifier { get; private set; }
 
-        public sealed override CssRuleType RuleType
+        public sealed override CssConditionType ConditionType
         {
-            get { return CssRuleType.Style; }
+            get { return CssConditionType.PseudoIdentifier; }
         }
 
-        public CssStyle(CssSelector[] selectors, CssDeclaration[] declarations)
+        public CssPseudoIdentifierCondition(string identifier)
         {
-            Selectors = selectors;
-            Declarations = declarations;
+            Identifier = identifier;
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(", ", (object[])Selectors));
-
-            sb.AppendLine("{");
-
-            sb.AppendLine(String.Join(";" + Environment.NewLine, (object[])Declarations));
-
-            sb.AppendLine("}");
-
-            return sb.ToString();
+            return string.Format(":{0}", Identifier.EscapeIdentifier());
         }
     }
 }

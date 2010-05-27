@@ -29,38 +29,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Selectors;
 
-namespace Marius.Html.Css.Dom
+namespace Marius.Html.Css.Selectors
 {
-    public class CssStyle: CssRule
+    public class CssAndCondition: CssCondition
     {
-        public CssSelector[] Selectors { get; private set; }
-        public CssDeclaration[] Declarations { get; private set; }
+        public CssCondition FirstCondition { get; private set; }
+        public CssCondition SecondCondition { get; private set; }
 
-        public sealed override CssRuleType RuleType
+        public override CssConditionType ConditionType
         {
-            get { return CssRuleType.Style; }
+            get { return CssConditionType.And; }
         }
 
-        public CssStyle(CssSelector[] selectors, CssDeclaration[] declarations)
+        public CssAndCondition(CssCondition first, CssCondition second)
         {
-            Selectors = selectors;
-            Declarations = declarations;
+            FirstCondition = first;
+            SecondCondition = second;
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(", ", (object[])Selectors));
-
-            sb.AppendLine("{");
-
-            sb.AppendLine(String.Join(";" + Environment.NewLine, (object[])Declarations));
-
-            sb.AppendLine("}");
-
-            return sb.ToString();
+            return string.Format("{0}{1}", FirstCondition, SecondCondition);
         }
     }
 }
