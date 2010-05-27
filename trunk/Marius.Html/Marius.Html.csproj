@@ -52,11 +52,13 @@
     <Compile Include="Css\CssSourceToken.cs" />
     <Compile Include="Css\CssTokenizer.cs" />
     <Compile Include="Css\CssTokens.cs" />
-    <Compile Include="Css\CssValue.cs" />
     <Compile Include="Css\Dimension.cs" />
     <Compile Include="Css\LengthUnits.cs" />
     <Compile Include="Css\Stylesheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Css\Dom\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
