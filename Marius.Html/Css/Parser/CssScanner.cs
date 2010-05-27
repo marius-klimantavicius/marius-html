@@ -30,8 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Marius.Html.Css.Dom;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Parser
 {
     public class CssScanner
     {
@@ -191,44 +193,44 @@ namespace Marius.Html.Css
             switch (dim.ToUpperInvariant())
             {
                 case "EM":
-                    return Token(CssTokens.Ems, new EmsDimension(number));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Em, number, dim));
                 case "EX":
-                    return Token(CssTokens.Exs, new ExsDimension(number));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Ex, number, dim));
                 case "PX":
-                    return Token(CssTokens.Length, new LengthDimension(number, LengthUnits.Px));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Px, number, dim));
                 case "CM":
-                    return Token(CssTokens.Length, new LengthDimension(number, LengthUnits.Cm));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Cm, number, dim));
                 case "MM":
-                    return Token(CssTokens.Length, new LengthDimension(number, LengthUnits.Mm));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Mm, number, dim));
                 case "IN":
-                    return Token(CssTokens.Length, new LengthDimension(number, LengthUnits.In));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.In, number, dim));
                 case "PT":
-                    return Token(CssTokens.Length, new LengthDimension(number, LengthUnits.Pt));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Pt, number, dim));
                 case "PC":
-                    return Token(CssTokens.Length, new LengthDimension(number, LengthUnits.Pc));
+                    return Token(CssTokens.Length, new CssDimensionToken(CssUnits.Pc, number, dim));
                 case "DEG":
-                    return Token(CssTokens.Angle, new AngleDimension(number, AngleUnits.Deg));
+                    return Token(CssTokens.Angle, new CssDimensionToken(CssUnits.Deg, number, dim));
                 case "RAD":
-                    return Token(CssTokens.Angle, new AngleDimension(number, AngleUnits.Rad));
+                    return Token(CssTokens.Angle, new CssDimensionToken(CssUnits.Rad, number, dim));
                 case "GRAD":
-                    return Token(CssTokens.Angle, new AngleDimension(number, AngleUnits.Grad));
+                    return Token(CssTokens.Angle, new CssDimensionToken(CssUnits.Grad, number, dim));
                 case "MS":
-                    return Token(CssTokens.Time, new TimeDimension(number, TimeUnits.Ms));
+                    return Token(CssTokens.Time, new CssDimensionToken(CssUnits.Ms, number, dim));
                 case "S":
-                    return Token(CssTokens.Time, new TimeDimension(number, TimeUnits.S));
+                    return Token(CssTokens.Time, new CssDimensionToken(CssUnits.S, number, dim));
                 case "HZ":
-                    return Token(CssTokens.Frequency, new FrequencyDimension(number, FrequencyUnits.Hz));
+                    return Token(CssTokens.Frequency, new CssDimensionToken(CssUnits.Hz, number, dim));
                 case "KHZ":
-                    return Token(CssTokens.Frequency, new FrequencyDimension(number, FrequencyUnits.KHz));
+                    return Token(CssTokens.Frequency, new CssDimensionToken(CssUnits.KHz, number, dim));
                 default:
-                    return Token(CssTokens.Dimension, new UnknownDimension(number, dim));
+                    return Token(CssTokens.Dimension, new CssDimensionToken(CssUnits.Unknown, number, dim));
             }
         }
 
         private CssTokens Percentage(string text)
         {
             text = text.Substring(0, text.Length - 1);
-            return Token(CssTokens.Percentage, new Percentage(double.Parse(text)));
+            return Token(CssTokens.Percentage, new CssDimensionToken(CssUnits.Percentage, double.Parse(text), "%"));
         }
 
         private CssTokens Function(string text)

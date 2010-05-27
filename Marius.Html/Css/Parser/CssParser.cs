@@ -30,8 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
+using Marius.Html.Css.Dom;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Parser
 {
     /*
      * TODO:
@@ -50,44 +52,47 @@ namespace Marius.Html.Css
             _scanner = new TokenBuffer(scanner);
         }
 
-        public Stylesheet Parse()
+        public CssStylesheet Parse()
         {
             _scanner.MoveNext();
 
             return Stylesheet();
         }
 
-        private Stylesheet Stylesheet()
+        private CssStylesheet Stylesheet()
         {
             string charset = null;
-            List<Import> imports = new List<Import>();
-            List<Rule> rules = new List<Rule>();
+            List<CssRule> rules = new List<CssRule>();
 
             if (_scanner.Current == CssTokens.AtCharset)
+            {
                 charset = Charset();
+                if (charset != null)
+                    rules.Add(new CssCharset(charset));
+            }
 
             SkipSgml();
 
             while (_scanner.Current == CssTokens.AtImport)
             {
-                Import import = Import();
+                CssImport import = Import();
                 if (import != null)
-                    imports.Add(import);
+                    rules.Add(import);
 
                 SkipSgml();
             }
 
             while (_scanner.Current != CssTokens.EOF)
             {
-                Rule rule = Rule();
+                CssRule rule = Rule();
                 if (rule != null)
                     rules.Add(rule);
                 SkipSgml();
             }
-            return new Stylesheet(charset, imports.ToArray(), rules.ToArray());
+            return new CssStylesheet(rules.ToArray());
         }
 
-        private Rule Rule()
+        private CssRule Rule()
         {
             if (_scanner.Current == CssTokens.AtPage)
                 return Page();
@@ -103,7 +108,7 @@ namespace Marius.Html.Css
             return null;
         }
 
-        private Ruleset Ruleset()
+        private CssStyle Ruleset()
         {
             int nesting = 0;
             try
@@ -114,7 +119,7 @@ namespace Marius.Html.Css
                 //  ;
 
                 List<Selector> selectors = new List<Selector>();
-                List<Declaration> decls = new List<Declaration>();
+                List<CssDeclaration> decls = new List<CssDeclaration>();
 
                 Selector sel;
 
@@ -150,7 +155,7 @@ namespace Marius.Html.Css
                 nesting--;
                 SkipWhitespace();
 
-                return new Ruleset(selectors.ToArray(), decls.ToArray());
+                return new CssStyle(selectors.ToArray(), decls.ToArray());
             }
             catch (CssParsingException)
             {
@@ -160,9 +165,9 @@ namespace Marius.Html.Css
             return null;
         }
 
-        private void MaybeDeclaration(List<Declaration> decls)
+        private void MaybeDeclaration(List<CssDeclaration> decls)
         {
-            Declaration decl = null;
+            CssDeclaration decl = null;
             if (MatchesDeclarationStart())
                 decl = Declaration();
 
@@ -206,7 +211,7 @@ namespace Marius.Html.Css
 
                     combined = Selector();
 
-                    result = new ComplexSelector(selector, Css.Combinator.Descendant, combined);
+                    result = new ComplexSelector(selector, Dom.Combinator.Descendant, combined);
                 }
             }
 
@@ -443,10 +448,10 @@ namespace Marius.Html.Css
             switch (_scanner.Current)
             {
                 case CssTokens.Plus:
-                    result = Match(CssTokens.Plus, s => Css.Combinator.Sibling);
+                    result = Match(CssTokens.Plus, s => Dom.Combinator.Sibling);
                     break;
                 case CssTokens.More:
-                    result = Match(CssTokens.Plus, s => Css.Combinator.Adjacent);
+                    result = Match(CssTokens.Plus, s => Dom.Combinator.Adjacent);
                     break;
                 default:
                     throw new CssParsingException();
@@ -491,7 +496,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        private Media Media()
+        private CssMedia Media()
         {
             int nesting = 0;
 
@@ -502,7 +507,7 @@ namespace Marius.Html.Css
                 //  ;
 
                 string[] mediaList;
-                List<Ruleset> rules = new List<Ruleset>();
+                List<CssStyle> rules = new List<CssStyle>();
 
                 Match(CssTokens.AtMedia);
                 SkipWhitespace();
@@ -515,7 +520,7 @@ namespace Marius.Html.Css
                 {
                     if (_scanner.Current == CssTokens.Identifier || _scanner.Current == CssTokens.Star)
                     {
-                        Ruleset ruleset = Ruleset();
+                        CssStyle ruleset = Ruleset();
                         if (ruleset != null)
                             rules.Add(ruleset);
                     }
@@ -530,7 +535,7 @@ namespace Marius.Html.Css
                 MatchEof(CssTokens.CloseBrace);
                 nesting--;
 
-                return new Media(mediaList, rules.ToArray());
+                return new CssMedia(mediaList, rules.ToArray());
             }
             catch (CssParsingException)
             {
@@ -541,7 +546,7 @@ namespace Marius.Html.Css
             return null;
         }
 
-        private Page Page()
+        private CssPage Page()
         {
             int nesting = 0;
             try
@@ -552,7 +557,7 @@ namespace Marius.Html.Css
                 //  ;
 
                 string pseudo = null;
-                List<Declaration> decls = new List<Declaration>();
+                List<CssDeclaration> decls = new List<CssDeclaration>();
 
                 Match(CssTokens.AtPage);
                 SkipWhitespace();
@@ -578,7 +583,7 @@ namespace Marius.Html.Css
                 nesting--;
                 SkipWhitespace();
 
-                return new Page(pseudo, decls.ToArray());
+                return new CssPage(pseudo, decls.ToArray());
             }
             catch (CssParsingException)
             {
@@ -589,7 +594,7 @@ namespace Marius.Html.Css
             return null;
         }
 
-        private Declaration Declaration()
+        private CssDeclaration Declaration()
         {
             try
             {
@@ -599,7 +604,7 @@ namespace Marius.Html.Css
                 // must handle error till ';'
 
                 string property;
-                Expression value;
+                CssExpression value;
                 bool important = false;
 
                 property = Property();
@@ -609,7 +614,7 @@ namespace Marius.Html.Css
                 if (_scanner.Current == CssTokens.Important)
                     important = Priority();
 
-                return new Declaration(property, value, important);
+                return new CssDeclaration(property, value, important);
             }
             catch (CssParsingException)
             {
@@ -619,7 +624,7 @@ namespace Marius.Html.Css
             return null;
         }
 
-        private Expression Expression()
+        private CssExpression Expression()
         {
             // if function == true, allow end with ')' or EOF
             // otherwise with ';' or '}' or !important or EOF
@@ -628,27 +633,27 @@ namespace Marius.Html.Css
             //  : term [ operator? term ]*
             //  ;
 
-            List<Term> terms = new List<Term>();
+            List<CssValueOperator> terms = new List<CssValueOperator>();
 
-            Term single;
+            CssValue single;
 
             single = Term();
-            terms.Add(single);
+            terms.Add(new CssValueOperator(single));
 
             while (true)
             {
                 if (_scanner.Current == CssTokens.Slash || _scanner.Current == CssTokens.Comma)
                 {
-                    single = Operator();
-                    terms.Add(single);
-
+                    CssOperator op = Operator();
                     single = Term();
-                    terms.Add(single);
+
+                    terms.Add(new CssValueOperator(single, op));
                 }
                 else if (IsTermStart())
                 {
                     single = Term();
-                    terms.Add(single);
+
+                    terms.Add(new CssValueOperator(single));
                 }
                 else
                 {
@@ -656,30 +661,30 @@ namespace Marius.Html.Css
                 }
             }
 
-            return new Expression(terms.ToArray());
+            return new CssExpression(terms.ToArray());
         }
 
-        private OperatorTerm Operator()
+        private CssOperator Operator()
         {
-            Operator op;
+            CssOperator op;
 
             switch (_scanner.Current)
             {
                 case CssTokens.Slash:
-                    op = Match(CssTokens.Slash, s => Css.Operator.Slash);
+                    op = Match(CssTokens.Slash, s => CssOperator.Slash);
                     break;
                 case CssTokens.Comma:
-                    op = Match(CssTokens.Comma, s => Css.Operator.Comma);
+                    op = Match(CssTokens.Comma, s => CssOperator.Comma);
                     break;
                 default:
                     throw new CssParsingException();
             }
 
             SkipWhitespace();
-            return new OperatorTerm(op);
+            return op;
         }
 
-        private Term Term()
+        private CssValue Term()
         {
             //term
             //  : unary_operator?
@@ -688,38 +693,36 @@ namespace Marius.Html.Css
             //  | STRING S* | IDENT S* | URI S* | hexcolor | function
             //  ;
 
-            Term result = null;
-            int sign = 1;
+            CssValue result = null;
+            CssSignOperator sign = CssSignOperator.Plus;
 
             switch (_scanner.Current)
             {
                 case CssTokens.Plus:
                 case CssTokens.Minus:
                     sign = UnaryOperator();
-                    result = Dimension(sign);
+                    result = new CssSignedDimension(Dimension(), sign);
                     SkipWhitespace();
                     break;
                 case CssTokens.Number:
                 case CssTokens.Percentage:
                 case CssTokens.Length:
-                case CssTokens.Ems:
-                case CssTokens.Exs:
                 case CssTokens.Angle:
                 case CssTokens.Time:
                 case CssTokens.Frequency:
-                    result = Dimension(sign);
+                    result = Dimension();
                     SkipWhitespace();
                     break;
                 case CssTokens.String:
-                    result = Match(CssTokens.String, s => new StringTerm(s.String));
+                    result = Match(CssTokens.String, s => new CssString(s.String));
                     SkipWhitespace();
                     break;
                 case CssTokens.Identifier:
-                    result = Match(CssTokens.Identifier, s => new IdentifierTerm(s.String));
+                    result = Match(CssTokens.Identifier, s => new CssIdentifier(s.String));
                     SkipWhitespace();
                     break;
                 case CssTokens.Uri:
-                    result = Match(CssTokens.Uri, s => new UriTerm(s.String));
+                    result = Match(CssTokens.Uri, s => new CssUri(s.String));
                     SkipWhitespace();
                     break;
                 case CssTokens.Hash:
@@ -735,7 +738,7 @@ namespace Marius.Html.Css
             return result;
         }
 
-        private FunctionTerm Function()
+        private CssFunction Function()
         {
             int nesting = 0;
             try
@@ -745,7 +748,7 @@ namespace Marius.Html.Css
                 //  ;
 
                 string name;
-                Expression arguments;
+                CssExpression arguments;
 
                 name = Match(CssTokens.Function, s => s.String);
                 nesting++;
@@ -757,7 +760,7 @@ namespace Marius.Html.Css
 
                 SkipWhitespace();
 
-                return new FunctionTerm(name, arguments);
+                return new CssFunction(name, arguments);
             }
             catch (CssParsingException)
             {
@@ -767,66 +770,60 @@ namespace Marius.Html.Css
             }
         }
 
-        private HexColorTerm HexColor()
+        private CssColor HexColor()
         {
             string result;
 
             result = Match(CssTokens.Hash, s => s.String);
             SkipWhitespace();
 
-            return new HexColorTerm(result);
+            return new CssColor(result);
         }
 
-        private DimensionTerm Dimension(int sign)
+        private CssPrimitiveValue Dimension()
         {
-            Dimension result;
+            CssPrimitiveValue result;
 
             switch (_scanner.Current)
             {
                 case CssTokens.Number:
-                    result = Match(CssTokens.Number, s => new NumberDimension(s.Double));
+                    result = Match(CssTokens.Number, s => new CssNumber(s.Double));
                     break;
                 case CssTokens.Percentage:
-                    result = Match(CssTokens.Percentage, s => s.Dimension);
+                    result = Match(CssTokens.Percentage, s => new CssPercentage(s.Dimension.Value));
                     break;
                 case CssTokens.Length:
-                    result = Match(CssTokens.Length, s => s.Dimension);
-                    break;
-                case CssTokens.Ems:
-                    result = Match(CssTokens.Ems, s => s.Dimension);
-                    break;
-                case CssTokens.Exs:
-                    result = Match(CssTokens.Exs, s => s.Dimension);
+                    result = Match(CssTokens.Length, s => new CssLength(s.Dimension.Value, s.Dimension.Units));
                     break;
                 case CssTokens.Angle:
-                    result = Match(CssTokens.Angle, s => s.Dimension);
+                    result = Match(CssTokens.Angle, s => new CssAngle(s.Dimension.Value, s.Dimension.Units));
                     break;
                 case CssTokens.Time:
-                    result = Match(CssTokens.Time, s => s.Dimension);
+                    result = Match(CssTokens.Time, s => new CssTime(s.Dimension.Value, s.Dimension.Units));
                     break;
                 case CssTokens.Frequency:
-                    result = Match(CssTokens.Frequency, s => s.Dimension);
+                    result = Match(CssTokens.Frequency, s => new CssFrequency(s.Dimension.Value, s.Dimension.Units));
                     break;
                 case CssTokens.Dimension:
-                    result = Match(CssTokens.Dimension, s => s.Dimension);
+                    result = Match(CssTokens.Dimension, s => new CssDimension(s.Dimension.Value, s.Dimension.DimensionString));
                     break;
                 default:
                     throw new CssParsingException();
             }
             SkipWhitespace();
 
-            return new DimensionTerm(sign, result);
+            return result;
         }
 
-        private int UnaryOperator()
+        private CssSignOperator UnaryOperator()
         {
             if (_scanner.Current == CssTokens.Plus)
             {
-                return Match(CssTokens.Plus, s => 1);
+                return Match(CssTokens.Plus, s => CssSignOperator.Plus);
             }
             else if (_scanner.Current == CssTokens.Minus)
             {
-                return Match(CssTokens.Minus, s => -1);
+                return Match(CssTokens.Minus, s => CssSignOperator.Minus);
             }
             throw new CssParsingException();
         }
@@ -841,8 +838,6 @@ namespace Marius.Html.Css
                 case CssTokens.Hash:
                 case CssTokens.Identifier:
                 case CssTokens.Function:
-                case CssTokens.Ems:
-                case CssTokens.Exs:
                 case CssTokens.Length:
                 case CssTokens.Angle:
                 case CssTokens.Time:
@@ -907,7 +902,7 @@ namespace Marius.Html.Css
             return result;
         }
 
-        private Import Import()
+        private CssImport Import()
         {
             try
             {
@@ -933,7 +928,7 @@ namespace Marius.Html.Css
                     mediaList = MediaList();
                 MatchEof(CssTokens.SemiColon);
 
-                return new Import(import, mediaList);
+                return new CssImport(import, mediaList);
             }
             catch (CssParsingException)
             {

@@ -27,26 +27,51 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Marius.Html.Css.Dom;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Values
 {
-    public class Azimuth: CssProperty
+    public class CssValueOperator
     {
-        private static readonly string[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" };
+        public CssValue Value { get; private set; }
+        public CssOperator Operator { get; private set; }
 
-        /*private static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
-        private static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
-        private static readonly CssIdentifier Behind = new CssIdentifier("behind");
-
-        public CssValue Value { get; private set; }*/
-        public bool IsBehind { get; private set; }
-
-        public Azimuth(CssExpression value)
+        public CssValueOperator(CssValue value)
+            : this(value, CssOperator.Space)
         {
 
+        }
+
+        public CssValueOperator(CssValue value, CssOperator @operator)
+        {
+            Value = value;
+            Operator = @operator;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            switch (Operator)
+            {
+                case CssOperator.Comma:
+                    sb.Append(',');
+                    break;
+                case CssOperator.Slash:
+                    sb.Append('/');
+                    break;
+                case CssOperator.Space:
+                    sb.Append(' ');
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            sb.Append(Value.ToString());
+
+            return sb.ToString();
         }
     }
 }

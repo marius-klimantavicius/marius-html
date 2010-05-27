@@ -27,26 +27,30 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Marius.Html.Css.Dom;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Dom
 {
-    public class Azimuth: CssProperty
+    public class FunctionPseudoSpecifier: PseudoSpecifier
     {
-        private static readonly string[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" };
+        public string Function { get; private set; }
+        public string Argument { get; private set; }    // according to spec only one Identifier argument is allowed
 
-        /*private static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
-        private static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
-        private static readonly CssIdentifier Behind = new CssIdentifier("behind");
-
-        public CssValue Value { get; private set; }*/
-        public bool IsBehind { get; private set; }
-
-        public Azimuth(CssExpression value)
+        public sealed override SpecifierType SpecifierType
         {
+            get { return SpecifierType.PseudoFunction; ; }
+        }
 
+        public FunctionPseudoSpecifier(string function, string argument)
+        {
+            Function = function;
+            Argument = argument;
+        }
+
+        public override string ToString()
+        {
+            return string.Format(":{0}({1})", Function.EscapeIdentifier(), (Argument ?? "").EscapeIdentifier());
         }
     }
 }

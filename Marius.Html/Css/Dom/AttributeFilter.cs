@@ -27,26 +27,41 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Marius.Html.Css.Dom;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Dom
 {
-    public class Azimuth: CssProperty
+    public class AttributeFilter
     {
-        private static readonly string[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" };
+        public FilterOperator Operator { get; private set; }
+        public string Value { get; private set; }
 
-        /*private static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
-        private static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
-        private static readonly CssIdentifier Behind = new CssIdentifier("behind");
-
-        public CssValue Value { get; private set; }*/
-        public bool IsBehind { get; private set; }
-
-        public Azimuth(CssExpression value)
+        public AttributeFilter(FilterOperator op, string value)
         {
+            Operator = op;
+            Value = value;
+        }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            switch (Operator)
+            {
+                case FilterOperator.Equals:
+                    sb.Append("=");
+                    break;
+                case FilterOperator.DashMatch:
+                    sb.Append("|=");
+                    break;
+                case FilterOperator.Includes:
+                    sb.Append("~=");
+                    break;
+                default:
+                    break;
+            }
+            sb.Append("\"").Append(Value.Escape()).Append("\"");
+            return sb.ToString();
         }
     }
 }

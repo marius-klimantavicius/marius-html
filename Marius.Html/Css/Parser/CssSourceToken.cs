@@ -27,26 +27,34 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Marius.Html.Css.Dom;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Parser
 {
-    public class Azimuth: CssProperty
+    public class CssSourceToken
     {
-        private static readonly string[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" };
+        private object _value;
 
-        /*private static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
-        private static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
-        private static readonly CssIdentifier Behind = new CssIdentifier("behind");
-
-        public CssValue Value { get; private set; }*/
-        public bool IsBehind { get; private set; }
-
-        public Azimuth(CssExpression value)
+        public object Value
         {
+            get { return _value; }
+            set { _value = value; }
+        }
 
+        public string String
+        {
+            get { return (string)_value; }
+        }
+
+        public double Double
+        {
+            get { return (double)_value; }
+        }
+
+        public CssDimensionToken Dimension
+        {
+            get { return (CssDimensionToken)_value; }
         }
     }
 }

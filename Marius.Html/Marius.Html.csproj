@@ -41,25 +41,71 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Dom\AttributeFilter.cs" />
+    <Compile Include="Css\Dom\AttributeSpecifier.cs" />
+    <Compile Include="Css\Dom\ClassSpecifier.cs" />
+    <Compile Include="Css\Dom\Combinator.cs" />
+    <Compile Include="Css\Dom\ComplexSelector.cs" />
+    <Compile Include="Css\Values\CssAngle.cs" />
+    <Compile Include="Css\Dom\CssCharset.cs" />
+    <Compile Include="Css\Values\CssColor.cs" />
+    <Compile Include="Css\Dom\CssDeclaration.cs" />
+    <Compile Include="Css\Values\CssDimension.cs" />
+    <Compile Include="Css\Values\CssExpression.cs" />
+    <Compile Include="Css\Values\CssFrequency.cs" />
+    <Compile Include="Css\Values\CssFunction.cs" />
+    <Compile Include="Css\Values\CssIdentifier.cs" />
+    <Compile Include="Css\Dom\CssImport.cs" />
+    <Compile Include="Css\Values\CssLength.cs" />
+    <Compile Include="Css\Dom\CssMedia.cs" />
+    <Compile Include="Css\Values\CssNumber.cs" />
+    <Compile Include="Css\Values\CssOperator.cs" />
+    <Compile Include="Css\Dom\CssPage.cs" />
+    <Compile Include="Css\Values\CssPercentage.cs" />
+    <Compile Include="Css\Values\CssPrimitiveValue.cs" />
+    <Compile Include="Css\Values\CssPrimitiveValueType.cs" />
+    <Compile Include="Css\Dom\CssRule.cs" />
+    <Compile Include="Css\Dom\CssRuleType.cs" />
+    <Compile Include="Css\Values\CssSignedDimension.cs" />
+    <Compile Include="Css\Values\CssSignOperator.cs" />
+    <Compile Include="Css\Values\CssString.cs" />
+    <Compile Include="Css\Dom\CssStyle.cs" />
+    <Compile Include="Css\Dom\CssStylesheet.cs" />
+    <Compile Include="Css\Values\CssTime.cs" />
+    <Compile Include="Css\Values\CssUnits.cs" />
+    <Compile Include="Css\Dom\CssUnknown.cs" />
+    <Compile Include="Css\Values\CssUri.cs" />
+    <Compile Include="Css\Dom\CssValue.cs" />
+    <Compile Include="Css\Values\CssValueOperator.cs" />
+    <Compile Include="Css\Dom\CssValueType.cs" />
+    <Compile Include="Css\Dom\ElementName.cs" />
+    <Compile Include="Css\Dom\FilterOperator.cs" />
+    <Compile Include="Css\Dom\FunctionPseudoSpecifier.cs" />
+    <Compile Include="Css\Dom\IdentifierElementName.cs" />
+    <Compile Include="Css\Dom\IdentifierPseudoFilter.cs" />
+    <Compile Include="Css\Dom\IdSpecifier.cs" />
+    <Compile Include="Css\Dom\PseudoSpecifier.cs" />
+    <Compile Include="Css\Dom\Selector.cs" />
+    <Compile Include="Css\Dom\SimpleSelector.cs" />
+    <Compile Include="Css\Dom\Specifier.cs" />
+    <Compile Include="Css\Dom\SpecifierType.cs" />
+    <Compile Include="Css\Dom\StarElementName.cs" />
     <Compile Include="Css\Properties\Azimuth.cs" />
     <Compile Include="Css\Properties\BackgroundAttachment.cs" />
     <Compile Include="Css\Properties\BackgroundColor.cs" />
     <Compile Include="Css\CssBox.cs" />
-    <Compile Include="Css\CharSource.cs" />
+    <Compile Include="Css\Parser\InputSource.cs" />
     <Compile Include="Css\CssProperty.cs" />
-    <Compile Include="Css\CssParser.cs" />
-    <Compile Include="Css\CssScanner.cs" />
-    <Compile Include="Css\CssSourceToken.cs" />
-    <Compile Include="Css\CssTokenizer.cs" />
-    <Compile Include="Css\CssTokens.cs" />
-    <Compile Include="Css\Dimension.cs" />
-    <Compile Include="Css\LengthUnits.cs" />
-    <Compile Include="Css\Stylesheet.cs" />
+    <Compile Include="Css\Parser\CssParser.cs" />
+    <Compile Include="Css\Parser\CssScanner.cs" />
+    <Compile Include="Css\Parser\CssSourceToken.cs" />
+    <Compile Include="Css\Parser\CssTokenizer.cs" />
+    <Compile Include="Css\Parser\CssTokens.cs" />
+    <Compile Include="Css\Parser\CssDimensionToken.cs" />
+    <Compile Include="Css\StringUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Css\Dom\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

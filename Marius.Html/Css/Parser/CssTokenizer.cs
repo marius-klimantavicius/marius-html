@@ -31,13 +31,13 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Parser
 {
     public class CssTokenizer
     {
         private const int UnicodeEscapeMaxLength = 6;
 
-        private CharSource _source;
+        private InputSource _source;
         private string _value;
         private int _start, _end;
 
@@ -58,13 +58,13 @@ namespace Marius.Html.Css
             }
         }
 
-        public CharSource Peek { get { return _source; } }
+        public InputSource Peek { get { return _source; } }
 
         public int Position { get { return _source.Position; } }
 
         public void SetSource(string source, int index)
         {
-            _source = new CharSource(source, index);
+            _source = new InputSource(source, index);
         }
 
         public void PushState()

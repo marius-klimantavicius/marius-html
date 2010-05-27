@@ -30,62 +30,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Values
 {
-    public class CharSource
+    public class CssLength: CssPrimitiveValue
     {
-        private char[] _source;
-        private int _index;
-        private Stack<int> _state = new Stack<int>();
+        public CssUnits Units { get; private set; }
+        public double Value { get; private set; }
 
-        public char this[int index]
+        public sealed override CssPrimitiveValueType PrimitiveValueType
         {
             get
             {
-                if ((_index + 1 + index) < _source.Length && (_index + 1 + index) >= 0)
-                    return _source[(_index + 1 + index)];
-                return '\0';
+                switch (Units)
+                {
+                    case CssUnits.Px:
+                        return CssPrimitiveValueType.Px;
+                    case CssUnits.Pt:
+                        return CssPrimitiveValueType.Pt;
+                    case CssUnits.Cm:
+                        return CssPrimitiveValueType.Cm;
+                    case CssUnits.Mm:
+                        return CssPrimitiveValueType.Mm;
+                    case CssUnits.In:
+                        return CssPrimitiveValueType.In;
+                    case CssUnits.Pc:
+                        return CssPrimitiveValueType.Pc;
+                    case CssUnits.Em:
+                        return CssPrimitiveValueType.Ems;
+                    case CssUnits.Ex:
+                        return CssPrimitiveValueType.Exs;
+                }
+                throw new NotSupportedException();
             }
         }
 
-        public char Current
+        public CssLength(double value, CssUnits units)
         {
-            get { if (_index >= 0 && _index < _source.Length) return _source[_index]; return '\0'; }
-        }
-
-        public int Position
-        {
-            get { return _index; }
-        }
-
-        public bool Eof { get { return _index >= _source.Length; } }
-
-        public CharSource(string source, int startIndex)
-        {
-            _source = source.ToCharArray();
-            _index = startIndex;
-        }
-
-        public void Skip(int count)
-        {
-            _index += count;
-        }
-
-        public string Value(int start, int end)
-        {
-            return new string(_source, start, end - start);
-        }
-
-        public void PushState()
-        {
-            _state.Push(_index);
-        }
-
-        public void PopState(bool discard)
-        {
-            int index = _state.Pop();
-            if (!discard)
-                _index = index;
+            Value = value;
+            Units = units;
         }
     }
 }

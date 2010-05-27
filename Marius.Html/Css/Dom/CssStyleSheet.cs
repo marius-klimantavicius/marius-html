@@ -29,62 +29,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics.Contracts;
+using Marius.Html.Css.Parser;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Dom
 {
-    public enum CssTokens
+    public class CssStylesheet
     {
-        EOF,
-        Whitespace,
-        Comment,
-        Cdo,
-        Cdc,
-        Includes,
-        DashMatch,
-        Invalid,
-        String,
-        Number,
-        Percentage,
-        Dimension,
-        Hash,
-        AtKeyword,
-        ExclamationKeyword,
-        Identifier,
-        Function,
-        AtMedia,
-        AtPage,
-        AtImport,
-        AtCharset,
-        Important,
-        Ems,
-        Exs,
-        Length,
-        Angle,
-        Time,
-        Frequency,
-        Uri,
-        Unknown,
-        SurogateUrl,
-        SurogateExclamation,
-        
-        SemiColon,
-        OpenBrace,
-        CloseBrace,
-        Colon,
-        Slash,      // /  
-        Backslash,  // \
-        Comma,
-        Plus,
-        Minus,
-        More,       // >
-        Less,       // <
-        Tilde,      // ~
-        Equals,
-        Dot,
-        Star,
-        OpenBracket,
-        CloseBracket,
-        OpenParen,
-        CloseParen,
+        public CssRule[] Rules { get; private set; }
+
+        public CssStylesheet(CssRule[] rules)
+        {
+            Contract.Requires(rules != null);
+
+            Rules = rules;
+        }
+
+        public static CssStylesheet Parse(string source)
+        {
+            CssScanner scanner = new CssScanner();
+            scanner.SetSource(source, 0);
+
+            CssParser parser = new CssParser(scanner);
+            return parser.Parse();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < Rules.Length; i++)
+            {
+                sb.AppendLine(Rules[i].ToString());
+            }
+
+            return sb.ToString();
+        }
     }
 }

@@ -30,15 +30,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Dom
 {
-    public enum LengthUnits
+    public class CssMedia: CssRule
     {
-        Px,
-        Pt,
-        Cm,
-        Mm,
-        In,
-        Pc,
+        public string[] MediaList { get; private set; }
+        public CssStyle[] Ruleset { get; private set; }
+
+        public sealed override CssRuleType RuleType
+        {
+            get { return CssRuleType.Media; }
+        }
+
+        public CssMedia(string[] mediaList, CssStyle[] ruleset)
+        {
+            MediaList = mediaList;
+            Ruleset = ruleset;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("@media {0}", String.Join(", ", MediaList));
+            sb.AppendLine();
+            sb.AppendLine("{");
+
+            for (int i = 0; i < Ruleset.Length; i++)
+            {
+                sb.AppendLine(Ruleset[i].ToString());
+            }
+
+            sb.AppendLine("}");
+
+            return sb.ToString();
+        }
     }
 }
