@@ -544,6 +544,7 @@ namespace Marius.Html.Css
         Sibling,    // s + s
         Adjacent,   // s > s
         Descendant, // s s
+        GeneralAdjacent, // s ~ s
     }
 
     public abstract class Specifier
@@ -558,7 +559,6 @@ namespace Marius.Html.Css
         Attribute,
         PseudoId,
         PseudoFunction,
-
     }
 
     public class IdSpecifier: Specifier

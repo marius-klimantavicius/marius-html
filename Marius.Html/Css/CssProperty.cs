@@ -36,5 +36,7 @@ namespace Marius.Html.Css
     {
         //public abstract string Name { get; }
         //public abstract bool Inherited { get; }
+
+        public bool IsUserSet { get; protected set; }
     }
 }
