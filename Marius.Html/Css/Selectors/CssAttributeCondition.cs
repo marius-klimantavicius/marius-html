@@ -29,38 +29,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Selectors;
 
-namespace Marius.Html.Css.Dom
+namespace Marius.Html.Css.Selectors
 {
-    public class CssStyle: CssRule
+    public class CssAttributeCondition: CssCondition
     {
-        public CssSelector[] Selectors { get; private set; }
-        public CssDeclaration[] Declarations { get; private set; }
+        public string Attribute { get; private set; }
+        public string Value { get; private set; }
+        public bool IsSpecified { get; private set; }
 
-        public sealed override CssRuleType RuleType
+        public CssAttributeCondition(string attribute, string value)
+            : this(attribute, value, false)
         {
-            get { return CssRuleType.Style; }
+
         }
 
-        public CssStyle(CssSelector[] selectors, CssDeclaration[] declarations)
+        public override CssConditionType ConditionType
         {
-            Selectors = selectors;
-            Declarations = declarations;
+            get { return CssConditionType.Attribute; }
+        }
+
+        public CssAttributeCondition(string attribute, string value, bool isSpecified)
+        {
+            Attribute = attribute;
+            Value = value;
+            IsSpecified = isSpecified;
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(", ", (object[])Selectors));
-
-            sb.AppendLine("{");
-
-            sb.AppendLine(String.Join(";" + Environment.NewLine, (object[])Declarations));
-
-            sb.AppendLine("}");
-
-            return sb.ToString();
+            if (IsSpecified)
+                return string.Format("[{0}=\"{1}\"]", Attribute.EscapeIdentifier(), Value.Escape());
+            return string.Format("[{0}]", Attribute.EscapeIdentifier());
         }
     }
 }

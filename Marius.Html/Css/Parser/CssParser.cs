@@ -32,13 +32,10 @@ using System.Text;
 using System.Diagnostics.Contracts;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Parser
 {
-    /*
-     * TODO:
-     *  must ignore any '@import'  rule that occurs inside a block or after any non-ignored statement other than an @charset or an @import rule. 
-     */
     public class CssParser
     {
         private static readonly string[] EmptyStringArray = new string[0];
@@ -118,10 +115,10 @@ namespace Marius.Html.Css.Parser
                 //    '{' S* declaration? [ ';' S* declaration? ]* '}' S*
                 //  ;
 
-                List<Selector> selectors = new List<Selector>();
+                List<CssSelector> selectors = new List<CssSelector>();
                 List<CssDeclaration> decls = new List<CssDeclaration>();
 
-                Selector sel;
+                CssSelector sel;
 
                 sel = Selector();
                 if (sel != null)
@@ -182,14 +179,14 @@ namespace Marius.Html.Css.Parser
             }
         }
 
-        private Selector Selector()
+        private CssSelector Selector()
         {
             //selector
             //  : simple_selector [ combinator selector | S+ [ combinator? selector ]? ]?
             //  ;
 
-            Selector result;
-            SimpleSelector selector;
+            CssSelector result;
+            CssSimpleSelector selector;
 
             result = selector = SimpleSelector();
 
@@ -207,76 +204,89 @@ namespace Marius.Html.Css.Parser
                 }
                 else if (MatchesSelectorStart())
                 {
-                    Selector combined;
+                    CssSelector combined;
 
                     combined = Selector();
 
-                    result = new ComplexSelector(selector, Dom.Combinator.Descendant, combined);
+                    result = new CssDescendantSelector(selector, combined);
                 }
             }
 
             return result;
         }
 
-        private Selector CombinedSelector(SimpleSelector selector)
+        private CssSelector CombinedSelector(CssSimpleSelector selector)
         {
-            Selector result;
-            Combinator combinator;
-            Selector combined;
+            CssSelectorCombinator combinator;
+            CssSelector combined;
 
             combinator = Combinator();
             combined = Selector();
 
-            result = new ComplexSelector(selector, combinator, combined);
-            return result;
+            switch (combinator)
+            {
+                case CssSelectorCombinator.Sibling:
+                    return new CssSiblingSelector(selector, combined);
+                case CssSelectorCombinator.Child:
+                    return new CssChildSelector(selector, combined);
+            }
+
+            throw new CssInvalidStateException();
         }
 
-        private SimpleSelector SimpleSelector()
+        private CssSimpleSelector SimpleSelector()
         {
             //simple_selector
             //  : element_name [ HASH | class | attrib | pseudo ]*
             //  | [ HASH | class | attrib | pseudo ]+
             //  ;
 
-            ElementName name;
-            List<Specifier> specifiers = new List<Specifier>();
-
-            Specifier spec;
+            CssSimpleSelector result;
+            CssCondition condition;
 
             if (_scanner.Current == CssTokens.Identifier || _scanner.Current == CssTokens.Star)
             {
-                name = ElementName();
+                result = ElementName();
 
-                while (MatchesSpecifierStart())
+                if (MatchesSpecifierStart())
                 {
-                    spec = Specifier();
-                    specifiers.Add(spec);
+                    condition = Condition();
+                    result = new CssConditionalSelector(result, condition);
                 }
             }
             else
             {
-                name = StarElementName.Instance;
+                result = CssUniversalSelector.Instance;
+                condition = Condition();
 
-                spec = Specifier();
-                specifiers.Add(spec);
-
-                while (MatchesSpecifierStart())
-                {
-                    spec = Specifier();
-                    specifiers.Add(spec);
-                }
+                result = new CssConditionalSelector(result, condition);
             }
 
-            return new SimpleSelector(name, specifiers.ToArray());
+            return result;
         }
 
-        private Specifier Specifier()
+        private CssCondition Condition()
+        {
+            CssCondition result, other;
+
+            result = Specifier();
+
+            while (MatchesSpecifierStart())
+            {
+                other = Specifier();
+                result = new CssAndCondition(result, other);
+            }
+
+            return result;
+        }
+
+        private CssCondition Specifier()
         {
             //[ HASH | class | attrib | pseudo ]
             switch (_scanner.Current)
             {
                 case CssTokens.Hash:
-                    return Match(CssTokens.Hash, s => new IdSpecifier(s.String));
+                    return Match(CssTokens.Hash, s => new CssIdCondition(s.String));
                 case CssTokens.Dot:
                     return Class();
                 case CssTokens.OpenBracket:
@@ -288,7 +298,7 @@ namespace Marius.Html.Css.Parser
             }
         }
 
-        private Specifier Pseudo()
+        private CssCondition Pseudo()
         {
             int nesting = 0;
             try
@@ -300,7 +310,7 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.Colon);
                 if (_scanner.Current == CssTokens.Identifier)
                 {
-                    return Match(CssTokens.Identifier, s => new IdentifierPseudoSpecifier(s.String));
+                    return Match(CssTokens.Identifier, s => new CssPseudoIdentifierCondition(s.String));
                 }
                 else if (_scanner.Current == CssTokens.Function)
                 {
@@ -318,7 +328,7 @@ namespace Marius.Html.Css.Parser
                     Match(CssTokens.CloseParen);
                     nesting--;
 
-                    return new FunctionPseudoSpecifier(function, argument);
+                    return new CssPseudoFunctionCondition(function, argument);
                 }
                 else
                 {
@@ -333,7 +343,7 @@ namespace Marius.Html.Css.Parser
             }
         }
 
-        private Specifier Attribute()
+        private CssCondition Attribute()
         {
             int nesting = 0;
             try
@@ -344,7 +354,6 @@ namespace Marius.Html.Css.Parser
                 //  ;
 
                 string name;
-                AttributeFilter filter = null;
 
                 Match(CssTokens.OpenBracket);
                 nesting++;
@@ -353,24 +362,25 @@ namespace Marius.Html.Css.Parser
                 name = Match(CssTokens.Identifier, s => s.String);
                 SkipWhitespace();
 
+                Func<string, CssCondition> create = null;
+                string value = null;
+
                 if (_scanner.Current == CssTokens.Equals || _scanner.Current == CssTokens.Includes || _scanner.Current == CssTokens.DashMatch)
                 {
-                    FilterOperator op;
-                    string value;
 
                     switch (_scanner.Current)
                     {
                         case CssTokens.Equals:
-                            op = FilterOperator.Equals;
+                            create = s => new CssAttributeCondition(name, s);
                             break;
                         case CssTokens.Includes:
-                            op = FilterOperator.Includes;
+                            create = s => new CssIncludesAttributeCondition(name, s);
                             break;
                         case CssTokens.DashMatch:
-                            op = FilterOperator.DashMatch;
+                            create = s => new CssBeginHyphenAttributeCondition(name, s);
                             break;
                         default:
-                            throw new CssParsingException();
+                            throw new CssInvalidStateException();
                     }
                     _scanner.MoveNext();
 
@@ -387,14 +397,15 @@ namespace Marius.Html.Css.Parser
                     }
 
                     SkipWhitespace();
-
-                    filter = new AttributeFilter(op, value);
                 }
 
                 Match(CssTokens.CloseBracket);
                 nesting--;
 
-                return new AttributeSpecifier(name, filter);
+                if (create != null && value != null)
+                    return create(value);
+                
+                return new CssAttributeCondition(name, value);
             }
             catch (CssParsingException)
             {
@@ -404,10 +415,10 @@ namespace Marius.Html.Css.Parser
             }
         }
 
-        private ClassSpecifier Class()
+        private CssClassCondition Class()
         {
             Match(CssTokens.Dot);
-            return Match(CssTokens.Identifier, s => new ClassSpecifier(s.String));
+            return Match(CssTokens.Identifier, s => new CssClassCondition(s.String));
         }
 
         private bool MatchesSpecifierStart()
@@ -423,35 +434,35 @@ namespace Marius.Html.Css.Parser
             return false;
         }
 
-        private ElementName ElementName()
+        private CssSimpleSelector ElementName()
         {
             switch (_scanner.Current)
             {
                 case CssTokens.Identifier:
-                    return Match(CssTokens.Identifier, s => new IdentifierElementName(s.String));
+                    return Match(CssTokens.Identifier, s => new CssElementSelector(s.String));
                 case CssTokens.Star:
-                    return Match(CssTokens.Star, s => StarElementName.Instance);
+                    return Match(CssTokens.Star, s => CssUniversalSelector.Instance);
                 default:
                     throw new CssParsingException();
             }
         }
 
-        private Combinator Combinator()
+        private CssSelectorCombinator Combinator()
         {
             //combinator
             //  : '+' S*
             //  | '>' S*
             //  ;
 
-            Combinator result;
+            CssSelectorCombinator result;
 
             switch (_scanner.Current)
             {
                 case CssTokens.Plus:
-                    result = Match(CssTokens.Plus, s => Dom.Combinator.Sibling);
+                    result = Match(CssTokens.Plus, s => CssSelectorCombinator.Sibling);
                     break;
                 case CssTokens.More:
-                    result = Match(CssTokens.Plus, s => Dom.Combinator.Adjacent);
+                    result = Match(CssTokens.More, s => CssSelectorCombinator.Child);
                     break;
                 default:
                     throw new CssParsingException();

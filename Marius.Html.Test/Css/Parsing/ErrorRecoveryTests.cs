@@ -53,11 +53,11 @@ namespace Marius.Html.Tests.Css.Parsing
         {
             var s = CssStylesheet.Parse(@"
 @media screen {
-    p:before { content: 'Hello\
+    p:before#m[id][lang|='lt'] { content: 'Hello\
 ");
             var e = CssStylesheet.Parse(@"
 @media screen {
-    p:before { content: 'Hello' }
+    p:before#m[id][lang|='lt'] { content: 'Hello' }
 }
 ");
             AssertStylesheetsEqual(e, s);
@@ -244,6 +244,20 @@ OL { list-style-type: lower-alpha; }
 .xd { }
 ");
             AssertStylesheetsEqual(e, s);
+        }
+
+        [Test]
+        public void TestSelectorConditions()
+        {
+            var s = CssStylesheet.Parse(@"
+a > b, a {}
+a + b {}
+a:id + b[a] {}
+a b {}
+a b c {}
+#id #r {}
+");
+            Console.WriteLine(s);
         }
 
         private void AssertStylesheetsEqual(CssStylesheet e, CssStylesheet s)
