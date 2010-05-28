@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Dom
 {
-    public class CssDeclaration
+    public class CssDeclaration: IEquatable<CssDeclaration>
     {
         public string Property { get; private set; }
         public CssExpression Value { get; private set; }
@@ -53,6 +53,11 @@ namespace Marius.Html.Css.Dom
             if (Important)
                 sb.Append(" !important");
             return sb.ToString();
+        }
+
+        public bool Equals(CssDeclaration other)
+        {
+            return other.Property == this.Property && other.Value.Equals(this.Value) && other.Important == this.Important;
         }
     }
 }

@@ -64,5 +64,19 @@ namespace Marius.Html.Css.Dom
 
             return sb.ToString();
         }
+
+        public override bool Equals(CssRule other)
+        {
+            CssMedia o = other as CssMedia;
+            if (o == null)
+                return false;
+
+            return o.MediaList.ArraysEqual(this.MediaList) && o.Ruleset.ArraysEqual(this.Ruleset);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(MediaList, Ruleset, RuleType);
+        }
     }
 }

@@ -32,9 +32,21 @@ using System.Text;
 
 namespace Marius.Html.Css.Selectors
 {
-    public abstract class CssSelector
+    public abstract class CssSelector: IEquatable<CssSelector>
     {
         public abstract CssSelectorType SelectorType { get; }
         public abstract CssSpecificity Specificity { get; }
+
+        public abstract bool Equals(CssSelector other);
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            return Equals((CssSelector)obj);
+        }
+
+        public abstract override int GetHashCode();
     }
 }

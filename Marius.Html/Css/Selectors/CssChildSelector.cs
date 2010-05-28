@@ -61,5 +61,19 @@ namespace Marius.Html.Css.Selectors
         {
             get { return _specificity; }
         }
+
+        public override bool Equals(CssSelector other)
+        {
+            CssChildSelector o = other as CssChildSelector;
+            if (o == null)
+                return false;
+
+            return o.AncestorSelector.Equals(this.AncestorSelector) && o.Selector.Equals(this.Selector);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(AncestorSelector, Selector);
+        }
     }
 }

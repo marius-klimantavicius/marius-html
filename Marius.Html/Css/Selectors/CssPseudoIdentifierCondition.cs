@@ -57,5 +57,19 @@ namespace Marius.Html.Css.Selectors
         {
             get { return PseudoIdentifierSpecificity; }
         }
+
+        public override bool Equals(CssCondition other)
+        {
+            CssPseudoIdentifierCondition o = other as CssPseudoIdentifierCondition;
+            if (o == null)
+                return false;
+
+            return o.Identifier == this.Identifier;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Identifier, ConditionType);
+        }
     }
 }

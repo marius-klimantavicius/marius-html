@@ -50,5 +50,18 @@ namespace Marius.Html.Css.Dom
         {
             return string.Format("@charset \"{0}\";", Encoding.Escape());
         }
+
+        public override bool Equals(CssRule other)
+        {
+            CssCharset o = other as CssCharset;
+            if (o == null)
+                return false;
+            return o.Encoding == this.Encoding;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Encoding, RuleType);
+        }
     }
 }

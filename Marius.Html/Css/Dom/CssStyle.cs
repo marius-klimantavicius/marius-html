@@ -33,7 +33,7 @@ using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Dom
 {
-    public class CssStyle: CssRule
+    public class CssStyle: CssRule, IEquatable<CssStyle>
     {
         public CssSelector[] Selectors { get; private set; }
         public CssDeclaration[] Declarations { get; private set; }
@@ -61,6 +61,25 @@ namespace Marius.Html.Css.Dom
             sb.AppendLine("}");
 
             return sb.ToString();
+        }
+
+        public override bool Equals(CssRule other)
+        {
+            CssStyle o = other as CssStyle;
+            if (o == null)
+                return false;
+
+            return Equals(o);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Selectors, Declarations, RuleType);
+        }
+
+        public bool Equals(CssStyle o)
+        {
+            return o.Selectors.ArraysEqual(this.Selectors) && o.Declarations.ArraysEqual(this.Declarations);
         }
     }
 }

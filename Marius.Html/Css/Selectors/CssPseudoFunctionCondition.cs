@@ -60,5 +60,19 @@ namespace Marius.Html.Css.Selectors
             // this might be pseudo class (in case of lang()), or pseudo element, for now they will be counted as pseudo class
             get { return PseudoFunctionSpecificity; }
         }
+
+        public override bool Equals(CssCondition other)
+        {
+            CssPseudoFunctionCondition o = other as CssPseudoFunctionCondition;
+            if (o == null)
+                return false;
+
+            return o.Name == this.Name && o.Argument == this.Argument;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Name, Argument, ConditionType);
+        }
     }
 }

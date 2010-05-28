@@ -50,5 +50,19 @@ namespace Marius.Html.Css.Values
         {
             return string.Format("@url(\"{0}\")", Uri.Escape());
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssUri o = other as CssUri;
+            if (o == null)
+                return false;
+
+            return o.Uri == this.Uri;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Uri, PrimitiveValueType);
+        }
     }
 }

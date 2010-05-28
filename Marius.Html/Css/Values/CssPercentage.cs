@@ -45,5 +45,19 @@ namespace Marius.Html.Css.Values
         {
             Value = value;
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssPercentage o = other as CssPercentage;
+            if (o == null)
+                return false;
+
+            return o.Value == this.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Value, PrimitiveValueType);
+        }
     }
 }

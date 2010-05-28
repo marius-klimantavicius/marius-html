@@ -33,7 +33,7 @@ using System.Diagnostics.Contracts;
 
 namespace Marius.Html.Css
 {
-    public static class StringUtils
+    public static class Utils
     {
         public static string Escape(this string value)
         {
@@ -84,6 +84,51 @@ namespace Marius.Html.Css
             }
 
             return sb.ToString();
+        }
+
+        public static bool ArraysEqual<T>(this T[] first, T[] second)
+            where T: IEquatable<T>
+        {
+            if(first.Length!=second.Length)
+                return false;
+            
+            for (int i = 0; i < first.Length; i++)
+                if(!first[i].Equals((T)second[i]))
+                    return false;
+
+            return true;
+        }
+
+        public static int ArrayHashCode(this object[] array)
+        {
+            int result = 0;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                result += array[i].GetHashCode();
+                result = (result << 3) ^ result;
+            }
+
+            return result;
+        }
+
+        public static int GetHashCode(params object[] items)
+        {
+            int result = 0;
+            
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i] != null)
+                {
+                    if (items[i] is object[])
+                        result += ArrayHashCode((object[])items[i]);
+                    else
+                        result += items[i].GetHashCode();
+                }
+                result = (result << 3) ^ result;
+            }
+
+            return result;
         }
     }
 }

@@ -32,8 +32,19 @@ using System.Text;
 
 namespace Marius.Html.Css.Dom
 {
-    public abstract class CssValue
+    public abstract class CssValue: IEquatable<CssValue>
     {
         public abstract CssValueType ValueType { get; }
+
+        public abstract bool Equals(CssValue other);
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            return Equals((CssValue)obj);
+        }
+
+        public abstract override int GetHashCode();
     }
 }

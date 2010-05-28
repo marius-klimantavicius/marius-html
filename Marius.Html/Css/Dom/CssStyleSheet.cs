@@ -34,7 +34,7 @@ using Marius.Html.Css.Parser;
 
 namespace Marius.Html.Css.Dom
 {
-    public class CssStylesheet
+    public class CssStylesheet: IEquatable<CssStylesheet>
     {
         public CssRule[] Rules { get; private set; }
 
@@ -64,6 +64,24 @@ namespace Marius.Html.Css.Dom
             }
 
             return sb.ToString();
+        }
+
+        public bool Equals(CssStylesheet other)
+        {
+            return other.Rules.ArraysEqual(this.Rules);
+        }
+
+        public override bool Equals(object obj)
+        {
+            CssStylesheet o = obj as CssStylesheet;
+            if (o == null)
+                return false;
+            return Equals(o);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode((object)Rules);
         }
     }
 }

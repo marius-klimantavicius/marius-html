@@ -63,5 +63,19 @@ namespace Marius.Html.Css.Dom
 
             return sb.ToString();
         }
+
+        public override bool Equals(CssRule other)
+        {
+            CssPage o = other as CssPage;
+            if (o == null)
+                return false;
+
+            return o.PseudoPage == this.PseudoPage && o.Declarations.ArraysEqual(this.Declarations);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(PseudoPage, Declarations, RuleType);
+        }
     }
 }
