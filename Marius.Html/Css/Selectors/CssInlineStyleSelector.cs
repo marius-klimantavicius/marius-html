@@ -32,34 +32,26 @@ using System.Text;
 
 namespace Marius.Html.Css.Selectors
 {
-    public class CssSiblingSelector: CssSelector
+    // specifity 1,0,0,0
+    public class CssInlineStyleSelector: CssSelector
     {
-        private readonly CssSpecificity _specificity;
+        private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
 
-        public CssSimpleSelector SiblingSelector { get; private set; }
-        public CssSelector Selector { get; private set; }
-
-        public CssSiblingSelector(CssSimpleSelector siblingSelector, CssSelector selector)
-        {
-            SiblingSelector = siblingSelector;
-            Selector = selector;
-
-            _specificity = SiblingSelector.Specificity + Selector.Specificity;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0} + {1}", SiblingSelector, Selector);
-        }
+        public CssBox Element { get; private set; }
 
         public override CssSelectorType SelectorType
         {
-            get { return CssSelectorType.Sibling; }
+            get { return CssSelectorType.InlineStyle; }
+        }
+
+        public CssInlineStyleSelector(CssBox element)
+        {
+            Element = element;
         }
 
         public override CssSpecificity Specificity
         {
-            get { return _specificity; }
+            get { return StyleSpecificity; }
         }
     }
 }

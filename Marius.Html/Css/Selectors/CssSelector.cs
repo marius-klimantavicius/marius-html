@@ -35,5 +35,6 @@ namespace Marius.Html.Css.Selectors
     public abstract class CssSelector
     {
         public abstract CssSelectorType SelectorType { get; }
+        public abstract CssSpecificity Specificity { get; }
     }
 }

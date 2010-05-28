@@ -34,6 +34,8 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssChildSelector: CssSelector
     {
+        private readonly CssSpecificity _specificity;
+
         public CssSimpleSelector AncestorSelector { get; private set; }
         public CssSelector Selector { get; private set; }
 
@@ -41,6 +43,8 @@ namespace Marius.Html.Css.Selectors
         {
             AncestorSelector = ancestorSelector;
             Selector = selector;
+
+            _specificity = AncestorSelector.Specificity + Selector.Specificity;
         }
 
         public override string ToString()
@@ -51,6 +55,11 @@ namespace Marius.Html.Css.Selectors
         public sealed override CssSelectorType SelectorType
         {
             get { return CssSelectorType.Child; }
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return _specificity; }
         }
     }
 }

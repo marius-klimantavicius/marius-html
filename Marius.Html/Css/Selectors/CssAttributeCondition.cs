@@ -34,6 +34,8 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssAttributeCondition: CssCondition
     {
+        private static readonly CssSpecificity AttributeSpecificity = new CssSpecificity(0, 0, 1, 0);
+
         public string Attribute { get; private set; }
         public string Value { get; private set; }
         public bool IsSpecified { get; private set; }
@@ -61,6 +63,11 @@ namespace Marius.Html.Css.Selectors
             if (IsSpecified)
                 return string.Format("[{0}=\"{1}\"]", Attribute.EscapeIdentifier(), Value.Escape());
             return string.Format("[{0}]", Attribute.EscapeIdentifier());
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return AttributeSpecificity; }
         }
     }
 }

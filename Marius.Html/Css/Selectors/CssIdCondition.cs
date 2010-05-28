@@ -34,6 +34,7 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssIdCondition: CssAttributeCondition
     {
+        private static readonly CssSpecificity IdSpecificity = new CssSpecificity(0, 1, 0, 0);
         public const string IdAttribute = "id";
 
         public override CssConditionType ConditionType
@@ -54,6 +55,11 @@ namespace Marius.Html.Css.Selectors
         public override string ToString()
         {
             return string.Format("#{0}", Value.EscapeIdentifier());
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return IdSpecificity; }
         }
     }
 }

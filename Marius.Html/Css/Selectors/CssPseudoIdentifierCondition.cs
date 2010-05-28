@@ -34,6 +34,8 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssPseudoIdentifierCondition: CssCondition
     {
+        private static readonly CssSpecificity PseudoIdentifierSpecificity = new CssSpecificity(0, 0, 1, 0);
+        
         public string Identifier { get; private set; }
 
         public sealed override CssConditionType ConditionType
@@ -49,6 +51,11 @@ namespace Marius.Html.Css.Selectors
         public override string ToString()
         {
             return string.Format(":{0}", Identifier.EscapeIdentifier());
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return PseudoIdentifierSpecificity; }
         }
     }
 }

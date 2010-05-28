@@ -34,6 +34,8 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssPseudoFunctionCondition: CssCondition
     {
+        private static readonly CssSpecificity PseudoFunctionSpecificity = new CssSpecificity(0, 0, 1, 0);
+
         public string Name { get; private set; }
         public string Argument { get; private set; }
 
@@ -51,6 +53,12 @@ namespace Marius.Html.Css.Selectors
         public override string ToString()
         {
             return string.Format(":{0}({1})", Name.EscapeIdentifier(), Argument.EscapeIdentifier());
+        }
+
+        public override CssSpecificity Specificity
+        {
+            // this might be pseudo class (in case of lang()), or pseudo element, for now they will be counted as pseudo class
+            get { return PseudoFunctionSpecificity; }
         }
     }
 }
