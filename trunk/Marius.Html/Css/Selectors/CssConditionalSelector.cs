@@ -34,6 +34,8 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssConditionalSelector: CssSimpleSelector
     {
+        private readonly CssSpecificity _specificity;
+
         public CssSimpleSelector SimpleSelector { get; private set; }
         public CssCondition Condition { get; private set; }
 
@@ -46,11 +48,18 @@ namespace Marius.Html.Css.Selectors
         {
             SimpleSelector = selector;
             Condition = condition;
+
+            _specificity = SimpleSelector.Specificity + Condition.Specificity;
         }
 
         public override string ToString()
         {
             return string.Format("{0}{1}", SimpleSelector, Condition);
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return _specificity; }
         }
     }
 }

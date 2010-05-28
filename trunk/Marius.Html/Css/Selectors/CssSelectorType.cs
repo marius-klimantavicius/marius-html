@@ -42,5 +42,7 @@ namespace Marius.Html.Css.Selectors
         Universal,
         Conditional,
         Element,
+
+        InlineStyle, // corresponds to <elm style="..."
     }
 }

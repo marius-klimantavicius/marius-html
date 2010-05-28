@@ -34,6 +34,7 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssUniversalSelector: CssSimpleSelector
     {
+        public static readonly CssSpecificity UniversalSpecificity = new CssSpecificity(0, 0, 0, 0);
         public static readonly CssUniversalSelector Instance = new CssUniversalSelector();
 
         public override CssSelectorType SelectorType
@@ -49,6 +50,11 @@ namespace Marius.Html.Css.Selectors
         public override string ToString()
         {
             return "*";
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return UniversalSpecificity; }
         }
     }
 }

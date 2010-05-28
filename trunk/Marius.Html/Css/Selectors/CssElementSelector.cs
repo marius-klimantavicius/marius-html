@@ -34,6 +34,8 @@ namespace Marius.Html.Css.Selectors
 {
     public class CssElementSelector: CssSimpleSelector
     {
+        private static readonly CssSpecificity ElementSpecificity = new CssSpecificity(0, 0, 0, 1);
+
         public string Name { get; private set; }
 
         public override CssSelectorType SelectorType
@@ -49,6 +51,11 @@ namespace Marius.Html.Css.Selectors
         public override string ToString()
         {
             return Name.EscapeIdentifier();
+        }
+
+        public override CssSpecificity Specificity
+        {
+            get { return ElementSpecificity; }
         }
     }
 }

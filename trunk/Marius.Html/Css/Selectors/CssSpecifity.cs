@@ -32,34 +32,56 @@ using System.Text;
 
 namespace Marius.Html.Css.Selectors
 {
-    public class CssSiblingSelector: CssSelector
+    public class CssSpecificity: IComparable<CssSpecificity>
     {
-        private readonly CssSpecificity _specificity;
+        public readonly int A, B, C, D;
 
-        public CssSimpleSelector SiblingSelector { get; private set; }
-        public CssSelector Selector { get; private set; }
-
-        public CssSiblingSelector(CssSimpleSelector siblingSelector, CssSelector selector)
+        public CssSpecificity(int a, int b, int c, int d)
         {
-            SiblingSelector = siblingSelector;
-            Selector = selector;
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+        }
 
-            _specificity = SiblingSelector.Specificity + Selector.Specificity;
+        public int CompareTo(CssSpecificity other)
+        {
+            if (this.A != other.A)
+                return this.A - other.A;
+
+            if (this.B != other.B)
+                return this.B - other.B;
+
+            if (this.C != other.C)
+                return this.C - other.C;
+
+            if (this.D != other.D)
+                return this.D - other.D;
+
+            return 0;
         }
 
         public override string ToString()
         {
-            return string.Format("{0} + {1}", SiblingSelector, Selector);
+            return string.Format("{0}, {1}, {2}, {3}", A, B, C, D);
         }
 
-        public override CssSelectorType SelectorType
+        public override bool Equals(object obj)
         {
-            get { return CssSelectorType.Sibling; }
+            CssSpecificity other = obj as CssSpecificity;
+            if (other == null)
+                return false;
+            return CompareTo(other) == 0;
         }
 
-        public override CssSpecificity Specificity
+        public override int GetHashCode()
         {
-            get { return _specificity; }
+            return (A << 24) + (B << 16) + (C << 8) + D;
+        }
+
+        public static CssSpecificity operator +(CssSpecificity a, CssSpecificity b)
+        {
+            return new CssSpecificity(a.A + b.A, a.B + b.B, a.C + b.C, a.D + b.D);
         }
     }
 }

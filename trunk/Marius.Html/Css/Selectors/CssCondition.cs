@@ -35,5 +35,6 @@ namespace Marius.Html.Css.Selectors
     public abstract class CssCondition
     {
         public abstract CssConditionType ConditionType { get; }
+        public abstract CssSpecificity Specificity { get; }
     }
 }
