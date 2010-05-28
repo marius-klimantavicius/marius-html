@@ -33,7 +33,7 @@ using Marius.Html.Css.Dom;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssValueOperator
+    public class CssValueOperator: IEquatable<CssValueOperator>
     {
         public CssValue Value { get; private set; }
         public CssOperator Operator { get; private set; }
@@ -72,6 +72,26 @@ namespace Marius.Html.Css.Values
             sb.Append(Value.ToString());
 
             return sb.ToString();
+        }
+
+        public bool Equals(CssValueOperator other)
+        {
+            if (other == null)
+                return false;
+            return other.Value.Equals(this.Value) && other.Operator == this.Operator;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != GetType())
+                return false;
+
+            return Equals((CssValueOperator)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Value, Operator);
         }
     }
 }

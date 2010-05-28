@@ -56,5 +56,18 @@ namespace Marius.Html.Css.Selectors
         {
             get { return UniversalSpecificity; }
         }
+
+        public override bool Equals(CssSelector other)
+        {
+            CssUniversalSelector o = other as CssUniversalSelector;
+            if (o == null)
+                return false;
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return 0x57A4;
+        }
     }
 }

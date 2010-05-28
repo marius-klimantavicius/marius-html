@@ -36,9 +36,23 @@ namespace Marius.Html.Css.Dom
     {
         public string Text { get; private set; }
 
-        public override CssRuleType RuleType
+        public sealed override CssRuleType RuleType
         {
             get { return CssRuleType.Unknown; }
+        }
+
+        public override bool Equals(CssRule other)
+        {
+            CssUnknown o = other as CssUnknown;
+            if (o == null)
+                return false;
+
+            return o.Text == this.Text;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Text, RuleType);
         }
     }
 }

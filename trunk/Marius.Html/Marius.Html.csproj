@@ -108,7 +108,7 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
-    <Compile Include="Css\StringUtils.cs" />
+    <Compile Include="Css\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

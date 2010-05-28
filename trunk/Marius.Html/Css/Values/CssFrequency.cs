@@ -57,5 +57,19 @@ namespace Marius.Html.Css.Values
             Value = value;
             Units = units;
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssFrequency o = other as CssFrequency;
+            if (o == null)
+                return false;
+
+            return o.Units == this.Units && o.Value == this.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Units, Value, PrimitiveValueType);
+        }
     }
 }

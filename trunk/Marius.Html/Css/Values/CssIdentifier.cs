@@ -50,5 +50,18 @@ namespace Marius.Html.Css.Values
         {
             return Name.EscapeIdentifier();
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssIdentifier o = other as CssIdentifier;
+            if (o == null)
+                return false;
+            return o.Name == this.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Name, PrimitiveValueType);
+        }
     }
 }

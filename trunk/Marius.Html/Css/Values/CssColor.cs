@@ -55,5 +55,18 @@ namespace Marius.Html.Css.Values
             throw new NotImplementedException();
             //return string.Format("#{0}", Value.EscapeIdentifier());
         }
+
+        public override bool Equals(CssValue other)
+        {
+            CssColor o = other as CssColor;
+            if (o == null)
+                return false;
+            return o.Red.Equals(this.Red) && o.Green.Equals(this.Green) && o.Blue.Equals(this.Blue);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Red, Green, Blue);
+        }
     }
 }

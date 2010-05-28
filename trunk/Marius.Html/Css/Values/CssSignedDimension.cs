@@ -69,5 +69,18 @@ namespace Marius.Html.Css.Values
             Dimension = dimension;
             Sign = sign;
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssSignedDimension o = other as CssSignedDimension;
+            if (o == null)
+                return false;
+            return o.Sign == this.Sign && o.Dimension.Equals(this.Dimension);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Sign, Dimension, PrimitiveValueType);
+        }
     }
 }

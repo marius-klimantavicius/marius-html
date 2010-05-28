@@ -53,5 +53,18 @@ namespace Marius.Html.Css.Selectors
         {
             get { return StyleSpecificity; }
         }
+
+        public override bool Equals(CssSelector other)
+        {
+            CssInlineStyleSelector o = other as CssInlineStyleSelector;
+            if (o == null)
+                return false;
+            return o.Element.Equals(this.Element);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Element, SelectorType);
+        }
     }
 }

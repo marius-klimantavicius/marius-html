@@ -47,5 +47,18 @@ namespace Marius.Html.Css.Values
             Value = value;
             Dimension = dimension;
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssDimension o = other as CssDimension;
+            if (o == null)
+                return false;
+            return o.Value == this.Value && o.Dimension == this.Dimension;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Value, Dimension, PrimitiveValueType);
+        }
     }
 }

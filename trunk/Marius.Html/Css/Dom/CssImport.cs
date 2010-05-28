@@ -52,5 +52,19 @@ namespace Marius.Html.Css.Dom
         {
             return string.Format("@import \"{0}\" {1};", Uri.Escape(), String.Join(", ", MediaList));
         }
+
+        public override bool Equals(CssRule other)
+        {
+            CssImport o = other as CssImport;
+            if (o == null)
+                return false;
+
+            return o.Uri == this.Uri && o.MediaList.ArraysEqual(this.MediaList);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Uri, MediaList, RuleType);
+        }
     }
 }

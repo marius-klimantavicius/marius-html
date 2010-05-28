@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssExpression
+    public class CssExpression: IEquatable<CssExpression>
     {
         public CssValueOperator[] Items { get; private set; }
 
@@ -44,6 +44,26 @@ namespace Marius.Html.Css.Values
         public override string ToString()
         {
             return string.Join(" ", (object[])Items);
+        }
+
+        public bool Equals(CssExpression other)
+        {
+            if (other == null)
+                return false;
+
+            return other.Items.ArraysEqual(this.Items);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            return Equals((CssExpression)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode((object)Items);
         }
     }
 }

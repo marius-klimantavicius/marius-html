@@ -45,5 +45,18 @@ namespace Marius.Html.Css.Values
         {
             get { return CssPrimitiveValueType.Number; }
         }
+
+        public override bool Equals(Dom.CssValue other)
+        {
+            CssNumber o = other as CssNumber;
+            if (o == null)
+                return false;
+            return o.Value == this.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Value, PrimitiveValueType);
+        }
     }
 }
