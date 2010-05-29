@@ -30,30 +30,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Dom;
+using System.Text.RegularExpressions;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssColor: CssPrimitiveValue
+    public abstract class CssColor: CssPrimitiveValue
     {
-        public CssValue Red { get; private set; }
-        public CssValue Green { get; private set; }
-        public CssValue Blue { get; private set; }
 
-        public CssColor(string hex)
+        public CssValue Red { get; protected set; }
+        public CssValue Green { get; protected set; }
+        public CssValue Blue { get; protected set; }
+
+        public CssColor()
         {
-            throw new NotImplementedException();
         }
 
         public sealed override CssPrimitiveValueType PrimitiveValueType
         {
             get { return CssPrimitiveValueType.RgbColor; }
-        }
-
-        public override string ToString()
-        {
-            // TODO: implement
-            throw new NotImplementedException();
-            //return string.Format("#{0}", Value.EscapeIdentifier());
         }
 
         public override bool Equals(CssValue other)
