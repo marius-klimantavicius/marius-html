@@ -42,6 +42,7 @@ namespace Marius.Html.Css.Parser
 
         private TokenBuffer _scanner;
         private PseudoConditionFactory _pseudoConditionFactory = PseudoConditionFactory.Create();
+        private FunctionFactory _functionFactory = FunctionFactory.Create();
 
         public CssParser(CssScanner scanner)
         {
@@ -213,7 +214,7 @@ namespace Marius.Html.Css.Parser
                 }
             }
 
-            // need to check whether pseudo-element selector is appended only to the last simple_selector
+            // TODO: need to check whether pseudo-element selector is appended only to the last simple_selector
             return result;
         }
 
@@ -751,7 +752,7 @@ namespace Marius.Html.Css.Parser
             return result;
         }
 
-        private CssFunction Function()
+        private CssValue Function()
         {
             int nesting = 0;
             try
@@ -773,7 +774,7 @@ namespace Marius.Html.Css.Parser
 
                 _scanner.SkipWhitespace();
 
-                return new CssFunction(name, arguments);
+                return _functionFactory.Function(name, arguments);
             }
             catch (CssParsingException)
             {

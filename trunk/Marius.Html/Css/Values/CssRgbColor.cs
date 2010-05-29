@@ -12,7 +12,10 @@ namespace Marius.Html.Css.Values
         {
             CssValue red, green, blue;
 
-            if (!Extract(rgb, out red, out green, out blue))
+            if (rgb.Name.ToUpperInvariant() != "RGB")
+                throw new ArgumentException();
+
+            if (!Extract(rgb.Arguments, out red, out green, out blue))
                 throw new ArgumentException();
 
             Red = red;
@@ -20,16 +23,13 @@ namespace Marius.Html.Css.Values
             Blue = blue;
         }
 
-        public static bool Extract(CssFunction rgb, out CssValue red, out CssValue green, out CssValue blue)
+        public static bool Extract(CssExpression args, out CssValue red, out CssValue green, out CssValue blue)
         {
             red = null;
             green = null;
             blue = null;
 
-            if (!rgb.Name.Equals("rgb", StringComparison.InvariantCultureIgnoreCase))
-                return false;
-
-            if (rgb.Arguments.Items.Length != 3)
+            if (args.Items.Length != 3)
                 return false;
 
             CssPrimitiveValueType last = CssPrimitiveValueType.Unknown;
@@ -37,7 +37,7 @@ namespace Marius.Html.Css.Values
             CssValue[] color = new CssValue[3];
             for (int i = 0; i < color.Length; i++)
             {
-                var item = rgb.Arguments.Items[i];
+                var item = args.Items[i];
                 color[i] = item.Value;
                 if (i == 0 && item.Operator != CssOperator.Space)
                     return false;
