@@ -116,7 +116,7 @@ p @here {color: red}     /* ruleset with unexpected at-keyword '@here' */
         public void IgnoreMalformedDeclarations()
         {
             var s = CssStylesheet.Parse(@"
-p { color:green }
+p { color:rgb(0, 255, 0) }
 p { color:green; color }  /* malformed declaration missing ':', value */
 p { color:red;   color; color:green }  /* same with expected recovery */
 p { color:green; color: } /* malformed declaration missing value */
@@ -125,7 +125,7 @@ p { color:green; color{;color:maroon} } /* unexpected tokens { } */
 p { color:red;   color{;color:maroon}; color:green } /* same with recovery */
 ");
             var e = CssStylesheet.Parse(@"
-p { color:green }
+p { color:rgb(0, 255, 0) }
 p { color:green }
 p { color:red; color:green }
 p { color:green }

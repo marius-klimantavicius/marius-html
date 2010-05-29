@@ -71,6 +71,7 @@
     <Compile Include="Css\Values\CssExpression.cs" />
     <Compile Include="Css\Values\CssFrequency.cs" />
     <Compile Include="Css\Values\CssFunction.cs" />
+    <Compile Include="Css\Values\CssHexColor.cs" />
     <Compile Include="Css\Values\CssIdentifier.cs" />
     <Compile Include="Css\Dom\CssImport.cs" />
     <Compile Include="Css\Values\CssLength.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Css\Values\CssPrimitiveValueType.cs" />
     <Compile Include="Css\Dom\CssRule.cs" />
     <Compile Include="Css\Dom\CssRuleType.cs" />
+    <Compile Include="Css\Values\CssRgbColor.cs" />
     <Compile Include="Css\Values\CssSignedDimension.cs" />
     <Compile Include="Css\Values\CssSignOperator.cs" />
     <Compile Include="Css\Values\CssString.cs" />

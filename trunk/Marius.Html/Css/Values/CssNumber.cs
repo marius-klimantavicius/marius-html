@@ -46,6 +46,11 @@ namespace Marius.Html.Css.Values
             get { return CssPrimitiveValueType.Number; }
         }
 
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
         public override bool Equals(Dom.CssValue other)
         {
             CssNumber o = other as CssNumber;

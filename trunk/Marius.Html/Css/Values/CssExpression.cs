@@ -43,7 +43,33 @@ namespace Marius.Html.Css.Values
 
         public override string ToString()
         {
-            return string.Join(" ", (object[])Items);
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < Items.Length; i++)
+            {
+                if ((i == 0 && Items[i].Operator != CssOperator.Space) || (i > 0))
+                    sb.Append(OperatorToString(Items[i].Operator));
+                if (Items[i].Operator != CssOperator.Space)
+                    sb.Append(' ');
+                sb.Append(Items[i].Value);
+            }
+
+            return sb.ToString();
+        }
+
+        private char OperatorToString(CssOperator cssOperator)
+        {
+            switch (cssOperator)
+            {
+                case CssOperator.Comma:
+                    return ',';
+                case CssOperator.Slash:
+                    return '\\';
+                case CssOperator.Space:
+                    return ' ';
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         public bool Equals(CssExpression other)

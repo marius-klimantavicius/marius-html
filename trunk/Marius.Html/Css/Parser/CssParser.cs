@@ -404,7 +404,7 @@ namespace Marius.Html.Css.Parser
 
                 if (create != null && value != null)
                     return create(value);
-                
+
                 return new CssAttributeCondition(name, value);
             }
             catch (CssParsingException)
@@ -788,7 +788,10 @@ namespace Marius.Html.Css.Parser
             result = Match(CssTokens.Hash, s => s.String);
             SkipWhitespace();
 
-            return new CssColor(result);
+            if ((result.Length == 3 || result.Length == 6) && result.ToUpperInvariant().All(s => (s >= '0' && s <= '9') || (s >= 'A' && s <= 'F')))
+                return new CssHexColor(result);
+
+            throw new CssParsingException();
         }
 
         private CssPrimitiveValue Dimension()

@@ -50,30 +50,6 @@ namespace Marius.Html.Css.Values
             Operator = @operator;
         }
 
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            switch (Operator)
-            {
-                case CssOperator.Comma:
-                    sb.Append(',');
-                    break;
-                case CssOperator.Slash:
-                    sb.Append('/');
-                    break;
-                case CssOperator.Space:
-                    sb.Append(' ');
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
-
-            sb.Append(Value.ToString());
-
-            return sb.ToString();
-        }
-
         public bool Equals(CssValueOperator other)
         {
             if (other == null)
