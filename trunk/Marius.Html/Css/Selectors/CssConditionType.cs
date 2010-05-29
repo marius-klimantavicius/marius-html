@@ -37,10 +37,11 @@ namespace Marius.Html.Css.Selectors
         Attribute,
         BeginHyphenAttribute,
         IncludesAttribute,
-        IdCondition,
-        ClassCondition,
+        Id,
+        Class,
         And,
-        PseudoFunction,
-        PseudoIdentifier,
+
+        PseudoElement,
+        PseudoClass,
     }
 }

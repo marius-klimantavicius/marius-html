@@ -32,28 +32,32 @@ using System.Text;
 
 namespace Marius.Html.Css.Selectors
 {
-    public class CssClassCondition: CssAttributeCondition
+    public class CssPseudoIdentifier: CssPseudoValue
     {
-        public const string ClassAttribute = "class";
+        public string Identifier { get; private set; }
 
-        public override CssConditionType ConditionType
+        public CssPseudoIdentifier(string identifier)
         {
-            get { return CssConditionType.Class; }
+            Identifier = identifier;
         }
 
-        public CssClassCondition(string className)
-            : base(ClassAttribute, className, true)
+        public override bool Equals(CssPseudoValue other)
         {
+            CssPseudoIdentifier o = other as CssPseudoIdentifier;
+            if (o == null)
+                return false;
+
+            return o.Identifier == this.Identifier;
         }
 
-        public CssClassCondition(string attribute, string className)
-            : base(attribute, className, true)
+        public override int GetHashCode()
         {
+            return Identifier.GetHashCode();
         }
 
         public override string ToString()
         {
-            return string.Format(".{0}", Value.EscapeIdentifier());
+            return Identifier.EscapeIdentifier();
         }
     }
 }

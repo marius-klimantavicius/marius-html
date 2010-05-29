@@ -30,30 +30,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Css.Parser
 {
-    public class CssClassCondition: CssAttributeCondition
+    public class TokenBuffer
     {
-        public const string ClassAttribute = "class";
+        private CssScanner _scanner;
+        private CssTokens _current;
 
-        public override CssConditionType ConditionType
+        public TokenBuffer(CssScanner scanner)
         {
-            get { return CssConditionType.Class; }
+            _scanner = scanner;
         }
 
-        public CssClassCondition(string className)
-            : base(ClassAttribute, className, true)
+        public CssTokens Current
         {
+            get { return _current; }
         }
 
-        public CssClassCondition(string attribute, string className)
-            : base(attribute, className, true)
+        public CssSourceToken Value
         {
+            get { return _scanner.Value; }
         }
 
-        public override string ToString()
+        public void MoveNext()
         {
-            return string.Format(".{0}", Value.EscapeIdentifier());
+            _current = _scanner.NextToken();
         }
     }
 }

@@ -41,6 +41,7 @@ namespace Marius.Html.Css.Parser
         private static readonly string[] EmptyStringArray = new string[0];
 
         private TokenBuffer _scanner;
+        private PseudoConditionFactory _pseudoConditionFactory = PseudoConditionFactory.Create();
 
         public CssParser(CssScanner scanner)
         {
@@ -68,7 +69,7 @@ namespace Marius.Html.Css.Parser
                     rules.Add(new CssCharset(charset));
             }
 
-            SkipSgml();
+            _scanner.SkipSgml();
 
             while (_scanner.Current == CssTokens.AtImport)
             {
@@ -76,7 +77,7 @@ namespace Marius.Html.Css.Parser
                 if (import != null)
                     rules.Add(import);
 
-                SkipSgml();
+                _scanner.SkipSgml();
             }
 
             while (_scanner.Current != CssTokens.EOF)
@@ -84,7 +85,7 @@ namespace Marius.Html.Css.Parser
                 CssRule rule = Rule();
                 if (rule != null)
                     rules.Add(rule);
-                SkipSgml();
+                _scanner.SkipSgml();
             }
             return new CssStylesheet(rules.ToArray());
         }
@@ -97,8 +98,8 @@ namespace Marius.Html.Css.Parser
                 return Media();
             else if (_scanner.Current == CssTokens.AtImport || _scanner.Current == CssTokens.AtKeyword)
             {
-                SkipSemicolonOrBlock(true, true);
-                SkipWhitespace();
+                _scanner.SkipSemicolonOrBlock(true, true);
+                _scanner.SkipWhitespace();
             }
             else
                 return Ruleset();
@@ -111,7 +112,7 @@ namespace Marius.Html.Css.Parser
             try
             {
                 //ruleset
-                //  : selector [ ',' S* selector ]*
+                //  : first [ ',' S* first ]*
                 //    '{' S* declaration? [ ';' S* declaration? ]* '}' S*
                 //  ;
 
@@ -127,7 +128,7 @@ namespace Marius.Html.Css.Parser
                 while (_scanner.Current == CssTokens.Comma)
                 {
                     Match(CssTokens.Comma);
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     sel = Selector();
                     if (sel != null)
                         selectors.Add(sel);
@@ -136,7 +137,7 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.OpenBrace);
                 nesting++;
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 MaybeDeclaration(decls);
 
@@ -144,20 +145,20 @@ namespace Marius.Html.Css.Parser
                 {
                     Match(CssTokens.SemiColon);
 
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     MaybeDeclaration(decls);
                 }
 
                 MatchEof(CssTokens.CloseBrace);
                 nesting--;
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 return new CssStyle(selectors.ToArray(), decls.ToArray());
             }
             catch (CssParsingException)
             {
-                SkipEndBlock(nesting);
-                SkipWhitespace();
+                _scanner.SkipEndBlock(nesting);
+                _scanner.SkipWhitespace();
             }
             return null;
         }
@@ -170,8 +171,8 @@ namespace Marius.Html.Css.Parser
 
             if (_scanner.Current != CssTokens.SemiColon && _scanner.Current != CssTokens.CloseBrace && _scanner.Current != CssTokens.EOF)
             {
-                SkipSemicolonOrBlock(false, true);
-                SkipWhitespace();
+                _scanner.SkipSemicolonOrBlock(false, true);
+                _scanner.SkipWhitespace();
             }
             else if (decl != null)
             {
@@ -192,15 +193,15 @@ namespace Marius.Html.Css.Parser
 
             if (_scanner.Current == CssTokens.Plus || _scanner.Current == CssTokens.More)
             {
-                result = CombinedSelector(selector);
+                result = ComplexSelector(selector);
             }
             else if (_scanner.Current == CssTokens.Whitespace)
             {
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 if (_scanner.Current == CssTokens.Plus || _scanner.Current == CssTokens.More)
                 {
-                    result = CombinedSelector(selector);
+                    result = ComplexSelector(selector);
                 }
                 else if (MatchesSelectorStart())
                 {
@@ -212,23 +213,24 @@ namespace Marius.Html.Css.Parser
                 }
             }
 
+            // need to check whether pseudo-element selector is appended only to the last simple_selector
             return result;
         }
 
-        private CssSelector CombinedSelector(CssSimpleSelector selector)
+        private CssSelector ComplexSelector(CssSimpleSelector first)
         {
             CssSelectorCombinator combinator;
-            CssSelector combined;
+            CssSelector second;
 
             combinator = Combinator();
-            combined = Selector();
+            second = Selector();
 
             switch (combinator)
             {
                 case CssSelectorCombinator.Sibling:
-                    return new CssSiblingSelector(selector, combined);
+                    return new CssSiblingSelector(first, second);
                 case CssSelectorCombinator.Child:
-                    return new CssChildSelector(selector, combined);
+                    return new CssChildSelector(first, second);
             }
 
             throw new CssInvalidStateException();
@@ -310,7 +312,7 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.Colon);
                 if (_scanner.Current == CssTokens.Identifier)
                 {
-                    return Match(CssTokens.Identifier, s => new CssPseudoIdentifierCondition(s.String));
+                    return Match(CssTokens.Identifier, s => _pseudoConditionFactory.PseudoIdentifierCondition(s.String));
                 }
                 else if (_scanner.Current == CssTokens.Function)
                 {
@@ -319,16 +321,16 @@ namespace Marius.Html.Css.Parser
                     function = Match(CssTokens.Function, s => s.String);
                     nesting++;
 
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     if (_scanner.Current == CssTokens.Identifier)
                     {
                         argument = Match(CssTokens.Identifier, s => s.String);
-                        SkipWhitespace();
+                        _scanner.SkipWhitespace();
                     }
                     Match(CssTokens.CloseParen);
                     nesting--;
 
-                    return new CssPseudoFunctionCondition(function, argument);
+                    return _pseudoConditionFactory.PseudoFunctionCondition(function, argument);
                 }
                 else
                 {
@@ -338,7 +340,7 @@ namespace Marius.Html.Css.Parser
             catch (CssParsingException)
             {
                 if (nesting > 0)
-                    SkipParen(nesting);
+                    _scanner.SkipParen(nesting);
                 throw;
             }
         }
@@ -358,9 +360,9 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.OpenBracket);
                 nesting++;
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
                 name = Match(CssTokens.Identifier, s => s.String);
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 Func<string, CssCondition> create = null;
                 string value = null;
@@ -384,7 +386,7 @@ namespace Marius.Html.Css.Parser
                     }
                     _scanner.MoveNext();
 
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
 
                     if (_scanner.Current == CssTokens.Identifier || _scanner.Current == CssTokens.String)
                     {
@@ -396,7 +398,7 @@ namespace Marius.Html.Css.Parser
                         throw new CssParsingException();
                     }
 
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                 }
 
                 Match(CssTokens.CloseBracket);
@@ -410,7 +412,7 @@ namespace Marius.Html.Css.Parser
             catch (CssParsingException)
             {
                 if (nesting > 0)
-                    SkipBracket(nesting);
+                    _scanner.SkipBracket(nesting);
                 throw;
             }
         }
@@ -467,14 +469,14 @@ namespace Marius.Html.Css.Parser
                 default:
                     throw new CssParsingException();
             }
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
             return result;
         }
 
         private bool MatchesSelectorStart()
         {
-            //selector
-            //  : simple_selector [ combinator selector | S+ [ combinator? selector ]? ]?
+            //first
+            //  : simple_selector [ combinator first | S+ [ combinator? first ]? ]?
             //  ;
             //simple_selector
             //  : element_name [ HASH | class | attrib | pseudo ]*
@@ -521,12 +523,12 @@ namespace Marius.Html.Css.Parser
                 List<CssStyle> rules = new List<CssStyle>();
 
                 Match(CssTokens.AtMedia);
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
                 mediaList = MediaList();
                 Match(CssTokens.OpenBrace);
                 nesting++;
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
                 while (_scanner.Current != CssTokens.CloseBrace && _scanner.Current != CssTokens.EOF)
                 {
                     if (_scanner.Current == CssTokens.Identifier || _scanner.Current == CssTokens.Star)
@@ -538,8 +540,8 @@ namespace Marius.Html.Css.Parser
                     else
                     {
                         // error skip till ';' or {}
-                        SkipSemicolonOrBlock(true, true, nesting);
-                        SkipWhitespace();
+                        _scanner.SkipSemicolonOrBlock(true, true, nesting);
+                        _scanner.SkipWhitespace();
                     }
                 }
 
@@ -550,8 +552,8 @@ namespace Marius.Html.Css.Parser
             }
             catch (CssParsingException)
             {
-                SkipSemicolonOrEndBlock(nesting);
-                SkipWhitespace();
+                _scanner.SkipSemicolonOrEndBlock(nesting);
+                _scanner.SkipWhitespace();
             }
 
             return null;
@@ -571,7 +573,7 @@ namespace Marius.Html.Css.Parser
                 List<CssDeclaration> decls = new List<CssDeclaration>();
 
                 Match(CssTokens.AtPage);
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 if (_scanner.Current == CssTokens.Colon)
                     pseudo = PseudoPage();
@@ -579,27 +581,27 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.OpenBrace);
                 nesting++;
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 MaybeDeclaration(decls);
 
                 while (_scanner.Current == CssTokens.SemiColon)
                 {
                     Match(CssTokens.SemiColon);
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     MaybeDeclaration(decls);
                 }
 
                 MatchEof(CssTokens.CloseBrace);
                 nesting--;
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 return new CssPage(pseudo, decls.ToArray());
             }
             catch (CssParsingException)
             {
-                SkipSemicolonOrEndBlock(nesting);
-                SkipWhitespace();
+                _scanner.SkipSemicolonOrEndBlock(nesting);
+                _scanner.SkipWhitespace();
             }
 
             return null;
@@ -620,7 +622,7 @@ namespace Marius.Html.Css.Parser
 
                 property = Property();
                 Match(CssTokens.Colon);
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
                 value = Expression();
                 if (_scanner.Current == CssTokens.Important)
                     important = Priority();
@@ -629,8 +631,8 @@ namespace Marius.Html.Css.Parser
             }
             catch (CssParsingException)
             {
-                SkipSemicolonOrBlock(false, true);
-                SkipWhitespace();
+                _scanner.SkipSemicolonOrBlock(false, true);
+                _scanner.SkipWhitespace();
             }
             return null;
         }
@@ -691,7 +693,7 @@ namespace Marius.Html.Css.Parser
                     throw new CssParsingException();
             }
 
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
             return op;
         }
 
@@ -713,7 +715,7 @@ namespace Marius.Html.Css.Parser
                 case CssTokens.Minus:
                     sign = UnaryOperator();
                     result = new CssSignedDimension(Dimension(), sign);
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     break;
                 case CssTokens.Number:
                 case CssTokens.Percentage:
@@ -722,19 +724,19 @@ namespace Marius.Html.Css.Parser
                 case CssTokens.Time:
                 case CssTokens.Frequency:
                     result = Dimension();
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     break;
                 case CssTokens.String:
                     result = Match(CssTokens.String, s => new CssString(s.String));
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     break;
                 case CssTokens.Identifier:
                     result = Match(CssTokens.Identifier, s => new CssIdentifier(s.String));
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     break;
                 case CssTokens.Uri:
                     result = Match(CssTokens.Uri, s => new CssUri(s.String));
-                    SkipWhitespace();
+                    _scanner.SkipWhitespace();
                     break;
                 case CssTokens.Hash:
                     result = HexColor();
@@ -764,19 +766,19 @@ namespace Marius.Html.Css.Parser
                 name = Match(CssTokens.Function, s => s.String);
                 nesting++;
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
                 arguments = Expression();
                 MatchEof(CssTokens.CloseParen);
                 nesting--;
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 return new CssFunction(name, arguments);
             }
             catch (CssParsingException)
             {
                 if (nesting > 0)
-                    SkipParen(nesting);
+                    _scanner.SkipParen(nesting);
                 throw;
             }
         }
@@ -786,7 +788,7 @@ namespace Marius.Html.Css.Parser
             string result;
 
             result = Match(CssTokens.Hash, s => s.String);
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
 
             if ((result.Length == 3 || result.Length == 6) && result.ToUpperInvariant().All(s => (s >= '0' && s <= '9') || (s >= 'A' && s <= 'F')))
                 return new CssHexColor(result);
@@ -824,7 +826,7 @@ namespace Marius.Html.Css.Parser
                 default:
                     throw new CssParsingException();
             }
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
 
             return result;
         }
@@ -871,7 +873,7 @@ namespace Marius.Html.Css.Parser
             //  ;
 
             Match(CssTokens.Important);
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
 
             return true;
         }
@@ -885,7 +887,7 @@ namespace Marius.Html.Css.Parser
             string result;
 
             result = Match(CssTokens.Identifier, s => s.String);
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
 
             return result;
         }
@@ -911,7 +913,7 @@ namespace Marius.Html.Css.Parser
 
             Match(CssTokens.Colon);
             result = Match(CssTokens.Identifier, s => s.String);
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
 
             return result;
         }
@@ -927,7 +929,7 @@ namespace Marius.Html.Css.Parser
                 string[] mediaList = EmptyStringArray;
 
                 Match(CssTokens.AtImport);
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 if (_scanner.Current == CssTokens.String)
                     import = Match(CssTokens.String, s => s.String);
@@ -936,7 +938,7 @@ namespace Marius.Html.Css.Parser
                 else
                     throw new CssParsingException();
 
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 if (_scanner.Current == CssTokens.Identifier)
                     mediaList = MediaList();
@@ -946,7 +948,7 @@ namespace Marius.Html.Css.Parser
             }
             catch (CssParsingException)
             {
-                SkipSemicolonOrBlock(true, true);
+                _scanner.SkipSemicolonOrBlock(true, true);
             }
 
             return null;
@@ -963,7 +965,7 @@ namespace Marius.Html.Css.Parser
             while (_scanner.Current == CssTokens.Comma)
             {
                 Match(CssTokens.Comma);
-                SkipWhitespace();
+                _scanner.SkipWhitespace();
 
                 single = Medium();
                 result.Add(single);
@@ -975,7 +977,7 @@ namespace Marius.Html.Css.Parser
         {
             string result;
             result = Match(CssTokens.Identifier, s => s.String);
-            SkipWhitespace();
+            _scanner.SkipWhitespace();
             return result;
         }
 
@@ -993,7 +995,7 @@ namespace Marius.Html.Css.Parser
             }
             catch (CssParsingException)
             {
-                SkipSemicolonOrBlock(true, true);
+                _scanner.SkipSemicolonOrBlock(true, true);
             }
             return null;
         }
@@ -1025,136 +1027,6 @@ namespace Marius.Html.Css.Parser
 
             _scanner.MoveNext();
             return result;
-        }
-
-        private void SkipWhitespace()
-        {
-            while (_scanner.Current == CssTokens.Whitespace)
-                _scanner.MoveNext();
-        }
-
-        private void SkipSgml()
-        {
-            while (_scanner.Current == CssTokens.Whitespace || _scanner.Current == CssTokens.Cdc || _scanner.Current == CssTokens.Cdo)
-                _scanner.MoveNext();
-        }
-
-        private bool SkipBatch(Func<bool> until, bool strict, int nestingBrace = 0, int nestingBracket = 0, int nestingParen = 0)
-        {
-            int startingBraceNesting = nestingBrace;
-
-            while (!until() || (nestingBrace > startingBraceNesting) || (nestingBracket + nestingParen) > 0)
-            {
-                switch (_scanner.Current)
-                {
-                    case CssTokens.EOF:
-                        return true;
-                    case CssTokens.OpenBrace:
-                        nestingBrace++;
-                        break;
-                    case CssTokens.CloseBrace:
-                        nestingBrace--;
-                        if (nestingBrace < 0)
-                            nestingBrace = 0;
-                        break;
-                    case CssTokens.OpenBracket:
-                        nestingBracket++;
-                        break;
-                    case CssTokens.CloseBracket:
-                        nestingBracket--;
-                        if (nestingBracket < 0)
-                            nestingBracket = 0;
-                        break;
-                    case CssTokens.OpenParen:
-                        nestingParen++;
-                        break;
-                    case CssTokens.CloseParen:
-                        nestingParen--;
-                        if (nestingParen < 0)
-                            nestingParen = 0;
-                        break;
-                }
-
-                if (!strict || startingBraceNesting == 0)
-                    if (until() && (nestingBracket + nestingParen) <= 0 && (nestingBrace <= startingBraceNesting))
-                        return false;
-
-                _scanner.MoveNext();
-            }
-
-            return _scanner.Current == CssTokens.CloseBrace;
-        }
-
-        private void SkipParen(int nesting)
-        {
-            SkipBatch(() => _scanner.Current == CssTokens.CloseParen, true, nestingParen : nesting);
-        }
-
-        private void SkipSemicolonOrEndBlock(int nesting)
-        {
-            SkipBatch(() => _scanner.Current == CssTokens.CloseBrace || _scanner.Current == CssTokens.SemiColon, true, nestingBrace : nesting);
-
-            _scanner.MoveNext();
-        }
-
-        private void SkipEndBlock(int nesting)
-        {
-            SkipBatch(() => _scanner.Current == CssTokens.CloseBrace, true, nestingBrace : nesting);
-
-            _scanner.MoveNext();
-        }
-
-        private void SkipBracket(int nesting)
-        {
-            SkipBatch(() => _scanner.Current == CssTokens.CloseBracket, true, nestingBracket : nesting);
-        }
-
-        /// <summary>
-        /// Skips till ';' (and skips if eatSemicolon is true) or '{...}' (and skips if eatClosingBrace is true) or '...}' (never skips the end of current block)
-        /// </summary>
-        private void SkipSemicolonOrBlock(bool eatSemicolon, bool eatClosingBrace, int nesting = 0)
-        {
-            bool endOfCurrent = SkipBatch(() => _scanner.Current == CssTokens.SemiColon || _scanner.Current == CssTokens.CloseBrace, false, nestingBrace : nesting);
-            if (!endOfCurrent)
-            {
-                if (eatSemicolon && _scanner.Current == CssTokens.SemiColon)
-                    _scanner.MoveNext();
-                else if (eatClosingBrace && _scanner.Current == CssTokens.CloseBrace)
-                    _scanner.MoveNext();
-            }
-        }
-    }
-
-    public class CssParsingException: Exception
-    {
-        public CssParsingException()
-        {
-        }
-    }
-
-    public class TokenBuffer
-    {
-        private CssScanner _scanner;
-        private CssTokens _current;
-
-        public TokenBuffer(CssScanner scanner)
-        {
-            _scanner = scanner;
-        }
-
-        public CssTokens Current
-        {
-            get { return _current; }
-        }
-
-        public CssSourceToken Value
-        {
-            get { return _scanner.Value; }
-        }
-
-        public void MoveNext()
-        {
-            _current = _scanner.NextToken();
         }
     }
 }

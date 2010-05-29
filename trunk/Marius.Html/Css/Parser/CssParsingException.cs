@@ -30,46 +30,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Css.Parser
 {
-    public class CssPseudoIdentifierCondition: CssCondition
+    public class CssParsingException: Exception
     {
-        private static readonly CssSpecificity PseudoIdentifierSpecificity = new CssSpecificity(0, 0, 1, 0);
-        
-        public string Identifier { get; private set; }
-
-        public sealed override CssConditionType ConditionType
-        {
-            get { return CssConditionType.PseudoIdentifier; }
-        }
-
-        public CssPseudoIdentifierCondition(string identifier)
-        {
-            Identifier = identifier;
-        }
-
-        public override string ToString()
-        {
-            return string.Format(":{0}", Identifier.EscapeIdentifier());
-        }
-
-        public override CssSpecificity Specificity
-        {
-            get { return PseudoIdentifierSpecificity; }
-        }
-
-        public override bool Equals(CssCondition other)
-        {
-            CssPseudoIdentifierCondition o = other as CssPseudoIdentifierCondition;
-            if (o == null)
-                return false;
-
-            return o.Identifier == this.Identifier;
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Identifier, ConditionType);
-        }
+        public CssParsingException() { }
+        public CssParsingException(string message) : base(message) { }
+        public CssParsingException(string message, Exception inner) : base(message, inner) { }
+        protected CssParsingException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
     }
 }

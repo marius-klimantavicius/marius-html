@@ -39,7 +39,7 @@ namespace Marius.Html.Css.Selectors
 
         public override CssConditionType ConditionType
         {
-            get { return CssConditionType.IdCondition; }
+            get { return CssConditionType.Id; }
         }
 
         public CssIdCondition(string id)
