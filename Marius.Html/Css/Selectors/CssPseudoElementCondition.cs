@@ -32,28 +32,44 @@ using System.Text;
 
 namespace Marius.Html.Css.Selectors
 {
-    public class CssClassCondition: CssAttributeCondition
+    public class CssPseudoElementCondition: CssCondition
     {
-        public const string ClassAttribute = "class";
+        private static readonly CssSpecificity PseudoElementSpecificty = new CssSpecificity(0, 0, 0, 1);
 
-        public override CssConditionType ConditionType
+        public CssPseudoValue Condition { get; private set; }
+
+        public sealed override CssConditionType ConditionType
         {
-            get { return CssConditionType.Class; }
+            get { return CssConditionType.PseudoElement; }
         }
 
-        public CssClassCondition(string className)
-            : base(ClassAttribute, className, true)
+        public override CssSpecificity Specificity
         {
+            get { return PseudoElementSpecificty; }
         }
 
-        public CssClassCondition(string attribute, string className)
-            : base(attribute, className, true)
+        public CssPseudoElementCondition(CssPseudoValue condition)
         {
+            Condition = condition;
+        }
+
+        public override bool Equals(CssCondition other)
+        {
+            CssPseudoElementCondition o = other as CssPseudoElementCondition;
+            if (o == null)
+                return false;
+
+            return o.Condition.Equals(this.Condition);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Condition, ConditionType);
         }
 
         public override string ToString()
         {
-            return string.Format(".{0}", Value.EscapeIdentifier());
+            return string.Format(":{0}", Condition);
         }
     }
 }

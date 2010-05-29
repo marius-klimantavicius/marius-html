@@ -32,47 +32,44 @@ using System.Text;
 
 namespace Marius.Html.Css.Selectors
 {
-    public class CssPseudoFunctionCondition: CssCondition
+    public class CssPseudoClassCondition: CssCondition
     {
-        private static readonly CssSpecificity PseudoFunctionSpecificity = new CssSpecificity(0, 0, 1, 0);
+        private static readonly CssSpecificity PseudoClassSpecificity = new CssSpecificity(0, 0, 1, 0);
 
-        public string Name { get; private set; }
-        public string Argument { get; private set; }
+        public CssPseudoValue Condition { get; private set; }
 
-        public override CssConditionType ConditionType
+        public sealed override CssConditionType ConditionType
         {
-            get { return CssConditionType.PseudoFunction; }
-        }
-
-        public CssPseudoFunctionCondition(string name, string argument)
-        {
-            Name = name;
-            Argument = argument;
-        }
-
-        public override string ToString()
-        {
-            return string.Format(":{0}({1})", Name.EscapeIdentifier(), Argument.EscapeIdentifier());
+            get { return CssConditionType.PseudoClass; }
         }
 
         public override CssSpecificity Specificity
         {
-            // this might be pseudo class (in case of lang()), or pseudo element, for now they will be counted as pseudo class
-            get { return PseudoFunctionSpecificity; }
+            get { return PseudoClassSpecificity; }
+        }
+
+        public CssPseudoClassCondition(CssPseudoValue condition)
+        {
+            Condition = condition;
         }
 
         public override bool Equals(CssCondition other)
         {
-            CssPseudoFunctionCondition o = other as CssPseudoFunctionCondition;
+            CssPseudoClassCondition o = other as CssPseudoClassCondition;
             if (o == null)
                 return false;
 
-            return o.Name == this.Name && o.Argument == this.Argument;
+            return o.Condition.Equals(this.Condition);
         }
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Name, Argument, ConditionType);
+            return Condition.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return string.Format(":{0}", Condition);
         }
     }
 }
