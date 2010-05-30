@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssUri: CssPrimitiveValue
+    public class CssUri: CssValue
     {
         public string Uri { get; private set; }
 
@@ -41,9 +41,9 @@ namespace Marius.Html.Css.Values
             Uri = uri;
         }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
-            get { return CssPrimitiveValueType.Uri; }
+            get { return CssValueType.Uri; }
         }
 
         public override string ToString()
@@ -51,7 +51,7 @@ namespace Marius.Html.Css.Values
             return string.Format("@url(\"{0}\")", Uri.Escape());
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssUri o = other as CssUri;
             if (o == null)
@@ -62,7 +62,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Uri, PrimitiveValueType);
+            return Utils.GetHashCode(Uri, ValueType);
         }
     }
 }

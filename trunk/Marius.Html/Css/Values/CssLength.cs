@@ -32,33 +32,33 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssLength: CssPrimitiveValue
+    public class CssLength: CssValue
     {
         public CssUnits Units { get; private set; }
         public double Value { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
             get
             {
                 switch (Units)
                 {
                     case CssUnits.Px:
-                        return CssPrimitiveValueType.Px;
+                        return CssValueType.Px;
                     case CssUnits.Pt:
-                        return CssPrimitiveValueType.Pt;
+                        return CssValueType.Pt;
                     case CssUnits.Cm:
-                        return CssPrimitiveValueType.Cm;
+                        return CssValueType.Cm;
                     case CssUnits.Mm:
-                        return CssPrimitiveValueType.Mm;
+                        return CssValueType.Mm;
                     case CssUnits.In:
-                        return CssPrimitiveValueType.In;
+                        return CssValueType.In;
                     case CssUnits.Pc:
-                        return CssPrimitiveValueType.Pc;
+                        return CssValueType.Pc;
                     case CssUnits.Em:
-                        return CssPrimitiveValueType.Ems;
+                        return CssValueType.Em;
                     case CssUnits.Ex:
-                        return CssPrimitiveValueType.Exs;
+                        return CssValueType.Ex;
                 }
                 throw new NotSupportedException();
             }
@@ -70,7 +70,7 @@ namespace Marius.Html.Css.Values
             Units = units;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssLength o = other as CssLength;
             if (o == null)
@@ -80,7 +80,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Units, Value, PrimitiveValueType);
+            return Utils.GetHashCode(Units, Value, ValueType);
         }
     }
 }

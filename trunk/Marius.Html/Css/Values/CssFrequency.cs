@@ -32,21 +32,21 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssFrequency: CssPrimitiveValue
+    public class CssFrequency: CssValue
     {
         public CssUnits Units { get; private set; }
         public double Value { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
             get
             {
                 switch (Units)
                 {
                     case CssUnits.Hz:
-                        return CssPrimitiveValueType.Hz;
+                        return CssValueType.Hz;
                     case CssUnits.KHz:
-                        return CssPrimitiveValueType.KHz;
+                        return CssValueType.KHz;
                 }
                 throw new NotSupportedException();
             }
@@ -58,7 +58,7 @@ namespace Marius.Html.Css.Values
             Units = units;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssFrequency o = other as CssFrequency;
             if (o == null)
@@ -69,7 +69,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Units, Value, PrimitiveValueType);
+            return Utils.GetHashCode(Units, Value, ValueType);
         }
     }
 }

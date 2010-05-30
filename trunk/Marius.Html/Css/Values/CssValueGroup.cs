@@ -25,44 +25,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssString: CssValue
+    public enum CssValueGroup
     {
-        public string Value { get; private set; }
-
-        public CssString(string value)
-        {
-            Value = value;
-        }
-
-        public sealed override CssValueType ValueType
-        {
-            get { return CssValueType.String; }
-        }
-
-        public override string ToString()
-        {
-            return "\"" + Value.Escape() + "\"";
-        }
-
-        public override bool Equals(CssValue other)
-        {
-            CssString o = other as CssString;
-            if (o == null)
-                return false;
-
-            return o.Value == this.Value;
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Value, ValueType);
-        }
+        Unknown,
+        Number,
+        Percentage,
+        Length,
+        Angle,
+        Time,
+        Frequency,
+        Dimension,
+        String,
+        Uri,
+        Identifier,
+        Color,
+        Function,
+        SignedDimension,
+        Operator,
     }
 }

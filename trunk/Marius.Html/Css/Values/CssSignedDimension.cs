@@ -32,36 +32,36 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssSignedDimension: CssPrimitiveValue
+    public class CssSignedDimension: CssValue
     {
-        public CssPrimitiveValue Dimension { get; private set; }
+        public CssValue Dimension { get; private set; }
         public CssSignOperator Sign { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
-            get { return CssPrimitiveValueType.SignedDimension; }
+            get { return CssValueType.SignedDimension; }
         }
 
-        public CssSignedDimension(CssPrimitiveValue dimension, CssSignOperator sign)
+        public CssSignedDimension(CssValue dimension, CssSignOperator sign)
         {
-            switch (dimension.PrimitiveValueType)
+            switch (dimension.ValueType)
             {
-                case CssPrimitiveValueType.Ems:
-                case CssPrimitiveValueType.Exs:
-                case CssPrimitiveValueType.Px:
-                case CssPrimitiveValueType.Cm:
-                case CssPrimitiveValueType.Mm:
-                case CssPrimitiveValueType.In:
-                case CssPrimitiveValueType.Pt:
-                case CssPrimitiveValueType.Pc:
-                case CssPrimitiveValueType.Deg:
-                case CssPrimitiveValueType.Rad:
-                case CssPrimitiveValueType.Grad:
-                case CssPrimitiveValueType.Ms:
-                case CssPrimitiveValueType.S:
-                case CssPrimitiveValueType.Hz:
-                case CssPrimitiveValueType.KHz:
-                case CssPrimitiveValueType.Dimension:
+                case CssValueType.Em:
+                case CssValueType.Ex:
+                case CssValueType.Px:
+                case CssValueType.Cm:
+                case CssValueType.Mm:
+                case CssValueType.In:
+                case CssValueType.Pt:
+                case CssValueType.Pc:
+                case CssValueType.Deg:
+                case CssValueType.Rad:
+                case CssValueType.Grad:
+                case CssValueType.Ms:
+                case CssValueType.S:
+                case CssValueType.Hz:
+                case CssValueType.KHz:
+                case CssValueType.Dimension:
                     break;
                 default:
                     throw new ArgumentException();
@@ -70,7 +70,7 @@ namespace Marius.Html.Css.Values
             Sign = sign;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssSignedDimension o = other as CssSignedDimension;
             if (o == null)
@@ -80,7 +80,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Sign, Dimension, PrimitiveValueType);
+            return Utils.GetHashCode(Sign, Dimension, ValueType);
         }
     }
 }

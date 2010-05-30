@@ -32,23 +32,23 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssAngle: CssPrimitiveValue
+    public class CssAngle: CssValue
     {
         public CssUnits Units { get; private set; }
         public double Value { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
             get
             {
                 switch (Units)
                 {
                     case CssUnits.Deg:
-                        return CssPrimitiveValueType.Deg;
+                        return CssValueType.Deg;
                     case CssUnits.Rad:
-                        return CssPrimitiveValueType.Rad;
+                        return CssValueType.Rad;
                     case CssUnits.Grad:
-                        return CssPrimitiveValueType.Grad;
+                        return CssValueType.Grad;
                 }
                 throw new NotSupportedException();
             }
@@ -60,7 +60,7 @@ namespace Marius.Html.Css.Values
             Units = units;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssAngle o = other as CssAngle;
             if (o == null)

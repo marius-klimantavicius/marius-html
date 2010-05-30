@@ -34,11 +34,38 @@ namespace Marius.Html.Css.Values
 {
     public class CssExpression: IEquatable<CssExpression>
     {
-        public CssValueOperator[] Items { get; private set; }
+        private int _currentIndex;
 
-        public CssExpression(CssValueOperator[] items)
+        public CssValue[] Items { get; private set; }
+
+        public CssValue Current
+        {
+            get
+            {
+                if (_currentIndex >= Items.Length)
+                    return null;
+                return Items[_currentIndex];
+            }
+        }
+
+        public CssExpression(CssValue[] items)
         {
             Items = items;
+        }
+
+        public bool MoveNext()
+        {
+            _currentIndex++;
+
+            if (_currentIndex >= Items.Length)
+                return false;
+            
+            return true;
+        }
+
+        public void Reset()
+        {
+            _currentIndex = 0;
         }
 
         public override string ToString()
@@ -47,26 +74,22 @@ namespace Marius.Html.Css.Values
 
             for (int i = 0; i < Items.Length; i++)
             {
-                if ((i == 0 && Items[i].Operator != CssOperator.Space) || (i > 0))
-                    sb.Append(OperatorToString(Items[i].Operator));
-                if (Items[i].Operator != CssOperator.Space)
+                sb.Append(Items[i].ToString());
+                if (Items[i].ValueType == CssValueType.Comma || Items[i].ValueType == CssValueType.Slash)
                     sb.Append(' ');
-                sb.Append(Items[i].Value);
             }
 
             return sb.ToString();
         }
 
-        private char OperatorToString(CssOperator cssOperator)
+        private char OperatorToString(CssValueType op)
         {
-            switch (cssOperator)
+            switch (op)
             {
-                case CssOperator.Comma:
+                case CssValueType.Comma:
                     return ',';
-                case CssOperator.Slash:
+                case CssValueType.Slash:
                     return '\\';
-                case CssOperator.Space:
-                    return ' ';
                 default:
                     throw new ArgumentException();
             }

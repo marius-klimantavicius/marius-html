@@ -32,10 +32,35 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public enum CssOperator
+    public enum CssValueType
     {
-        Comma,
+        Unknown,
+        Number,
+        Percentage,
+        Em,
+        Ex,
+        Px,
+        Cm,
+        Mm,
+        In,
+        Pt,
+        Pc,
+        Deg,
+        Rad,
+        Grad,
+        Ms,
+        S,
+        Hz,
+        KHz,
+        Dimension,
+        String,
+        Uri,
+        Identifier,
+        RgbColor,
+        Function,
+        SignedDimension,
+
         Slash,
-        Space,
+        Comma,
     }
 }

@@ -32,13 +32,13 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssPercentage: CssPrimitiveValue
+    public class CssPercentage: CssValue
     {
         public double Value { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
-            get { return CssPrimitiveValueType.Percentage; }
+            get { return CssValueType.Percentage; }
         }
 
         public CssPercentage(double value)
@@ -46,7 +46,7 @@ namespace Marius.Html.Css.Values
             Value = value;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssPercentage o = other as CssPercentage;
             if (o == null)
@@ -57,7 +57,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Value, PrimitiveValueType);
+            return Utils.GetHashCode(Value, ValueType);
         }
     }
 }

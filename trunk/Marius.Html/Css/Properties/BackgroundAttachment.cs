@@ -29,10 +29,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Attributes
 {
     public class BackgroundAttachment: CssProperty
     {
+        private static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
+        private static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+
+        public CssValue Attachment { get; private set; }
+
+        public BackgroundAttachment(CssValue value)
+        {
+            Attachment = value;
+        }
+
+        public static BackgroundAttachment Create(CssExpression expression)
+        {
+            CssValue attachment;
+            if (!Extract(expression, out attachment))
+                return null;
+
+            return new BackgroundAttachment(attachment);
+        }
+
+        public static bool Extract(CssExpression value, out CssValue attachment)
+        {
+            attachment = null;
+            return false;
+        }
     }
 }
