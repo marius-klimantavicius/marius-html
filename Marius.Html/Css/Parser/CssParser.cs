@@ -647,12 +647,12 @@ namespace Marius.Html.Css.Parser
             //  : term [ operator? term ]*
             //  ;
 
-            List<CssValueOperator> terms = new List<CssValueOperator>();
+            List<CssValue> terms = new List<CssValue>();
 
             CssValue single;
 
             single = Term();
-            terms.Add(new CssValueOperator(single));
+            terms.Add(single);
 
             while (true)
             {
@@ -661,13 +661,14 @@ namespace Marius.Html.Css.Parser
                     CssOperator op = Operator();
                     single = Term();
 
-                    terms.Add(new CssValueOperator(single, op));
+                    terms.Add(op);
+                    terms.Add(single);
                 }
                 else if (IsTermStart())
                 {
                     single = Term();
 
-                    terms.Add(new CssValueOperator(single));
+                    terms.Add(single);
                 }
                 else
                 {
@@ -797,9 +798,9 @@ namespace Marius.Html.Css.Parser
             throw new CssParsingException();
         }
 
-        private CssPrimitiveValue Dimension()
+        private CssValue Dimension()
         {
-            CssPrimitiveValue result;
+            CssValue result;
 
             switch (_scanner.Current)
             {

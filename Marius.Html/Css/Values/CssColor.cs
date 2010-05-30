@@ -34,7 +34,7 @@ using System.Text.RegularExpressions;
 
 namespace Marius.Html.Css.Values
 {
-    public abstract class CssColor: CssPrimitiveValue
+    public abstract class CssColor: CssValue
     {
 
         public CssValue Red { get; protected set; }
@@ -45,9 +45,9 @@ namespace Marius.Html.Css.Values
         {
         }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
-            get { return CssPrimitiveValueType.RgbColor; }
+            get { return CssValueType.RgbColor; }
         }
 
         public override bool Equals(CssValue other)

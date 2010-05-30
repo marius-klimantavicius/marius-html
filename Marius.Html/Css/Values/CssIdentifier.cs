@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssIdentifier: CssPrimitiveValue
+    public class CssIdentifier: CssValue
     {
         public string Name { get; private set; }
 
@@ -41,9 +41,9 @@ namespace Marius.Html.Css.Values
             Name = name;
         }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
-            get { return CssPrimitiveValueType.Identifier; }
+            get { return CssValueType.Identifier; }
         }
 
         public override string ToString()
@@ -51,17 +51,17 @@ namespace Marius.Html.Css.Values
             return Name.EscapeIdentifier();
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssIdentifier o = other as CssIdentifier;
             if (o == null)
                 return false;
-            return o.Name == this.Name;
+            return o.Name.Equals(this.Name, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Name, PrimitiveValueType);
+            return Utils.GetHashCode(Name, ValueType);
         }
     }
 }

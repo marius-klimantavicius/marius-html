@@ -32,21 +32,21 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssTime: CssPrimitiveValue
+    public class CssTime: CssValue
     {
         public CssUnits Units { get; private set; }
         public double Value { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
             get
             {
                 switch (Units)
                 {
                     case CssUnits.S:
-                        return CssPrimitiveValueType.S;
+                        return CssValueType.S;
                     case CssUnits.Ms:
-                        return CssPrimitiveValueType.Ms;
+                        return CssValueType.Ms;
                 }
                 throw new NotSupportedException();
             }
@@ -58,7 +58,7 @@ namespace Marius.Html.Css.Values
             Units = units;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssTime o = other as CssTime;
             if (o == null)
@@ -69,7 +69,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Units, Value, PrimitiveValueType);
+            return Utils.GetHashCode(Units, Value, ValueType);
         }
     }
 }

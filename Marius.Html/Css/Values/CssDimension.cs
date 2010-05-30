@@ -32,14 +32,14 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public class CssDimension: CssPrimitiveValue
+    public class CssDimension: CssValue
     {
         public double Value { get; private set; }
         public string Dimension { get; private set; }
 
-        public sealed override CssPrimitiveValueType PrimitiveValueType
+        public sealed override CssValueType ValueType
         {
-            get { return CssPrimitiveValueType.Dimension; }
+            get { return CssValueType.Dimension; }
         }
 
         public CssDimension(double value, string dimension)
@@ -48,7 +48,7 @@ namespace Marius.Html.Css.Values
             Dimension = dimension;
         }
 
-        public override bool Equals(Dom.CssValue other)
+        public override bool Equals(CssValue other)
         {
             CssDimension o = other as CssDimension;
             if (o == null)
@@ -58,7 +58,7 @@ namespace Marius.Html.Css.Values
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(Value, Dimension, PrimitiveValueType);
+            return Utils.GetHashCode(Value, Dimension, ValueType);
         }
     }
 }
