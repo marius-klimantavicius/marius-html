@@ -36,6 +36,7 @@ namespace Marius.Html.Css.Values
     public abstract class CssValue: IEquatable<CssValue>
     {
         public static readonly CssIdentifier Inherit = new CssIdentifier("inherit");
+        public static readonly CssIdentifier None = new CssIdentifier("none");
 
         public abstract CssValueType ValueType { get; }
         public CssValueGroup ValueGroup
