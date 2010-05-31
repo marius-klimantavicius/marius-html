@@ -36,7 +36,6 @@ namespace Marius.Html.Css.Values
 {
     public abstract class CssColor: CssValue
     {
-
         public CssValue Red { get; protected set; }
         public CssValue Green { get; protected set; }
         public CssValue Blue { get; protected set; }
@@ -62,5 +61,31 @@ namespace Marius.Html.Css.Values
         {
             return Utils.GetHashCode(Red, Green, Blue);
         }
+    }
+
+    public class CssColors
+    {
+        public static readonly CssIdentifier Aqua = new CssIdentifier("aqua");
+        public static readonly CssIdentifier Black = new CssIdentifier("black");
+        public static readonly CssIdentifier Blue = new CssIdentifier("blue");
+        public static readonly CssIdentifier Fuchsia = new CssIdentifier("fuchsia");
+        public static readonly CssIdentifier Gray = new CssIdentifier("gray");
+        public static readonly CssIdentifier Green = new CssIdentifier("green");
+        public static readonly CssIdentifier Lime = new CssIdentifier("lime");
+        public static readonly CssIdentifier Maroon = new CssIdentifier("maroon");
+        public static readonly CssIdentifier Navy = new CssIdentifier("navy");
+        public static readonly CssIdentifier Olive = new CssIdentifier("olive");
+        public static readonly CssIdentifier Orange = new CssIdentifier("orange");
+        public static readonly CssIdentifier Purple = new CssIdentifier("purple");
+        public static readonly CssIdentifier Red = new CssIdentifier("red");
+        public static readonly CssIdentifier Silver = new CssIdentifier("silver");
+        public static readonly CssIdentifier Teal = new CssIdentifier("teal");
+        public static readonly CssIdentifier White = new CssIdentifier("white");
+        public static readonly CssIdentifier Yellow = new CssIdentifier("yellow");
+
+        public static readonly CssIdentifier[] Colors = new CssIdentifier[]
+        {
+            Aqua, Black, Blue, Fuchsia, Gray, Green, Lime, Maroon, Navy, Olive, Orange, Purple, Red, Silver, Teal, White, Yellow 
+        };
     }
 }

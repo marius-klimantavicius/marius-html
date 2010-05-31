@@ -56,43 +56,27 @@ namespace Marius.Html.Css.Values
             green = null;
             blue = null; 
             
+            if (args.Items.Length != 3)
+                return false;
+
+            var items = args.Items;
+            if (items[0].ValueType == CssValueType.Percentage && items[1].ValueType == CssValueType.Percentage && items[2].ValueType == CssValueType.Percentage)
+            {
+                red = items[0];
+                green = items[1];
+                blue = items[2];
+                return true;
+            }
+
+            if (items[1].ValueType == CssValueType.Number && items[1].ValueType == CssValueType.Number && items[2].ValueType == CssValueType.Number)
+            {
+                red = items[0];
+                green = items[1];
+                blue = items[2];
+                return true;
+            }
+
             return false;
-
-            //if (args.Items.Length != 3)
-            //    return false;
-
-            //CssValueType last = CssValueType.Unknown;
-
-            //CssValue[] color = new CssValue[3];
-            //for (int i = 0; i < color.Length; i++)
-            //{
-            //    var item = args.Items[i];
-            //    color[i] = item.Value;
-            //    if (i == 0 && item.Operator != CssOperator.Space)
-            //        return false;
-            //    else if (item.Operator != CssOperator.Comma)
-            //        return false;
-
-            //    CssValue pval = item.Value;
-
-            //    if (i == 0)
-            //    {
-            //        last = pval.ValueType;
-            //        if (last != CssValueType.Percentage && last != CssValueType.Number)
-            //            return false;
-            //    }
-            //    else
-            //    {
-            //        if (pval.ValueType != last)
-            //            return false;
-            //    }
-            //}
-
-            //red = color[0];
-            //green = color[1];
-            //blue = color[2];
-
-            //return true;
         }
     }
 }
