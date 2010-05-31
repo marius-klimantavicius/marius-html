@@ -31,33 +31,39 @@ using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Properties
 {
     public class BackgroundAttachment: CssProperty
     {
         private static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
         private static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
 
+        private static readonly Func<CssExpression, BackgroundAttachment, bool> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
+
         public CssValue Attachment { get; private set; }
+
+        private BackgroundAttachment()
+        {
+
+        }
 
         public BackgroundAttachment(CssValue value)
         {
             Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression)
+        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
         {
-            CssValue attachment;
-            if (!Extract(expression, out attachment))
-                return null;
+            BackgroundAttachment result = new BackgroundAttachment();
 
-            return new BackgroundAttachment(attachment);
-        }
+            if (Parse(expression, result))
+            {
+                if (full && expression.Current != null)
+                    return null;
+                return result;
+            }
 
-        public static bool Extract(CssExpression value, out CssValue attachment)
-        {
-            attachment = null;
-            return false;
+            return null;
         }
     }
 }

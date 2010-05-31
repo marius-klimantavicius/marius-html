@@ -46,6 +46,11 @@ namespace Marius.Html.Css.Values
             Value = value;
         }
 
+        public override string ToString()
+        {
+            return string.Format("{0}%", Value);
+        }
+
         public override bool Equals(CssValue other)
         {
             CssPercentage o = other as CssPercentage;

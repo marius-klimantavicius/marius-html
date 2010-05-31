@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Css\Parsing\ErrorRecoveryTests.cs" />
     <Compile Include="Css\Parsing\ScannerTests.cs" />
+    <Compile Include="Css\Properties\AzimuthTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

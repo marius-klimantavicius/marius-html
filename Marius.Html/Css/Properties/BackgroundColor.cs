@@ -29,10 +29,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Properties
 {
     public class BackgroundColor: CssProperty
     {
+        public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
+
+        public CssValue Color { get; private set; }
+        private static readonly Func<CssExpression, BackgroundColor, bool> Parse;
+
+        static BackgroundColor()
+        {
+            var color = CssPropertyParser.Color<BackgroundColor>((s, c) => c.Color = s);
+            var other = CssPropertyParser.Any<BackgroundColor>(new[] { Transparent, CssValue.Inherit }, (s, c) => c.Color = s);
+
+            Parse = CssPropertyParser.Any<BackgroundColor>(color, other);
+        }
+
+        private BackgroundColor()
+        {
+
+        }
+
+        public BackgroundColor(CssValue color)
+        {
+            Color = color;
+        }
+
+        public static BackgroundColor Create(CssExpression expression, bool full = false)
+        {
+            BackgroundColor result = new BackgroundColor();
+            if (Parse(expression, result))
+            {
+                if (full && expression.Current != null)
+                    return null;
+                return result;
+            }
+            return null;
+        }
     }
 }

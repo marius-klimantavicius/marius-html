@@ -28,25 +28,64 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Attributes
+namespace Marius.Html.Css.Properties
 {
     public class Azimuth: CssProperty
     {
-        private static readonly string[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" };
+        public static readonly CssIdentifier[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" }.Select(s => new CssIdentifier(s)).ToArray();
+        public static readonly CssIdentifier Center = Keywords[4];
 
-        /*private static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
-        private static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
-        private static readonly CssIdentifier Behind = new CssIdentifier("behind");
+        public static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
+        public static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
+        public static readonly CssIdentifier Behind = new CssIdentifier("behind");
 
-        public CssValue Value { get; private set; }*/
+        private static readonly Func<CssExpression, Azimuth, bool> Parse;
+
+        static Azimuth()
+        {
+            // <angle> | [[ left-side | far-left | left | center-left | center | center-right | right | far-right | right-side ] || behind ] | leftwards | rightwards | inherit
+
+            var side = CssPropertyParser.Any<Azimuth>(Keywords, (s, c) => c.Location = s);
+            var behind = CssPropertyParser.Match<Azimuth>(Behind, (s, c) => c.IsBehind = true);
+            var sideBehind = CssPropertyParser.Pipe<Azimuth>(side, behind);
+            var angle = CssPropertyParser.Angle<Azimuth>((s, c) => c.Location = s);
+            var other = CssPropertyParser.Any<Azimuth>(new[] { Leftwards, Rightwards, CssValue.Inherit }, (s, c) => c.Location = s);
+            var rule = CssPropertyParser.Any<Azimuth>(angle, sideBehind, other);
+
+            Parse = rule;
+        }
+
+        public CssValue Location { get; private set; }
         public bool IsBehind { get; private set; }
 
-        public Azimuth(CssExpression value)
+        private Azimuth()
         {
+        }
 
+        public Azimuth(CssValue location, bool isBehind)
+        {
+            Location = location;
+            IsBehind = isBehind;
+        }
+
+        public static Azimuth Create(CssExpression value, bool full = true)
+        {
+            Azimuth result = new Azimuth();
+            if (Parse(value, result))
+            {
+                if (full && value.Current != null)
+                    return null;
+
+                if (result.Location == null)
+                    result.Location = Center;
+
+                return result;
+            }
+            return null;
         }
     }
 }
