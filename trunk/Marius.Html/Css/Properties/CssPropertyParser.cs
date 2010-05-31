@@ -167,5 +167,13 @@ namespace Marius.Html.Css.Properties
                     return Match<T>(expression, s => s.ValueGroup == CssValueGroup.Color, context, onMatch);
                 };
         }
+
+        public static Func<CssExpression, T, bool> Uri<T>(Action<CssValue, T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    return Match(expression, s => s.ValueGroup == CssValueGroup.Uri, context, onMatch);
+                };
+        }
     }
 }
