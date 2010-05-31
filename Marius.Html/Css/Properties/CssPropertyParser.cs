@@ -104,6 +104,28 @@ namespace Marius.Html.Css.Properties
             };
         }
 
+        public static Func<CssExpression, T, bool> Maybe<T>(Func<CssExpression, T, bool> match)
+        {
+            return (expression, context) =>
+                {
+                    match(expression, context);
+                    return true;
+                };
+        }
+
+        public static Func<CssExpression, T, bool> Sequence<T>(params Func<CssExpression, T, bool>[] matches)
+        {
+            return (expression, context) =>
+                {
+                    for (int i = 0; i < matches.Length; i++)
+                    {
+                        if (!matches[i](expression, context))
+                            return false;
+                    }
+                    return true;
+                };
+        }
+
         public static bool Match<T>(CssExpression expression, CssIdentifier value, T context, Action<CssValue, T> onMatch)
         {
             var item = expression.Current;
@@ -158,13 +180,13 @@ namespace Marius.Html.Css.Properties
 
                     if (item.ValueGroup == CssValueGroup.Identifier)
                     {
-                        var rule = Any<T>(CssColors.Colors, onMatch);
+                        var rule = Any(CssColors.Colors, onMatch);
                         if (rule(expression, context))
                             return true;
                         return false;
                     }
 
-                    return Match<T>(expression, s => s.ValueGroup == CssValueGroup.Color, context, onMatch);
+                    return Match(expression, s => s.ValueGroup == CssValueGroup.Color, context, onMatch);
                 };
         }
 
@@ -173,6 +195,22 @@ namespace Marius.Html.Css.Properties
             return (expression, context) =>
                 {
                     return Match(expression, s => s.ValueGroup == CssValueGroup.Uri, context, onMatch);
+                };
+        }
+
+        public static Func<CssExpression, T, bool> Percentage<T>(Action<CssValue, T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    return Match(expression, s => s.ValueGroup == CssValueGroup.Percentage, context, onMatch);
+                };
+        }
+
+        public static Func<CssExpression, T, bool> Length<T>(Action<CssValue, T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    return Match(expression, s => s.ValueGroup == CssValueGroup.Length, context, onMatch);
                 };
         }
     }

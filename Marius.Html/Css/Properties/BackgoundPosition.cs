@@ -57,19 +57,20 @@ namespace Marius.Html.Css.Properties
              * ] | 
              *      inherit
              */
-            /*
+            
             var hop = CssPropertyParser.Any<BackgoundPosition>(
                 CssPropertyParser.Percentage<BackgoundPosition>((s, c) => c.Horizontal = s),
                 CssPropertyParser.Length<BackgoundPosition>((s, c) => c.Horizontal = s));
 
-            var hoh = CssPropertyParser.Any<BackgoundPosition>(new[] { Left, Center, Right }, (s, c) => c.Horizontal = s);
+            var hoh = CssPropertyParser.Any<BackgoundPosition>(new[] { Left, Right }, (s, c) => c.Horizontal = s);
 
             var vep = CssPropertyParser.Any<BackgoundPosition>(
                 CssPropertyParser.Percentage<BackgoundPosition>((s, c) => c.Vertical = s),
                 CssPropertyParser.Length<BackgoundPosition>((s, c) => c.Vertical = s));
 
-            var vev = CssPropertyParser.Any<BackgoundPosition>(new[] { Top, Center, Bottom }, (s, c) => c.Vertical = s);
-            */
+            var vev = CssPropertyParser.Any<BackgoundPosition>(new[] { Top, Bottom }, (s, c) => c.Vertical = s);
+
+            var alt1 = CssPropertyParser.Sequence(hoh, CssPropertyParser.Maybe(CssPropertyParser.Any(vep,vev)));
         }
     }
 }
