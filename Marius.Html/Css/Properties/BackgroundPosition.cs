@@ -35,13 +35,17 @@ namespace Marius.Html.Css.Properties
 {
     public class BackgroundPosition: CssProperty
     {
-        private static readonly Func<CssExpression, BackgroundPosition, bool> Parse;
+        public static readonly Func<CssExpression, BackgroundPosition, bool> Parse;
 
-        private static readonly CssIdentifier Left = new CssIdentifier("left");
-        private static readonly CssIdentifier Right = new CssIdentifier("right");
-        private static readonly CssIdentifier Center = new CssIdentifier("center");
-        private static readonly CssIdentifier Top = new CssIdentifier("top");
-        private static readonly CssIdentifier Bottom = new CssIdentifier("bottom");
+        public static readonly CssIdentifier Left = new CssIdentifier("left");
+        public static readonly CssIdentifier Right = new CssIdentifier("right");
+        public static readonly CssIdentifier Center = new CssIdentifier("center");
+        public static readonly CssIdentifier Top = new CssIdentifier("top");
+        public static readonly CssIdentifier Bottom = new CssIdentifier("bottom");
+
+        public static readonly CssPercentage Zero = new CssPercentage(0);
+        public static readonly CssPercentage Fifty = new CssPercentage(50);
+        public static readonly CssPercentage Hundred = new CssPercentage(100);
 
         public CssValue Horizontal { get; private set; }
         public CssValue Vertical { get; private set; }
@@ -105,7 +109,8 @@ namespace Marius.Html.Css.Properties
                 {
                     if (percFirst(expression, context))
                     {
-                        percSecond(expression, context);
+                        if (!percSecond(expression, context))
+                            context.Vertical = Center;
                         return true;
                     }
 
@@ -114,7 +119,8 @@ namespace Marius.Html.Css.Properties
 
                     if (vert(expression, context))
                     {
-                        horiz(expression, context);
+                        if (!horiz(expression, context))
+                            context.Horizontal = Center;
                         return true;
                     }
 
@@ -125,7 +131,8 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
-        private BackgroundPosition()
+        public BackgroundPosition()
+            : this(Zero, Zero)
         {
         }
 
@@ -142,14 +149,6 @@ namespace Marius.Html.Css.Properties
             {
                 if (full && expression.Current != null)
                     return null;
-
-                if (result.Horizontal == null && result.Vertical == null)
-                    throw new CssInvalidStateException();
-
-                if (result.Vertical == null)
-                    result.Vertical = Center;
-                if (result.Horizontal == null)
-                    result.Horizontal = Center;
 
                 return result;
             }

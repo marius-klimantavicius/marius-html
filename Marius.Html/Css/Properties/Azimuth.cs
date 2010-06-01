@@ -36,14 +36,14 @@ namespace Marius.Html.Css.Properties
 {
     public class Azimuth: CssProperty
     {
+        public static readonly Func<CssExpression, Azimuth, bool> Parse;
+
         public static readonly CssIdentifier[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" }.Select(s => new CssIdentifier(s)).ToArray();
         public static readonly CssIdentifier Center = Keywords[4];
 
         public static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
         public static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
         public static readonly CssIdentifier Behind = new CssIdentifier("behind");
-
-        private static readonly Func<CssExpression, Azimuth, bool> Parse;
 
         static Azimuth()
         {
@@ -62,7 +62,8 @@ namespace Marius.Html.Css.Properties
         public CssValue Location { get; private set; }
         public bool IsBehind { get; private set; }
 
-        private Azimuth()
+        public Azimuth()
+            : this(Center, false)
         {
         }
 

@@ -33,37 +33,38 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BorderSideColor: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundAttachment, bool> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static Func<CssExpression, BorderSideColor, bool> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public CssValue Color { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static BorderSideColor()
         {
-
+            var color = CssPropertyParser.ColorWithTransparent<BorderSideColor>((s, c) => c.Color = s);
+            Parse = CssPropertyParser.Any(color, CssPropertyParser.Match<BorderSideColor>(CssValue.Inherit, (s, c) => c.Color = s));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public BorderSideColor()
+            : this(CssBoxColor.Instance)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public BorderSideColor(CssValue color)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Color = color;
+        }
 
+        public static BorderSideColor Create(CssExpression expression, bool full = true)
+        {
+            BorderSideColor result = new BorderSideColor();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

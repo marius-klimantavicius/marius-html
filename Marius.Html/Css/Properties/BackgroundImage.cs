@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BackgroundImage: CssProperty
     {
-        private static readonly Func<CssExpression, BackgroundImage, bool> Parse;
+        public static readonly Func<CssExpression, BackgroundImage, bool> Parse;
 
         public CssValue Image { get; private set; }
 
@@ -48,7 +48,8 @@ namespace Marius.Html.Css.Properties
             Parse = CssPropertyParser.Any(uri, other);
         }
 
-        private BackgroundImage()
+        public BackgroundImage()
+            : this(CssValue.None)
         {
         }
 

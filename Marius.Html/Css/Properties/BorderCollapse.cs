@@ -33,37 +33,40 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BorderCollapse: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundAttachment, bool> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly Func<CssExpression, BorderCollapse, bool> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public static readonly CssIdentifier Collapse = new CssIdentifier("collapse");
+        public static readonly CssIdentifier Separate = new CssIdentifier("separate");
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        public CssValue Value { get; private set; }
+
+        static BorderCollapse()
         {
-
+            Parse = CssPropertyParser.Any<BorderCollapse>(new[] { Collapse, Separate, CssValue.Inherit }, (s, c) => c.Value = s);
         }
 
-        public BackgroundAttachment(CssValue value)
+        public BorderCollapse()
+            : this(Separate)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public BorderCollapse(CssValue value)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Value = value;
+        }
 
+        public static BorderCollapse Create(CssExpression expression, bool full = true)
+        {
+            BorderCollapse result = new BorderCollapse();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

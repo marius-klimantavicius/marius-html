@@ -190,6 +190,11 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
+        public static Func<CssExpression, T, bool> ColorWithTransparent<T>(Action<CssValue, T> onMatch)
+        {
+            return Any(Color(onMatch), Match<T>(CssValue.Transparent, onMatch));
+        }
+
         public static Func<CssExpression, T, bool> Uri<T>(Action<CssValue, T> onMatch)
         {
             return (expression, context) =>
@@ -210,7 +215,7 @@ namespace Marius.Html.Css.Properties
         {
             return (expression, context) =>
                 {
-                    return Match(expression, s => s.ValueGroup == CssValueGroup.Length, context, onMatch);
+                    return Match(expression, s => s.ValueGroup == CssValueGroup.Length || (s.ValueType == CssValueType.Number && ((CssNumber)s).Value == 0), context, onMatch);
                 };
         }
     }
