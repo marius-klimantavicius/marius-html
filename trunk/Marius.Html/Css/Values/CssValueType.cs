@@ -62,5 +62,7 @@ namespace Marius.Html.Css.Values
 
         Slash,
         Comma,
+
+        BoxColor,
     }
 }

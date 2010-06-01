@@ -33,34 +33,42 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BorderSpacing: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundAttachment, bool> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly Func<CssExpression, BorderSpacing, bool> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public CssValue Horizontal { get; private set; }
+        public CssValue Vertical { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static BorderSpacing()
         {
+            var length = CssPropertyParser.Sequence(
+                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Horizontal = c.Vertical = s),
+                CssPropertyParser.Maybe(CssPropertyParser.Length<BorderSpacing>((s, c) => c.Vertical = s))
+                );
 
+            Parse = CssPropertyParser.Any(length, CssPropertyParser.Match<BorderSpacing>(CssValue.Inherit, (s, c) => c.Horizontal = c.Vertical = s));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public BorderSpacing()
+            : this(CssValue.Zero, CssValue.Zero)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public BorderSpacing(CssValue horizontal, CssValue vertical)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Horizontal = horizontal;
+            Vertical = vertical;
+        }
 
+        public static BorderSpacing Create(CssExpression expression, bool full = true)
+        {
+            BorderSpacing result = new BorderSpacing();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
 

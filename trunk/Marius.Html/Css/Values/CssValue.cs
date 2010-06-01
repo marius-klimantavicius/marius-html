@@ -37,6 +37,9 @@ namespace Marius.Html.Css.Values
     {
         public static readonly CssIdentifier Inherit = new CssIdentifier("inherit");
         public static readonly CssIdentifier None = new CssIdentifier("none");
+        public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
+
+        public static readonly CssNumber Zero = new CssNumber(0);
 
         public abstract CssValueType ValueType { get; }
         public CssValueGroup ValueGroup
@@ -87,6 +90,8 @@ namespace Marius.Html.Css.Values
                     case CssValueType.Slash:
                     case CssValueType.Comma:
                         return CssValueGroup.Operator;
+                    case CssValueType.BoxColor:
+                        return CssValueGroup.BoxColor;
                 }
                 throw new NotSupportedException();
             }

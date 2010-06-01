@@ -45,5 +45,8 @@ namespace Marius.Html.Css.Values
         Function,
         SignedDimension,
         Operator,
+
+        // surogate
+        BoxColor,
     }
 }

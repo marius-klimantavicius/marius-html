@@ -35,22 +35,21 @@ namespace Marius.Html.Css.Properties
 {
     public class BackgroundColor: CssProperty
     {
-        public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
+        public static readonly Func<CssExpression, BackgroundColor, bool> Parse;
 
         public CssValue Color { get; private set; }
-        private static readonly Func<CssExpression, BackgroundColor, bool> Parse;
 
         static BackgroundColor()
         {
             var color = CssPropertyParser.Color<BackgroundColor>((s, c) => c.Color = s);
-            var other = CssPropertyParser.Any<BackgroundColor>(new[] { Transparent, CssValue.Inherit }, (s, c) => c.Color = s);
+            var other = CssPropertyParser.Any<BackgroundColor>(new[] { CssValue.Transparent, CssValue.Inherit }, (s, c) => c.Color = s);
 
             Parse = CssPropertyParser.Any<BackgroundColor>(color, other);
         }
 
-        private BackgroundColor()
+        public BackgroundColor()
+            : this(CssValue.Transparent)
         {
-
         }
 
         public BackgroundColor(CssValue color)

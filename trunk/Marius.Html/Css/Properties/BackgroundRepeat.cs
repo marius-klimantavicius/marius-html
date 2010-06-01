@@ -33,37 +33,42 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BackgroundRepeat: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundAttachment, bool> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly Func<CssExpression, BackgroundRepeat, bool> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public static readonly CssIdentifier Repeat = new CssIdentifier("repeat");
+        public static readonly CssIdentifier RepeatX = new CssIdentifier("repeat-x");
+        public static readonly CssIdentifier RepeatY = new CssIdentifier("repeat-y");
+        public static readonly CssIdentifier NoRepeat = new CssIdentifier("no-repeat");
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        public CssValue Value { get; private set; }
+
+        static BackgroundRepeat()
         {
-
+            Parse = CssPropertyParser.Any<BackgroundRepeat>(new[] { Repeat, RepeatX, RepeatY, NoRepeat, CssValue.Inherit }, (s, c) => c.Value = s);
         }
 
-        public BackgroundAttachment(CssValue value)
+        public BackgroundRepeat()
+            : this(Repeat)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public BackgroundRepeat(CssValue value)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Value = value;
+        }
 
+        public static BackgroundRepeat Create(CssExpression expression, bool full = true)
+        {
+            BackgroundRepeat result = new BackgroundRepeat();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }
