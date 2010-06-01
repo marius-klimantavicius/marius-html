@@ -42,14 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Css\Parser\FunctionFactory.cs" />
-    <Compile Include="Css\Properties\BackgoundPosition.cs" />
+    <Compile Include="Css\Properties\BackgroundPosition.cs" />
     <Compile Include="Css\Properties\BackgroundImage.cs" />
     <Compile Include="Css\Properties\CssPropertyParser.cs" />
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />
     <Compile Include="Css\Selectors\CssPseudoFunction.cs" />
     <Compile Include="Css\Selectors\CssPseudoIdentifier.cs" />
     <Compile Include="Css\Parser\PseudoConditionFactory.cs" />
-    <Compile Include="Css\Parser\CssInvalidStateException.cs" />
+    <Compile Include="Css\CssInvalidStateException.cs" />
     <Compile Include="Css\Parser\CssParsingException.cs" />
     <Compile Include="Css\Parser\CssSelectorCombinator.cs" />
     <Compile Include="Css\Parser\ParserHelper.cs" />

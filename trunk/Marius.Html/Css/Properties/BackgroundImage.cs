@@ -57,7 +57,7 @@ namespace Marius.Html.Css.Properties
             Image = image;
         }
 
-        public static BackgroundImage Create(CssExpression expression, bool full = false)
+        public static BackgroundImage Create(CssExpression expression, bool full = true)
         {
             BackgroundImage result = new BackgroundImage();
             if (Parse(expression, result))

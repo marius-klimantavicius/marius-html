@@ -29,45 +29,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css
 {
-    public class BackgroundColor: CssProperty
+    [Serializable]
+    public class CssInvalidStateException: Exception
     {
-        public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
-
-        public CssValue Color { get; private set; }
-        private static readonly Func<CssExpression, BackgroundColor, bool> Parse;
-
-        static BackgroundColor()
-        {
-            var color = CssPropertyParser.Color<BackgroundColor>((s, c) => c.Color = s);
-            var other = CssPropertyParser.Any<BackgroundColor>(new[] { Transparent, CssValue.Inherit }, (s, c) => c.Color = s);
-
-            Parse = CssPropertyParser.Any<BackgroundColor>(color, other);
-        }
-
-        private BackgroundColor()
-        {
-
-        }
-
-        public BackgroundColor(CssValue color)
-        {
-            Color = color;
-        }
-
-        public static BackgroundColor Create(CssExpression expression, bool full = true)
-        {
-            BackgroundColor result = new BackgroundColor();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-                return result;
-            }
-            return null;
-        }
+        public CssInvalidStateException() { }
+        public CssInvalidStateException(string message) : base(message) { }
+        public CssInvalidStateException(string message, Exception inner) : base(message, inner) { }
+        protected CssInvalidStateException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
     }
 }
