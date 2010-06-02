@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Distributed under the terms of an MIT-style license:
+Distributed under the terms of a MIT-style license:
 
 The MIT License
 
@@ -27,7 +27,7 @@ THE SOFTWARE.
 #endregion
 #region License
 /*
-Distributed under the terms of an MIT-style license:
+Distributed under the terms of a MIT-style license:
 
 The MIT License
 
