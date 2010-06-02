@@ -36,7 +36,7 @@ namespace Marius.Html.Css.Properties
 {
     public class Azimuth: CssProperty
     {
-        public static readonly Func<CssExpression, Azimuth, bool> Parse;
+        public static readonly ParseFunc<Azimuth> Parse;
 
         public static readonly CssIdentifier[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" }.Select(s => new CssIdentifier(s)).ToArray();
         public static readonly CssIdentifier Center = Keywords[4];

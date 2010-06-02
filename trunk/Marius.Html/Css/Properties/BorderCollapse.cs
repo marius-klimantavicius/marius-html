@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BorderCollapse: CssProperty
     {
-        public static readonly Func<CssExpression, BorderCollapse, bool> Parse;
+        public static readonly ParseFunc<BorderCollapse> Parse;
 
         public static readonly CssIdentifier Collapse = new CssIdentifier("collapse");
         public static readonly CssIdentifier Separate = new CssIdentifier("separate");

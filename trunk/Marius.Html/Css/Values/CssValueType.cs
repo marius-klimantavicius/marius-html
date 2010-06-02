@@ -56,7 +56,7 @@ namespace Marius.Html.Css.Values
         String,
         Uri,
         Identifier,
-        RgbColor,
+        Color,
         Function,
         SignedDimension,
 
@@ -64,5 +64,7 @@ namespace Marius.Html.Css.Values
         Comma,
 
         BoxColor,
+        Rect,
+        ValueList,
     }
 }

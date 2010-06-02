@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BorderStyle: CssProperty
     {
-        public static readonly Func<CssExpression, BorderStyle, bool> Parse;
+        public static readonly ParseFunc<BorderStyle> Parse;
 
         public static readonly CssIdentifier Dotted = new CssIdentifier("dotted");
         public static readonly CssIdentifier Dashed = new CssIdentifier("dashed");
@@ -55,7 +55,7 @@ namespace Marius.Html.Css.Properties
 
         static BorderStyle()
         {
-            Func<CssExpression, BorderStyle, bool> func1 = (e, c) =>
+            ParseFunc<BorderStyle> func1 = (e, c) =>
                 {
                     if (BorderSideStyle.Parse(e, c.Top))
                     {
@@ -65,7 +65,7 @@ namespace Marius.Html.Css.Properties
                     return false;
                 };
 
-            Func<CssExpression, BorderStyle, bool> func2 = (e, c) =>
+            ParseFunc<BorderStyle> func2 = (e, c) =>
                 {
                     if (BorderSideStyle.Parse(e, c.Right))
                     {
@@ -75,16 +75,21 @@ namespace Marius.Html.Css.Properties
                     return false;
                 };
 
-            Func<CssExpression, BorderStyle, bool> func3 = (e, c) => BorderSideStyle.Parse(e, c.Bottom);
-            Func<CssExpression, BorderStyle, bool> func4 = (e, c) => BorderSideStyle.Parse(e, c.Left);
+            ParseFunc<BorderStyle> func3 = (e, c) => BorderSideStyle.Parse(e, c.Bottom);
+            ParseFunc<BorderStyle> func4 = (e, c) => BorderSideStyle.Parse(e, c.Left);
 
-            Func<CssExpression, BorderStyle, bool> inherit = CssPropertyParser.Match<BorderStyle>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideStyle(s));
+            ParseFunc<BorderStyle> inherit = CssPropertyParser.Match<BorderStyle>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideStyle(s));
 
-            Parse = CssPropertyParser.Any(CssPropertyParser.FourSequence(func1, func2, func3, func4), inherit);
+            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence(func1, func2, func3, func4));
         }
 
         public BorderStyle()
             : this(new BorderSideStyle(), new BorderSideStyle(), new BorderSideStyle(), new BorderSideStyle())
+        {
+        }
+
+        public BorderStyle(CssValue all)
+            : this(new BorderSideStyle(all), new BorderSideStyle(all), new BorderSideStyle(all), new BorderSideStyle(all))
         {
         }
 

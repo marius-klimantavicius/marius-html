@@ -35,16 +35,16 @@ namespace Marius.Html.Css.Properties
 {
     public class BorderSpacing: CssProperty
     {
-        public static readonly Func<CssExpression, BorderSpacing, bool> Parse;
+        public static readonly ParseFunc<BorderSpacing> Parse;
 
         public CssValue Horizontal { get; private set; }
         public CssValue Vertical { get; private set; }
 
         static BorderSpacing()
         {
-            var length = CssPropertyParser.Sequence(
+            var length = CssPropertyParser.TwoSequence(
                 CssPropertyParser.Length<BorderSpacing>((s, c) => c.Horizontal = c.Vertical = s),
-                CssPropertyParser.Maybe(CssPropertyParser.Length<BorderSpacing>((s, c) => c.Vertical = s))
+                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Vertical = s)
                 );
 
             Parse = CssPropertyParser.Any(length, CssPropertyParser.Match<BorderSpacing>(CssValue.Inherit, (s, c) => c.Horizontal = c.Vertical = s));

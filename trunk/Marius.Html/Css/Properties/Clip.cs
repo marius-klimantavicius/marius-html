@@ -26,44 +26,45 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class Clip: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<Clip> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public CssValue Value { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static Clip()
         {
-
+            // 	<shape> | auto | inherit
+            Parse = CssPropertyParser.Any(
+                CssPropertyParser.Shape<Clip>((s, c) => c.Value = new CssRect(s.Item1, s.Item2, s.Item3, s.Item4)),
+                CssPropertyParser.Match<Clip>(CssValue.Auto, (s, c) => c.Value = s),
+                CssPropertyParser.Match<Clip>(CssValue.Inherit, (s, c) => c.Value = s));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public Clip()
+            : this(CssValue.Auto)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public Clip(CssValue value)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Value = value;
+        }
 
+        public static Clip Create(CssExpression expression, bool full = true)
+        {
+            Clip result = new Clip();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

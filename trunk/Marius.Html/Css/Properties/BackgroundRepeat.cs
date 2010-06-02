@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BackgroundRepeat: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundRepeat, bool> Parse;
+        public static readonly ParseFunc<BackgroundRepeat> Parse;
 
         public static readonly CssIdentifier Repeat = new CssIdentifier("repeat");
         public static readonly CssIdentifier RepeatX = new CssIdentifier("repeat-x");

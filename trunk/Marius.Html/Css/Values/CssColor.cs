@@ -46,7 +46,7 @@ namespace Marius.Html.Css.Values
 
         public sealed override CssValueType ValueType
         {
-            get { return CssValueType.RgbColor; }
+            get { return CssValueType.Color; }
         }
 
         public override bool Equals(CssValue other)

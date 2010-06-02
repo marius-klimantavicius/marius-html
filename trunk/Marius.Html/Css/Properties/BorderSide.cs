@@ -33,37 +33,48 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BorderSide: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<BorderSide> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public BorderSideColor Color { get; private set; }
+        public BorderSideStyle Style { get; private set; }
+        public BorderSideWidth Width { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static BorderSide()
         {
+            // [ <border-width>  || <border-style>  || 'border-top-color'?? should be border-*-color  ] | inherit
+            ParseFunc<BorderSide> width = (e, c) => BorderSideWidth.Parse(e, c.Width);
+            ParseFunc<BorderSide> style = (e, c) => BorderSideStyle.Parse(e, c.Style);
+            ParseFunc<BorderSide> color = (e, c) => BorderSideColor.Parse(e, c.Color);
 
+            ParseFunc<BorderSide> inherit = CssPropertyParser.Match<BorderSide>(CssValue.Inherit, (s, c) => { c.Width = new BorderSideWidth(s); c.Style = new BorderSideStyle(s); c.Color = new BorderSideColor(s); });
+
+            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.Pipe(width, style, color));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public BorderSide()
+            : this(new BorderSideColor(), new BorderSideStyle(), new BorderSideWidth())
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public BorderSide(BorderSideColor color, BorderSideStyle style, BorderSideWidth width)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Color = color;
+            Style = style;
+            Width = width;
+        }
 
+        public static BorderSide Create(CssExpression expression, bool full = true)
+        {
+            BorderSide result = new BorderSide();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

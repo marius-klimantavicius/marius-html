@@ -26,44 +26,45 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class Color: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<Color> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public CssValue Value { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static Color()
         {
+            // <color> | inherit
 
+            Parse = CssPropertyParser.Any(
+                CssPropertyParser.Color<Color>((s, c) => c.Value = s),
+                CssPropertyParser.Match<Color>(CssValue.Inherit, (s, c) => c.Value = s));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public Color()
+            : this(CssColors.Black)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public Color(CssValue value)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Value = value;
+        }
 
+        public static Color Create(CssExpression expression, bool full = true)
+        {
+            Color result = new Color();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

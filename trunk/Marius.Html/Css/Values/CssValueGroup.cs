@@ -48,5 +48,6 @@ namespace Marius.Html.Css.Values
 
         // surogate
         BoxColor,
+        ValueList,
     }
 }

@@ -33,37 +33,42 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class SideLocation: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<SideLocation> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public CssValue Value { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static SideLocation()
         {
-
+            // 	<length>  | <percentage>  | auto | inherit
+            Parse = CssPropertyParser.Any(
+                CssPropertyParser.Length<SideLocation>((s, c) => c.Value = s),
+                CssPropertyParser.Percentage<SideLocation>((s, c) => c.Value = s),
+                CssPropertyParser.Match<SideLocation>(CssValue.Auto, (s, c) => c.Value = s),
+                CssPropertyParser.Match<SideLocation>(CssValue.Inherit, (s, c) => c.Value = s));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public SideLocation()
+            : this(CssValue.Auto)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public SideLocation(CssValue value)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Value = value;
+        }
 
+        public static SideLocation Create(CssExpression expression, bool full = true)
+        {
+            SideLocation result = new SideLocation();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

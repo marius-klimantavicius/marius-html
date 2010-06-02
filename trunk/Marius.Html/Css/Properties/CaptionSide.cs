@@ -26,44 +26,44 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class CaptionSide: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<CaptionSide> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public static readonly CssIdentifier Top = new CssIdentifier("top");
+        public static readonly CssIdentifier Bottom = new CssIdentifier("bottom");
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        public CssValue Side { get; private set; }
+
+        static CaptionSide()
         {
-
+            Parse = CssPropertyParser.Any<CaptionSide>(new[] { Top, Bottom, CssValue.Inherit }, (s, c) => c.Side = s);
         }
 
-        public BackgroundAttachment(CssValue value)
+        public CaptionSide()
+            : this(Top)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public CaptionSide(CssValue side)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Side = side;
+        }
 
+        public static CaptionSide Create(CssExpression expression, bool full = true)
+        {
+            CaptionSide result = new CaptionSide();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

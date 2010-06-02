@@ -36,6 +36,7 @@ namespace Marius.Html.Css.Values
     public abstract class CssValue: IEquatable<CssValue>
     {
         public static readonly CssIdentifier Inherit = new CssIdentifier("inherit");
+        public static readonly CssIdentifier Auto = new CssIdentifier("auto");
         public static readonly CssIdentifier None = new CssIdentifier("none");
         public static readonly CssIdentifier Hidden = new CssIdentifier("hidden");
         public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
@@ -82,8 +83,9 @@ namespace Marius.Html.Css.Values
                         return CssValueGroup.Uri;
                     case CssValueType.Identifier:
                         return CssValueGroup.Identifier;
-                    case CssValueType.RgbColor:
+                    case CssValueType.Color:
                         return CssValueGroup.Color;
+                    case CssValueType.Rect:
                     case CssValueType.Function:
                         return CssValueGroup.Function;
                     case CssValueType.SignedDimension:
@@ -93,6 +95,8 @@ namespace Marius.Html.Css.Values
                         return CssValueGroup.Operator;
                     case CssValueType.BoxColor:
                         return CssValueGroup.BoxColor;
+                    case CssValueType.ValueList:
+                        return CssValueGroup.ValueList;
                 }
                 throw new NotSupportedException();
             }

@@ -29,42 +29,46 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Values
 {
-    public class BackgroundAttachment: CssProperty
+    public class CssRect: CssValue
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public CssValue Top { get; private set; }
+        public CssValue Right { get; private set; }
+        public CssValue Bottom { get; private set; }
+        public CssValue Left { get; private set; }
 
-        public CssValue Attachment { get; private set; }
-
-        public BackgroundAttachment()
-            : this(Scroll)
+        public override CssValueType ValueType
         {
-
+            get { return CssValueType.Rect; }
         }
 
-        public BackgroundAttachment(CssValue value)
+        public CssRect(CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
-            Attachment = value;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+            Left = left;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public override bool Equals(CssValue other)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            CssRect o = other as CssRect;
+            if (o == null)
+                return false;
 
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-                return result;
-            }
+            return o.Top.Equals(this.Top) && o.Right.Equals(this.Right) && o.Bottom.Equals(this.Bottom) && o.Left.Equals(this.Left);
+        }
 
-            return null;
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Top, Right, Bottom, Left, ValueType);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("rect({0}, {1}, {2}, {3})", Top, Right, Bottom, Left);
         }
     }
 }

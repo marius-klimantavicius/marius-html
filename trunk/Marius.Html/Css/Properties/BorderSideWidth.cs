@@ -33,37 +33,40 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BorderSideWidth: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<BorderSideWidth> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public CssValue Width { get; private set; }
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        static BorderSideWidth()
         {
-
+            Parse = CssPropertyParser.Any(
+                CssPropertyParser.Any<BorderSideWidth>(BorderWidth.Keywords, (s, c) => c.Width = s),
+                CssPropertyParser.Match<BorderSideWidth>(CssValue.Inherit, (s, c) => c.Width = s),
+                CssPropertyParser.Length<BorderSideWidth>((s, c) => c.Width = s));
         }
 
-        public BackgroundAttachment(CssValue value)
+        public BorderSideWidth()
+            : this(BorderWidth.Medium)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public BorderSideWidth(CssValue width)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Width = width;
+        }
 
+        public static BorderSideWidth Create(CssExpression expression, bool full = true)
+        {
+            BorderSideWidth result = new BorderSideWidth();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }
