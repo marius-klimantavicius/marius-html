@@ -126,6 +126,25 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
+        public static Func<CssExpression, T, bool> FourSequence<T>(Func<CssExpression, T, bool> func1, Func<CssExpression, T, bool> func2, Func<CssExpression, T, bool> func3, Func<CssExpression, T, bool> func4)
+        {
+            return (expression, context) =>
+                {
+                    if (!func1(expression, context))
+                        return false;
+
+                    if (!func2(expression, context))
+                        return true;
+
+                    if (!func3(expression, context))
+                        return true;
+
+                    if (!func4(expression, context))
+                        return true;
+                    return true;
+                };
+        }
+
         public static bool Match<T>(CssExpression expression, CssIdentifier value, T context, Action<CssValue, T> onMatch)
         {
             var item = expression.Current;

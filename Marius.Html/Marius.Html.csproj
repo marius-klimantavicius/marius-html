@@ -49,7 +49,9 @@
     <Compile Include="Css\Properties\BorderCollapse.cs" />
     <Compile Include="Css\Properties\BorderColor.cs" />
     <Compile Include="Css\Properties\BorderSideColor.cs" />
+    <Compile Include="Css\Properties\BorderSideStyle.cs" />
     <Compile Include="Css\Properties\BorderSpacing.cs" />
+    <Compile Include="Css\Properties\BorderStyle.cs" />
     <Compile Include="Css\Properties\CssPropertyParser.cs" />
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />
     <Compile Include="Css\Selectors\CssPseudoFunction.cs" />

@@ -44,14 +44,32 @@ namespace Marius.Html.Css.Properties
 
         static BorderColor()
         {
-            var color = CssPropertyParser.Sequence(
-                CssPropertyParser.ColorWithTransparent<BorderColor>((s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideColor(s)),
-                CssPropertyParser.Maybe(CssPropertyParser.ColorWithTransparent<BorderColor>((s, c) => c.Right = c.Left = new BorderSideColor(s))),
-                CssPropertyParser.Maybe(CssPropertyParser.ColorWithTransparent<BorderColor>((s, c) => c.Bottom = new BorderSideColor(s))),
-                CssPropertyParser.Maybe(CssPropertyParser.ColorWithTransparent<BorderColor>((s, c) => c.Left = new BorderSideColor(s)))
-                );
+            Func<CssExpression, BorderColor, bool> func1 = (e, c) =>
+                {
+                    if (BorderSideColor.Parse(e, c.Top))
+                    {
+                        c.Right = c.Bottom = c.Left = c.Top;
+                        return true;
+                    }
+                    return false;
+                };
 
-            Parse = CssPropertyParser.Any(color, CssPropertyParser.Match<BorderColor>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideColor(s)));
+            Func<CssExpression, BorderColor, bool> func2 = (e, c) =>
+                {
+                    if (BorderSideColor.Parse(e, c.Right))
+                    {
+                        c.Left = c.Right;
+                        return true;
+                    }
+                    return false;
+                };
+
+            Func<CssExpression, BorderColor, bool> func3 = (e, c) => BorderSideColor.Parse(e, c.Bottom);
+            Func<CssExpression, BorderColor, bool> func4 = (e, c) => BorderSideColor.Parse(e, c.Left);
+
+            var inherit = CssPropertyParser.Match<BorderColor>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideColor(s));
+
+            Parse = CssPropertyParser.Any(CssPropertyParser.FourSequence<BorderColor>(func1, func2, func3, func4), inherit);
         }
 
         public BorderColor()
