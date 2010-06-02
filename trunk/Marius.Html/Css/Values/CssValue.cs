@@ -37,6 +37,7 @@ namespace Marius.Html.Css.Values
     {
         public static readonly CssIdentifier Inherit = new CssIdentifier("inherit");
         public static readonly CssIdentifier None = new CssIdentifier("none");
+        public static readonly CssIdentifier Hidden = new CssIdentifier("hidden");
         public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
 
         public static readonly CssNumber Zero = new CssNumber(0);
