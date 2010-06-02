@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class Background: CssProperty
     {
-        public static readonly Func<CssExpression, Background, bool> Parse;
+        public static readonly ParseFunc<Background> Parse;
 
         public BackgroundColor BackgroundColor { get; private set; }
         public BackgroundImage BackgroundImage { get; private set; }
@@ -45,11 +45,11 @@ namespace Marius.Html.Css.Properties
 
         static Background()
         {
-            Func<CssExpression, Background, bool> colorFunc = (e, c) => BackgroundColor.Parse(e, c.BackgroundColor);
-            Func<CssExpression, Background, bool> imageFunc = (e, c) => BackgroundImage.Parse(e, c.BackgroundImage);
-            Func<CssExpression, Background, bool> repeatFunc = (e, c) => BackgroundRepeat.Parse(e, c.BackgroundRepeat);
-            Func<CssExpression, Background, bool> positionFunc = (e, c) => BackgroundPosition.Parse(e, c.BackgroundPosition);
-            Func<CssExpression, Background, bool> attachmentFunc = (e, c) => BackgroundAttachment.Parse(e, c.BackgroundAttachment);
+            ParseFunc<Background> colorFunc = (e, c) => BackgroundColor.Parse(e, c.BackgroundColor);
+            ParseFunc<Background> imageFunc = (e, c) => BackgroundImage.Parse(e, c.BackgroundImage);
+            ParseFunc<Background> repeatFunc = (e, c) => BackgroundRepeat.Parse(e, c.BackgroundRepeat);
+            ParseFunc<Background> positionFunc = (e, c) => BackgroundPosition.Parse(e, c.BackgroundPosition);
+            ParseFunc<Background> attachmentFunc = (e, c) => BackgroundAttachment.Parse(e, c.BackgroundAttachment);
 
             var inherit = CssPropertyParser.Match<Background>(CssValue.Inherit, (s, c) =>
                 {

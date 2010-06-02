@@ -30,12 +30,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
+using System.Linq.Expressions;
 
 namespace Marius.Html.Css.Properties
 {
+    public delegate bool ParseFunc<T>(CssExpression expression, T context);
+    public delegate void ParseAction<T>(CssValue value, T context);
+    public delegate void ShapeParseAction<T>(Tuple<CssValue, CssValue, CssValue, CssValue> shape, T context);
+
     public static class CssPropertyParser
     {
-        public static Func<CssExpression, T, bool> Any<T>(CssIdentifier[] keywords, Action<CssValue, T> onMatch)
+        public static ParseFunc<T> Any<T>(CssIdentifier[] keywords, ParseAction<T> onMatch)
         {
             return (expression, context) =>
             {
@@ -48,7 +53,7 @@ namespace Marius.Html.Css.Properties
             };
         }
 
-        public static Func<CssExpression, T, bool> Any<T>(params Func<CssExpression, T, bool>[] matches)
+        public static ParseFunc<T> Any<T>(params ParseFunc<T>[] matches)
         {
             return (expression, context) =>
             {
@@ -61,7 +66,7 @@ namespace Marius.Html.Css.Properties
             };
         }
 
-        public static Func<CssExpression, T, bool> Pipe<T>(params Func<CssExpression, T, bool>[] matches)
+        public static ParseFunc<T> Pipe<T>(params ParseFunc<T>[] matches)
         {
             return (expression, context) =>
             {
@@ -96,7 +101,7 @@ namespace Marius.Html.Css.Properties
             };
         }
 
-        public static Func<CssExpression, T, bool> Match<T>(CssIdentifier key, Action<CssValue, T> onMatch)
+        public static ParseFunc<T> Match<T>(CssIdentifier key, ParseAction<T> onMatch)
         {
             return (expression, context) =>
             {
@@ -104,7 +109,7 @@ namespace Marius.Html.Css.Properties
             };
         }
 
-        public static Func<CssExpression, T, bool> Maybe<T>(Func<CssExpression, T, bool> match)
+        public static ParseFunc<T> Maybe<T>(ParseFunc<T> match)
         {
             return (expression, context) =>
                 {
@@ -113,7 +118,7 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
-        public static Func<CssExpression, T, bool> Sequence<T>(params Func<CssExpression, T, bool>[] matches)
+        public static ParseFunc<T> Sequence<T>(params ParseFunc<T>[] matches)
         {
             return (expression, context) =>
                 {
@@ -126,7 +131,19 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
-        public static Func<CssExpression, T, bool> FourSequence<T>(Func<CssExpression, T, bool> func1, Func<CssExpression, T, bool> func2, Func<CssExpression, T, bool> func3, Func<CssExpression, T, bool> func4)
+        public static ParseFunc<T> TwoSequence<T>(ParseFunc<T> func1, ParseFunc<T> func2)
+        {
+            return (expression, context) =>
+                {
+                    if (!func1(expression, context))
+                        return false;
+
+                    func2(expression, context);
+                    return true;
+                };
+        }
+
+        public static ParseFunc<T> FourSequence<T>(ParseFunc<T> func1, ParseFunc<T> func2, ParseFunc<T> func3, ParseFunc<T> func4)
         {
             return (expression, context) =>
                 {
@@ -139,13 +156,12 @@ namespace Marius.Html.Css.Properties
                     if (!func3(expression, context))
                         return true;
 
-                    if (!func4(expression, context))
-                        return true;
+                    func4(expression, context);
                     return true;
                 };
         }
 
-        public static bool Match<T>(CssExpression expression, CssIdentifier value, T context, Action<CssValue, T> onMatch)
+        public static bool Match<T>(CssExpression expression, CssIdentifier value, T context, ParseAction<T> onMatch)
         {
             var item = expression.Current;
             if (item == null)
@@ -163,7 +179,7 @@ namespace Marius.Html.Css.Properties
             return false;
         }
 
-        public static bool Match<T>(CssExpression expression, Func<CssValue, bool> predicate, T context, Action<CssValue, T> onMatch)
+        public static bool Match<T>(CssExpression expression, Func<CssValue, bool> predicate, T context, ParseAction<T> onMatch)
         {
             var item = expression.Current;
             if (item == null)
@@ -179,7 +195,12 @@ namespace Marius.Html.Css.Properties
             return false;
         }
 
-        public static Func<CssExpression, T, bool> Angle<T>(Action<CssValue, T> onMatch)
+        public static bool MatchLength<T>(CssExpression expression, T context, ParseAction<T> onMatch)
+        {
+            return Match(expression, s => s.ValueGroup == CssValueGroup.Length || (s.ValueType == CssValueType.Number && ((CssNumber)s).Value == 0), context, onMatch);
+        }
+
+        public static ParseFunc<T> Angle<T>(ParseAction<T> onMatch)
         {
             return (expression, context) =>
             {
@@ -187,7 +208,7 @@ namespace Marius.Html.Css.Properties
             };
         }
 
-        public static Func<CssExpression, T, bool> Color<T>(Action<CssValue, T> onMatch)
+        public static ParseFunc<T> Color<T>(ParseAction<T> onMatch)
         {
             // aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, orange, purple, red, silver, teal, white, and yellow
             return (expression, context) =>
@@ -209,12 +230,12 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
-        public static Func<CssExpression, T, bool> ColorWithTransparent<T>(Action<CssValue, T> onMatch)
+        public static ParseFunc<T> ColorWithTransparent<T>(ParseAction<T> onMatch)
         {
             return Any(Color(onMatch), Match<T>(CssValue.Transparent, onMatch));
         }
 
-        public static Func<CssExpression, T, bool> Uri<T>(Action<CssValue, T> onMatch)
+        public static ParseFunc<T> Uri<T>(ParseAction<T> onMatch)
         {
             return (expression, context) =>
                 {
@@ -222,7 +243,7 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
-        public static Func<CssExpression, T, bool> Percentage<T>(Action<CssValue, T> onMatch)
+        public static ParseFunc<T> Percentage<T>(ParseAction<T> onMatch)
         {
             return (expression, context) =>
                 {
@@ -230,11 +251,69 @@ namespace Marius.Html.Css.Properties
                 };
         }
 
-        public static Func<CssExpression, T, bool> Length<T>(Action<CssValue, T> onMatch)
+        public static ParseFunc<T> Length<T>(ParseAction<T> onMatch)
         {
             return (expression, context) =>
                 {
-                    return Match(expression, s => s.ValueGroup == CssValueGroup.Length || (s.ValueType == CssValueType.Number && ((CssNumber)s).Value == 0), context, onMatch);
+                    return MatchLength<T>(expression, context, onMatch);
+                };
+        }
+
+        public static ParseFunc<T> Shape<T>(ShapeParseAction<T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    if (expression.Current.ValueType != CssValueType.Function)
+                        return false;
+
+                    CssFunction fun = (CssFunction)expression.Current;
+                    if (!fun.Name.Equals("rect", StringComparison.InvariantCultureIgnoreCase))
+                        return false;
+
+                    if (fun.Arguments.Items.Length != 4)
+                        return false;
+
+                    CssValue top = null, right = null, bottom = null, left = null;
+                    if (!MatchLength<object>(expression, null, (s, c) => top = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => top = s))
+                        return false;
+
+                    if (!MatchLength<object>(expression, null, (s, c) => right = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => right = s))
+                        return false;
+                    
+                    if (!MatchLength<object>(expression, null, (s, c) => bottom = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => bottom = s))
+                        return false;
+                    
+                    if (!MatchLength<object>(expression, null, (s, c) => left = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => left = s))
+                        return false;
+
+                    onMatch(new Tuple<CssValue, CssValue, CssValue, CssValue>(top, right, bottom, left), context);
+                    return true;
+                };
+        }
+
+        public static ParseFunc<T> String<T>(ParseAction<T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    return Match<T>(expression, s => s.ValueType == CssValueType.String, context, onMatch);
+                };
+        }
+
+        public static ParseFunc<T> Counter<T>(ParseAction<T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    // TODO: implement
+                    throw new NotImplementedException();
+                };
+        }
+
+        public static ParseFunc<T> Attr<T>(ParseAction<T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    // TODO: implement
+                    throw new NotImplementedException();
                 };
         }
     }

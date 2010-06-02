@@ -29,42 +29,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Values
 {
-    public class BackgroundAttachment: CssProperty
+    public class CssValueList: CssValue
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public CssValue[] Items { get; private set; }
 
-        public CssValue Attachment { get; private set; }
-
-        public BackgroundAttachment()
-            : this(Scroll)
+        public override CssValueType ValueType
         {
-
+            get { return CssValueType.ValueList; }
         }
 
-        public BackgroundAttachment(CssValue value)
+        public CssValueList(CssValue[] items)
         {
-            Attachment = value;
+            Items = items;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public override bool Equals(CssValue other)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            CssValueList o = other as CssValueList;
+            if (o == null)
+                return false;
 
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-                return result;
-            }
+            return Utils.ArraysEqual(o.Items, Items);
+        }
 
-            return null;
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Items, ValueType);
+        }
+
+        public override string ToString()
+        {
+            return String.Join(" ", (object[])Items);
         }
     }
 }

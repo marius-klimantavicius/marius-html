@@ -33,20 +33,25 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderColor: CssProperty
+    public class BorderWidth: CssProperty
     {
-        public static ParseFunc<BorderColor> Parse;
+        public static readonly ParseFunc<BorderWidth> Parse;
 
-        public BorderSideColor Top { get; private set; }
-        public BorderSideColor Right { get; private set; }
-        public BorderSideColor Bottom { get; private set; }
-        public BorderSideColor Left { get; private set; }
+        public static readonly CssIdentifier Thin = new CssIdentifier("thin");
+        public static readonly CssIdentifier Medium = new CssIdentifier("medium");
+        public static readonly CssIdentifier Thick = new CssIdentifier("thick");
+        public static readonly CssIdentifier[] Keywords = new[] { Thin, Medium, Thick };
 
-        static BorderColor()
+        public BorderSideWidth Top { get; private set; }
+        public BorderSideWidth Right { get; private set; }
+        public BorderSideWidth Bottom { get; private set; }
+        public BorderSideWidth Left { get; private set; }
+
+        static BorderWidth()
         {
-            ParseFunc<BorderColor> func1 = (e, c) =>
+            ParseFunc<BorderWidth> func1 = (e, c) =>
                 {
-                    if (BorderSideColor.Parse(e, c.Top))
+                    if (BorderSideWidth.Parse(e, c.Top))
                     {
                         c.Right = c.Bottom = c.Left = c.Top;
                         return true;
@@ -54,37 +59,35 @@ namespace Marius.Html.Css.Properties
                     return false;
                 };
 
-            ParseFunc<BorderColor> func2 = (e, c) =>
+            ParseFunc<BorderWidth> func2 = (e, c) =>
                 {
-                    if (BorderSideColor.Parse(e, c.Right))
+                    if (BorderSideWidth.Parse(e, c.Right))
                     {
                         c.Left = c.Right;
-                        return true;
                     }
                     return false;
                 };
 
-            ParseFunc<BorderColor> func3 = (e, c) => BorderSideColor.Parse(e, c.Bottom);
-            ParseFunc<BorderColor> func4 = (e, c) => BorderSideColor.Parse(e, c.Left);
+            ParseFunc<BorderWidth> func3 = (e, c) => BorderSideWidth.Parse(e, c.Bottom);
+            ParseFunc<BorderWidth> func4 = (e, c) => BorderSideWidth.Parse(e, c.Left);
 
-            // not sure what to do in border-color: inherit inherit; - should this rule be disarded?
-            // FF and others discard the rule
-            var inherit = CssPropertyParser.Match<BorderColor>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideColor(s));
+            ParseFunc<BorderWidth> inherit = CssPropertyParser.Match<BorderWidth>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideWidth(s));
 
-            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence<BorderColor>(func1, func2, func3, func4));
+            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence(func1, func2, func3, func4));
         }
 
-        public BorderColor()
-            : this(new BorderSideColor(), new BorderSideColor(), new BorderSideColor(), new BorderSideColor())
+        public BorderWidth()
+            : this(new BorderSideWidth(), new BorderSideWidth(), new BorderSideWidth(), new BorderSideWidth())
         {
         }
 
-        public BorderColor(CssValue all)
-            : this(new BorderSideColor(all), new BorderSideColor(all), new BorderSideColor(all), new BorderSideColor(all))
+        public BorderWidth(CssValue all)
+            : this(new BorderSideWidth(all), new BorderSideWidth(all), new BorderSideWidth(all), new BorderSideWidth(all))
         {
+
         }
 
-        public BorderColor(BorderSideColor top, BorderSideColor right, BorderSideColor bottom, BorderSideColor left)
+        public BorderWidth(BorderSideWidth top, BorderSideWidth right, BorderSideWidth bottom, BorderSideWidth left)
         {
             Top = top;
             Right = right;
@@ -92,9 +95,9 @@ namespace Marius.Html.Css.Properties
             Left = left;
         }
 
-        public static BorderColor Create(CssExpression expression, bool full = true)
+        public static BorderWidth Create(CssExpression expression, bool full = true)
         {
-            BorderColor result = new BorderColor();
+            BorderWidth result = new BorderWidth();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)

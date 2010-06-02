@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BackgroundColor: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundColor, bool> Parse;
+        public static readonly ParseFunc<BackgroundColor> Parse;
 
         public CssValue Color { get; private set; }
 

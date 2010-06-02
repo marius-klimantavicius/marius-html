@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BackgroundPosition: CssProperty
     {
-        public static readonly Func<CssExpression, BackgroundPosition, bool> Parse;
+        public static readonly ParseFunc<BackgroundPosition> Parse;
 
         public static readonly CssIdentifier Left = new CssIdentifier("left");
         public static readonly CssIdentifier Right = new CssIdentifier("right");
@@ -78,7 +78,7 @@ namespace Marius.Html.Css.Properties
             var horiz = CssPropertyParser.Any<BackgroundPosition>(new[] { Left, Center, Right }, (s, c) => c.Horizontal = s);
             var vert = CssPropertyParser.Any<BackgroundPosition>(new[] { Top, Center, Bottom }, (s, c) => c.Vertical = s);
 
-            Func<CssExpression, BackgroundPosition, bool> center = (expression, context) =>
+            ParseFunc<BackgroundPosition> center = (expression, context) =>
                 {
                     if (CssPropertyParser.Match(expression, Center, context, (s, c) => { }))
                     {

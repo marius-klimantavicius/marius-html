@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BorderSideColor: CssProperty
     {
-        public static Func<CssExpression, BorderSideColor, bool> Parse;
+        public static ParseFunc<BorderSideColor> Parse;
 
         public CssValue Color { get; private set; }
 

@@ -26,44 +26,46 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class Clear: CssProperty
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
+        public static readonly ParseFunc<Clear> Parse;
 
-        public CssValue Attachment { get; private set; }
+        public static readonly CssIdentifier Left = new CssIdentifier("left");
+        public static readonly CssIdentifier Right = new CssIdentifier("right");
+        public static readonly CssIdentifier Both = new CssIdentifier("both");
 
-        public BackgroundAttachment()
-            : this(Scroll)
+        public CssValue Value { get; private set; }
+
+        static Clear()
         {
-
+            // 	none | left | right | both | inherit
+            Parse = CssPropertyParser.Any<Clear>(new[] { Left, Right, Both, CssValue.None, CssValue.Inherit }, (s, c) => c.Value = s);
         }
 
-        public BackgroundAttachment(CssValue value)
+        public Clear()
+            : this(CssValue.None)
         {
-            Attachment = value;
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public Clear(CssValue value)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            Value = value;
+        }
 
+        public static Clear Create(CssExpression expression, bool full = true)
+        {
+            Clear result = new Clear();
             if (Parse(expression, result))
             {
                 if (full && expression.Current != null)
                     return null;
+
                 return result;
             }
-
             return null;
         }
     }

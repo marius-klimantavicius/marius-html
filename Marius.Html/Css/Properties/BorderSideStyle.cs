@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Properties
 {
     public class BorderSideStyle: CssProperty
     {
-        public static readonly Func<CssExpression, BorderSideStyle, bool> Parse;
+        public static readonly ParseFunc<BorderSideStyle> Parse;
 
         public CssValue Style { get; private set; }
 
