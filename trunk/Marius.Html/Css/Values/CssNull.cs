@@ -25,30 +25,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public enum CssValueGroup
+    public class CssNull: CssValue
     {
-        Unknown,
-        Number,
-        Percentage,
-        Length,
-        Angle,
-        Time,
-        Frequency,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
-        Operator,
+        public static readonly CssNull Instance = new CssNull();
 
-        // surogate
-        BoxColor,
-        ValueList,
-        Null,
+        public override CssValueType ValueType
+        {
+            get { return CssValueType.Null; }
+        }
+
+        private CssNull()
+        {
+        }
+
+        public override bool Equals(CssValue other)
+        {
+            CssNull o = other as CssNull;
+            if (o == null)
+                return false;
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(ValueType);
+        }
+
+        public override string ToString()
+        {
+            return "";
+        }
+
+        public override bool IsNull()
+        {
+            return true;
+        }
     }
 }

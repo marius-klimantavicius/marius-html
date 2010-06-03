@@ -66,5 +66,6 @@ namespace Marius.Html.Css.Values
         BoxColor,
         Rect,
         ValueList,
+        Null,
     }
 }

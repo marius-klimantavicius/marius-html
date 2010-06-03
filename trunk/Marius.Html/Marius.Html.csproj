@@ -101,6 +101,7 @@
     <Compile Include="Css\Values\CssColor.cs" />
     <Compile Include="Css\Dom\CssDeclaration.cs" />
     <Compile Include="Css\Values\CssDimension.cs" />
+    <Compile Include="Css\Values\CssNull.cs" />
     <Compile Include="Css\Values\CssExpression.cs" />
     <Compile Include="Css\Values\CssFrequency.cs" />
     <Compile Include="Css\Values\CssFunction.cs" />
