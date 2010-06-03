@@ -97,6 +97,8 @@ namespace Marius.Html.Css.Values
                         return CssValueGroup.BoxColor;
                     case CssValueType.ValueList:
                         return CssValueGroup.ValueList;
+                    case CssValueType.Null:
+                        return CssValueGroup.Null;
                 }
                 throw new NotSupportedException();
             }
@@ -111,6 +113,11 @@ namespace Marius.Html.Css.Values
                 return false;
 
             return Equals((CssValue)obj);
+        }
+
+        public virtual bool IsNull()
+        {
+            return false;
         }
     }
 }

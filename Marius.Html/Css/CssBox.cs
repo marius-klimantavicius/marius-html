@@ -29,10 +29,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
     public class CssBox
     {
+        public CssValue Azimuth { get; set; }
     }
 }

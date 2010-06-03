@@ -43,10 +43,12 @@ namespace Marius.Html.Css.Values
             get
             {
                 if (_currentIndex >= Items.Length)
-                    return null;
+                    return CssNull.Instance;
                 return Items[_currentIndex];
             }
         }
+
+        public int Count { get { return Items.Length; } }
 
         public CssExpression(CssValue[] items)
         {
