@@ -58,15 +58,22 @@ namespace Marius.Html.Css.Properties
             ParseFunc<Content> complex = (expression, context) =>
                 {
                     List<CssValue> result = new List<CssValue>();
-                    if (!complexItem(expression, result))
-                        return false;
+                    bool has = false;
 
-                    while (complexItem(expression, result)) ;
+                    while (complexItem(expression, result))
+                        has = true;
 
-                    context.Value = new CssValueList(result.ToArray());
+                    if (has)
+                        context.Value = new CssValueList(result.ToArray());
 
-                    return true;
+                    return has;
                 };
+
+            Parse = CssPropertyParser.Any(
+                CssPropertyParser.Match<Content>(Normal, (s, c) => c.Value = s),
+                CssPropertyParser.Match<Content>(CssValue.None, (s, c) => c.Value = s),
+                complex,
+                CssPropertyParser.Match<Content>(CssValue.Inherit, (s, c) => c.Value = s));
         }
 
         public Content()

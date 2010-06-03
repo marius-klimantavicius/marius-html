@@ -304,7 +304,8 @@ namespace Marius.Html.Css.Properties
             return (expression, context) =>
                 {
                     // TODO: implement
-                    throw new NotImplementedException();
+                    // for the moment, accept any function
+                    return Match(expression, s => s.ValueType == CssValueType.Function, context, onMatch);
                 };
         }
 
@@ -313,7 +314,24 @@ namespace Marius.Html.Css.Properties
             return (expression, context) =>
                 {
                     // TODO: implement
-                    throw new NotImplementedException();
+                    // for the moment, accept any function
+                    return Match(expression, s => s.ValueType == CssValueType.Function, context, onMatch);
+                };
+        }
+
+        public static ParseFunc<T> Identifier<T>(ParseAction<T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    return Match<T>(expression, s => s.ValueType == CssValueType.Identifier, context, onMatch);
+                };
+        }
+
+        public static ParseFunc<T> Number<T>(ParseAction<T> onMatch)
+        {
+            return (expression, context) =>
+                {
+                    return Match<T>(expression, s => s.ValueType == CssValueType.Number, context, onMatch);
                 };
         }
     }

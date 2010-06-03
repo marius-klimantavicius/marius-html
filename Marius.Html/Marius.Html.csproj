@@ -61,6 +61,9 @@
     <Compile Include="Css\Properties\Clip.cs" />
     <Compile Include="Css\Properties\Color.cs" />
     <Compile Include="Css\Properties\Content.cs" />
+    <Compile Include="Css\Properties\CounterChange.cs" />
+    <Compile Include="Css\Properties\Cue.cs" />
+    <Compile Include="Css\Properties\CueValue.cs" />
     <Compile Include="Css\Properties\SideLocation.cs" />
     <Compile Include="Css\Properties\CssPropertyParser.cs" />
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />

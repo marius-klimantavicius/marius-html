@@ -31,6 +31,7 @@ using System.Text;
 using NUnit.Framework;
 using Marius.Html.Css.Properties;
 using Marius.Html.Css.Values;
+using System.Linq.Expressions;
 
 namespace Marius.Html.Tests.Css.Properties
 {
