@@ -42,7 +42,7 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { throw new NotImplementedException(); } // should I thrown or should I null
+            get { throw new NotSupportedException(); } // should I thrown or should I null
         }
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)

@@ -50,7 +50,6 @@
     <Compile Include="Css\Properties\Border.cs" />
     <Compile Include="Css\Properties\BorderCollapse.cs" />
     <Compile Include="Css\Properties\BorderColor.cs" />
-    <Compile Include="Css\Properties\BorderSide.cs" />
     <Compile Include="Css\Properties\BorderSideColor.cs" />
     <Compile Include="Css\Properties\BorderSideStyle.cs" />
     <Compile Include="Css\Properties\BorderSideWidth.cs" />
