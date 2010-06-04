@@ -33,38 +33,35 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssProperty
+    public class BackgroundAttachment: CssPropertyStrategy
     {
-        public static readonly ParseFunc<BackgroundAttachment> Parse = CssPropertyParser.Any<BackgroundAttachment>(new[] { Scroll, Fixed, CssValue.Inherit }, (s, c) => c.Attachment = s);
-        
-        public static readonly CssIdentifier Scroll = new CssIdentifier("scroll");
-        public static readonly CssIdentifier Fixed = new CssIdentifier("fixed");
-
-        public CssValue Attachment { get; private set; }
-
-        public BackgroundAttachment()
-            : this(Scroll)
+        public override bool IsInherited
         {
-
+            get { return false; }
         }
 
-        public BackgroundAttachment(CssValue value)
+        public override CssValue Initial
         {
-            Attachment = value;
+            get { return CssKeywords.Scroll; }
         }
 
-        public static BackgroundAttachment Create(CssExpression expression, bool full = true)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            BackgroundAttachment result = new BackgroundAttachment();
+            CssValue result = Parse(context, expression);
+            if (result == null || (full && !expression.Current.IsNull()))
+                return false;
 
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            box.BackgroundAttachment = result;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            CssValue result = null;
+            if (MatchAny(expression, new[] { CssKeywords.Scroll, CssKeywords.Fixed }, ref result))
                 return result;
-            }
 
-            return null;
+            return MatchInherit(expression);
         }
     }
 }

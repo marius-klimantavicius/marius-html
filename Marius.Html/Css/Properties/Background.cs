@@ -33,64 +33,105 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Background: CssProperty
+    public class Background: CssPropertyStrategy
     {
-        public static readonly ParseFunc<Background> Parse;
-
-        public BackgroundColor BackgroundColor { get; private set; }
-        public BackgroundImage BackgroundImage { get; private set; }
-        public BackgroundRepeat BackgroundRepeat { get; private set; }
-        public BackgroundPosition BackgroundPosition { get; private set; }
-        public BackgroundAttachment BackgroundAttachment { get; private set; }
-
-        static Background()
+        public override bool IsInherited
         {
-            ParseFunc<Background> colorFunc = (e, c) => BackgroundColor.Parse(e, c.BackgroundColor);
-            ParseFunc<Background> imageFunc = (e, c) => BackgroundImage.Parse(e, c.BackgroundImage);
-            ParseFunc<Background> repeatFunc = (e, c) => BackgroundRepeat.Parse(e, c.BackgroundRepeat);
-            ParseFunc<Background> positionFunc = (e, c) => BackgroundPosition.Parse(e, c.BackgroundPosition);
-            ParseFunc<Background> attachmentFunc = (e, c) => BackgroundAttachment.Parse(e, c.BackgroundAttachment);
-
-            var inherit = CssPropertyParser.Match<Background>(CssValue.Inherit, (s, c) =>
-                {
-                    c.BackgroundAttachment = new BackgroundAttachment(s);
-                    c.BackgroundColor = new BackgroundColor(s);
-                    c.BackgroundImage = new BackgroundImage(s);
-                    c.BackgroundPosition = new BackgroundPosition(s, s);
-                    c.BackgroundRepeat = new BackgroundRepeat(s);
-                });
-
-            var shand = CssPropertyParser.Pipe<Background>(colorFunc, imageFunc, repeatFunc, positionFunc, attachmentFunc);
-
-            Parse = CssPropertyParser.Any(inherit, shand);
+            get { return false; }
         }
 
-        public Background()
-            : this(new BackgroundColor(), new BackgroundImage(), new BackgroundPosition(), new BackgroundRepeat(), new BackgroundAttachment())
+        public override CssValue Initial
         {
+            get { throw new NotImplementedException(); } // should I thrown or should I null
         }
 
-        public Background(BackgroundColor color, BackgroundImage image, BackgroundPosition position, BackgroundRepeat repeat, BackgroundAttachment attachment)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            BackgroundColor = color;
-            BackgroundImage = image;
-            BackgroundPosition = position;
-            BackgroundRepeat = repeat;
-            BackgroundAttachment = attachment;
-        }
-
-        public static Background Create(CssExpression expression, bool full = true)
-        {
-            Background result = new Background();
-            if (Parse(expression, result))
+            CssValue inherit = MatchInherit(expression);
+            if (inherit != null)
             {
-                if (full && expression.Current != null)
-                    return null;
+                if (full && !expression.Current.IsNull())
+                    return false;
 
-                return result;
+                box.BackgroundAttachment = CssKeywords.Inherit;
+                box.BackgroundColor = CssKeywords.Inherit;
+                box.BackgroundImage = CssKeywords.Inherit;
+                box.BackgroundPosition= CssKeywords.Inherit;
+                box.BackgroundRepeat = CssKeywords.Inherit;
+                return true;
             }
 
-            return null;
+            bool has = true;
+            CssValue value;
+            CssValue attachment = null, color = null, image = null, position = null, repeat = null;
+            for (int i = 0; i < 5 && has; i++)
+            {
+                has = false;
+
+                value = context.BackgroundAttachment.Parse(context, expression);
+                if (value != null)
+                {
+                    if (attachment != null)
+                        return false;
+
+                    has = true;
+                    attachment = value;
+                }
+
+                value = context.BackgroundColor.Parse(context, expression);
+                if (value != null)
+                {
+                    if (color != null)
+                        return false;
+
+                    has = true;
+                    color = value;
+                }
+
+                value = context.BackgroundImage.Parse(context, expression);
+                if (value != null)
+                {
+                    if (image != null)
+                        return false;
+
+                    has = true;
+                    image = value;
+                }
+
+                value = context.BackgroundPosition.Parse(context, expression);
+                if (value != null)
+                {
+                    if (position != null)
+                        return false;
+
+                    has = true;
+                    position = value;
+                }
+
+                value = context.BackgroundRepeat.Parse(context, expression);
+                if (value != null)
+                {
+                    if (repeat != null)
+                        return false;
+
+                    has = true;
+                    repeat = value;
+                }
+            }
+
+            if (attachment == null && color == null && image == null && position == null && repeat == null)
+                return false;
+
+            if (full && !expression.Current.IsNull())
+                return false;
+
+            box.BackgroundAttachment = attachment ?? context.BackgroundAttachment.Initial;
+            box.BackgroundColor = color ?? context.BackgroundColor.Initial;
+            box.BackgroundImage = image ?? context.BackgroundImage.Initial;
+            box.BackgroundPosition = position ?? context.BackgroundPosition.Initial;
+            box.BackgroundRepeat = repeat ?? context.BackgroundRepeat.Initial;
+
+            return true;
         }
     }
 }

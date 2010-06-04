@@ -35,12 +35,6 @@ namespace Marius.Html.Css.Values
 {
     public abstract class CssValue: IEquatable<CssValue>
     {
-        public static readonly CssIdentifier Inherit = new CssIdentifier("inherit");
-        public static readonly CssIdentifier Auto = new CssIdentifier("auto");
-        public static readonly CssIdentifier None = new CssIdentifier("none");
-        public static readonly CssIdentifier Hidden = new CssIdentifier("hidden");
-        public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
-
         public static readonly CssNumber Zero = new CssNumber(0);
 
         public abstract CssValueType ValueType { get; }
@@ -99,6 +93,10 @@ namespace Marius.Html.Css.Values
                         return CssValueGroup.ValueList;
                     case CssValueType.Null:
                         return CssValueGroup.Null;
+                    case CssValueType.Azimuth:
+                        return CssValueGroup.Azimuth;
+                    case CssValueType.BackgroundPosition:
+                        return CssValueGroup.BackgroundPosition;
                 }
                 throw new NotSupportedException();
             }

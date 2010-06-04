@@ -56,11 +56,11 @@ namespace Marius.Html.Css.Properties
                     return has;
                 };
 
-            Parse = CssPropertyParser.Any(ids, CssPropertyParser.Match<CounterChange>(CssValue.None, (s, c) => c.Value = s), CssPropertyParser.Match<CounterChange>(CssValue.Inherit, (s, c) => c.Value = s));
+            Parse = CssPropertyParser.Any(ids, CssPropertyParser.Match<CounterChange>(CssKeywords.None, (s, c) => c.Value = s), CssPropertyParser.Match<CounterChange>(CssKeywords.Inherit, (s, c) => c.Value = s));
         }
 
         public CounterChange()
-            : this(CssValue.None)
+            : this(CssKeywords.None)
         {
         }
 

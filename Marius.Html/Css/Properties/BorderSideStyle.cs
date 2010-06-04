@@ -45,7 +45,7 @@ namespace Marius.Html.Css.Properties
         }
 
         public BorderSideStyle()
-            : this(CssValue.None)
+            : this(CssKeywords.None)
         {
         }
 

@@ -26,46 +26,19 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using Marius.Html.Css.Values;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Marius.Html.Css.Properties;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css
 {
-    public class CueValue: CssProperty
+    public class CssContext
     {
-        public static readonly ParseFunc<CueValue> Parse;
-
-        public CssValue Value { get; private set; }
-
-        static CueValue()
-        {
-            // <uri> | none | inherit
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Uri<CueValue>((s, c) => c.Value = s),
-                CssPropertyParser.Match<CueValue>(CssKeywords.None, (s, c) => c.Value = s),
-                CssPropertyParser.Match<CueValue>(CssKeywords.Inherit, (s, c) => c.Value = s));
-        }
-
-        public CueValue()
-            : this(CssKeywords.None)
-        {
-        }
-
-        public CueValue(CssValue value)
-        {
-            Value = value;
-        }
-
-        public static CueValue Create(CssExpression expression, bool full = true)
-        {
-            CueValue result = new CueValue();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
-            }
-            return null;
-        }
+        public BackgroundAttachment BackgroundAttachment { get; set; }
+        public BackgroundColor BackgroundColor { get; set; }
+        public BackgroundImage BackgroundImage { get; set; }
+        public BackgroundPosition BackgroundPosition { get; set; }
+        public BackgroundRepeat BackgroundRepeat { get; set; }
     }
 }

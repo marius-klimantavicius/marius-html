@@ -29,50 +29,42 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Values
 {
-    public class BorderSpacing: CssProperty
+    public class CssBackgroundPosition: CssValue
     {
-        public static readonly ParseFunc<BorderSpacing> Parse;
-
-        public CssValue Horizontal { get; private set; }
         public CssValue Vertical { get; private set; }
+        public CssValue Horizontal { get; private set; }
 
-        static BorderSpacing()
+        public override CssValueType ValueType
         {
-            var length = CssPropertyParser.TwoSequence(
-                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Horizontal = c.Vertical = s),
-                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Vertical = s)
-                );
-
-            Parse = CssPropertyParser.Any(length, CssPropertyParser.Match<BorderSpacing>(CssKeywords.Inherit, (s, c) => c.Horizontal = c.Vertical = s));
+            get { return CssValueType.BackgroundPosition; }
         }
 
-        public BorderSpacing()
-            : this(CssValue.Zero, CssValue.Zero)
+        public CssBackgroundPosition(CssValue vertical, CssValue horizontal)
         {
-        }
-
-        public BorderSpacing(CssValue horizontal, CssValue vertical)
-        {
-            Horizontal = horizontal;
             Vertical = vertical;
+            Horizontal = horizontal;
         }
 
-        public static BorderSpacing Create(CssExpression expression, bool full = true)
+        public override bool Equals(CssValue other)
         {
-            BorderSpacing result = new BorderSpacing();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            CssBackgroundPosition o = other as CssBackgroundPosition;
+            if (o == null)
+                return false;
 
-                return result;
-            }
+            return o.Vertical.Equals(this.Vertical) && o.Horizontal.Equals(this.Horizontal);
+        }
 
-            return null;
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Vertical, Horizontal);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Horizontal, Vertical);
         }
     }
 }

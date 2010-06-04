@@ -41,7 +41,7 @@ namespace Marius.Html.Css.Properties
 
         static CaptionSide()
         {
-            Parse = CssPropertyParser.Any<CaptionSide>(new[] { Top, Bottom, CssValue.Inherit }, (s, c) => c.Side = s);
+            Parse = CssPropertyParser.Any<CaptionSide>(new[] { Top, Bottom, CssKeywords.Inherit }, (s, c) => c.Side = s);
         }
 
         public CaptionSide()

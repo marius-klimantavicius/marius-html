@@ -50,5 +50,7 @@ namespace Marius.Html.Css.Values
         BoxColor,
         ValueList,
         Null,
+        Azimuth,
+        BackgroundPosition,
     }
 }

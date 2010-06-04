@@ -33,41 +33,39 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundImage: CssProperty
+    public class BackgroundImage: CssPropertyStrategy
     {
-        public static readonly ParseFunc<BackgroundImage> Parse;
-
-        public CssValue Image { get; private set; }
-
-        static BackgroundImage()
+        public override bool IsInherited
         {
-            // <uri> | none | inherit
-            var uri = CssPropertyParser.Uri<BackgroundImage>((s, c) => c.Image = s);
-            var other = CssPropertyParser.Any<BackgroundImage>(new[] { CssValue.None, CssValue.Inherit }, (s, c) => c.Image = s);
-
-            Parse = CssPropertyParser.Any(uri, other);
+            get { return false; }
         }
 
-        public BackgroundImage()
-            : this(CssValue.None)
+        public override CssValue Initial
         {
+            get { return CssKeywords.None; }
         }
 
-        public BackgroundImage(CssValue image)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Image = image;
+            CssValue result = Parse(context, expression);
+            if (result == null || (full && !expression.Current.IsNull()))
+                return false;
+
+            box.BackgroundImage = result;
+            return true;
         }
 
-        public static BackgroundImage Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            BackgroundImage result = new BackgroundImage();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            CssValue result = null;
+
+            if (MatchUri(expression, ref result))
                 return result;
-            }
-            return null;
+
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            return MatchInherit(expression);
         }
     }
 }
