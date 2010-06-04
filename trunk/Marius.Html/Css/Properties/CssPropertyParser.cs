@@ -232,7 +232,7 @@ namespace Marius.Html.Css.Properties
 
         public static ParseFunc<T> ColorWithTransparent<T>(ParseAction<T> onMatch)
         {
-            return Any(Color(onMatch), Match<T>(CssValue.Transparent, onMatch));
+            return Any(Color(onMatch), Match<T>(CssKeywords.Transparent, onMatch));
         }
 
         public static ParseFunc<T> Uri<T>(ParseAction<T> onMatch)
@@ -274,16 +274,16 @@ namespace Marius.Html.Css.Properties
                         return false;
 
                     CssValue top = null, right = null, bottom = null, left = null;
-                    if (!MatchLength<object>(expression, null, (s, c) => top = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => top = s))
+                    if (!MatchLength<object>(expression, null, (s, c) => top = s) && !Match<object>(expression, CssKeywords.Auto, null, (s, c) => top = s))
                         return false;
 
-                    if (!MatchLength<object>(expression, null, (s, c) => right = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => right = s))
+                    if (!MatchLength<object>(expression, null, (s, c) => right = s) && !Match<object>(expression, CssKeywords.Auto, null, (s, c) => right = s))
                         return false;
-                    
-                    if (!MatchLength<object>(expression, null, (s, c) => bottom = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => bottom = s))
+
+                    if (!MatchLength<object>(expression, null, (s, c) => bottom = s) && !Match<object>(expression, CssKeywords.Auto, null, (s, c) => bottom = s))
                         return false;
-                    
-                    if (!MatchLength<object>(expression, null, (s, c) => left = s) && !Match<object>(expression, CssValue.Auto, null, (s, c) => left = s))
+
+                    if (!MatchLength<object>(expression, null, (s, c) => left = s) && !Match<object>(expression, CssKeywords.Auto, null, (s, c) => left = s))
                         return false;
 
                     onMatch(new Tuple<CssValue, CssValue, CssValue, CssValue>(top, right, bottom, left), context);

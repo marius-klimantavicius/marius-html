@@ -45,12 +45,12 @@ namespace Marius.Html.Css.Properties
             Parse = CssPropertyParser.Any(
                 CssPropertyParser.Length<SideLocation>((s, c) => c.Value = s),
                 CssPropertyParser.Percentage<SideLocation>((s, c) => c.Value = s),
-                CssPropertyParser.Match<SideLocation>(CssValue.Auto, (s, c) => c.Value = s),
-                CssPropertyParser.Match<SideLocation>(CssValue.Inherit, (s, c) => c.Value = s));
+                CssPropertyParser.Match<SideLocation>(CssKeywords.Auto, (s, c) => c.Value = s),
+                CssPropertyParser.Match<SideLocation>(CssKeywords.Inherit, (s, c) => c.Value = s));
         }
 
         public SideLocation()
-            : this(CssValue.Auto)
+            : this(CssKeywords.Auto)
         {
         }
 

@@ -33,40 +33,38 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundColor: CssProperty
+    public class BackgroundColor: CssPropertyStrategy
     {
-        public static readonly ParseFunc<BackgroundColor> Parse;
-
-        public CssValue Color { get; private set; }
-
-        static BackgroundColor()
+        public override bool IsInherited
         {
-            var color = CssPropertyParser.Color<BackgroundColor>((s, c) => c.Color = s);
-            var other = CssPropertyParser.Any<BackgroundColor>(new[] { CssValue.Transparent, CssValue.Inherit }, (s, c) => c.Color = s);
-
-            Parse = CssPropertyParser.Any<BackgroundColor>(color, other);
+            get { return false; }
         }
 
-        public BackgroundColor()
-            : this(CssValue.Transparent)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Transparent; }
         }
 
-        public BackgroundColor(CssValue color)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Color = color;
+            CssValue result = Parse(context, expression);
+            if (result == null || (full && !expression.Current.IsNull()))
+                return false;
+
+            box.BackgroundColor = result;
+            return true;
         }
 
-        public static BackgroundColor Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            BackgroundColor result = new BackgroundColor();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            if (Match(expression, CssKeywords.Transparent))
+                return CssKeywords.Transparent;
+
+            CssValue result = null;
+            if (MatchColor(expression, ref result))
                 return result;
-            }
-            return null;
+
+            return MatchInherit(expression);
         }
     }
 }

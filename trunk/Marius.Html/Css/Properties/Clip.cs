@@ -41,12 +41,12 @@ namespace Marius.Html.Css.Properties
             // 	<shape> | auto | inherit
             Parse = CssPropertyParser.Any(
                 CssPropertyParser.Shape<Clip>((s, c) => c.Value = new CssRect(s.Item1, s.Item2, s.Item3, s.Item4)),
-                CssPropertyParser.Match<Clip>(CssValue.Auto, (s, c) => c.Value = s),
-                CssPropertyParser.Match<Clip>(CssValue.Inherit, (s, c) => c.Value = s));
+                CssPropertyParser.Match<Clip>(CssKeywords.Auto, (s, c) => c.Value = s),
+                CssPropertyParser.Match<Clip>(CssKeywords.Inherit, (s, c) => c.Value = s));
         }
 
         public Clip()
-            : this(CssValue.Auto)
+            : this(CssKeywords.Auto)
         {
         }
 

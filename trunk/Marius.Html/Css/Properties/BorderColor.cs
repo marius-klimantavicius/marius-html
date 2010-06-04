@@ -69,7 +69,7 @@ namespace Marius.Html.Css.Properties
 
             // not sure what to do in border-color: inherit inherit; - should this rule be disarded?
             // FF and others discard the rule
-            var inherit = CssPropertyParser.Match<BorderColor>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideColor(s));
+            var inherit = CssPropertyParser.Match<BorderColor>(CssKeywords.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideColor(s));
 
             Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence<BorderColor>(func1, func2, func3, func4));
         }

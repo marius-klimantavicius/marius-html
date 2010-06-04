@@ -34,7 +34,7 @@ namespace Marius.Html.Css.Values
 {
     public class CssNull: CssValue
     {
-        public static readonly CssNull Instance = new CssNull();
+        public static readonly CssNull Value = new CssNull();
 
         public override CssValueType ValueType
         {

@@ -29,50 +29,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Values
 {
-    public class BorderSpacing: CssProperty
+    public class CssAzimuth: CssValue
     {
-        public static readonly ParseFunc<BorderSpacing> Parse;
+        public bool IsBehind { get; private set; }
+        public CssValue Position { get; private set; }
 
-        public CssValue Horizontal { get; private set; }
-        public CssValue Vertical { get; private set; }
-
-        static BorderSpacing()
+        public sealed override CssValueType ValueType
         {
-            var length = CssPropertyParser.TwoSequence(
-                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Horizontal = c.Vertical = s),
-                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Vertical = s)
-                );
-
-            Parse = CssPropertyParser.Any(length, CssPropertyParser.Match<BorderSpacing>(CssKeywords.Inherit, (s, c) => c.Horizontal = c.Vertical = s));
+            get { return CssValueType.Azimuth; }
         }
 
-        public BorderSpacing()
-            : this(CssValue.Zero, CssValue.Zero)
+        public CssAzimuth(CssValue position, bool isBehind)
         {
+            IsBehind = isBehind;
+            Position = position;
         }
 
-        public BorderSpacing(CssValue horizontal, CssValue vertical)
+        public override bool Equals(CssValue other)
         {
-            Horizontal = horizontal;
-            Vertical = vertical;
+            CssAzimuth o = other as CssAzimuth;
+            if (o == null)
+                return false;
+
+            return o.IsBehind == this.IsBehind && o.Position.Equals(this.Position);
         }
 
-        public static BorderSpacing Create(CssExpression expression, bool full = true)
+        public override int GetHashCode()
         {
-            BorderSpacing result = new BorderSpacing();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            return Utils.GetHashCode(IsBehind, Position, ValueType);
+        }
 
-                return result;
-            }
-
-            return null;
+        public override string ToString()
+        {
+            if (IsBehind)
+                return string.Format("{0} behind", Position);
+            else
+                return Position.ToString();
         }
     }
 }

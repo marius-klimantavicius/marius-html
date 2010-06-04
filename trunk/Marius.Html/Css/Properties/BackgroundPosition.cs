@@ -33,24 +33,29 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundPosition: CssProperty
+    public class BackgroundPosition: CssPropertyStrategy
     {
-        public static readonly ParseFunc<BackgroundPosition> Parse;
+        public override bool IsInherited
+        {
+            get { return false; }
+        }
 
-        public static readonly CssIdentifier Left = new CssIdentifier("left");
-        public static readonly CssIdentifier Right = new CssIdentifier("right");
-        public static readonly CssIdentifier Center = new CssIdentifier("center");
-        public static readonly CssIdentifier Top = new CssIdentifier("top");
-        public static readonly CssIdentifier Bottom = new CssIdentifier("bottom");
+        public override CssValue Initial
+        {
+            get { return new CssBackgroundPosition(CssPercentage.Zero, CssPercentage.Zero); }
+        }
 
-        public static readonly CssPercentage Zero = new CssPercentage(0);
-        public static readonly CssPercentage Fifty = new CssPercentage(50);
-        public static readonly CssPercentage Hundred = new CssPercentage(100);
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue result = Parse(context, expression);
+            if (result == null || (full && !expression.Current.IsNull()))
+                return false;
 
-        public CssValue Horizontal { get; private set; }
-        public CssValue Vertical { get; private set; }
+            box.BackgroundPosition = result;
+            return true;
+        }
 
-        static BackgroundPosition()
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
             /* 	
              * [ 
@@ -61,98 +66,63 @@ namespace Marius.Html.Css.Properties
              * ] | 
              *      inherit
              */
+            CssValue result = null;
 
-            var percFirst = CssPropertyParser.Any(
-                CssPropertyParser.Percentage<BackgroundPosition>((s, c) => c.Horizontal = s),
-                CssPropertyParser.Length<BackgroundPosition>((s, c) => c.Horizontal = s),
-                CssPropertyParser.Match<BackgroundPosition>(Left, (s, c) => c.Horizontal = s),
-                CssPropertyParser.Match<BackgroundPosition>(Right, (s, c) => c.Horizontal = s));
+            if (MatchInherit(expression) != null)
+                return CssKeywords.Inherit;
 
-            var percSecond = CssPropertyParser.Any(
-                CssPropertyParser.Percentage<BackgroundPosition>((s, c) => c.Vertical = s),
-                CssPropertyParser.Length<BackgroundPosition>((s, c) => c.Vertical = s),
-                CssPropertyParser.Match<BackgroundPosition>(Top, (s, c) => c.Vertical = s),
-                CssPropertyParser.Match<BackgroundPosition>(Center, (s, c) => c.Vertical = s),
-                CssPropertyParser.Match<BackgroundPosition>(Bottom, (s, c) => c.Vertical = s));
-
-            var horiz = CssPropertyParser.Any<BackgroundPosition>(new[] { Left, Center, Right }, (s, c) => c.Horizontal = s);
-            var vert = CssPropertyParser.Any<BackgroundPosition>(new[] { Top, Center, Bottom }, (s, c) => c.Vertical = s);
-
-            ParseFunc<BackgroundPosition> center = (expression, context) =>
-                {
-                    if (CssPropertyParser.Match(expression, Center, context, (s, c) => { }))
-                    {
-                        if (percSecond(expression, context))
-                        {
-                            context.Horizontal = Center;
-                            return true;
-                        }
-                        if (horiz(expression, context))
-                        {
-                            context.Vertical = Center;
-                            return true;
-                        }
-                        if (vert(expression, context))
-                        {
-                            context.Horizontal = Center;
-                            return true;
-                        }
-
-                        context.Horizontal = Center;
-                        context.Vertical = Center;
-                        return true;
-                    }
-                    return false;
-                };
-
-            Parse = (expression, context) =>
-                {
-                    if (percFirst(expression, context))
-                    {
-                        if (!percSecond(expression, context))
-                            context.Vertical = Center;
-                        return true;
-                    }
-
-                    if (center(expression, context))
-                        return true;
-
-                    if (vert(expression, context))
-                    {
-                        if (!horiz(expression, context))
-                            context.Horizontal = Center;
-                        return true;
-                    }
-
-                    if (CssPropertyParser.Match(expression, CssValue.Inherit, context, (s, c) => { c.Horizontal = s; c.Vertical = s; }))
-                        return true;
-
-                    return false;
-                };
-        }
-
-        public BackgroundPosition()
-            : this(Zero, Zero)
-        {
-        }
-
-        public BackgroundPosition(CssValue horizontal, CssValue vertical)
-        {
-            Horizontal = horizontal;
-            Vertical = vertical;
-        }
-
-        public static BackgroundPosition Create(CssExpression expression, bool full = true)
-        {
-            BackgroundPosition result = new BackgroundPosition();
-            if (Parse(expression, result))
+            CssValue v = CssKeywords.Center, h = CssKeywords.Center;
+            if (expression.Current.ValueGroup == CssValueGroup.Percentage || expression.Current.ValueGroup == CssValueGroup.Length)
             {
-                if (full && expression.Current != null)
-                    return null;
+                h = expression.Current;
+                expression.MoveNext();
 
-                return result;
+                VerticalPosition(expression, ref v);
+                return new CssBackgroundPosition(v, h);
             }
+            else if (MatchAny(expression, new[] { CssKeywords.Left, CssKeywords.Right }, ref result))
+            {
+                h = result;
+                VerticalPosition(expression, ref v);
+
+                return new CssBackgroundPosition(v, h);
+            }
+            else if (MatchAny(expression, new[] { CssKeywords.Top, CssKeywords.Bottom }, ref result))
+            {
+                v = result;
+                MatchAny(expression, new[] { CssKeywords.Left, CssKeywords.Center, CssKeywords.Right }, ref h);
+
+                return new CssBackgroundPosition(v, h);
+            }
+            else if (Match(expression, CssKeywords.Center))
+            {
+                if (VerticalPosition(expression, ref v))
+                    h = result;
+                else if (MatchAny(expression, new[] { CssKeywords.Left, CssKeywords.Center, CssKeywords.Right }, ref h))
+                    v = result;
+                else
+                {
+                    Match(expression, CssKeywords.Center); // can be center, but it does not matter, we ignore value, but we must eat this token
+                    h = v = CssKeywords.Center;
+                }
+                return new CssBackgroundPosition(v, h);
+            }
+
             return null;
+        }
+
+        private bool VerticalPosition(CssExpression expression, ref CssValue v)
+        {
+            if (expression.Current.ValueGroup == CssValueGroup.Percentage || expression.Current.ValueGroup == CssValueGroup.Length)
+            {
+                v = expression.Current;
+                expression.MoveNext();
+                return true;
+            }
+            else
+            {
+                return MatchAny(expression, new[] { CssKeywords.Top, CssKeywords.Center, CssKeywords.Bottom }, ref v); // ignore result - optional
+            }
         }
     }
 }

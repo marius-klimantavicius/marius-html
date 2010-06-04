@@ -39,41 +39,41 @@ namespace Marius.Html.Tests.Css.Properties
     [TestFixture]
     public class AzimuthTests
     {
-        [Test]
-        public void ShouldAcceptSingleKeyword()
-        {
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("center") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("leftwards") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("inherit") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssAngle(10, CssUnits.Deg) })));
-        }
+        //[Test]
+        //public void ShouldAcceptSingleKeyword()
+        //{
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("center") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("leftwards") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("inherit") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssAngle(10, CssUnits.Deg) })));
+        //}
 
-        [Test]
-        public void ShouldIgnoreInvalidValues()
-        {
-            Assert.IsNull(Azimuth.Create(new CssExpression(new CssValue[0])));
+        //[Test]
+        //public void ShouldIgnoreInvalidValues()
+        //{
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new CssValue[0])));
 
-            Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("centruotas") })));
-            Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssLength(10, CssUnits.Cm) })));
-            Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssHexColor("FFFFFF") })));
-        }
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("centruotas") })));
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssLength(10, CssUnits.Cm) })));
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssHexColor("FFFFFF") })));
+        //}
 
-        [Test]
-        public void ShouldHandleValueWithBehind()
-        {
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("center"), new CssIdentifier("behind") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("center-right"), new CssIdentifier("behind") })));
-            Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center-right") })));
-        }
+        //[Test]
+        //public void ShouldHandleValueWithBehind()
+        //{
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("center"), new CssIdentifier("behind") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("center-right"), new CssIdentifier("behind") })));
+        //    Assert.IsNotNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center-right") })));
+        //}
 
-        [Test]
-        public void ShouldIgnoreInvalidDoubleValues()
-        {
-            Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("behind") })));
-            Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("leftwards"), new CssIdentifier("behind") })));
-            Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("inherit") })));
-        }
+        //[Test]
+        //public void ShouldIgnoreInvalidDoubleValues()
+        //{
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("behind") })));
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("leftwards"), new CssIdentifier("behind") })));
+        //    Assert.IsNull(Azimuth.Create(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("inherit") })));
+        //}
     }
 }

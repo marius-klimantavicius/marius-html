@@ -54,7 +54,7 @@ namespace Marius.Html.Css.Properties
 
             Parse = CssPropertyParser.Any(
                 CssPropertyParser.TwoSequence<Cue>(func1, func2),
-                CssPropertyParser.Match<Cue>(CssValue.Inherit, (s, c) => c.After = c.Before = new CueValue(s)));
+                CssPropertyParser.Match<Cue>(CssKeywords.Inherit, (s, c) => c.After = c.Before = new CueValue(s)));
         }
 
         public Cue()

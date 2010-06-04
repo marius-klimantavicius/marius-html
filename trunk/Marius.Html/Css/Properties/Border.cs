@@ -47,7 +47,7 @@ namespace Marius.Html.Css.Properties
             ParseFunc<Border> style = (e, c) => BorderStyle.Parse(e, c.Style);
             ParseFunc<Border> color = (e, c) => BorderColor.Parse(e, c.Color);
 
-            ParseFunc<Border> inherit = CssPropertyParser.Match<Border>(CssValue.Inherit, (s, c) => { c.Width = new BorderWidth(s); c.Style = new BorderStyle(s); c.Color = new BorderColor(s); });
+            ParseFunc<Border> inherit = CssPropertyParser.Match<Border>(CssKeywords.Inherit, (s, c) => { c.Width = new BorderWidth(s); c.Style = new BorderStyle(s); c.Color = new BorderColor(s); });
 
             Parse = CssPropertyParser.Any(inherit, CssPropertyParser.Pipe(width, style, color));
         }

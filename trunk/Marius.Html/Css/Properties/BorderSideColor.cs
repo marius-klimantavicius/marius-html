@@ -42,7 +42,7 @@ namespace Marius.Html.Css.Properties
         static BorderSideColor()
         {
             var color = CssPropertyParser.ColorWithTransparent<BorderSideColor>((s, c) => c.Color = s);
-            Parse = CssPropertyParser.Any(color, CssPropertyParser.Match<BorderSideColor>(CssValue.Inherit, (s, c) => c.Color = s));
+            Parse = CssPropertyParser.Any(color, CssPropertyParser.Match<BorderSideColor>(CssKeywords.Inherit, (s, c) => c.Color = s));
         }
 
         public BorderSideColor()

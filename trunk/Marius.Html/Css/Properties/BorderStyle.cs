@@ -46,7 +46,7 @@ namespace Marius.Html.Css.Properties
         public static readonly CssIdentifier Inset = new CssIdentifier("inset");
         public static readonly CssIdentifier Outset = new CssIdentifier("outset");
 
-        public static readonly CssIdentifier[] Keywords = new[] { CssValue.None, CssValue.Hidden, Dotted, Dashed, Solid, Double, Groove, Ridge, Inset, Outset };
+        public static readonly CssIdentifier[] Keywords = new[] { CssKeywords.None, CssKeywords.Hidden, Dotted, Dashed, Solid, Double, Groove, Ridge, Inset, Outset };
 
         public BorderSideStyle Top { get; private set; }
         public BorderSideStyle Right { get; private set; }
@@ -78,7 +78,7 @@ namespace Marius.Html.Css.Properties
             ParseFunc<BorderStyle> func3 = (e, c) => BorderSideStyle.Parse(e, c.Bottom);
             ParseFunc<BorderStyle> func4 = (e, c) => BorderSideStyle.Parse(e, c.Left);
 
-            ParseFunc<BorderStyle> inherit = CssPropertyParser.Match<BorderStyle>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideStyle(s));
+            ParseFunc<BorderStyle> inherit = CssPropertyParser.Match<BorderStyle>(CssKeywords.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideStyle(s));
 
             Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence(func1, func2, func3, func4));
         }

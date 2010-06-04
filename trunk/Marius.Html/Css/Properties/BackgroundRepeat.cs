@@ -33,43 +33,35 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundRepeat: CssProperty
+    public class BackgroundRepeat: CssPropertyStrategy
     {
-        public static readonly ParseFunc<BackgroundRepeat> Parse;
-
-        public static readonly CssIdentifier Repeat = new CssIdentifier("repeat");
-        public static readonly CssIdentifier RepeatX = new CssIdentifier("repeat-x");
-        public static readonly CssIdentifier RepeatY = new CssIdentifier("repeat-y");
-        public static readonly CssIdentifier NoRepeat = new CssIdentifier("no-repeat");
-
-        public CssValue Value { get; private set; }
-
-        static BackgroundRepeat()
+        public override bool IsInherited
         {
-            Parse = CssPropertyParser.Any<BackgroundRepeat>(new[] { Repeat, RepeatX, RepeatY, NoRepeat, CssValue.Inherit }, (s, c) => c.Value = s);
+            get { return false; }
         }
 
-        public BackgroundRepeat()
-            : this(Repeat)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Repeat; }
         }
 
-        public BackgroundRepeat(CssValue value)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Value = value;
+            CssValue result = Parse(context, expression);
+            if (result == null || (full && !expression.Current.IsNull()))
+                return false;
+
+            box.BackgroundRepeat = result;
+            return true;
         }
 
-        public static BackgroundRepeat Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            BackgroundRepeat result = new BackgroundRepeat();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
+            CssValue result = null;
+            if (MatchAny(expression, new[] { CssKeywords.Repeat, CssKeywords.RepeatX, CssKeywords.RepeatY, CssKeywords.NoRepeat }, ref result))
                 return result;
-            }
-            return null;
+
+            return MatchInherit(expression);
         }
     }
 }

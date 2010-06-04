@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\CssContext.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
     <Compile Include="Css\Properties\Background.cs" />
     <Compile Include="Css\Properties\BackgroundPosition.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Css\Properties\Color.cs" />
     <Compile Include="Css\Properties\Content.cs" />
     <Compile Include="Css\Properties\CounterChange.cs" />
+    <Compile Include="Css\Properties\CssPropertyStrategy.cs" />
     <Compile Include="Css\Properties\Cue.cs" />
     <Compile Include="Css\Properties\CueValue.cs" />
     <Compile Include="Css\Properties\SideLocation.cs" />
@@ -97,10 +99,13 @@
     <Compile Include="Css\Selectors\CssUniversalSelector.cs" />
     <Compile Include="Css\Values\CssAngle.cs" />
     <Compile Include="Css\Dom\CssCharset.cs" />
+    <Compile Include="Css\Values\CssAzimuth.cs" />
+    <Compile Include="Css\Values\CssBackgroundPosition.cs" />
     <Compile Include="Css\Values\CssBoxColor.cs" />
     <Compile Include="Css\Values\CssColor.cs" />
     <Compile Include="Css\Dom\CssDeclaration.cs" />
     <Compile Include="Css\Values\CssDimension.cs" />
+    <Compile Include="Css\Values\CssKeywords.cs" />
     <Compile Include="Css\Values\CssNull.cs" />
     <Compile Include="Css\Values\CssExpression.cs" />
     <Compile Include="Css\Values\CssFrequency.cs" />

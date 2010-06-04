@@ -47,7 +47,7 @@ namespace Marius.Html.Css.Properties
         static Content()
         {
             // 	normal | none | [ <string>  | <uri> | <counter>  | attr(<identifier>) | open-quote | close-quote | no-open-quote | no-close-quote ]+ | inherit
-            ParseFunc<Content> simple = CssPropertyParser.Any<Content>(new[] { Normal, CssValue.None, CssValue.Inherit }, (s, c) => c.Value = s);
+            ParseFunc<Content> simple = CssPropertyParser.Any<Content>(new[] { Normal, CssKeywords.None, CssKeywords.Inherit }, (s, c) => c.Value = s);
             ParseFunc<List<CssValue>> complexItem = CssPropertyParser.Any<List<CssValue>>(
                 CssPropertyParser.String<List<CssValue>>((s, c) => c.Add(s)),
                 CssPropertyParser.Uri<List<CssValue>>((s, c) => c.Add(s)),
@@ -71,9 +71,9 @@ namespace Marius.Html.Css.Properties
 
             Parse = CssPropertyParser.Any(
                 CssPropertyParser.Match<Content>(Normal, (s, c) => c.Value = s),
-                CssPropertyParser.Match<Content>(CssValue.None, (s, c) => c.Value = s),
+                CssPropertyParser.Match<Content>(CssKeywords.None, (s, c) => c.Value = s),
                 complex,
-                CssPropertyParser.Match<Content>(CssValue.Inherit, (s, c) => c.Value = s));
+                CssPropertyParser.Match<Content>(CssKeywords.Inherit, (s, c) => c.Value = s));
         }
 
         public Content()

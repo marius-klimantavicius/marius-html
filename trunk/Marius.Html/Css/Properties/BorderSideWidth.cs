@@ -43,7 +43,7 @@ namespace Marius.Html.Css.Properties
         {
             Parse = CssPropertyParser.Any(
                 CssPropertyParser.Any<BorderSideWidth>(BorderWidth.Keywords, (s, c) => c.Width = s),
-                CssPropertyParser.Match<BorderSideWidth>(CssValue.Inherit, (s, c) => c.Width = s),
+                CssPropertyParser.Match<BorderSideWidth>(CssKeywords.Inherit, (s, c) => c.Width = s),
                 CssPropertyParser.Length<BorderSideWidth>((s, c) => c.Width = s));
         }
 

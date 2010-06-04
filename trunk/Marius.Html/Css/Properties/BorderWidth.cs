@@ -71,7 +71,7 @@ namespace Marius.Html.Css.Properties
             ParseFunc<BorderWidth> func3 = (e, c) => BorderSideWidth.Parse(e, c.Bottom);
             ParseFunc<BorderWidth> func4 = (e, c) => BorderSideWidth.Parse(e, c.Left);
 
-            ParseFunc<BorderWidth> inherit = CssPropertyParser.Match<BorderWidth>(CssValue.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideWidth(s));
+            ParseFunc<BorderWidth> inherit = CssPropertyParser.Match<BorderWidth>(CssKeywords.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideWidth(s));
 
             Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence(func1, func2, func3, func4));
         }

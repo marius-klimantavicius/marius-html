@@ -34,58 +34,62 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Azimuth: CssProperty
+    public class Azimuth: CssPropertyStrategy
     {
-        public static readonly ParseFunc<Azimuth> Parse;
-
-        public static readonly CssIdentifier[] Keywords = new string[] { "left-side", "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side" }.Select(s => new CssIdentifier(s)).ToArray();
-        public static readonly CssIdentifier Center = Keywords[4];
-
-        public static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
-        public static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
-        public static readonly CssIdentifier Behind = new CssIdentifier("behind");
-
-        static Azimuth()
+        public override bool IsInherited
         {
-            // <angle> | [[ left-side | far-left | left | center-left | center | center-right | right | far-right | right-side ] || behind ] | leftwards | rightwards | inherit
-
-            var side = CssPropertyParser.Any<Azimuth>(Keywords, (s, c) => c.Location = s);
-            var behind = CssPropertyParser.Match<Azimuth>(Behind, (s, c) => c.IsBehind = true);
-            var sideBehind = CssPropertyParser.Pipe<Azimuth>(side, behind);
-            var angle = CssPropertyParser.Angle<Azimuth>((s, c) => c.Location = s);
-            var other = CssPropertyParser.Any<Azimuth>(new[] { Leftwards, Rightwards, CssValue.Inherit }, (s, c) => c.Location = s);
-            var rule = CssPropertyParser.Any<Azimuth>(angle, sideBehind, other);
-
-            Parse = rule;
+            get { return true; }
         }
 
-        public CssValue Location { get; private set; }
-        public bool IsBehind { get; private set; }
-
-        public Azimuth()
-            : this(Center, false)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Center; }
         }
 
-        public Azimuth(CssValue location, bool isBehind)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Location = location;
-            IsBehind = isBehind;
+            CssValue value = Parse(context, expression);
+            if (value == null || (full && !expression.Current.IsNull()))
+                return false;
+
+            box.Azimuth = value;
+
+            return true;
         }
 
-        public static Azimuth Create(CssExpression value, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            Azimuth result = new Azimuth();
-            if (Parse(value, result))
+            if (Match(expression, CssKeywords.Inherit))
+                    return CssKeywords.Inherit;
+
+            CssValue value = null;
+            if (MatchAny(expression, new[] { CssKeywords.Leftwards, CssKeywords.Rightwards }, ref value))
+                    return value;
+
+            bool hasBehind = false, hasPosition = false;
+            for (int i = 0; i < 2; i++)
             {
-                if (full && value.Current != null)
-                    return null;
-
-                if (result.Location == null)
-                    result.Location = Center;
-
-                return result;
+                if (Match(expression, CssKeywords.Behind))
+                {
+                    if (hasBehind)
+                        return null;
+                    hasBehind = true;
+                }
+                else if (MatchAny(expression, new[] { CssKeywords.LeftSide, CssKeywords.FarLeft, CssKeywords.Left, CssKeywords.CenterLeft, CssKeywords.Center, CssKeywords.CenterRight, CssKeywords.Right, CssKeywords.FarRight, CssKeywords.RightSide }, ref value))
+                {
+                    if (hasPosition)
+                        return null;
+                    hasPosition = true;
+                }
             }
+
+            if (hasPosition || hasBehind)
+            {
+                if (!hasPosition)
+                    value = CssKeywords.Center;
+                return new CssAzimuth(value, hasBehind);
+            }
+
             return null;
         }
     }

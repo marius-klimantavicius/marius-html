@@ -43,11 +43,11 @@ namespace Marius.Html.Css.Properties
         static Clear()
         {
             // 	none | left | right | both | inherit
-            Parse = CssPropertyParser.Any<Clear>(new[] { Left, Right, Both, CssValue.None, CssValue.Inherit }, (s, c) => c.Value = s);
+            Parse = CssPropertyParser.Any<Clear>(new[] { Left, Right, Both, CssKeywords.None, CssKeywords.Inherit }, (s, c) => c.Value = s);
         }
 
         public Clear()
-            : this(CssValue.None)
+            : this(CssKeywords.None)
         {
         }
 

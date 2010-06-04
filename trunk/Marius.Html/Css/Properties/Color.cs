@@ -42,7 +42,7 @@ namespace Marius.Html.Css.Properties
 
             Parse = CssPropertyParser.Any(
                 CssPropertyParser.Color<Color>((s, c) => c.Value = s),
-                CssPropertyParser.Match<Color>(CssValue.Inherit, (s, c) => c.Value = s));
+                CssPropertyParser.Match<Color>(CssKeywords.Inherit, (s, c) => c.Value = s));
         }
 
         public Color()
