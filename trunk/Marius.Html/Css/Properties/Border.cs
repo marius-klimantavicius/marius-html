@@ -33,48 +33,48 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Border: CssProperty
+    public class Border
     {
-        public static readonly ParseFunc<Border> Parse;
+        //public static readonly ParseFunc<Border> Parse;
 
-        public BorderWidth Width { get; private set; }
-        public BorderStyle Style { get; private set; }
-        public BorderColor Color { get; private set; }
+        //public BorderWidth Width { get; private set; }
+        //public BorderStyle Style { get; private set; }
+        //public BorderColor Color { get; private set; }
 
-        static Border()
-        {
-            ParseFunc<Border> width = (e, c) => BorderWidth.Parse(e, c.Width);
-            ParseFunc<Border> style = (e, c) => BorderStyle.Parse(e, c.Style);
-            ParseFunc<Border> color = (e, c) => BorderColor.Parse(e, c.Color);
+        //static Border()
+        //{
+        //    ParseFunc<Border> width = (e, c) => BorderWidth.Parse(e, c.Width);
+        //    ParseFunc<Border> style = (e, c) => BorderStyle.Parse(e, c.Style);
+        //    ParseFunc<Border> color = (e, c) => BorderColor.Parse(e, c.Color);
 
-            ParseFunc<Border> inherit = CssPropertyParser.Match<Border>(CssKeywords.Inherit, (s, c) => { c.Width = new BorderWidth(s); c.Style = new BorderStyle(s); c.Color = new BorderColor(s); });
+        //    ParseFunc<Border> inherit = CssPropertyParser.Match<Border>(CssKeywords.Inherit, (s, c) => { c.Width = new BorderWidth(s); c.Style = new BorderStyle(s); c.Color = new BorderColor(s); });
 
-            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.Pipe(width, style, color));
-        }
+        //    Parse = CssPropertyParser.Any(inherit, CssPropertyParser.Pipe(width, style, color));
+        //}
 
-        public Border()
-            : this(new BorderWidth(), new BorderStyle(), new BorderColor())
-        {
-        }
+        //public Border()
+        //    : this(new BorderWidth(), new BorderStyle(), new BorderColor())
+        //{
+        //}
 
-        public Border(BorderWidth width, BorderStyle style, BorderColor color)
-        {
-            Width = width;
-            Style = style;
-            Color = color;
-        }
+        //public Border(BorderWidth width, BorderStyle style, BorderColor color)
+        //{
+        //    Width = width;
+        //    Style = style;
+        //    Color = color;
+        //}
 
-        public static Border Create(CssExpression expression, bool full = true)
-        {
-            Border result = new Border();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+        //public static Border Create(CssExpression expression, bool full = true)
+        //{
+        //    Border result = new Border();
+        //    if (Parse(expression, result))
+        //    {
+        //        if (full && expression.Current != null)
+        //            return null;
 
-                return result;
-            }
-            return null;
-        }
+        //        return result;
+        //    }
+        //    return null;
+        //}
     }
 }
