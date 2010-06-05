@@ -34,6 +34,9 @@ namespace Marius.Html.Css.Values
 {
     public class CssNumber: CssValue
     {
+        public static readonly CssNumber Zero = new CssNumber(0);
+        public static readonly CssNumber One = new CssNumber(1);
+
         public double Value { get; private set; }
 
         public CssNumber(double value)

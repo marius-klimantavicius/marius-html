@@ -42,6 +42,7 @@ namespace Marius.Html.Css
         public CssValue BackgroundPosition { get; set; }
         public CssValue BackgroundRepeat { get; set; }
         public CssValue BorderCollapse { get; set; }
+        public CssValue BorderSpacing { get; set; }
         public CssValue BorderTopColor { get; set; }
         public CssValue BorderTopWidth { get; set; }
         public CssValue BorderTopStyle { get; set; }
@@ -119,6 +120,7 @@ namespace Marius.Html.Css
         public CssValue TextDecoration { get; set; }
         public CssValue TextIndent { get; set; }
         public CssValue TextTransform { get; set; }
+        public CssValue Top { get; set; }
         public CssValue UnicodeBidi { get; set; }
         public CssValue VerticalAlign { get; set; }
         public CssValue Visibility { get; set; }

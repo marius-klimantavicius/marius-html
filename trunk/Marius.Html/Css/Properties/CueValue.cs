@@ -30,42 +30,62 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CueValue: CssProperty
+    public class CueValue: CssPropertyHandler
     {
-        public static readonly ParseFunc<CueValue> Parse;
+        public CssCuePosition Position { get; private set; }
 
-        public CssValue Value { get; private set; }
-
-        static CueValue()
+        public override bool IsInherited
         {
-            // <uri> | none | inherit
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Uri<CueValue>((s, c) => c.Value = s),
-                CssPropertyParser.Match<CueValue>(CssKeywords.None, (s, c) => c.Value = s),
-                CssPropertyParser.Match<CueValue>(CssKeywords.Inherit, (s, c) => c.Value = s));
+            get { return false; }
         }
 
-        public CueValue()
-            : this(CssKeywords.None)
+        public override CssValue Initial
         {
+            get { return CssKeywords.None; }
         }
 
-        public CueValue(CssValue value)
+        public CueValue(CssCuePosition position)
         {
-            Value = value;
+            Position = position;
         }
 
-        public static CueValue Create(CssExpression expression, bool full = true)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            CueValue result = new CueValue();
-            if (Parse(expression, result))
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            switch (Position)
             {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
+                case CssCuePosition.Before:
+                    box.CueBefore = value;
+                    break;
+                case CssCuePosition.After:
+                    box.CueAfter = value;
+                    break;
+                default:
+                    throw new NotSupportedException();
             }
-            return null;
+
+            return true;
         }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            CssValue result = null;
+            if (MatchUri(expression, ref result))
+                return result;
+
+            return MatchInherit(expression);
+        }
+    }
+
+    public enum CssCuePosition
+    {
+        Before,
+        After,
     }
 }

@@ -26,53 +26,38 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using Marius.Html.Css.Values;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Values
 {
-    public class Cue: CssPropertyHandler
+    public class CssCounterChange: CssValue
     {
-        public override bool IsInherited
+        public CssValue Name { get; private set; }
+        public CssValue Value { get; private set; }
+
+        public override CssValueType ValueType
         {
-            get { return false; }
+            get { return CssValueType.CounterChange; }
         }
 
-        public override CssValue Initial
+        public override bool Equals(CssValue other)
         {
-            get { throw new NotSupportedException(); }
+            CssCounterChange o = other as CssCounterChange;
+            if (o == null)
+                return false;
+            return o.Name.Equals(this.Name) && o.Value.Equals(this.Value);
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override int GetHashCode()
         {
-            if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression, full))
-                    return false;
+            return Utils.GetHashCode(Name, Value, ValueType);
+        }
 
-                box.CueAfter = CssKeywords.Inherit;
-                box.CueBefore = CssKeywords.Inherit;
-                return true;
-            }
-
-            CssValue value = null;
-            CssValue before, after;
-
-            value = context.CueBefore.Parse(context, expression);
-            if (value == null)
-                return false;
-
-            before = after = value;
-
-            value = context.CueAfter.Parse(context, expression);
-            if (value != null)
-                after = value;
-
-            if (!Valid(expression, full))
-                return false;
-
-            box.CueBefore = before;
-            box.CueAfter = after;
-            return true;
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Name, Value);
         }
     }
 }

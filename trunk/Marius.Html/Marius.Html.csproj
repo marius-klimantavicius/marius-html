@@ -51,6 +51,8 @@
     <Compile Include="Css\Properties\BorderCollapse.cs" />
     <Compile Include="Css\Properties\BorderColor.cs" />
     <Compile Include="Css\Properties\BorderSideColor.cs" />
+    <Compile Include="Css\Properties\BorderSideShortcut.cs" />
+    <Compile Include="Css\Properties\BorderSideStrategy.cs" />
     <Compile Include="Css\Properties\BorderSideStyle.cs" />
     <Compile Include="Css\Properties\BorderSideWidth.cs" />
     <Compile Include="Css\Properties\BorderSpacing.cs" />
@@ -62,11 +64,10 @@
     <Compile Include="Css\Properties\Color.cs" />
     <Compile Include="Css\Properties\Content.cs" />
     <Compile Include="Css\Properties\CounterChange.cs" />
-    <Compile Include="Css\Properties\CssPropertyStrategy.cs" />
+    <Compile Include="Css\Properties\CssPropertyHandler.cs" />
     <Compile Include="Css\Properties\Cue.cs" />
     <Compile Include="Css\Properties\CueValue.cs" />
     <Compile Include="Css\Properties\SideLocation.cs" />
-    <Compile Include="Css\Properties\CssPropertyParser.cs" />
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />
     <Compile Include="Css\Selectors\CssPseudoFunction.cs" />
     <Compile Include="Css\Selectors\CssPseudoIdentifier.cs" />
@@ -100,9 +101,11 @@
     <Compile Include="Css\Dom\CssCharset.cs" />
     <Compile Include="Css\Values\CssAzimuth.cs" />
     <Compile Include="Css\Values\CssBackgroundPosition.cs" />
+    <Compile Include="Css\Values\CssBorderSpacing.cs" />
     <Compile Include="Css\Values\CssBoxColor.cs" />
     <Compile Include="Css\Values\CssColor.cs" />
     <Compile Include="Css\Dom\CssDeclaration.cs" />
+    <Compile Include="Css\Values\CssCounterChange.cs" />
     <Compile Include="Css\Values\CssDimension.cs" />
     <Compile Include="Css\Values\CssKeywords.cs" />
     <Compile Include="Css\Values\CssNull.cs" />

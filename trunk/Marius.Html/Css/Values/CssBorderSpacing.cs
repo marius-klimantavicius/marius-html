@@ -26,53 +26,45 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using Marius.Html.Css.Values;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Values
 {
-    public class Cue: CssPropertyHandler
+    public class CssBorderSpacing: CssValue
     {
-        public override bool IsInherited
+        public CssValue Vertical { get; private set; }
+        public CssValue Horizontal { get; private set; }
+
+        public override CssValueType ValueType
         {
-            get { return false; }
+            get { return CssValueType.BorderSpacing; }
         }
 
-        public override CssValue Initial
+        public CssBorderSpacing(CssValue vertical, CssValue horizontal)
         {
-            get { throw new NotSupportedException(); }
+            Vertical = vertical;
+            Horizontal = horizontal;
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Equals(CssValue other)
         {
-            if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression, full))
-                    return false;
-
-                box.CueAfter = CssKeywords.Inherit;
-                box.CueBefore = CssKeywords.Inherit;
-                return true;
-            }
-
-            CssValue value = null;
-            CssValue before, after;
-
-            value = context.CueBefore.Parse(context, expression);
-            if (value == null)
+            CssBackgroundPosition o = other as CssBackgroundPosition;
+            if (o == null)
                 return false;
 
-            before = after = value;
+            return o.Vertical.Equals(this.Vertical) && o.Horizontal.Equals(this.Horizontal);
+        }
 
-            value = context.CueAfter.Parse(context, expression);
-            if (value != null)
-                after = value;
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Vertical, Horizontal);
+        }
 
-            if (!Valid(expression, full))
-                return false;
-
-            box.CueBefore = before;
-            box.CueAfter = after;
-            return true;
+        public override string ToString()
+        {
+            return string.Format("{0} {1}", Horizontal, Vertical);
         }
     }
 }

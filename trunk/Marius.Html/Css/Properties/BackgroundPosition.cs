@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundPosition: CssPropertyStrategy
+    public class BackgroundPosition: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -48,7 +48,7 @@ namespace Marius.Html.Css.Properties
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
             CssValue result = Parse(context, expression);
-            if (result == null || (full && !expression.Current.IsNull()))
+            if (result == null || !Valid(expression, full))
                 return false;
 
             box.BackgroundPosition = result;
@@ -121,7 +121,7 @@ namespace Marius.Html.Css.Properties
             }
             else
             {
-                return MatchAny(expression, new[] { CssKeywords.Top, CssKeywords.Center, CssKeywords.Bottom }, ref v); // ignore result - optional
+                return MatchAny(expression, new[] { CssKeywords.Top, CssKeywords.Center, CssKeywords.Bottom }, ref v); // ignore value - optional
             }
         }
     }

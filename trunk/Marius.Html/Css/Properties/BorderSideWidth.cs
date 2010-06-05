@@ -33,41 +33,62 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideWidth: CssProperty
+    public class BorderSideWidth: BorderSideStrategy
     {
-        public static readonly ParseFunc<BorderSideWidth> Parse;
+        public CssBorderSide Side { get; private set; }
 
-        public CssValue Width { get; private set; }
-
-        static BorderSideWidth()
+        public override bool IsInherited
         {
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Any<BorderSideWidth>(BorderWidth.Keywords, (s, c) => c.Width = s),
-                CssPropertyParser.Match<BorderSideWidth>(CssKeywords.Inherit, (s, c) => c.Width = s),
-                CssPropertyParser.Length<BorderSideWidth>((s, c) => c.Width = s));
+            get { return false; }
         }
 
-        public BorderSideWidth()
-            : this(BorderWidth.Medium)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Medium; }
         }
 
-        public BorderSideWidth(CssValue width)
+        public BorderSideWidth(CssBorderSide side)
         {
-            Width = width;
+            Side = side;
         }
 
-        public static BorderSideWidth Create(CssExpression expression, bool full = true)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            BorderSideWidth result = new BorderSideWidth();
-            if (Parse(expression, result))
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            switch (Side)
             {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
+                case CssBorderSide.Top:
+                    box.BorderTopWidth = value;
+                    break;
+                case CssBorderSide.Right:
+                    box.BorderRightWidth = value;
+                    break;
+                case CssBorderSide.Bottom:
+                    box.BorderBottomWidth = value;
+                    break;
+                case CssBorderSide.Left:
+                    box.BorderLeftWidth = value;
+                    break;
+                default:
+                    throw new NotSupportedException();
             }
-            return null;
+
+            return true;
+        }
+
+        public override CssValue Parse(CssContext context, CssExpression expression)
+        {
+            CssValue result = null;
+            if (MatchAny(expression, new[] { CssKeywords.Thin, CssKeywords.Thick, CssKeywords.Medium }, ref result))
+                return result;
+
+            if (MatchLength(expression, ref result))
+                return result;
+
+            return MatchInherit(expression);
         }
     }
 }

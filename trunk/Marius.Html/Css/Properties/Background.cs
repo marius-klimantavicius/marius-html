@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Background: CssPropertyStrategy
+    public class Background: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -50,7 +50,7 @@ namespace Marius.Html.Css.Properties
             CssValue inherit = MatchInherit(expression);
             if (inherit != null)
             {
-                if (full && !expression.Current.IsNull())
+                if (!Valid(expression, full))
                     return false;
 
                 box.BackgroundAttachment = CssKeywords.Inherit;
@@ -122,7 +122,7 @@ namespace Marius.Html.Css.Properties
             if (attachment == null && color == null && image == null && position == null && repeat == null)
                 return false;
 
-            if (full && !expression.Current.IsNull())
+            if (!Valid(expression, full))
                 return false;
 
             box.BackgroundAttachment = attachment ?? context.BackgroundAttachment.Initial;

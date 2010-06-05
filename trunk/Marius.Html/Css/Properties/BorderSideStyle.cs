@@ -33,38 +33,63 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideStyle: CssProperty
+    public class BorderSideStyle: BorderSideStrategy
     {
-        public static readonly ParseFunc<BorderSideStyle> Parse;
+        public CssBorderSide Side { get; private set; }
 
-        public CssValue Style { get; private set; }
-
-        static BorderSideStyle()
+        public override bool IsInherited
         {
-            Parse = CssPropertyParser.Any<BorderSideStyle>(BorderStyle.Keywords, (s, c) => c.Style = s);
+            get { return false; }
         }
 
-        public BorderSideStyle()
-            : this(CssKeywords.None)
+        public override CssValue Initial
         {
+            get { return CssKeywords.None; }
         }
 
-        public BorderSideStyle(CssValue style)
+        public BorderSideStyle(CssBorderSide side)
         {
-            Style = style;
+            Side = side;
         }
 
-        public static BorderSideStyle Create(CssExpression expression, bool full = true)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            BorderSideStyle result = new BorderSideStyle();
-            if (Parse(expression, result))
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            switch (Side)
             {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
+                case CssBorderSide.Top:
+                    box.BorderTopStyle = value;
+                    break;
+                case CssBorderSide.Right:
+                    box.BorderRightStyle = value;
+                    break;
+                case CssBorderSide.Bottom:
+                    box.BorderBottomStyle = value;
+                    break;
+                case CssBorderSide.Left:
+                    box.BorderLeftStyle = value;
+                    break;
+                default:
+                    throw new NotSupportedException();
             }
-            return null;
+
+            return true;
+        }
+
+        public override CssValue Parse(CssContext context, CssExpression expression)
+        {
+            CssValue result = null;
+            if (MatchAny(expression, new[]{CssKeywords.None, CssKeywords.Dotted, CssKeywords.Dashed, CssKeywords.Solid,
+                CssKeywords.Double, CssKeywords.Groove, CssKeywords.Ridge, CssKeywords.Inset, CssKeywords.Outset}, ref result))
+                return result;
+
+            return MatchInherit(expression);
         }
     }
 }
+
+
+

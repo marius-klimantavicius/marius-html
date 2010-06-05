@@ -32,71 +32,70 @@ using System.Linq.Expressions;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Content: CssProperty
+    public class Content: CssPropertyHandler
     {
-        public static readonly ParseFunc<Content> Parse;
-
-        public static readonly CssIdentifier Normal = new CssIdentifier("normal");
-        public static readonly CssIdentifier OpenQuote = new CssIdentifier("open-quote");
-        public static readonly CssIdentifier CloseQuote = new CssIdentifier("close-quote");
-        public static readonly CssIdentifier NoOpenQuote = new CssIdentifier("no-open-quote");
-        public static readonly CssIdentifier NoCloseQuote = new CssIdentifier("no-close-quote");
-
-        public CssValue Value { get; private set; }
-
-        static Content()
+        public override bool IsInherited
         {
-            // 	normal | none | [ <string>  | <uri> | <counter>  | attr(<identifier>) | open-quote | close-quote | no-open-quote | no-close-quote ]+ | inherit
-            ParseFunc<Content> simple = CssPropertyParser.Any<Content>(new[] { Normal, CssKeywords.None, CssKeywords.Inherit }, (s, c) => c.Value = s);
-            ParseFunc<List<CssValue>> complexItem = CssPropertyParser.Any<List<CssValue>>(
-                CssPropertyParser.String<List<CssValue>>((s, c) => c.Add(s)),
-                CssPropertyParser.Uri<List<CssValue>>((s, c) => c.Add(s)),
-                CssPropertyParser.Counter<List<CssValue>>((s, c) => c.Add(s)),
-                CssPropertyParser.Attr<List<CssValue>>((s, c) => c.Add(s)),
-                CssPropertyParser.Any<List<CssValue>>(new[] { OpenQuote, CloseQuote, NoOpenQuote, NoCloseQuote }, (s, c) => c.Add(s)));
-
-            ParseFunc<Content> complex = (expression, context) =>
-                {
-                    List<CssValue> result = new List<CssValue>();
-                    bool has = false;
-
-                    while (complexItem(expression, result))
-                        has = true;
-
-                    if (has)
-                        context.Value = new CssValueList(result.ToArray());
-
-                    return has;
-                };
-
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Match<Content>(Normal, (s, c) => c.Value = s),
-                CssPropertyParser.Match<Content>(CssKeywords.None, (s, c) => c.Value = s),
-                complex,
-                CssPropertyParser.Match<Content>(CssKeywords.Inherit, (s, c) => c.Value = s));
+            get { return false; }
         }
 
-        public Content()
-            : this(Normal)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Normal; }
         }
 
-        public Content(CssValue value)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Value = value;
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.Content = value;
+            return true;
         }
 
-        public static Content Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            Content result = new Content();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            // 	normal | none
+            //         | [ <string>  | <uri> | <counter>  | attr(<identifier>) | open-quote | close-quote  | no-open-quote | no-close-quote ]+ 
+            //         | inherit
 
-                return result;
-            }
-            return null;
+            if (Match(expression, CssKeywords.Normal))
+                return CssKeywords.Normal;
+
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            CssValue result = null;
+            List<CssValue> content = new List<CssValue>();
+
+            while (MatchContentElement(context, expression, ref result))
+                content.Add(result);
+
+            if (content.Count > 0)
+                return new CssValueList(content.ToArray());
+
+            return MatchInherit(expression);
+        }
+
+        protected virtual bool MatchContentElement(CssContext context, CssExpression expression, ref CssValue result)
+        {
+            if (MatchString(expression, ref result))
+                return true;
+
+            if (MatchUri(expression, ref result))
+                return true;
+
+            if (MatchAny(expression, new[] { CssKeywords.OpenQuote, CssKeywords.CloseQuote, CssKeywords.NoOpenQuote, CssKeywords.NoCloseQuote }, ref result))
+                return true;
+
+            if (MatchCounter(expression, ref result))
+                return true;
+
+            if (MatchAttr(expression, ref result))
+                return true;
+
+            return false;
         }
     }
 }

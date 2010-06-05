@@ -35,8 +35,6 @@ namespace Marius.Html.Css.Values
 {
     public abstract class CssValue: IEquatable<CssValue>
     {
-        public static readonly CssNumber Zero = new CssNumber(0);
-
         public abstract CssValueType ValueType { get; }
         public CssValueGroup ValueGroup
         {
@@ -94,9 +92,10 @@ namespace Marius.Html.Css.Values
                     case CssValueType.Null:
                         return CssValueGroup.Null;
                     case CssValueType.Azimuth:
-                        return CssValueGroup.Azimuth;
                     case CssValueType.BackgroundPosition:
-                        return CssValueGroup.BackgroundPosition;
+                    case CssValueType.BorderSpacing:
+                    case CssValueType.CounterChange:
+                        return CssValueGroup.Custom;
                 }
                 throw new NotSupportedException();
             }

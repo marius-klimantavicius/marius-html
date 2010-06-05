@@ -33,85 +33,22 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderStyle: CssProperty
+    public class BorderStyle: BorderSideShortcut
     {
-        public static readonly ParseFunc<BorderStyle> Parse;
-
-        public static readonly CssIdentifier Dotted = new CssIdentifier("dotted");
-        public static readonly CssIdentifier Dashed = new CssIdentifier("dashed");
-        public static readonly CssIdentifier Solid = new CssIdentifier("solid");
-        public static readonly CssIdentifier Double = new CssIdentifier("double");
-        public static readonly CssIdentifier Groove = new CssIdentifier("groove");
-        public static readonly CssIdentifier Ridge = new CssIdentifier("rigde");
-        public static readonly CssIdentifier Inset = new CssIdentifier("inset");
-        public static readonly CssIdentifier Outset = new CssIdentifier("outset");
-
-        public static readonly CssIdentifier[] Keywords = new[] { CssKeywords.None, CssKeywords.Hidden, Dotted, Dashed, Solid, Double, Groove, Ridge, Inset, Outset };
-
-        public BorderSideStyle Top { get; private set; }
-        public BorderSideStyle Right { get; private set; }
-        public BorderSideStyle Bottom { get; private set; }
-        public BorderSideStyle Left { get; private set; }
-
-        static BorderStyle()
+        public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
-            ParseFunc<BorderStyle> func1 = (e, c) =>
-                {
-                    if (BorderSideStyle.Parse(e, c.Top))
-                    {
-                        c.Right = c.Bottom = c.Left = c.Top;
-                        return true;
-                    }
-                    return false;
-                };
-
-            ParseFunc<BorderStyle> func2 = (e, c) =>
-                {
-                    if (BorderSideStyle.Parse(e, c.Right))
-                    {
-                        c.Left = c.Right;
-                        return true;
-                    }
-                    return false;
-                };
-
-            ParseFunc<BorderStyle> func3 = (e, c) => BorderSideStyle.Parse(e, c.Bottom);
-            ParseFunc<BorderStyle> func4 = (e, c) => BorderSideStyle.Parse(e, c.Left);
-
-            ParseFunc<BorderStyle> inherit = CssPropertyParser.Match<BorderStyle>(CssKeywords.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideStyle(s));
-
-            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence(func1, func2, func3, func4));
+            box.BorderTopStyle = top;
+            box.BorderRightStyle = right;
+            box.BorderBottomStyle = bottom;
+            box.BorderLeftStyle = left;
         }
 
-        public BorderStyle()
-            : this(new BorderSideStyle(), new BorderSideStyle(), new BorderSideStyle(), new BorderSideStyle())
+        protected override void RetrieveHandlers(CssContext context, out BorderSideStrategy top, out BorderSideStrategy right, out BorderSideStrategy bottom, out BorderSideStrategy left)
         {
-        }
-
-        public BorderStyle(CssValue all)
-            : this(new BorderSideStyle(all), new BorderSideStyle(all), new BorderSideStyle(all), new BorderSideStyle(all))
-        {
-        }
-
-        public BorderStyle(BorderSideStyle top, BorderSideStyle right, BorderSideStyle bottom, BorderSideStyle left)
-        {
-            Top = top;
-            Right = right;
-            Bottom = bottom;
-            Left = left;
-        }
-
-        public static BorderStyle Create(CssExpression expression, bool full = true)
-        {
-            BorderStyle result = new BorderStyle();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
-            }
-            return null;
+            top = context.BorderTopStyle;
+            right = context.BorderRightStyle;
+            bottom = context.BorderBottomStyle;
+            left = context.BorderLeftStyle;
         }
     }
 }
