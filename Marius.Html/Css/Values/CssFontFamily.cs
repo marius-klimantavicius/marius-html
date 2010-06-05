@@ -27,50 +27,40 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public enum CssValueType
+    public class CssFontFamily: CssValue
     {
-        Unknown,
-        Number,
-        Percentage,
-        Em,
-        Ex,
-        Px,
-        Cm,
-        Mm,
-        In,
-        Pt,
-        Pc,
-        Deg,
-        Rad,
-        Grad,
-        Ms,
-        S,
-        Hz,
-        KHz,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
+        public CssValue[] Families { get; private set; }
 
-        Slash,
-        Comma,
+        public override CssValueType ValueType
+        {
+            get { return CssValueType.FontFamily; }
+        }
 
-        BoxColor,
-        Rect,
-        ValueList,
-        Null,
-        Azimuth,
-        BackgroundPosition,
-        BorderSpacing,
-        CounterChange,
-        FontFamily,
+        public CssFontFamily(CssValue[] families)
+        {
+            Families = families;
+        }
+
+        public override bool Equals(CssValue other)
+        {
+            CssFontFamily o = other as CssFontFamily;
+            if (o == null)
+                return false;
+
+            return o.Families.ArraysEqual(this.Families);
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode((object)Families, ValueType);
+        }
+
+        public override string ToString()
+        {
+            return string.Join(", ", (object[])Families);
+        }
     }
 }

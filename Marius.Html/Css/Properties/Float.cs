@@ -27,50 +27,44 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Values
+namespace Marius.Html.Css.Properties
 {
-    public enum CssValueType
+    public class Float: CssPropertyHandler
     {
-        Unknown,
-        Number,
-        Percentage,
-        Em,
-        Ex,
-        Px,
-        Cm,
-        Mm,
-        In,
-        Pt,
-        Pc,
-        Deg,
-        Rad,
-        Grad,
-        Ms,
-        S,
-        Hz,
-        KHz,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
+        public override bool IsInherited
+        {
+            get { return false; }
+        }
 
-        Slash,
-        Comma,
+        public override CssValue Initial
+        {
+            get { return CssKeywords.None; }
+        }
 
-        BoxColor,
-        Rect,
-        ValueList,
-        Null,
-        Azimuth,
-        BackgroundPosition,
-        BorderSpacing,
-        CounterChange,
-        FontFamily,
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.Float = value;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            if (Match(expression, CssKeywords.Left))
+                return CssKeywords.Left;
+
+            if (Match(expression, CssKeywords.Right))
+                return CssKeywords.Right;
+
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            return MatchInherit(expression);
+        }
     }
 }

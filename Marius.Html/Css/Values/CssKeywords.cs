@@ -41,6 +41,8 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Hidden = new CssIdentifier("hidden");
         public static readonly CssIdentifier Both = new CssIdentifier("both");
         public static readonly CssIdentifier Initial = new CssIdentifier("initial");
+        public static readonly CssIdentifier Show = new CssIdentifier("show");
+        public static readonly CssIdentifier Hide = new CssIdentifier("hide");
 
         public static readonly CssIdentifier LeftSide = new CssIdentifier("left-side");
         public static readonly CssIdentifier FarLeft = new CssIdentifier("far-left");
@@ -148,5 +150,37 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Above = new CssIdentifier("above");
         public static readonly CssIdentifier Higher = new CssIdentifier("higher");
         public static readonly CssIdentifier Lower = new CssIdentifier("lower");
+
+        public static readonly CssIdentifier Serif = new CssIdentifier("serif");
+        public static readonly CssIdentifier SansSerif = new CssIdentifier("sans-serif");
+        public static readonly CssIdentifier Cursive = new CssIdentifier("cursive");
+        public static readonly CssIdentifier Fantasy = new CssIdentifier("fantasy");
+        public static readonly CssIdentifier Monospace = new CssIdentifier("monospace");
+
+        public static readonly CssIdentifier XXSmall = new CssIdentifier("xx-small");
+        public static readonly CssIdentifier XSmall = new CssIdentifier("x-small");
+        public static readonly CssIdentifier Small = new CssIdentifier("small");
+        public static readonly CssIdentifier Large = new CssIdentifier("large");
+        public static readonly CssIdentifier XLarge = new CssIdentifier("x-large");
+        public static readonly CssIdentifier XXLarge = new CssIdentifier("xx-large");
+
+        public static readonly CssIdentifier Larger = new CssIdentifier("larger");
+        public static readonly CssIdentifier Smaller = new CssIdentifier("smaller");
+
+        public static readonly CssIdentifier Italic = new CssIdentifier("italic");
+        public static readonly CssIdentifier Oblique = new CssIdentifier("oblique");
+        public static readonly CssIdentifier SmallCaps = new CssIdentifier("small-caps");
+
+        public static readonly CssIdentifier Bold = new CssIdentifier("bold");
+        public static readonly CssIdentifier Bolder = new CssIdentifier("bolder");
+        public static readonly CssIdentifier Lighter = new CssIdentifier("lighter");
+
+        public static readonly CssIdentifier Caption = new CssIdentifier("caption");
+        public static readonly CssIdentifier Icon = new CssIdentifier("icon");
+        public static readonly CssIdentifier Menu = new CssIdentifier("menu");
+        public static readonly CssIdentifier MessageBox = new CssIdentifier("message-box");
+        public static readonly CssIdentifier SmallCaption = new CssIdentifier("small-caption");
+        public static readonly CssIdentifier StatusBar = new CssIdentifier("status-bar");
+
     }
 }

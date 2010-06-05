@@ -71,6 +71,15 @@
     <Compile Include="Css\Properties\Direction.cs" />
     <Compile Include="Css\Properties\Display.cs" />
     <Compile Include="Css\Properties\Elevation.cs" />
+    <Compile Include="Css\Properties\EmptyCells.cs" />
+    <Compile Include="Css\Properties\Float.cs" />
+    <Compile Include="Css\Properties\Font.cs" />
+    <Compile Include="Css\Properties\FontFamily.cs" />
+    <Compile Include="Css\Properties\FontSize.cs" />
+    <Compile Include="Css\Properties\FontStyle.cs" />
+    <Compile Include="Css\Properties\FontVariant.cs" />
+    <Compile Include="Css\Properties\FontWeight.cs" />
+    <Compile Include="Css\Properties\LineHeight.cs" />
     <Compile Include="Css\Properties\SideLocation.cs" />
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />
     <Compile Include="Css\Selectors\CssPseudoFunction.cs" />
@@ -111,6 +120,7 @@
     <Compile Include="Css\Dom\CssDeclaration.cs" />
     <Compile Include="Css\Values\CssCounterChange.cs" />
     <Compile Include="Css\Values\CssDimension.cs" />
+    <Compile Include="Css\Values\CssFontFamily.cs" />
     <Compile Include="Css\Values\CssKeywords.cs" />
     <Compile Include="Css\Values\CssNull.cs" />
     <Compile Include="Css\Values\CssExpression.cs" />
