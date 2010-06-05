@@ -63,5 +63,13 @@ namespace Marius.Html.Css
 
         public CueValue CueBefore { get; set; }
         public CueValue CueAfter { get; set; }
+
+        public FontStyle FontStyle { get; set; }
+        public FontVariant FontVariant { get; set; }
+        public FontSize FontSize { get; set; }
+        public FontFamily FontFamily { get; set; }
+        public FontWeight FontWeight { get; set; }
+
+        public LineHeight LineHeight { get; set; }
     }
 }

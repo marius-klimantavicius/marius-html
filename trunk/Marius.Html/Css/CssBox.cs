@@ -71,10 +71,12 @@ namespace Marius.Html.Css
         public CssValue Elevation { get; set; }
         public CssValue EmptyCells { get; set; }
         public CssValue Float { get; set; }
+        public CssValue FontFamily { get; set; }
         public CssValue FontSize { get; set; }
         public CssValue FontStyle { get; set; }
         public CssValue FontVariant { get; set; }
         public CssValue FontWeight { get; set; }
+        public CssValue Font { get; set; }
         public CssValue Height { get; set; }
         public CssValue Left { get; set; }
         public CssValue LineHeight { get; set; }

@@ -100,7 +100,7 @@ namespace Marius.Html.Css.Properties
             {
                 result = expression.Current;
                 expression.MoveNext();
-                result true;
+                return true;
             }
             return false;
         }
