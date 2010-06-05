@@ -67,6 +67,10 @@
     <Compile Include="Css\Properties\CssPropertyHandler.cs" />
     <Compile Include="Css\Properties\Cue.cs" />
     <Compile Include="Css\Properties\CueValue.cs" />
+    <Compile Include="Css\Properties\Cursor.cs" />
+    <Compile Include="Css\Properties\Direction.cs" />
+    <Compile Include="Css\Properties\Display.cs" />
+    <Compile Include="Css\Properties\Elevation.cs" />
     <Compile Include="Css\Properties\SideLocation.cs" />
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />
     <Compile Include="Css\Selectors\CssPseudoFunction.cs" />

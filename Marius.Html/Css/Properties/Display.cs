@@ -27,23 +27,20 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Azimuth: CssPropertyHandler
+    public class Display: CssPropertyHandler
     {
         public override bool IsInherited
         {
-            get { return true; }
+            get { return false; }
         }
 
         public override CssValue Initial
         {
-            get { return CssKeywords.Center; }
+            get { return CssKeywords.Inline; }
         }
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
@@ -52,48 +49,20 @@ namespace Marius.Html.Css.Properties
             if (value == null || !Valid(expression, full))
                 return false;
 
-            box.Azimuth = value;
-
+            box.Display = value;
             return true;
         }
 
         public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            if (Match(expression, CssKeywords.Inherit))
-                    return CssKeywords.Inherit;
+            CssValue result = null;
+            if (MatchAny(expression, new[] { CssKeywords.Inline, CssKeywords.Block, CssKeywords.ListItem, CssKeywords.RunIn, CssKeywords.InlineBlock,
+                    CssKeywords.Table, CssKeywords.InlineTable, CssKeywords.TableRowGroup, CssKeywords.TableHeaderGroup,
+                    CssKeywords.TableFooterGroup, CssKeywords.TableRow, CssKeywords.TableColumnGroup, CssKeywords.TableColumn,
+                    CssKeywords.TableCell, CssKeywords.TableCaption, CssKeywords.None}, ref result))
+                return result;
 
-            CssValue value = null;
-            if (MatchAny(expression, new[] { CssKeywords.Leftwards, CssKeywords.Rightwards }, ref value))
-                    return value;
-
-            if (MatchAngle(expression, ref value))
-                return value;
-
-            bool hasBehind = false, hasPosition = false;
-            for (int i = 0; i < 2; i++)
-            {
-                if (Match(expression, CssKeywords.Behind))
-                {
-                    if (hasBehind)
-                        return null;
-                    hasBehind = true;
-                }
-                else if (MatchAny(expression, new[] { CssKeywords.LeftSide, CssKeywords.FarLeft, CssKeywords.Left, CssKeywords.CenterLeft, CssKeywords.Center, CssKeywords.CenterRight, CssKeywords.Right, CssKeywords.FarRight, CssKeywords.RightSide }, ref value))
-                {
-                    if (hasPosition)
-                        return null;
-                    hasPosition = true;
-                }
-            }
-
-            if (hasPosition || hasBehind)
-            {
-                if (!hasPosition)
-                    value = CssKeywords.Center;
-                return new CssAzimuth(value, hasBehind);
-            }
-
-            return null;
+            return MatchInherit(expression);
         }
     }
 }

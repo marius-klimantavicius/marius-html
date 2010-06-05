@@ -94,6 +94,17 @@ namespace Marius.Html.Css.Properties
             return false;
         }
 
+        protected bool MatchAngle(CssExpression expression, ref CssValue result)
+        {
+            if (expression.Current.ValueGroup == CssValueGroup.Angle)
+            {
+                result = expression.Current;
+                expression.MoveNext();
+                result true;
+            }
+            return false;
+        }
+
         protected bool MatchColor(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Identifier)
