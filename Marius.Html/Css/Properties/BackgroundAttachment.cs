@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundAttachment: CssPropertyStrategy
+    public class BackgroundAttachment: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -48,7 +48,7 @@ namespace Marius.Html.Css.Properties
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
             CssValue result = Parse(context, expression);
-            if (result == null || (full && !expression.Current.IsNull()))
+            if (result == null || !Valid(expression, full))
                 return false;
 
             box.BackgroundAttachment = result;

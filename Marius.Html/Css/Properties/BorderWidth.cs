@@ -33,79 +33,22 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderWidth: CssProperty
+    public class BorderWidth: BorderSideShortcut
     {
-        public static readonly ParseFunc<BorderWidth> Parse;
-
-        public static readonly CssIdentifier Thin = new CssIdentifier("thin");
-        public static readonly CssIdentifier Medium = new CssIdentifier("medium");
-        public static readonly CssIdentifier Thick = new CssIdentifier("thick");
-        public static readonly CssIdentifier[] Keywords = new[] { Thin, Medium, Thick };
-
-        public BorderSideWidth Top { get; private set; }
-        public BorderSideWidth Right { get; private set; }
-        public BorderSideWidth Bottom { get; private set; }
-        public BorderSideWidth Left { get; private set; }
-
-        static BorderWidth()
+        public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
-            ParseFunc<BorderWidth> func1 = (e, c) =>
-                {
-                    if (BorderSideWidth.Parse(e, c.Top))
-                    {
-                        c.Right = c.Bottom = c.Left = c.Top;
-                        return true;
-                    }
-                    return false;
-                };
-
-            ParseFunc<BorderWidth> func2 = (e, c) =>
-                {
-                    if (BorderSideWidth.Parse(e, c.Right))
-                    {
-                        c.Left = c.Right;
-                    }
-                    return false;
-                };
-
-            ParseFunc<BorderWidth> func3 = (e, c) => BorderSideWidth.Parse(e, c.Bottom);
-            ParseFunc<BorderWidth> func4 = (e, c) => BorderSideWidth.Parse(e, c.Left);
-
-            ParseFunc<BorderWidth> inherit = CssPropertyParser.Match<BorderWidth>(CssKeywords.Inherit, (s, c) => c.Top = c.Right = c.Bottom = c.Left = new BorderSideWidth(s));
-
-            Parse = CssPropertyParser.Any(inherit, CssPropertyParser.FourSequence(func1, func2, func3, func4));
+            box.BorderTopStyle = top;
+            box.BorderRightStyle = right;
+            box.BorderBottomStyle = bottom;
+            box.BorderLeftStyle = left;
         }
 
-        public BorderWidth()
-            : this(new BorderSideWidth(), new BorderSideWidth(), new BorderSideWidth(), new BorderSideWidth())
+        protected override void RetrieveHandlers(CssContext context, out BorderSideStrategy top, out BorderSideStrategy right, out BorderSideStrategy bottom, out BorderSideStrategy left)
         {
-        }
-
-        public BorderWidth(CssValue all)
-            : this(new BorderSideWidth(all), new BorderSideWidth(all), new BorderSideWidth(all), new BorderSideWidth(all))
-        {
-
-        }
-
-        public BorderWidth(BorderSideWidth top, BorderSideWidth right, BorderSideWidth bottom, BorderSideWidth left)
-        {
-            Top = top;
-            Right = right;
-            Bottom = bottom;
-            Left = left;
-        }
-
-        public static BorderWidth Create(CssExpression expression, bool full = true)
-        {
-            BorderWidth result = new BorderWidth();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
-            }
-            return null;
+            top = context.BorderTopWidth;
+            right = context.BorderRightWidth;
+            bottom = context.BorderBottomWidth;
+            left = context.BorderLeftWidth;
         }
     }
 }

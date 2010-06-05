@@ -26,53 +26,15 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Cue: CssPropertyHandler
+    public abstract class BorderSideStrategy: CssPropertyHandler
     {
-        public override bool IsInherited
-        {
-            get { return false; }
-        }
-
-        public override CssValue Initial
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
-        {
-            if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression, full))
-                    return false;
-
-                box.CueAfter = CssKeywords.Inherit;
-                box.CueBefore = CssKeywords.Inherit;
-                return true;
-            }
-
-            CssValue value = null;
-            CssValue before, after;
-
-            value = context.CueBefore.Parse(context, expression);
-            if (value == null)
-                return false;
-
-            before = after = value;
-
-            value = context.CueAfter.Parse(context, expression);
-            if (value != null)
-                after = value;
-
-            if (!Valid(expression, full))
-                return false;
-
-            box.CueBefore = before;
-            box.CueAfter = after;
-            return true;
-        }
+        public abstract CssValue Parse(CssContext context, CssExpression expression);
     }
 }

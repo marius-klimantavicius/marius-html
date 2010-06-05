@@ -69,5 +69,7 @@ namespace Marius.Html.Css.Values
         Null,
         Azimuth,
         BackgroundPosition,
+        BorderSpacing,
+        CounterChange,
     }
 }

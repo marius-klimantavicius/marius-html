@@ -31,55 +31,99 @@ using System.Collections.Generic;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CounterChange: CssProperty
+    public class CounterChange: CssPropertyHandler
     {
-        public static readonly ParseFunc<CounterChange> Parse;
+        public CssCounterChangeType ChangeType { get; private set; }
 
-        public CssValue Value { get; private set; }
-
-        static CounterChange()
+        public override bool IsInherited
         {
-            ParseFunc<CounterChange> ids = (expression, context) =>
-                {
-                    List<CssValue> items = new List<CssValue>();
-                    bool has = false;
-
-                    while (CssPropertyParser.Match<List<CssValue>>(expression, s => s.ValueType == CssValueType.Identifier, items, (s, c) => c.Add(s)))
-                    {
-                        has = true;
-                        CssPropertyParser.Match<List<CssValue>>(expression, s => s.ValueType == CssValueType.Number, items, (s, c) => c.Add(s));
-                    }
-
-                    if (has)
-                        context.Value = new CssValueList(items.ToArray());
-
-                    return has;
-                };
-
-            Parse = CssPropertyParser.Any(ids, CssPropertyParser.Match<CounterChange>(CssKeywords.None, (s, c) => c.Value = s), CssPropertyParser.Match<CounterChange>(CssKeywords.Inherit, (s, c) => c.Value = s));
+            get { return false; }
         }
 
-        public CounterChange()
-            : this(CssKeywords.None)
+        public override CssValue Initial
         {
+            get { return CssKeywords.None; }
         }
 
-        public CounterChange(CssValue value)
+        public CounterChange(CssCounterChangeType change)
         {
-            Value = value;
+            ChangeType = change;
         }
 
-        public static CounterChange Create(CssExpression expression, bool full = true)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            CounterChange result = new CounterChange();
-            if (Parse(expression, result))
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            switch (ChangeType)
             {
-                if (full && expression.Current != null)
-                    return null;
-
-                return result;
+                case CssCounterChangeType.Reset:
+                    box.CounterReset = value;
+                    break;
+                case CssCounterChangeType.Increment:
+                    box.CounterIncrement = value;
+                    break;
+                default:
+                    throw new NotSupportedException();
             }
-            return null;
+
+            return true;
         }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            // [ <identifier>  <integer>? ]+ | none | inherit
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            // 'initial' reserved for future use and must not be used as counter name
+            if (Match(expression, CssKeywords.Initial))
+                return null;
+
+            CssValue result = null;
+            List<CssValue> values = new List<CssValue>();
+
+            while (MatchChangeItem(context, expression, ref result))
+                values.Add(result);
+
+            if (values.Count > 0)
+                return new CssValueList(values.ToArray());
+
+            return MatchInherit(expression);
+        }
+
+        private bool MatchChangeItem(CssContext context, CssExpression expression, ref CssValue result)
+        {
+            CssValue name = null, value = null;
+
+            if (!MatchIdentifier(expression, ref name))
+                return false;
+
+            MatchNumber(expression, ref value);
+
+            if (value == null)
+            {
+                switch (ChangeType)
+                {
+                    case CssCounterChangeType.Reset:
+                        value = CssNumber.Zero;
+                        break;
+                    case CssCounterChangeType.Increment:
+                        value = CssNumber.One;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public enum CssCounterChangeType
+    {
+        Reset,
+        Increment,
     }
 }

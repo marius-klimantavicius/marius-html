@@ -40,5 +40,28 @@ namespace Marius.Html.Css
         public BackgroundImage BackgroundImage { get; set; }
         public BackgroundPosition BackgroundPosition { get; set; }
         public BackgroundRepeat BackgroundRepeat { get; set; }
+
+        public Border Border { get; set; }
+
+        public BorderColor BorderColor { get; set; }
+        public BorderSideColor BorderTopColor { get; set; }
+        public BorderSideColor BorderRightColor { get; set; }
+        public BorderSideColor BorderBottomColor { get; set; }
+        public BorderSideColor BorderLeftColor { get; set; }
+
+        public BorderStyle BorderStyle { get; set; }
+        public BorderSideStyle BorderTopStyle { get; set; }
+        public BorderSideStyle BorderRightStyle { get; set; }
+        public BorderSideStyle BorderBottomStyle { get; set; }
+        public BorderSideStyle BorderLeftStyle { get; set; }
+
+        public BorderWidth BorderWidth { get; set; }
+        public BorderSideWidth BorderTopWidth { get; set; }
+        public BorderSideWidth BorderRightWidth { get; set; }
+        public BorderSideWidth BorderBottomWidth { get; set; }
+        public BorderSideWidth BorderLeftWidth { get; set; }
+
+        public CueValue CueBefore { get; set; }
+        public CueValue CueAfter { get; set; }
     }
 }

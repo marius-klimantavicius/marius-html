@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideColor: CssPropertyStrategy
+    public class BorderSideColor: BorderSideStrategy
     {
         public CssBorderSide Side { get; private set; }
 
@@ -55,7 +55,7 @@ namespace Marius.Html.Css.Properties
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
             CssValue result = Parse(context, expression);
-            if (result == null || (full && !expression.Current.IsNull()))
+            if (result == null || !Valid(expression, full))
                 return false;
 
             switch (Side)
@@ -79,7 +79,7 @@ namespace Marius.Html.Css.Properties
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
             CssValue result = null;
             if (MatchColor(expression, ref result))

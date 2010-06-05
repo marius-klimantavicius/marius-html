@@ -30,42 +30,38 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Clip: CssProperty
+    public class Clip: CssPropertyHandler
     {
-        public static readonly ParseFunc<Clip> Parse;
-
-        public CssValue Value { get; private set; }
-
-        static Clip()
+        public override bool IsInherited
         {
-            // 	<shape> | auto | inherit
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Shape<Clip>((s, c) => c.Value = new CssRect(s.Item1, s.Item2, s.Item3, s.Item4)),
-                CssPropertyParser.Match<Clip>(CssKeywords.Auto, (s, c) => c.Value = s),
-                CssPropertyParser.Match<Clip>(CssKeywords.Inherit, (s, c) => c.Value = s));
+            get { return false; }
         }
 
-        public Clip()
-            : this(CssKeywords.Auto)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Auto; }
         }
 
-        public Clip(CssValue value)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Value = value;
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.Clip = value;
+            return true;
         }
 
-        public static Clip Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            Clip result = new Clip();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
+            CssValue result = null;
+            if (MatchShape(expression, ref result))
                 return result;
-            }
-            return null;
+
+            if (Match(expression, CssKeywords.Auto))
+                return CssKeywords.Auto;
+
+            return MatchInherit(expression);
         }
     }
 }

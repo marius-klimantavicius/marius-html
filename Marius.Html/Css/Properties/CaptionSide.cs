@@ -30,41 +30,37 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CaptionSide: CssProperty
+    public class CaptionSide: CssPropertyHandler
     {
-        public static readonly ParseFunc<CaptionSide> Parse;
-
-        public static readonly CssIdentifier Top = new CssIdentifier("top");
-        public static readonly CssIdentifier Bottom = new CssIdentifier("bottom");
-
-        public CssValue Side { get; private set; }
-
-        static CaptionSide()
+        public override bool IsInherited
         {
-            Parse = CssPropertyParser.Any<CaptionSide>(new[] { Top, Bottom, CssKeywords.Inherit }, (s, c) => c.Side = s);
+            get { return true; }
         }
 
-        public CaptionSide()
-            : this(Top)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Top; }
         }
 
-        public CaptionSide(CssValue side)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Side = side;
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.CaptionSide = value;
+            return true;
         }
 
-        public static CaptionSide Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            CaptionSide result = new CaptionSide();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
+            if (Match(expression, CssKeywords.Top))
+                return CssKeywords.Top;
 
-                return result;
-            }
-            return null;
+            if (Match(expression, CssKeywords.Bottom))
+                return CssKeywords.Bottom;
+
+            return MatchInherit(expression);
         }
     }
 }

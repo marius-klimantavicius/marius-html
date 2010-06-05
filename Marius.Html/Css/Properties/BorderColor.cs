@@ -33,21 +33,22 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderColor: CssPropertyStrategy
+    public class BorderColor: BorderSideShortcut
     {
-        public override bool IsInherited
+        public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
-            get { return false; }
+            box.BorderTopColor = top;
+            box.BorderRightColor = right;
+            box.BorderBottomColor = bottom;
+            box.BorderLeftColor = left;
         }
 
-        public override CssValue Initial
+        protected override void RetrieveHandlers(CssContext context, out BorderSideStrategy top, out BorderSideStrategy right, out BorderSideStrategy bottom, out BorderSideStrategy left)
         {
-            get { throw new NotSupportedException(); }
-        }
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
-        {
-            throw new NotImplementedException();
+            top = context.BorderTopColor;
+            right = context.BorderRightColor;
+            bottom = context.BorderBottomColor;
+            left = context.BorderLeftColor;
         }
     }
 }

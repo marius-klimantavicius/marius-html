@@ -39,7 +39,9 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Transparent = new CssIdentifier("transparent");
         public static readonly CssIdentifier Auto = new CssIdentifier("auto");
         public static readonly CssIdentifier Hidden = new CssIdentifier("hidden");
-        
+        public static readonly CssIdentifier Both = new CssIdentifier("both");
+        public static readonly CssIdentifier Initial = new CssIdentifier("initial");
+
         public static readonly CssIdentifier LeftSide = new CssIdentifier("left-side");
         public static readonly CssIdentifier FarLeft = new CssIdentifier("far-left");
         public static readonly CssIdentifier Left = new CssIdentifier("left");
@@ -49,7 +51,7 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Right = new CssIdentifier("right");
         public static readonly CssIdentifier FarRight = new CssIdentifier("far-right");
         public static readonly CssIdentifier RightSide = new CssIdentifier("right-side");
-        
+
         public static readonly CssIdentifier Behind = new CssIdentifier("behind");
         public static readonly CssIdentifier Leftwards = new CssIdentifier("leftwards");
         public static readonly CssIdentifier Rightwards = new CssIdentifier("rightwards");
@@ -85,5 +87,24 @@ namespace Marius.Html.Css.Values
 
         public static readonly CssIdentifier Collapse = new CssIdentifier("collapse");
         public static readonly CssIdentifier Separate = new CssIdentifier("separate");
+
+        public static readonly CssIdentifier Dotted = new CssIdentifier("dotted");
+        public static readonly CssIdentifier Dashed = new CssIdentifier("dashed");
+        public static readonly CssIdentifier Solid = new CssIdentifier("solid");
+        public static readonly CssIdentifier Double = new CssIdentifier("double");
+        public static readonly CssIdentifier Groove = new CssIdentifier("groove");
+        public static readonly CssIdentifier Ridge = new CssIdentifier("rigde");
+        public static readonly CssIdentifier Inset = new CssIdentifier("inset");
+        public static readonly CssIdentifier Outset = new CssIdentifier("outset");
+
+        public static readonly CssIdentifier Thin = new CssIdentifier("thin");
+        public static readonly CssIdentifier Medium = new CssIdentifier("medium");
+        public static readonly CssIdentifier Thick = new CssIdentifier("thick");
+
+        public static readonly CssIdentifier Normal = new CssIdentifier("normal");
+        public static readonly CssIdentifier OpenQuote = new CssIdentifier("open-quote");
+        public static readonly CssIdentifier CloseQuote = new CssIdentifier("close-quote");
+        public static readonly CssIdentifier NoOpenQuote = new CssIdentifier("no-open-quote");
+        public static readonly CssIdentifier NoCloseQuote = new CssIdentifier("no-close-quote");
     }
 }

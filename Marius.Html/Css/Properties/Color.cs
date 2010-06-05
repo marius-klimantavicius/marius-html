@@ -30,42 +30,35 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Color: CssProperty
+    public class Color: CssPropertyHandler
     {
-        public static readonly ParseFunc<Color> Parse;
-
-        public CssValue Value { get; private set; }
-
-        static Color()
+        public override bool IsInherited
         {
-            // <color> | inherit
-
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Color<Color>((s, c) => c.Value = s),
-                CssPropertyParser.Match<Color>(CssKeywords.Inherit, (s, c) => c.Value = s));
+            get { return true; }
         }
 
-        public Color()
-            : this(CssColors.Black)
+        public override CssValue Initial
         {
+            get { return CssKeywords.Black; }
         }
 
-        public Color(CssValue value)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Value = value;
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.Color = value;
+            return true;
         }
 
-        public static Color Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            Color result = new Color();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
+            CssValue result = null;
+            if (MatchColor(expression, ref result))
                 return result;
-            }
-            return null;
+
+            return MatchInherit(expression);
         }
     }
 }

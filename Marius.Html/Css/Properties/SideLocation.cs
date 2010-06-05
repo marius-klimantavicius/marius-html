@@ -33,43 +33,70 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class SideLocation: CssProperty
+    public class SideLocation: CssPropertyHandler
     {
-        public static readonly ParseFunc<SideLocation> Parse;
+        public CssSide Side { get; private set; }
 
-        public CssValue Value { get; private set; }
+        public override bool IsInherited
+        {
+            get { return false; }
+        }
 
-        static SideLocation()
+        public override CssValue Initial
+        {
+            get { return CssKeywords.Auto; }
+        }
+
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            switch (Side)
+            {
+                case CssSide.Top:
+                    box.Top = value;
+                    break;
+                case CssSide.Right:
+                    box.Right = value;
+                    break;
+                case CssSide.Bottom:
+                    box.Bottom = value;
+                    break;
+                case CssSide.Left:
+                    box.Left = value;
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
             // 	<length>  | <percentage>  | auto | inherit
-            Parse = CssPropertyParser.Any(
-                CssPropertyParser.Length<SideLocation>((s, c) => c.Value = s),
-                CssPropertyParser.Percentage<SideLocation>((s, c) => c.Value = s),
-                CssPropertyParser.Match<SideLocation>(CssKeywords.Auto, (s, c) => c.Value = s),
-                CssPropertyParser.Match<SideLocation>(CssKeywords.Inherit, (s, c) => c.Value = s));
-        }
 
-        public SideLocation()
-            : this(CssKeywords.Auto)
-        {
-        }
-
-        public SideLocation(CssValue value)
-        {
-            Value = value;
-        }
-
-        public static SideLocation Create(CssExpression expression, bool full = true)
-        {
-            SideLocation result = new SideLocation();
-            if (Parse(expression, result))
-            {
-                if (full && expression.Current != null)
-                    return null;
-
+            CssValue result = null;
+            if (MatchLength(expression, ref result))
                 return result;
-            }
-            return null;
+
+            if (MatchPercentage(expression, ref result))
+                return result;
+
+            if (Match(expression, CssKeywords.Auto))
+                return CssKeywords.Auto;
+
+            return MatchInherit(expression);
         }
+    }
+
+    public enum CssSide
+    {
+        Top,
+        Right,
+        Bottom,
+        Left,
     }
 }

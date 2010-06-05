@@ -34,7 +34,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Azimuth: CssPropertyStrategy
+    public class Azimuth: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -49,7 +49,7 @@ namespace Marius.Html.Css.Properties
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
             CssValue value = Parse(context, expression);
-            if (value == null || (full && !expression.Current.IsNull()))
+            if (value == null || !Valid(expression, full))
                 return false;
 
             box.Azimuth = value;

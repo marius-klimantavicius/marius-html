@@ -33,46 +33,40 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSpacing: CssProperty
+    public class BorderSpacing: CssPropertyHandler
     {
-        public static readonly ParseFunc<BorderSpacing> Parse;
-
-        public CssValue Horizontal { get; private set; }
-        public CssValue Vertical { get; private set; }
-
-        static BorderSpacing()
+        public override bool IsInherited
         {
-            var length = CssPropertyParser.TwoSequence(
-                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Horizontal = c.Vertical = s),
-                CssPropertyParser.Length<BorderSpacing>((s, c) => c.Vertical = s)
-                );
-
-            Parse = CssPropertyParser.Any(length, CssPropertyParser.Match<BorderSpacing>(CssKeywords.Inherit, (s, c) => c.Horizontal = c.Vertical = s));
+            get { return true; }
         }
 
-        public BorderSpacing()
-            : this(CssValue.Zero, CssValue.Zero)
+        public override CssValue Initial
         {
+            get { return new CssBorderSpacing(CssNumber.Zero, CssNumber.Zero); }
         }
 
-        public BorderSpacing(CssValue horizontal, CssValue vertical)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            Horizontal = horizontal;
-            Vertical = vertical;
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.BorderSpacing = value;
+            return true;
         }
 
-        public static BorderSpacing Create(CssExpression expression, bool full = true)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            BorderSpacing result = new BorderSpacing();
-            if (Parse(expression, result))
+            CssValue horizontal = null, vertical = null;
+            if (MatchLength(expression, ref horizontal))
             {
-                if (full && expression.Current != null)
-                    return null;
+                vertical = horizontal;
+                MatchLength(expression, ref vertical);
 
-                return result;
+                return new CssBorderSpacing(vertical, horizontal);
             }
 
-            return null;
+            return MatchInherit(expression);
         }
     }
 }
