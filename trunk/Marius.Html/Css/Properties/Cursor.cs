@@ -27,14 +27,13 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Marius.Html.Css.Dom;
+using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Azimuth: CssPropertyHandler
+    public class Cursor: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -43,7 +42,7 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssKeywords.Center; }
+            get { return CssKeywords.Auto; }
         }
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
@@ -52,48 +51,47 @@ namespace Marius.Html.Css.Properties
             if (value == null || !Valid(expression, full))
                 return false;
 
-            box.Azimuth = value;
-
+            box.Cursor = value;
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        private CssValue Parse(CssContext context, CssExpression expression)
         {
-            if (Match(expression, CssKeywords.Inherit))
-                    return CssKeywords.Inherit;
+            CssValue result = null;
+            List<CssValue> values = new List<CssValue>();
 
+            while (MatchCursorItem(context, expression, ref result))
+                values.Add(result);
+
+            if (MatchAny(expression, new[] { CssKeywords.Crosshair, CssKeywords.Default, CssKeywords.Pointer, CssKeywords.Move, CssKeywords.EResize, CssKeywords.NEResize, CssKeywords.NWResize, CssKeywords.NResize, CssKeywords.SEResize, CssKeywords.SWResize, CssKeywords.SResize, CssKeywords.WResize, CssKeywords.Text, CssKeywords.Wait, CssKeywords.Help, CssKeywords.Progress }, ref result))
+            {
+                if (values.Count == 0)
+                    return result;
+
+                values.Add(result);
+                return new CssValueList(values.ToArray());
+            }
+
+            if (values.Count > 0)
+                return null;
+
+            return MatchInherit(expression);
+        }
+
+        protected virtual bool MatchCursorItem(CssContext context, CssExpression expression, ref CssValue result)
+        {
             CssValue value = null;
-            if (MatchAny(expression, new[] { CssKeywords.Leftwards, CssKeywords.Rightwards }, ref value))
-                    return value;
-
-            if (MatchAngle(expression, ref value))
-                return value;
-
-            bool hasBehind = false, hasPosition = false;
-            for (int i = 0; i < 2; i++)
+            if (MatchUri(expression, ref value))
             {
-                if (Match(expression, CssKeywords.Behind))
+                if (expression.Current.ValueType == CssValueType.Comma)
                 {
-                    if (hasBehind)
-                        return null;
-                    hasBehind = true;
+                    expression.MoveNext();
+                    result = value;
+                    return true;
                 }
-                else if (MatchAny(expression, new[] { CssKeywords.LeftSide, CssKeywords.FarLeft, CssKeywords.Left, CssKeywords.CenterLeft, CssKeywords.Center, CssKeywords.CenterRight, CssKeywords.Right, CssKeywords.FarRight, CssKeywords.RightSide }, ref value))
-                {
-                    if (hasPosition)
-                        return null;
-                    hasPosition = true;
-                }
+                return false;
             }
-
-            if (hasPosition || hasBehind)
-            {
-                if (!hasPosition)
-                    value = CssKeywords.Center;
-                return new CssAzimuth(value, hasBehind);
-            }
-
-            return null;
+            return false;
         }
     }
 }

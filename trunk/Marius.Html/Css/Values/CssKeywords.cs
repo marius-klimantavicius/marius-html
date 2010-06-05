@@ -106,5 +106,47 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier CloseQuote = new CssIdentifier("close-quote");
         public static readonly CssIdentifier NoOpenQuote = new CssIdentifier("no-open-quote");
         public static readonly CssIdentifier NoCloseQuote = new CssIdentifier("no-close-quote");
+
+        public static readonly CssIdentifier Crosshair = new CssIdentifier("crosshair");
+        public static readonly CssIdentifier Default = new CssIdentifier("default");
+        public static readonly CssIdentifier Pointer = new CssIdentifier("pointer");
+        public static readonly CssIdentifier Move = new CssIdentifier("move");
+        public static readonly CssIdentifier EResize = new CssIdentifier("e-resize");
+        public static readonly CssIdentifier NEResize = new CssIdentifier("ne-resize");
+        public static readonly CssIdentifier NWResize = new CssIdentifier("nw-resize");
+        public static readonly CssIdentifier NResize = new CssIdentifier("n-resize");
+        public static readonly CssIdentifier SEResize = new CssIdentifier("se-resize");
+        public static readonly CssIdentifier SWResize = new CssIdentifier("sw-resize");
+        public static readonly CssIdentifier SResize = new CssIdentifier("s-resize");
+        public static readonly CssIdentifier WResize = new CssIdentifier("w-resize");
+        public static readonly CssIdentifier Text = new CssIdentifier("text");
+        public static readonly CssIdentifier Wait = new CssIdentifier("wait");
+        public static readonly CssIdentifier Help = new CssIdentifier("help");
+        public static readonly CssIdentifier Progress = new CssIdentifier("progress");
+
+        public static readonly CssIdentifier Ltr = new CssIdentifier("ltr");
+        public static readonly CssIdentifier Rtl = new CssIdentifier("rtl");
+
+        public static readonly CssIdentifier Inline = new CssIdentifier("inline");
+        public static readonly CssIdentifier Block = new CssIdentifier("block");
+        public static readonly CssIdentifier ListItem = new CssIdentifier("list-item");
+        public static readonly CssIdentifier RunIn = new CssIdentifier("run-in");
+        public static readonly CssIdentifier InlineBlock = new CssIdentifier("inline-block");
+        public static readonly CssIdentifier Table = new CssIdentifier("table");
+        public static readonly CssIdentifier InlineTable = new CssIdentifier("inline-table");
+        public static readonly CssIdentifier TableRowGroup = new CssIdentifier("table-row-group");
+        public static readonly CssIdentifier TableHeaderGroup = new CssIdentifier("table-header-group");
+        public static readonly CssIdentifier TableFooterGroup = new CssIdentifier("table-footer-group");
+        public static readonly CssIdentifier TableRow = new CssIdentifier("table-row");
+        public static readonly CssIdentifier TableColumnGroup = new CssIdentifier("table-column-group");
+        public static readonly CssIdentifier TableColumn = new CssIdentifier("table-column");
+        public static readonly CssIdentifier TableCell = new CssIdentifier("table-cell");
+        public static readonly CssIdentifier TableCaption = new CssIdentifier("table-caption");
+
+        public static readonly CssIdentifier Below = new CssIdentifier("below");
+        public static readonly CssIdentifier Level = new CssIdentifier("level");
+        public static readonly CssIdentifier Above = new CssIdentifier("above");
+        public static readonly CssIdentifier Higher = new CssIdentifier("higher");
+        public static readonly CssIdentifier Lower = new CssIdentifier("lower");
     }
 }

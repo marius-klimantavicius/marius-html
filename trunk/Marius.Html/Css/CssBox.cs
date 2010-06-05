@@ -65,6 +65,7 @@ namespace Marius.Html.Css
         public CssValue CounterReset { get; set; }
         public CssValue CueBefore { get; set; }
         public CssValue CueAfter { get; set; }
+        public CssValue Cursor { get; set; }
         public CssValue Direction { get; set; }
         public CssValue Display { get; set; }
         public CssValue Elevation { get; set; }
