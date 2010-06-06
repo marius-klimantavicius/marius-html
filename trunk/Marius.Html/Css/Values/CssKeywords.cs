@@ -43,6 +43,7 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Initial = new CssIdentifier("initial");
         public static readonly CssIdentifier Show = new CssIdentifier("show");
         public static readonly CssIdentifier Hide = new CssIdentifier("hide");
+        public static readonly CssIdentifier Visible = new CssIdentifier("visible");
 
         public static readonly CssIdentifier LeftSide = new CssIdentifier("left-side");
         public static readonly CssIdentifier FarLeft = new CssIdentifier("far-left");
@@ -182,5 +183,31 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier SmallCaption = new CssIdentifier("small-caption");
         public static readonly CssIdentifier StatusBar = new CssIdentifier("status-bar");
 
+        public static readonly CssIdentifier Outside = new CssIdentifier("outside");
+        public static readonly CssIdentifier Inside = new CssIdentifier("inside");
+
+        public static readonly CssIdentifier Disc = new CssIdentifier("disc");
+        public static readonly CssIdentifier Circle = new CssIdentifier("circle");
+        public static readonly CssIdentifier Square = new CssIdentifier("square");
+        public static readonly CssIdentifier Decimal = new CssIdentifier("decimal");
+        public static readonly CssIdentifier DecimalLeadingZero = new CssIdentifier("decimal-leading-zero");
+        public static readonly CssIdentifier LowerRoman = new CssIdentifier("lower-roman");
+        public static readonly CssIdentifier UpperRoman = new CssIdentifier("upper-roman");
+        public static readonly CssIdentifier LowerGreek = new CssIdentifier("lower-greek");
+        public static readonly CssIdentifier LowerLatin = new CssIdentifier("lower-latin");
+        public static readonly CssIdentifier UpperLatin = new CssIdentifier("upper-latin");
+        public static readonly CssIdentifier Armenian = new CssIdentifier("armenian");
+        public static readonly CssIdentifier Georgian = new CssIdentifier("georgian");
+        public static readonly CssIdentifier LowerAlpha = new CssIdentifier("lower-alpha");
+        public static readonly CssIdentifier UpperAlpha = new CssIdentifier("upper-alpha");
+        public static readonly CssIdentifier Invert = new CssIdentifier("invert");
+
+        public static readonly CssIdentifier Always = new CssIdentifier("always");
+        public static readonly CssIdentifier Avoid = new CssIdentifier("avoid");
+
+        public static readonly CssIdentifier XLow = new CssIdentifier("x-low");
+        public static readonly CssIdentifier Low = new CssIdentifier("low");
+        public static readonly CssIdentifier High = new CssIdentifier("high");
+        public static readonly CssIdentifier XHigh = new CssIdentifier("x-high");
     }
 }

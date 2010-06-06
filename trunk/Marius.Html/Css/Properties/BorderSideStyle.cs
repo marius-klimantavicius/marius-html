@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideStyle: BorderSideStrategy
+    public class BorderSideStyle: SideHandler
     {
         public CssBorderSide Side { get; private set; }
 

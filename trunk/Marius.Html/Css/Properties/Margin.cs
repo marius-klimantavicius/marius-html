@@ -27,28 +27,26 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderWidth: SideShortcut
+    public class Margin: SideShortcut
     {
         public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
-            box.BorderTopStyle = top;
-            box.BorderRightStyle = right;
-            box.BorderBottomStyle = bottom;
-            box.BorderLeftStyle = left;
+            box.MarginTop = top;
+            box.MarginRight = right;
+            box.MarginBottom = bottom;
+            box.MarginLeft = left;
         }
 
         protected override void RetrieveHandlers(CssContext context, out SideHandler top, out SideHandler right, out SideHandler bottom, out SideHandler left)
         {
-            top = context.BorderTopWidth;
-            right = context.BorderRightWidth;
-            bottom = context.BorderBottomWidth;
-            left = context.BorderLeftWidth;
+            top = context.MarginTop;
+            right = context.MarginRight;
+            bottom = context.MarginBottom;
+            left = context.MarginLeft;
         }
     }
 }

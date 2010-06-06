@@ -79,6 +79,7 @@ namespace Marius.Html.Css
         public CssValue Font { get; set; }
         public CssValue Height { get; set; }
         public CssValue Left { get; set; }
+        public CssValue LetterSpacing { get; set; }
         public CssValue LineHeight { get; set; }
         public CssValue ListStyleImage { get; set; }
         public CssValue ListStylePosition { get; set; }
@@ -134,5 +135,6 @@ namespace Marius.Html.Css
         public CssValue Width { get; set; }
         public CssValue WordSpacing { get; set; }
         public CssValue ZIndex { get; set; }
+
     }
 }

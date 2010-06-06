@@ -36,6 +36,8 @@ namespace Marius.Html.Css.Values
     {
         public static readonly CssNumber Zero = new CssNumber(0);
         public static readonly CssNumber One = new CssNumber(1);
+        public static readonly CssNumber Two = new CssNumber(2);
+        public static readonly CssNumber Fifty = new CssNumber(50);
 
         public double Value { get; private set; }
 

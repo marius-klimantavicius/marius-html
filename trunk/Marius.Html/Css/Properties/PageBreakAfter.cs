@@ -27,16 +27,12 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideColor: SideHandler
+    public class PageBreakAfter: CssPropertyHandler
     {
-        public CssBorderSide Side { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -44,59 +40,27 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssBoxColor.Instance; }
-        }
-
-        public BorderSideColor(CssBorderSide side)
-        {
-            Side = side;
+            get { return CssKeywords.Auto; }
         }
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            CssValue result = Parse(context, expression);
-            if (result == null || !Valid(expression, full))
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
                 return false;
 
-            switch (Side)
-            {
-                case CssBorderSide.Top:
-                    box.BorderTopColor = result;
-                    break;
-                case CssBorderSide.Right:
-                    box.BorderRightColor = result;
-                    break;
-                case CssBorderSide.Bottom:
-                    box.BorderBottomColor = result;
-                    break;
-                case CssBorderSide.Left:
-                    box.BorderLeftColor = result;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
-
+            box.PageBreakAfter = value;
             return true;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
+            // 	auto | always | avoid | left | right | inherit
             CssValue result = null;
-            if (MatchColor(expression, ref result))
+            if (MatchAny(expression, new[] { CssKeywords.Auto, CssKeywords.Always, CssKeywords.Avoid, CssKeywords.Left, CssKeywords.Right }, ref result))
                 return result;
-
-            if (Match(expression, CssKeywords.Transparent))
-                return CssKeywords.Transparent;
 
             return MatchInherit(expression);
         }
-    }
-
-    public enum CssBorderSide
-    {
-        Top,
-        Right,
-        Bottom,
-        Left,
     }
 }

@@ -33,22 +33,8 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderWidth: SideShortcut
+    public abstract class SideHandler: CssPropertyHandler
     {
-        public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
-        {
-            box.BorderTopStyle = top;
-            box.BorderRightStyle = right;
-            box.BorderBottomStyle = bottom;
-            box.BorderLeftStyle = left;
-        }
-
-        protected override void RetrieveHandlers(CssContext context, out SideHandler top, out SideHandler right, out SideHandler bottom, out SideHandler left)
-        {
-            top = context.BorderTopWidth;
-            right = context.BorderRightWidth;
-            bottom = context.BorderBottomWidth;
-            left = context.BorderLeftWidth;
-        }
+        public abstract CssValue Parse(CssContext context, CssExpression expression);
     }
 }

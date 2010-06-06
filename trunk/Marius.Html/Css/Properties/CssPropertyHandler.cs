@@ -243,5 +243,49 @@ namespace Marius.Html.Css.Properties
             }
             return false;
         }
+
+        protected bool MatchTime(CssExpression expression, ref CssValue result)
+        {
+            if (expression.Current.ValueGroup == CssValueGroup.Time)
+            {
+                result = expression.Current;
+                expression.MoveNext();
+                return true;
+            }
+            else if (expression.Current.ValueType == CssValueType.Number)
+            {
+                CssNumber value = (CssNumber)expression.Current;
+                if (value.Value != 0)
+                    return false;
+
+                result = value;
+                expression.MoveNext();
+                return true;
+            }
+
+            return false;
+        }
+
+        protected bool MatchFrequency(CssExpression expression, ref CssValue result)
+        {
+            if (expression.Current.ValueGroup == CssValueGroup.Frequency)
+            {
+                result = expression.Current;
+                expression.MoveNext();
+                return true;
+            }
+            else if (expression.Current.ValueType == CssValueType.Number)
+            {
+                CssNumber value = (CssNumber)expression.Current;
+                if (value.Value != 0)
+                    return false;
+
+                result = value;
+                expression.MoveNext();
+                return true;
+            }
+
+            return false;
+        }
     }
 }
