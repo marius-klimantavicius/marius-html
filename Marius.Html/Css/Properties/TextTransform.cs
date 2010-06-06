@@ -27,55 +27,47 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Values
+namespace Marius.Html.Css.Properties
 {
-    public enum CssValueType
+    public class TextTransform: CssPropertyHandler
     {
-        Unknown,
-        Number,
-        Percentage,
-        Em,
-        Ex,
-        Px,
-        Cm,
-        Mm,
-        In,
-        Pt,
-        Pc,
-        Deg,
-        Rad,
-        Grad,
-        Ms,
-        S,
-        Hz,
-        KHz,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
+        public override bool IsInherited
+        {
+            get { return true; }
+        }
 
-        Slash,
-        Comma,
+        public override CssValue Initial
+        {
+            get { return CssKeywords.None; }
+        }
 
-        BoxColor,
-        TextAlignInitial,
-        Rect,
-        ValueList,
-        Null,
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
 
-        // custom for specific properties, created ONLY when applying/parsing expressions
-        Azimuth,
-        BackgroundPosition,
-        BorderSpacing,
-        CounterChange,
-        FontFamily,
-        PlayDuring,
-        TextDecoration,
+            box.TextTransform = value;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            if (Match(expression, CssKeywords.Capitalize))
+                return CssKeywords.Capitalize;
+
+            if (Match(expression, CssKeywords.Lowercase))
+                return CssKeywords.Lowercase;
+
+            if (Match(expression, CssKeywords.Uppercase))
+                return CssKeywords.Uppercase;
+
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            return MatchInherit(expression);
+        }
     }
 }

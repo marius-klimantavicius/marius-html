@@ -27,55 +27,46 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Values
+namespace Marius.Html.Css.Properties
 {
-    public enum CssValueType
+    public class Volume: CssPropertyHandler
     {
-        Unknown,
-        Number,
-        Percentage,
-        Em,
-        Ex,
-        Px,
-        Cm,
-        Mm,
-        In,
-        Pt,
-        Pc,
-        Deg,
-        Rad,
-        Grad,
-        Ms,
-        S,
-        Hz,
-        KHz,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
+        public override bool IsInherited
+        {
+            get { return true; }
+        }
 
-        Slash,
-        Comma,
+        public override CssValue Initial
+        {
+            get { return CssKeywords.Medium; }
+        }
 
-        BoxColor,
-        TextAlignInitial,
-        Rect,
-        ValueList,
-        Null,
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
 
-        // custom for specific properties, created ONLY when applying/parsing expressions
-        Azimuth,
-        BackgroundPosition,
-        BorderSpacing,
-        CounterChange,
-        FontFamily,
-        PlayDuring,
-        TextDecoration,
+            box.Volume = value;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            CssValue result = null;
+
+            if (MatchNumber(expression, ref result))
+                return result;
+
+            if (MatchPercentage(expression, ref result))
+                return result;
+
+            if (MatchAny(expression, new[] { CssKeywords.Medium, CssKeywords.Silent, CssKeywords.XSoft, CssKeywords.Soft, CssKeywords.Loud, CssKeywords.XLoud }, ref result))
+                return result;
+
+            return MatchInherit(expression);
+        }
     }
 }

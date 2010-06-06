@@ -25,34 +25,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
+using System.Collections.Generic;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Values
+namespace Marius.Html.Css.Properties
 {
-    public enum CssValueGroup
+    public class SpeakPunctuation: CssPropertyHandler
     {
-        Unknown,
-        Number,
-        Percentage,
-        Length,
-        Angle,
-        Time,
-        Frequency,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
-        Operator,
+        public override bool IsInherited
+        {
+            get { return true; }
+        }
 
-        // surogate
-        BoxColor,
-        TextAlignInitial,
-        ValueList,
-        Null,
+        public override CssValue Initial
+        {
+            get { return CssKeywords.None; }
+        }
 
-        // only for box properties
-        Custom,
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.SpeakPunctuation = value;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            if (Match(expression, CssKeywords.Code))
+                return CssKeywords.Code;
+
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
+
+            return MatchInherit(expression);
+        }
     }
 }

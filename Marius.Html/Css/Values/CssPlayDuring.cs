@@ -32,50 +32,51 @@ using System.Text;
 
 namespace Marius.Html.Css.Values
 {
-    public enum CssValueType
+    public class CssPlayDuring: CssValue
     {
-        Unknown,
-        Number,
-        Percentage,
-        Em,
-        Ex,
-        Px,
-        Cm,
-        Mm,
-        In,
-        Pt,
-        Pc,
-        Deg,
-        Rad,
-        Grad,
-        Ms,
-        S,
-        Hz,
-        KHz,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
+        public CssValue Uri { get; private set; }
+        public bool Mix { get; private set; }
+        public bool Repeat { get; private set; }
 
-        Slash,
-        Comma,
+        public override CssValueType ValueType
+        {
+            get { return CssValueType.PlayDuring; }
+        }
 
-        BoxColor,
-        TextAlignInitial,
-        Rect,
-        ValueList,
-        Null,
+        public CssPlayDuring(CssValue uri, bool mix, bool repeat)
+        {
+            Uri = uri;
+            Mix = mix;
+            Repeat = repeat;
+        }
 
-        // custom for specific properties, created ONLY when applying/parsing expressions
-        Azimuth,
-        BackgroundPosition,
-        BorderSpacing,
-        CounterChange,
-        FontFamily,
-        PlayDuring,
-        TextDecoration,
+        public override bool Equals(CssValue other)
+        {
+            CssPlayDuring o = other as CssPlayDuring;
+            if (o == null)
+                return false;
+
+            return o.Uri.Equals(this.Uri) && o.Mix == this.Mix && o.Repeat == this.Repeat;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(Uri, Mix, Repeat, ValueType);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(Uri.ToString());
+
+            if (Mix)
+                sb.Append(" ").Append(CssKeywords.Mix.ToString());
+
+            if (Repeat)
+                sb.Append(" ").Append(CssKeywords.Repeat.ToString());
+
+            return sb.ToString();
+        }
     }
 }

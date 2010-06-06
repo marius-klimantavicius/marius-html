@@ -25,34 +25,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
+using System.Collections.Generic;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Values
 {
-    public enum CssValueGroup
+    public class CssTextAlingInitial: CssValue
     {
-        Unknown,
-        Number,
-        Percentage,
-        Length,
-        Angle,
-        Time,
-        Frequency,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
-        Operator,
+        public static readonly CssTextAlingInitial Instance = new CssTextAlingInitial();
 
-        // surogate
-        BoxColor,
-        TextAlignInitial,
-        ValueList,
-        Null,
+        public override CssValueType ValueType
+        {
+            get { return CssValueType.TextAlignInitial; }
+        }
 
-        // only for box properties
-        Custom,
+        private CssTextAlingInitial()
+        {
+        }
+
+        public override bool Equals(CssValue other)
+        {
+            CssTextAlingInitial o = other as CssTextAlingInitial;
+            if (o == null)
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return Utils.GetHashCode(ValueType);
+        }
     }
 }
