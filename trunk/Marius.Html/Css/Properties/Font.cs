@@ -121,6 +121,8 @@ namespace Marius.Html.Css.Properties
 
             if (expression.Current.ValueType == CssValueType.Slash)
             {
+                expression.MoveNext();
+
                 height = context.LineHeight.Parse(context, expression);
                 if (height == null)
                     return false;
