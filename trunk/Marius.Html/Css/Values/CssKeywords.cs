@@ -209,5 +209,63 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Low = new CssIdentifier("low");
         public static readonly CssIdentifier High = new CssIdentifier("high");
         public static readonly CssIdentifier XHigh = new CssIdentifier("x-high");
+
+        public static readonly CssIdentifier Mix = new CssIdentifier("mix");
+
+        public static readonly CssIdentifier Static = new CssIdentifier("static");
+        public static readonly CssIdentifier Absolute = new CssIdentifier("absolute");
+        public static readonly CssIdentifier Relative = new CssIdentifier("relative");
+
+        public static readonly CssIdentifier Once = new CssIdentifier("once");
+        
+        public static readonly CssIdentifier Continuous = new CssIdentifier("continuous");
+        public static readonly CssIdentifier Digits = new CssIdentifier("digits");
+
+        public static readonly CssIdentifier Code = new CssIdentifier("code");
+
+        public static readonly CssIdentifier SpellOut = new CssIdentifier("spell-out");
+
+        public static readonly CssIdentifier XSlow = new CssIdentifier("x-slow");
+        public static readonly CssIdentifier Slow = new CssIdentifier("slow");
+        public static readonly CssIdentifier Fast = new CssIdentifier("fast");
+        public static readonly CssIdentifier XFast = new CssIdentifier("x-fast");
+        public static readonly CssIdentifier Slower = new CssIdentifier("slower");
+        public static readonly CssIdentifier Faster = new CssIdentifier("faster");
+        public static readonly CssIdentifier Justify = new CssIdentifier("justify");
+
+        public static readonly CssIdentifier Underline = new CssIdentifier("underline");
+        public static readonly CssIdentifier Overline = new CssIdentifier("overline");
+        public static readonly CssIdentifier LineThrough = new CssIdentifier("line-through");
+        public static readonly CssIdentifier Blink = new CssIdentifier("blink");
+
+        public static readonly CssIdentifier Capitalize = new CssIdentifier("capitalize");
+        public static readonly CssIdentifier Uppercase = new CssIdentifier("uppercase");
+        public static readonly CssIdentifier Lowercase = new CssIdentifier("lowercase");
+
+        public static readonly CssIdentifier Embed = new CssIdentifier("embed");
+        public static readonly CssIdentifier BidiOverride = new CssIdentifier("bidi-override");
+
+        public static readonly CssIdentifier Baseline = new CssIdentifier("baseline");
+        
+        public static readonly CssIdentifier Sub = new CssIdentifier("sub");
+        public static readonly CssIdentifier Super = new CssIdentifier("super");
+        public static readonly CssIdentifier TextTop = new CssIdentifier("text-top");
+        public static readonly CssIdentifier Middle = new CssIdentifier("middle");
+        public static readonly CssIdentifier TextBottom = new CssIdentifier("text-bottom");
+
+        public static readonly CssIdentifier Male = new CssIdentifier("male");
+        public static readonly CssIdentifier Female = new CssIdentifier("female");
+        public static readonly CssIdentifier Child = new CssIdentifier("child");
+
+        public static CssIdentifier Silent = new CssIdentifier("silent");
+        public static CssIdentifier XSoft = new CssIdentifier("x-soft");
+        public static CssIdentifier Soft = new CssIdentifier("soft");
+        public static CssIdentifier Loud = new CssIdentifier("loud");
+        public static CssIdentifier XLoud = new CssIdentifier("x-loud");
+
+        public static readonly CssIdentifier Pre = new CssIdentifier("pre");
+        public static readonly CssIdentifier Nowrap = new CssIdentifier("nowrap");
+        public static readonly CssIdentifier PreWrap = new CssIdentifier("pre-wrap");
+        public static readonly CssIdentifier PreLine = new CssIdentifier("pre-line");
     }
 }

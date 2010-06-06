@@ -87,6 +87,8 @@ namespace Marius.Html.Css.Values
                         return CssValueGroup.Operator;
                     case CssValueType.BoxColor:
                         return CssValueGroup.BoxColor;
+                    case CssValueType.TextAlignInitial:
+                        return CssValueGroup.TextAlignInitial;
                     case CssValueType.ValueList:
                         return CssValueGroup.ValueList;
                     case CssValueType.Null:
@@ -96,6 +98,7 @@ namespace Marius.Html.Css.Values
                     case CssValueType.BorderSpacing:
                     case CssValueType.CounterChange:
                     case CssValueType.FontFamily:
+                    case CssValueType.PlayDuring:
                         return CssValueGroup.Custom;
                 }
                 throw new NotSupportedException();

@@ -25,34 +25,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
+using System.Collections.Generic;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Values
+namespace Marius.Html.Css.Properties
 {
-    public enum CssValueGroup
+    public class ZIndex: CssPropertyHandler
     {
-        Unknown,
-        Number,
-        Percentage,
-        Length,
-        Angle,
-        Time,
-        Frequency,
-        Dimension,
-        String,
-        Uri,
-        Identifier,
-        Color,
-        Function,
-        SignedDimension,
-        Operator,
+        public override bool IsInherited
+        {
+            get { return false; }
+        }
 
-        // surogate
-        BoxColor,
-        TextAlignInitial,
-        ValueList,
-        Null,
+        public override CssValue Initial
+        {
+            get { return CssKeywords.Auto; }
+        }
 
-        // only for box properties
-        Custom,
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.ZIndex = value;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            CssValue result = null;
+            if (MatchNumber(expression, ref result))
+                return result;
+
+            if (Match(expression, CssKeywords.Auto))
+                return CssKeywords.Auto;
+
+            return MatchInherit(expression);
+        }
     }
 }
