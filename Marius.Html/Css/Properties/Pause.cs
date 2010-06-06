@@ -27,16 +27,12 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideColor: SideHandler
+    public class Pause: CssPropertyHandler
     {
-        public CssBorderSide Side { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -44,59 +40,41 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssBoxColor.Instance; }
-        }
-
-        public BorderSideColor(CssBorderSide side)
-        {
-            Side = side;
+            get { throw new NotSupportedException(); }
         }
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            CssValue result = Parse(context, expression);
-            if (result == null || !Valid(expression, full))
-                return false;
-
-            switch (Side)
+            if (MatchInherit(expression) != null)
             {
-                case CssBorderSide.Top:
-                    box.BorderTopColor = result;
-                    break;
-                case CssBorderSide.Right:
-                    box.BorderRightColor = result;
-                    break;
-                case CssBorderSide.Bottom:
-                    box.BorderBottomColor = result;
-                    break;
-                case CssBorderSide.Left:
-                    box.BorderLeftColor = result;
-                    break;
-                default:
-                    throw new NotSupportedException();
+                if (!Valid(expression, full))
+                    return false;
+
+                box.PauseBefore = CssKeywords.Inherit;
+                box.PauseAfter = CssKeywords.Inherit;
+
+                return true;
             }
 
+            CssValue value = null;
+            CssValue before, after;
+
+            value = context.PauseBefore.Parse(context, expression);
+            if (value == null)
+                return false;
+
+            before = after = value;
+
+            value = context.PauseAfter.Parse(context, expression);
+            if (value != null)
+                after = value;
+
+            if (!Valid(expression, full))
+                return false;
+
+            box.PauseBefore = before;
+            box.PauseAfter = after;
             return true;
         }
-
-        public override CssValue Parse(CssContext context, CssExpression expression)
-        {
-            CssValue result = null;
-            if (MatchColor(expression, ref result))
-                return result;
-
-            if (Match(expression, CssKeywords.Transparent))
-                return CssKeywords.Transparent;
-
-            return MatchInherit(expression);
-        }
-    }
-
-    public enum CssBorderSide
-    {
-        Top,
-        Right,
-        Bottom,
-        Left,
     }
 }

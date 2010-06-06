@@ -27,14 +27,45 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class BorderSideStrategy: CssPropertyHandler
+    public class Height: CssPropertyHandler
     {
-        public abstract CssValue Parse(CssContext context, CssExpression expression);
+        public override bool IsInherited
+        {
+            get { return false; }
+        }
+
+        public override CssValue Initial
+        {
+            get { return CssKeywords.Auto; }
+        }
+
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
+                return false;
+
+            box.Height = value;
+            return true;
+        }
+
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        {
+            CssValue result = null;
+            if (MatchLength(expression, ref result))
+                return result;
+
+            if (MatchPercentage(expression, ref result))
+                return result;
+
+            if (Match(expression, CssKeywords.Auto))
+                return CssKeywords.Auto;
+
+            return MatchInherit(expression);
+        }
     }
 }

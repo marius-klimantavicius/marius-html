@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderStyle: BorderSideShortcut
+    public class BorderStyle: SideShortcut
     {
         public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
@@ -43,7 +43,7 @@ namespace Marius.Html.Css.Properties
             box.BorderLeftStyle = left;
         }
 
-        protected override void RetrieveHandlers(CssContext context, out BorderSideStrategy top, out BorderSideStrategy right, out BorderSideStrategy bottom, out BorderSideStrategy left)
+        protected override void RetrieveHandlers(CssContext context, out SideHandler top, out SideHandler right, out SideHandler bottom, out SideHandler left)
         {
             top = context.BorderTopStyle;
             right = context.BorderRightStyle;

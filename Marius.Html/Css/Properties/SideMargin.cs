@@ -27,15 +27,13 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideColor: SideHandler
+    public class SideMargin: SideHandler
     {
-        public CssBorderSide Side { get; private set; }
+        public CssSide Side { get; private set; }
 
         public override bool IsInherited
         {
@@ -44,33 +42,34 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssBoxColor.Instance; }
+            get { return CssNumber.Zero; }
         }
 
-        public BorderSideColor(CssBorderSide side)
+        public SideMargin(CssSide side)
         {
             Side = side;
         }
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            CssValue result = Parse(context, expression);
-            if (result == null || !Valid(expression, full))
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression, full))
                 return false;
+
 
             switch (Side)
             {
-                case CssBorderSide.Top:
-                    box.BorderTopColor = result;
+                case CssSide.Top:
+                    box.MarginTop = value;
                     break;
-                case CssBorderSide.Right:
-                    box.BorderRightColor = result;
+                case CssSide.Right:
+                    box.MarginRight = value;
                     break;
-                case CssBorderSide.Bottom:
-                    box.BorderBottomColor = result;
+                case CssSide.Bottom:
+                    box.MarginBottom = value;
                     break;
-                case CssBorderSide.Left:
-                    box.BorderLeftColor = result;
+                case CssSide.Left:
+                    box.MarginLeft = value;
                     break;
                 default:
                     throw new NotSupportedException();
@@ -81,22 +80,17 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Parse(CssContext context, CssExpression expression)
         {
-            CssValue result = null;
-            if (MatchColor(expression, ref result))
+            CssValue result=null;
+            if (MatchLength(expression, ref result))
                 return result;
 
-            if (Match(expression, CssKeywords.Transparent))
-                return CssKeywords.Transparent;
+            if (MatchPercentage(expression, ref result))
+                return result;
+
+            if (Match(expression, CssKeywords.Auto))
+                return CssKeywords.Auto;
 
             return MatchInherit(expression);
         }
-    }
-
-    public enum CssBorderSide
-    {
-        Top,
-        Right,
-        Bottom,
-        Left,
     }
 }

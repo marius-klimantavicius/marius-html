@@ -71,5 +71,26 @@ namespace Marius.Html.Css
         public FontWeight FontWeight { get; set; }
 
         public LineHeight LineHeight { get; set; }
+
+        public ListStyleImage ListStyleImage { get; set; }
+        public ListStylePosition ListStylePosition { get; set; }
+        public ListStyleType ListStyleType { get; set; }
+
+        public SideMargin MarginTop { get; set; }
+        public SideMargin MarginRight { get; set; }
+        public SideMargin MarginBottom { get; set; }
+        public SideMargin MarginLeft { get; set; }
+
+        public OutlineColor OutlineColor { get; set; }
+        public OutlineStyle OutlineStyle { get; set; }
+        public OutlineWidth OutlineWidth { get; set; }
+
+        public SidePadding PaddingTop { get; set; }
+        public SidePadding PaddingRight { get; set; }
+        public SidePadding PaddingBottom { get; set; }
+        public SidePadding PaddingLeft { get; set; }
+
+        public PauseBefore PauseBefore { get; set; }
+        public PauseAfter PauseAfter { get; set; }
     }
 }

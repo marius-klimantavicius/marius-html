@@ -95,6 +95,7 @@ namespace Marius.Html.Css.Values
                     case CssValueType.BackgroundPosition:
                     case CssValueType.BorderSpacing:
                     case CssValueType.CounterChange:
+                    case CssValueType.FontFamily:
                         return CssValueGroup.Custom;
                 }
                 throw new NotSupportedException();
