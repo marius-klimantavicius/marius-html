@@ -26,12 +26,12 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Collections.Generic;
 using Marius.Html.Css.Values;
+using System.Collections.Generic;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SidePadding: SideHandler
+    public class CounterReset: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -40,10 +40,8 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssNumber.Zero; }
+            get { return CssKeywords.None; }
         }
-
-        protected abstract void Apply(CssBox box, CssValue value);
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
@@ -51,53 +49,46 @@ namespace Marius.Html.Css.Properties
             if (value == null || !Valid(expression, full))
                 return false;
 
-            Apply(box, value);
+            box.CounterReset = value;
 
             return true;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            CssValue result = null;
-            if (MatchLength(expression, ref result))
-                return result;
+            // [ <identifier>  <integer>? ]+ | none | inherit
+            if (Match(expression, CssKeywords.None))
+                return CssKeywords.None;
 
-            if (MatchPercentage(expression, ref result))
-                return result;
+            // 'initial' reserved for future use and must not be used as counter name
+            if (Match(expression, CssKeywords.Initial))
+                return null;
+
+            CssValue result = null;
+            List<CssValue> values = new List<CssValue>();
+
+            while (MatchChangeItem(context, expression, ref result))
+                values.Add(result);
+
+            if (values.Count > 0)
+                return new CssValueList(values.ToArray());
 
             return MatchInherit(expression);
         }
-    }
 
-    public class PaddingTop: SidePadding
-    {
-        protected override void Apply(CssBox box, CssValue value)
+        private bool MatchChangeItem(CssContext context, CssExpression expression, ref CssValue result)
         {
-            box.PaddingTop = value;
-        }
-    }
+            CssValue name = null, value = null;
 
-    public class PaddingRight: SidePadding
-    {
-        protected override void Apply(CssBox box, CssValue value)
-        {
-            box.PaddingRight = value;
-        }
-    }
+            if (!MatchIdentifier(expression, ref name))
+                return false;
 
-    public class PaddingBottom: SidePadding
-    {
-        protected override void Apply(CssBox box, CssValue value)
-        {
-            box.PaddingBottom = value;
-        }
-    }
+            MatchNumber(expression, ref value);
 
-    public class PaddingLeft: SidePadding
-    {
-        protected override void Apply(CssBox box, CssValue value)
-        {
-            box.PaddingLeft = value;
+            if (value == null)
+                value = CssNumber.Zero;
+
+            return true;
         }
     }
 }

@@ -31,10 +31,8 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class SideMargin: SideHandler
+    public abstract class SideMargin: SideHandler
     {
-        public CssSide Side { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -45,10 +43,7 @@ namespace Marius.Html.Css.Properties
             get { return CssNumber.Zero; }
         }
 
-        public SideMargin(CssSide side)
-        {
-            Side = side;
-        }
+        protected abstract void Apply(CssBox box, CssValue value);
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
@@ -56,24 +51,7 @@ namespace Marius.Html.Css.Properties
             if (value == null || !Valid(expression, full))
                 return false;
 
-
-            switch (Side)
-            {
-                case CssSide.Top:
-                    box.MarginTop = value;
-                    break;
-                case CssSide.Right:
-                    box.MarginRight = value;
-                    break;
-                case CssSide.Bottom:
-                    box.MarginBottom = value;
-                    break;
-                case CssSide.Left:
-                    box.MarginLeft = value;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
+            Apply(box, value);
 
             return true;
         }
@@ -91,6 +69,38 @@ namespace Marius.Html.Css.Properties
                 return CssKeywords.Auto;
 
             return MatchInherit(expression);
+        }
+    }
+
+    public class MarginTop: SideMargin
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.MarginTop = value;
+        }
+    }
+
+    public class MarginRight: SideMargin
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.MarginRight = value;
+        }
+    }
+
+    public class MarginBottom: SideMargin
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.MarginBottom = value;
+        }
+    }
+
+    public class MarginLeft: SideMargin
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.MarginLeft = value;
         }
     }
 }
