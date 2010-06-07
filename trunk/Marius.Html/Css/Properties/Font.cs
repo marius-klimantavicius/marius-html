@@ -31,24 +31,14 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Font: CssPropertyHandler
+    public class Font: CssShortcutHandler
     {
-        public override bool IsInherited
-        {
-            get { return true; }
-        }
-
-        public override CssValue Initial
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue value = null;
             if (MatchAny(expression, new[] { CssKeywords.Caption, CssKeywords.Icon, CssKeywords.Menu, CssKeywords.MessageBox, CssKeywords.SmallCaption, CssKeywords.StatusBar }, ref value))
             {
-                if (!Valid(expression, full))
+                if (!Valid(expression))
                     return false;
 
                 box.FontFamily = null;
@@ -63,7 +53,7 @@ namespace Marius.Html.Css.Properties
 
             if (MatchInherit(expression) != null)
             {
-                if (!Valid(expression, full))
+                if (!Valid(expression))
                     return false;
 
                 box.FontFamily = CssKeywords.Inherit;

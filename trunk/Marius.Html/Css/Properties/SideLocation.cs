@@ -47,10 +47,10 @@ namespace Marius.Html.Css.Properties
 
         protected abstract void Apply(CssBox box, CssValue value);
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression, full))
+            if (value == null || !Valid(expression))
                 return false;
 
             Apply(box, value);
@@ -58,7 +58,7 @@ namespace Marius.Html.Css.Properties
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
             // 	<length>  | <percentage>  | auto | inherit
 

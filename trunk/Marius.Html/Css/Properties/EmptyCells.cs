@@ -43,17 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Show; }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression, full))
+            if (value == null || !Valid(expression))
                 return false;
 
             box.EmptyCells = value;
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
             if (Match(expression, CssKeywords.Show))
                 return CssKeywords.Show;

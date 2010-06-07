@@ -30,23 +30,13 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Cue: CssPropertyHandler
+    public class Cue: CssShortcutHandler
     {
-        public override bool IsInherited
-        {
-            get { return false; }
-        }
-
-        public override CssValue Initial
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             if (MatchInherit(expression) != null)
             {
-                if (!Valid(expression, full))
+                if (!Valid(expression))
                     return false;
 
                 box.CueAfter = CssKeywords.Inherit;
@@ -67,7 +57,7 @@ namespace Marius.Html.Css.Properties
             if (value != null)
                 after = value;
 
-            if (!Valid(expression, full))
+            if (!Valid(expression))
                 return false;
 
             box.CueBefore = before;

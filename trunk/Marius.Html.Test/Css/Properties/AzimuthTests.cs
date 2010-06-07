@@ -53,11 +53,11 @@ namespace Marius.Html.Tests.Css.Properties
         {
             CssBox box = new CssBox();
 
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("center") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("leftwards") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("inherit") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssAngle(10, CssUnits.Deg) }), true));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("center") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("leftwards") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("inherit") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssAngle(10, CssUnits.Deg) })));
         }
 
         [Test]
@@ -65,10 +65,10 @@ namespace Marius.Html.Tests.Css.Properties
         {
             CssBox box = new CssBox();
 
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new CssValue[0]), true));
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("centruotas") }), true));
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssLength(10, CssUnits.Cm) }), true));
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssHexColor("FFFFFF") }), true));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new CssValue[0])));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("centruotas") })));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssLength(10, CssUnits.Cm) })));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssHexColor("FFFFFF") })));
         }
 
         [Test]
@@ -76,10 +76,10 @@ namespace Marius.Html.Tests.Css.Properties
         {
             CssBox box = new CssBox();
 
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("center"), new CssIdentifier("behind") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("center-right"), new CssIdentifier("behind") }), true));
-            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center-right") }), true));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("center"), new CssIdentifier("behind") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("center-right"), new CssIdentifier("behind") })));
+            Assert.IsTrue(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center-right") })));
         }
 
         [Test]
@@ -87,9 +87,9 @@ namespace Marius.Html.Tests.Css.Properties
         {
             CssBox box = new CssBox();
 
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("behind") }), true));
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("leftwards"), new CssIdentifier("behind") }), true));
-            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("inherit") }), true));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("behind") })));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("leftwards"), new CssIdentifier("behind") })));
+            Assert.IsFalse(_context.Azimuth.Apply(_context, box, new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("inherit") })));
         }          
     }
 }

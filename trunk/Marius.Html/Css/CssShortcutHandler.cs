@@ -29,14 +29,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public abstract class CssProperty
+    public abstract class CssShortcutHandler: CssBasePropertyHandler
     {
-        //public abstract string Name { get; }
-        //public abstract bool Inherited { get; }
-
-        public bool IsUserSet { get; protected set; }
+        public abstract bool Apply(CssContext context, CssBox box, CssExpression expression);
     }
 }

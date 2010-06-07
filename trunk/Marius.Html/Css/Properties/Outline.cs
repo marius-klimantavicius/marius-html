@@ -31,23 +31,13 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Outline: CssPropertyHandler
+    public class Outline: CssShortcutHandler
     {
-        public override bool IsInherited
-        {
-            get { return false; }
-        }
-
-        public override CssValue Initial
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             if (MatchInherit(expression) != null)
             {
-                if (!Valid(expression, full))
+                if (!Valid(expression))
                     return false;
 
                 box.OutlineColor = CssKeywords.Inherit;
@@ -99,7 +89,7 @@ namespace Marius.Html.Css.Properties
             if (color == null && style == null && width == null)
                 return false;
 
-            if (!Valid(expression, full))
+            if (!Valid(expression))
                 return false;
 
             box.OutlineColor = color ?? context.OutlineColor.Initial;

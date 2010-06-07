@@ -45,17 +45,17 @@ namespace Marius.Html.Css.Properties
             get { return new CssBackgroundPosition(CssPercentage.Zero, CssPercentage.Zero); }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue result = Parse(context, expression);
-            if (result == null || !Valid(expression, full))
+            if (result == null || !Valid(expression))
                 return false;
 
             box.BackgroundPosition = result;
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
             /* 	
              * [ 
