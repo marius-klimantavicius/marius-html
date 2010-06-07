@@ -33,11 +33,13 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public abstract class CssPropertyHandler: CssBasePropertyHandler
+    public abstract class CssPropertyHandler: CssPropertyParser
     {
         public abstract bool IsInherited { get; }
         public abstract CssValue Initial { get; }
+        
         public abstract bool Apply(CssContext context, CssBox box, CssExpression expression);
+        
         public abstract CssValue Parse(CssContext context, CssExpression expression);
     }
 }
