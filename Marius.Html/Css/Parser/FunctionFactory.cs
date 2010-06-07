@@ -36,23 +36,85 @@ namespace Marius.Html.Css.Parser
 {
     public class FunctionFactory
     {
-        public static FunctionFactory Create()
+        public virtual CssValue Function(string name, CssExpression args)
         {
-            return new FunctionFactory();
-        }
-
-        public CssValue Function(string name, CssExpression args)
-        {
+            CssValue result = null;
             switch (name.ToUpperInvariant())
             {
                 case "RGB":
-                    CssValue red, green, blue;
-                    if (CssRgbColor.Extract(args, out red, out green, out blue))
-                        return new CssRgbColor(new CssFunction(name, args));
+                    if (ParseRgb(args, ref result))
+                        return result;
                     break;
+                case "RECT":
+                    if (ParseRect(args, ref result))
+                        return result;
+                    break;
+                    // TODO: implement attr(id) and counter/counters functions
             }
 
             return new CssFunction(name, args);
+        }
+
+        protected virtual bool ParseRgb(CssExpression args, ref CssValue result)
+        {
+            args.Reset();
+
+            CssValue red = null, green = null, blue = null;
+
+            if (CssPropertyParser.MatchPercentage(args, ref red))
+            {
+                if (!CssPropertyParser.MatchPercentage(args, ref green))
+                    return false;
+
+                if (!CssPropertyParser.MatchPercentage(args, ref blue))
+                    return false;
+
+                if (!CssPropertyParser.Valid(args))
+                    return false;
+
+                result = new CssRgbColor(red, green, blue);
+                return true;
+            }
+            else if (CssPropertyParser.MatchNumber(args, ref red))
+            {
+                if (!CssPropertyParser.MatchNumber(args, ref green))
+                    return false;
+
+                if (!CssPropertyParser.MatchNumber(args, ref blue))
+                    return false;
+
+                if (!CssPropertyParser.Valid(args))
+                    return false;
+
+                result = new CssRgbColor(red, green, blue);
+                return true;
+            }
+
+            return false;
+        }
+
+        protected virtual bool ParseRect(CssExpression args, ref CssValue result)
+        {
+            args.Reset();
+
+            CssValue top = null, right = null, bottom = null, left = null;
+            if (!CssPropertyParser.MatchLength(args, ref top) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref top))
+                return false;
+
+            if (!CssPropertyParser.MatchLength(args, ref right) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref right))
+                return false;
+
+            if (!CssPropertyParser.MatchLength(args, ref bottom) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref bottom))
+                return false;
+
+            if (!CssPropertyParser.MatchLength(args, ref left) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref left))
+                return false;
+
+            if (!CssPropertyParser.Valid(args))
+                return false;
+
+            result = new CssRect(top, right, bottom, left);
+            return true;
         }
     }
 }

@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Properties;
+using Marius.Html.Css.Parser;
 
 namespace Marius.Html.Css
 {
@@ -37,6 +38,9 @@ namespace Marius.Html.Css
     {
         public CssContext()
         {
+            FunctionFactory = new FunctionFactory();
+            PseudoConditionFactory = new PseudoConditionFactory();
+
             Azimuth = new Azimuth();
             Background = new Background();
             BackgroundAttachment = new BackgroundAttachment();
@@ -149,6 +153,9 @@ namespace Marius.Html.Css
             WordSpacing = new WordSpacing();
             ZIndex = new ZIndex();
         }
+
+        public virtual FunctionFactory FunctionFactory { get; set; }
+        public virtual PseudoConditionFactory PseudoConditionFactory { get; set; }
 
         public virtual Azimuth Azimuth { get; private set; }
         public virtual Background Background { get; private set; }

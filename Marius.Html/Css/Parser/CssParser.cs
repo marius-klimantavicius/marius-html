@@ -41,13 +41,18 @@ namespace Marius.Html.Css.Parser
         private static readonly string[] EmptyStringArray = new string[0];
 
         private TokenBuffer _scanner;
-        private PseudoConditionFactory _pseudoConditionFactory = PseudoConditionFactory.Create();
-        private FunctionFactory _functionFactory = FunctionFactory.Create();
+        private CssContext _context;
 
         public CssParser(CssScanner scanner)
+            : this(scanner, new CssContext())
+        {
+        }
+
+        public CssParser(CssScanner scanner, CssContext context)
         {
             Contract.Requires(scanner != null);
 
+            _context = context;
             _scanner = new TokenBuffer(scanner);
         }
 
@@ -313,7 +318,7 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.Colon);
                 if (_scanner.Current == CssTokens.Identifier)
                 {
-                    return Match(CssTokens.Identifier, s => _pseudoConditionFactory.PseudoIdentifierCondition(s.String));
+                    return Match(CssTokens.Identifier, s => _context.PseudoConditionFactory.PseudoIdentifierCondition(s.String));
                 }
                 else if (_scanner.Current == CssTokens.Function)
                 {
@@ -331,7 +336,7 @@ namespace Marius.Html.Css.Parser
                     Match(CssTokens.CloseParen);
                     nesting--;
 
-                    return _pseudoConditionFactory.PseudoFunctionCondition(function, argument);
+                    return _context.PseudoConditionFactory.PseudoFunctionCondition(function, argument);
                 }
                 else
                 {
@@ -775,7 +780,7 @@ namespace Marius.Html.Css.Parser
 
                 _scanner.SkipWhitespace();
 
-                return _functionFactory.Function(name, arguments);
+                return _context.FunctionFactory.Function(name, arguments);
             }
             catch (CssParsingException)
             {

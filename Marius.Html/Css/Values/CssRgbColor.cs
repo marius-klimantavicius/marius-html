@@ -35,48 +35,11 @@ namespace Marius.Html.Css.Values
 {
     public class CssRgbColor: CssColor
     {
-        public CssRgbColor(CssFunction rgb)
+        public CssRgbColor(CssValue red, CssValue green, CssValue blue)
         {
-            CssValue red, green, blue;
-
-            if (rgb.Name.ToUpperInvariant() != "RGB")
-                throw new ArgumentException();
-
-            if (!Extract(rgb.Arguments, out red, out green, out blue))
-                throw new ArgumentException();
-
             Red = red;
             Green = green;
             Blue = blue;
-        }
-
-        public static bool Extract(CssExpression args, out CssValue red, out CssValue green, out CssValue blue)
-        {
-            red = null;
-            green = null;
-            blue = null; 
-            
-            if (args.Items.Length != 3)
-                return false;
-
-            var items = args.Items;
-            if (items[0].ValueType == CssValueType.Percentage && items[1].ValueType == CssValueType.Percentage && items[2].ValueType == CssValueType.Percentage)
-            {
-                red = items[0];
-                green = items[1];
-                blue = items[2];
-                return true;
-            }
-
-            if (items[1].ValueType == CssValueType.Number && items[1].ValueType == CssValueType.Number && items[2].ValueType == CssValueType.Number)
-            {
-                red = items[0];
-                green = items[1];
-                blue = items[2];
-                return true;
-            }
-
-            return false;
         }
     }
 }

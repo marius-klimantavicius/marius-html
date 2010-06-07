@@ -33,15 +33,14 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public abstract class CssBasePropertyHandler
+    public abstract class CssPropertyParser
     {
-
-        protected bool Valid(CssExpression expression)
+        public static bool Valid(CssExpression expression)
         {
             return expression.Current.IsNull();
         }
 
-        protected bool Match(CssExpression expression, CssIdentifier keyword)
+        public static bool Match(CssExpression expression, CssIdentifier keyword)
         {
             if (expression.Current.ValueType == CssValueType.Identifier)
             {
@@ -55,14 +54,14 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected CssValue MatchInherit(CssExpression expression)
+        public static CssValue MatchInherit(CssExpression expression)
         {
             if (Match(expression, CssKeywords.Inherit))
                 return CssKeywords.Inherit;
             return null;
         }
 
-        protected bool Match(CssExpression expression, CssIdentifier keyword, ref CssValue result)
+        public static bool Match(CssExpression expression, CssIdentifier keyword, ref CssValue result)
         {
             if (expression.Current.ValueType == CssValueType.Identifier)
             {
@@ -77,7 +76,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchAny(CssExpression expression, CssIdentifier[] keywords, ref CssValue result)
+        public static bool MatchAny(CssExpression expression, CssIdentifier[] keywords, ref CssValue result)
         {
             if (expression.Current.ValueType != CssValueType.Identifier)
                 return false;
@@ -91,7 +90,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchAngle(CssExpression expression, ref CssValue result)
+        public static bool MatchAngle(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Angle)
             {
@@ -102,7 +101,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchColor(CssExpression expression, ref CssValue result)
+        public static bool MatchColor(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Identifier)
             {
@@ -118,7 +117,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchUri(CssExpression expression, ref CssValue result)
+        public static bool MatchUri(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Uri)
             {
@@ -130,7 +129,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchLength(CssExpression expression, ref CssValue result)
+        public static bool MatchLength(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Length)
             {
@@ -152,37 +151,19 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchShape(CssExpression expression, ref CssValue result)
+        public static bool MatchShape(CssExpression expression, ref CssValue result)
         {
-            if (expression.Current.ValueType != CssValueType.Function)
-                return false;
+            if (expression.Current.ValueType == CssValueType.Rect)
+            {
+                result = expression.Current;
+                expression.MoveNext();
+                return true;
+            }
 
-            CssFunction fun = (CssFunction)expression.Current;
-            if (!fun.Name.Equals("rect", StringComparison.InvariantCultureIgnoreCase))
-                return false;
-
-            if (fun.Arguments.Items.Length != 4)
-                return false;
-
-            CssValue top = null, right = null, bottom = null, left = null;
-            if (!MatchLength(expression, ref top) && !Match(expression, CssKeywords.Auto, ref top))
-                return false;
-
-            if (!MatchLength(expression, ref right) && !Match(expression, CssKeywords.Auto, ref right))
-                return false;
-
-            if (!MatchLength(expression, ref bottom) && !Match(expression, CssKeywords.Auto, ref bottom))
-                return false;
-
-            if (!MatchLength(expression, ref left) && !Match(expression, CssKeywords.Auto, ref left))
-                return false;
-
-            result = new CssRect(top, right, bottom, left);
-
-            return true;
+            return false;
         }
 
-        protected bool MatchString(CssExpression expression, ref CssValue result)
+        public static bool MatchString(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueType == CssValueType.String)
             {
@@ -194,19 +175,19 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchCounter(CssExpression expression, ref CssValue result)
+        public static bool MatchCounter(CssExpression expression, ref CssValue result)
         {
             // TODO: implement
             return false;
         }
 
-        protected bool MatchAttr(CssExpression expression, ref CssValue result)
+        public static bool MatchAttr(CssExpression expression, ref CssValue result)
         {
             // TODO: implement
             return false;
         }
 
-        protected bool MatchIdentifier(CssExpression expression, ref CssValue result)
+        public static bool MatchIdentifier(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueType == CssValueType.Identifier)
             {
@@ -218,7 +199,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchNumber(CssExpression expression, ref CssValue result)
+        public static bool MatchNumber(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueType == CssValueType.Number)
             {
@@ -230,7 +211,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchPercentage(CssExpression expression, ref CssValue result)
+        public static bool MatchPercentage(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueType == CssValueType.Percentage)
             {
@@ -241,7 +222,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchTime(CssExpression expression, ref CssValue result)
+        public static bool MatchTime(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Time)
             {
@@ -263,7 +244,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        protected bool MatchFrequency(CssExpression expression, ref CssValue result)
+        public static bool MatchFrequency(CssExpression expression, ref CssValue result)
         {
             if (expression.Current.ValueGroup == CssValueGroup.Frequency)
             {

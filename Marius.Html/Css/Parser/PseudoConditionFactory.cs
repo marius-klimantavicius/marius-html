@@ -37,11 +37,6 @@ namespace Marius.Html.Css.Parser
 {
     public class PseudoConditionFactory
     {
-        public static PseudoConditionFactory Create()
-        {
-            return new PseudoConditionFactory();
-        }
-
         public virtual CssCondition PseudoIdentifierCondition(string identifier)
         {
             CssPseudoValue condition = new CssPseudoIdentifier(identifier);

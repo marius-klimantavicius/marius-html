@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public abstract class CssShortcutHandler: CssBasePropertyHandler
+    public abstract class CssShortcutHandler: CssPropertyParser
     {
         public abstract bool Apply(CssContext context, CssBox box, CssExpression expression);
     }
