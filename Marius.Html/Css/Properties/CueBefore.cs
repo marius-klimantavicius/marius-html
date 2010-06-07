@@ -27,14 +27,11 @@ THE SOFTWARE.
 #endregion
 using System;
 using Marius.Html.Css.Values;
-using System.Collections.Generic;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CounterChange: CssPropertyHandler
+    public class CueBefore: CssPropertyHandler
     {
-        public CssCounterChangeType ChangeType { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -45,85 +42,27 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.None; }
         }
 
-        public CounterChange(CssCounterChangeType change)
-        {
-            ChangeType = change;
-        }
-
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
             CssValue value = Parse(context, expression);
             if (value == null || !Valid(expression, full))
                 return false;
 
-            switch (ChangeType)
-            {
-                case CssCounterChangeType.Reset:
-                    box.CounterReset = value;
-                    break;
-                case CssCounterChangeType.Increment:
-                    box.CounterIncrement = value;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
+            box.CueBefore = value;
 
             return true;
         }
 
         public virtual CssValue Parse(CssContext context, CssExpression expression)
         {
-            // [ <identifier>  <integer>? ]+ | none | inherit
             if (Match(expression, CssKeywords.None))
                 return CssKeywords.None;
 
-            // 'initial' reserved for future use and must not be used as counter name
-            if (Match(expression, CssKeywords.Initial))
-                return null;
-
             CssValue result = null;
-            List<CssValue> values = new List<CssValue>();
-
-            while (MatchChangeItem(context, expression, ref result))
-                values.Add(result);
-
-            if (values.Count > 0)
-                return new CssValueList(values.ToArray());
+            if (MatchUri(expression, ref result))
+                return result;
 
             return MatchInherit(expression);
         }
-
-        private bool MatchChangeItem(CssContext context, CssExpression expression, ref CssValue result)
-        {
-            CssValue name = null, value = null;
-
-            if (!MatchIdentifier(expression, ref name))
-                return false;
-
-            MatchNumber(expression, ref value);
-
-            if (value == null)
-            {
-                switch (ChangeType)
-                {
-                    case CssCounterChangeType.Reset:
-                        value = CssNumber.Zero;
-                        break;
-                    case CssCounterChangeType.Increment:
-                        value = CssNumber.One;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return true;
-        }
-    }
-
-    public enum CssCounterChangeType
-    {
-        Reset,
-        Increment,
     }
 }

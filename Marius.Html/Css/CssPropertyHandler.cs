@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css
 {
     public abstract class CssPropertyHandler
     {

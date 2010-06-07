@@ -26,14 +26,15 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CueValue: CssPropertyHandler
+    public abstract class SideBorderWidth: SideHandler
     {
-        public CssCuePosition Position { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -41,13 +42,10 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssKeywords.None; }
+            get { return CssKeywords.Medium; }
         }
 
-        public CueValue(CssCuePosition position)
-        {
-            Position = position;
-        }
+        protected abstract void Apply(CssBox box, CssValue value);
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
@@ -55,37 +53,54 @@ namespace Marius.Html.Css.Properties
             if (value == null || !Valid(expression, full))
                 return false;
 
-            switch (Position)
-            {
-                case CssCuePosition.Before:
-                    box.CueBefore = value;
-                    break;
-                case CssCuePosition.After:
-                    box.CueAfter = value;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
+            Apply(box, value);
 
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
-            if (Match(expression, CssKeywords.None))
-                return CssKeywords.None;
-
             CssValue result = null;
-            if (MatchUri(expression, ref result))
+            if (MatchAny(expression, new[] { CssKeywords.Thin, CssKeywords.Thick, CssKeywords.Medium }, ref result))
+                return result;
+
+            if (MatchLength(expression, ref result))
                 return result;
 
             return MatchInherit(expression);
         }
     }
 
-    public enum CssCuePosition
+    public class BorderTopWidth: SideBorderWidth
     {
-        Before,
-        After,
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderTopWidth = value;
+        }
     }
+
+    public class BorderRightWidth: SideBorderWidth
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderRightWidth = value;
+        }
+    }
+
+    public class BorderBottomWidth: SideBorderWidth
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderBottomWidth = value;
+        }
+    }
+
+    public class BorderLeftWidth: SideBorderWidth
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderLeftWidth = value;
+        }
+    }
+
 }

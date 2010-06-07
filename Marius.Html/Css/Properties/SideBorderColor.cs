@@ -33,10 +33,8 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSideWidth: SideHandler
+    public abstract class SideBorderColor: SideHandler
     {
-        public CssBorderSide Side { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -44,37 +42,18 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssKeywords.Medium; }
+            get { return CssBoxColor.Instance; }
         }
 
-        public BorderSideWidth(CssBorderSide side)
-        {
-            Side = side;
-        }
+        protected abstract void Apply(CssBox box, CssValue value);
 
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
-            CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression, full))
+            CssValue result = Parse(context, expression);
+            if (result == null || !Valid(expression, full))
                 return false;
 
-            switch (Side)
-            {
-                case CssBorderSide.Top:
-                    box.BorderTopWidth = value;
-                    break;
-                case CssBorderSide.Right:
-                    box.BorderRightWidth = value;
-                    break;
-                case CssBorderSide.Bottom:
-                    box.BorderBottomWidth = value;
-                    break;
-                case CssBorderSide.Left:
-                    box.BorderLeftWidth = value;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
+            Apply(box, result);
 
             return true;
         }
@@ -82,13 +61,46 @@ namespace Marius.Html.Css.Properties
         public override CssValue Parse(CssContext context, CssExpression expression)
         {
             CssValue result = null;
-            if (MatchAny(expression, new[] { CssKeywords.Thin, CssKeywords.Thick, CssKeywords.Medium }, ref result))
+            if (MatchColor(expression, ref result))
                 return result;
 
-            if (MatchLength(expression, ref result))
-                return result;
+            if (Match(expression, CssKeywords.Transparent))
+                return CssKeywords.Transparent;
 
             return MatchInherit(expression);
         }
     }
+
+    public class BorderTopColor: SideBorderColor
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderTopColor = value;
+        }
+    }
+
+    public class BorderRightColor: SideBorderColor
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderRightColor = value;
+        }
+    }
+
+    public class BorderBottomColor: SideBorderColor
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderBottomColor = value;
+        }
+    }
+
+    public class BorderLeftColor: SideBorderColor
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.BorderLeftColor = value;
+        }
+    }
+
 }

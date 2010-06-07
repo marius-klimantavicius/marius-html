@@ -33,10 +33,8 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class SideLocation: CssPropertyHandler
+    public abstract class SideLocation: CssPropertyHandler
     {
-        public CssSide Side { get; private set; }
-
         public override bool IsInherited
         {
             get { return false; }
@@ -47,29 +45,15 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Auto; }
         }
 
+        protected abstract void Apply(CssBox box, CssValue value);
+
         public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
         {
             CssValue value = Parse(context, expression);
             if (value == null || !Valid(expression, full))
                 return false;
 
-            switch (Side)
-            {
-                case CssSide.Top:
-                    box.Top = value;
-                    break;
-                case CssSide.Right:
-                    box.Right = value;
-                    break;
-                case CssSide.Bottom:
-                    box.Bottom = value;
-                    break;
-                case CssSide.Left:
-                    box.Left = value;
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
+            Apply(box, value);
 
             return true;
         }
@@ -92,11 +76,35 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public enum CssSide
+    public class Top: SideLocation
     {
-        Top,
-        Right,
-        Bottom,
-        Left,
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.Top = value;
+        }
+    }
+
+    public class Right: SideLocation
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.Right = value;
+        }
+    }
+
+    public class Bottom: SideLocation
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.Bottom = value;
+        }
+    }
+
+    public class Left: SideLocation
+    {
+        protected override void Apply(CssBox box, CssValue value)
+        {
+            box.Left = value;
+        }
     }
 }

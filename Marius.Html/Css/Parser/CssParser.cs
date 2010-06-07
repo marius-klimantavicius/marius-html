@@ -716,7 +716,7 @@ namespace Marius.Html.Css.Parser
                 case CssTokens.Plus:
                 case CssTokens.Minus:
                     sign = UnaryOperator();
-                    result = new CssSignedDimension(Dimension(), sign);
+                    result = Dimension(sign);
                     _scanner.SkipWhitespace();
                     break;
                 case CssTokens.Number:
@@ -725,7 +725,7 @@ namespace Marius.Html.Css.Parser
                 case CssTokens.Angle:
                 case CssTokens.Time:
                 case CssTokens.Frequency:
-                    result = Dimension();
+                    result = Dimension(CssSignOperator.Plus);
                     _scanner.SkipWhitespace();
                     break;
                 case CssTokens.String:
@@ -798,32 +798,32 @@ namespace Marius.Html.Css.Parser
             throw new CssParsingException();
         }
 
-        private CssValue Dimension()
+        private CssValue Dimension(CssSignOperator sign)
         {
             CssValue result;
 
             switch (_scanner.Current)
             {
                 case CssTokens.Number:
-                    result = Match(CssTokens.Number, s => new CssNumber(s.Double));
+                    result = Match(CssTokens.Number, s => new CssNumber(Signed(s.Double, sign)));
                     break;
                 case CssTokens.Percentage:
-                    result = Match(CssTokens.Percentage, s => new CssPercentage(s.Dimension.Value));
+                    result = Match(CssTokens.Percentage, s => new CssPercentage(Signed(s.Dimension.Value, sign)));
                     break;
                 case CssTokens.Length:
-                    result = Match(CssTokens.Length, s => new CssLength(s.Dimension.Value, s.Dimension.Units));
+                    result = Match(CssTokens.Length, s => new CssLength(Signed(s.Dimension.Value, sign), s.Dimension.Units));
                     break;
                 case CssTokens.Angle:
-                    result = Match(CssTokens.Angle, s => new CssAngle(s.Dimension.Value, s.Dimension.Units));
+                    result = Match(CssTokens.Angle, s => new CssAngle(Signed(s.Dimension.Value, sign), s.Dimension.Units));
                     break;
                 case CssTokens.Time:
-                    result = Match(CssTokens.Time, s => new CssTime(s.Dimension.Value, s.Dimension.Units));
+                    result = Match(CssTokens.Time, s => new CssTime(Signed(s.Dimension.Value, sign), s.Dimension.Units));
                     break;
                 case CssTokens.Frequency:
-                    result = Match(CssTokens.Frequency, s => new CssFrequency(s.Dimension.Value, s.Dimension.Units));
+                    result = Match(CssTokens.Frequency, s => new CssFrequency(Signed(s.Dimension.Value, sign), s.Dimension.Units));
                     break;
                 case CssTokens.Dimension:
-                    result = Match(CssTokens.Dimension, s => new CssDimension(s.Dimension.Value, s.Dimension.DimensionString));
+                    result = Match(CssTokens.Dimension, s => new CssDimension(Signed(s.Dimension.Value, sign), s.Dimension.DimensionString));
                     break;
                 default:
                     throw new CssParsingException();
@@ -831,6 +831,19 @@ namespace Marius.Html.Css.Parser
             _scanner.SkipWhitespace();
 
             return result;
+        }
+
+        private double Signed(double value, CssSignOperator sign)
+        {
+            switch (sign)
+            {
+                case CssSignOperator.Plus:
+                    return value;
+                case CssSignOperator.Minus:
+                    return -value;
+                default:
+                    throw new ArgumentException("sign");
+            }
         }
 
         private CssSignOperator UnaryOperator()

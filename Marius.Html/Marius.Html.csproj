@@ -50,7 +50,9 @@
     <Compile Include="Css\Properties\Border.cs" />
     <Compile Include="Css\Properties\BorderCollapse.cs" />
     <Compile Include="Css\Properties\BorderColor.cs" />
-    <Compile Include="Css\Properties\BorderSideColor.cs" />
+    <Compile Include="Css\Properties\CounterIncrement.cs" />
+    <Compile Include="Css\Properties\SideBorderColor.cs" />
+    <Compile Include="Css\Properties\CueAfter.cs" />
     <Compile Include="Css\Properties\Margin.cs" />
     <Compile Include="Css\Properties\MaxHeight.cs" />
     <Compile Include="Css\Properties\MaxWidth.cs" />
@@ -78,8 +80,8 @@
     <Compile Include="Css\Properties\SidePadding.cs" />
     <Compile Include="Css\Properties\SideShortcut.cs" />
     <Compile Include="Css\Properties\SideHandler.cs" />
-    <Compile Include="Css\Properties\BorderSideStyle.cs" />
-    <Compile Include="Css\Properties\BorderSideWidth.cs" />
+    <Compile Include="Css\Properties\SideBorderStyle.cs" />
+    <Compile Include="Css\Properties\SideBorderWidth.cs" />
     <Compile Include="Css\Properties\BorderSpacing.cs" />
     <Compile Include="Css\Properties\BorderStyle.cs" />
     <Compile Include="Css\Properties\BorderWidth.cs" />
@@ -88,10 +90,10 @@
     <Compile Include="Css\Properties\Clip.cs" />
     <Compile Include="Css\Properties\Color.cs" />
     <Compile Include="Css\Properties\Content.cs" />
-    <Compile Include="Css\Properties\CounterChange.cs" />
-    <Compile Include="Css\Properties\CssPropertyHandler.cs" />
+    <Compile Include="Css\Properties\CounterReset.cs" />
+    <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\Properties\Cue.cs" />
-    <Compile Include="Css\Properties\CueValue.cs" />
+    <Compile Include="Css\Properties\CueBefore.cs" />
     <Compile Include="Css\Properties\Cursor.cs" />
     <Compile Include="Css\Properties\Direction.cs" />
     <Compile Include="Css\Properties\Display.cs" />
@@ -199,7 +201,6 @@
     <Compile Include="Css\Dom\CssRule.cs" />
     <Compile Include="Css\Dom\CssRuleType.cs" />
     <Compile Include="Css\Values\CssRgbColor.cs" />
-    <Compile Include="Css\Values\CssSignedDimension.cs" />
     <Compile Include="Css\Values\CssSignOperator.cs" />
     <Compile Include="Css\Values\CssString.cs" />
     <Compile Include="Css\Dom\CssStyle.cs" />
