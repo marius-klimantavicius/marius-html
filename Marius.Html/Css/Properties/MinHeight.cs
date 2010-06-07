@@ -43,14 +43,9 @@ namespace Marius.Html.Css.Properties
             get { return CssNumber.Zero; }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public override void Apply(CssBox box, CssValue value)
         {
-            CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression))
-                return false;
-
             box.MinHeight = value;
-            return true;
         }
 
         public override CssValue Parse(CssContext context, CssExpression expression)
