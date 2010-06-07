@@ -45,14 +45,9 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Transparent; }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public override void Apply(CssBox box, CssValue value)
         {
-            CssValue result = Parse(context, expression);
-            if (result == null || !Valid(expression))
-                return false;
-
-            box.BackgroundColor = result;
-            return true;
+            box.BackgroundColor = value;
         }
 
         public override CssValue Parse(CssContext context, CssExpression expression)
