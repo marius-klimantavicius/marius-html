@@ -45,17 +45,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Scroll; }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue result = Parse(context, expression);
-            if (result == null || !Valid(expression, full))
+            if (result == null || !Valid(expression))
                 return false;
 
             box.BackgroundAttachment = result;
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.Scroll, CssKeywords.Fixed }, ref result))

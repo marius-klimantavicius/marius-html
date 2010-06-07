@@ -45,17 +45,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Separate; }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression, full))
+            if (value == null || !Valid(expression))
                 return false;
 
             box.BorderCollapse = value;
             return true;
         }
 
-        public virtual CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssContext context, CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.Collapse, CssKeywords.Separate }, ref result))

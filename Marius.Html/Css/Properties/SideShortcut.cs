@@ -33,24 +33,14 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SideShortcut: CssPropertyHandler
+    public abstract class SideShortcut: CssShortcutHandler
     {
-        public override bool IsInherited
-        {
-            get { return false; }
-        }
-
-        public override CssValue Initial
-        {
-            get { throw new NotSupportedException(); }
-        }
-
         public abstract void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left);
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue[] values = Parse(context, expression);
-            if (values == null || !Valid(expression, full))
+            if (values == null || !Valid(expression))
                 return false;
 
             return ApplyValues(box, values);

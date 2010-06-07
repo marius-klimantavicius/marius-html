@@ -35,6 +35,5 @@ namespace Marius.Html.Css.Properties
 {
     public abstract class SideHandler: CssPropertyHandler
     {
-        public abstract CssValue Parse(CssContext context, CssExpression expression);
     }
 }

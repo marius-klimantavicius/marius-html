@@ -33,24 +33,14 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Background: CssPropertyHandler
+    public class Background: CssShortcutHandler
     {
-        public override bool IsInherited
-        {
-            get { return false; }
-        }
-
-        public override CssValue Initial
-        {
-            get { throw new NotSupportedException(); } // should I thrown or should I null
-        }
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression, bool full)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue inherit = MatchInherit(expression);
             if (inherit != null)
             {
-                if (!Valid(expression, full))
+                if (!Valid(expression))
                     return false;
 
                 box.BackgroundAttachment = CssKeywords.Inherit;
@@ -122,7 +112,7 @@ namespace Marius.Html.Css.Properties
             if (attachment == null && color == null && image == null && position == null && repeat == null)
                 return false;
 
-            if (!Valid(expression, full))
+            if (!Valid(expression))
                 return false;
 
             box.BackgroundAttachment = attachment ?? context.BackgroundAttachment.Initial;
