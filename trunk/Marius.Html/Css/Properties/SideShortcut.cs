@@ -46,6 +46,12 @@ namespace Marius.Html.Css.Properties
             return ApplyValues(box, values);
         }
 
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
         public virtual CssValue[] Parse(CssContext context, CssExpression expression)
         {
             CssValue value;

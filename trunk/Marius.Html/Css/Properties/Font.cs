@@ -35,36 +35,47 @@ namespace Marius.Html.Css.Properties
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
-            CssValue value = null;
-            if (MatchAny(expression, new[] { CssKeywords.Caption, CssKeywords.Icon, CssKeywords.Menu, CssKeywords.MessageBox, CssKeywords.SmallCaption, CssKeywords.StatusBar }, ref value))
-            {
-                if (!Valid(expression))
-                    return false;
+            CssValue[] values = Parse(context, expression);
+            if (values == null || !Valid(expression))
+                return false;
 
-                box.FontFamily = null;
-                box.FontSize = null;
+            if (values[6] == null)
+            {
+                box.FontStyle = values[0] ?? context.FontStyle.Initial;
+                box.FontVariant = values[1] ?? context.FontVariant.Initial;
+                box.FontWeight = values[2] ?? context.FontWeight.Initial;
+                box.FontSize = values[3];
+                box.LineHeight = values[4] ?? context.LineHeight.Initial;
+                box.FontFamily = values[5] ?? context.FontFamily.Initial;
+                box.Font = null;
+            }
+            else
+            {
                 box.FontStyle = null;
                 box.FontVariant = null;
                 box.FontWeight = null;
-
-                box.Font = value;
-                return true;
+                box.FontSize = null;
+                box.LineHeight = null;
+                box.FontFamily = null;
+                box.Font = values[6];
             }
+            return true;
+        }
+
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
+        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        {
+            CssValue value = null;
+            if (MatchAny(expression, new[] { CssKeywords.Caption, CssKeywords.Icon, CssKeywords.Menu, CssKeywords.MessageBox, CssKeywords.SmallCaption, CssKeywords.StatusBar }, ref value))
+                return new[] { null, null, null, null, null, null, value };
 
             if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression))
-                    return false;
-
-                box.FontFamily = CssKeywords.Inherit;
-                box.FontSize = CssKeywords.Inherit;
-                box.FontStyle = CssKeywords.Inherit;
-                box.FontVariant = CssKeywords.Inherit;
-                box.FontWeight = CssKeywords.Inherit;
-
-                box.Font = null;
-                return true;
-            }
+                return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, null };
 
             // 	[ [ 'font-style'  || 'font-variant'  || 'font-weight'  ]? 'font-size' [ / 'line-height'  ]? 'font-family'  ] | caption | icon | menu | message-box | small-caption | status-bar | inherit
             CssValue style = null, variant = null, weight = null, size = null, family = null, height = null;
@@ -78,7 +89,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (style != null)
-                        return false;
+                        return null;
 
                     has = true;
                     style = value;
@@ -88,7 +99,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (variant != null)
-                        return false;
+                        return null;
 
                     has = true;
                     variant = value;
@@ -98,7 +109,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (weight != null)
-                        return false;
+                        return null;
 
                     has = true;
                     weight = value;
@@ -107,7 +118,7 @@ namespace Marius.Html.Css.Properties
 
             size = context.FontSize.Parse(context, expression);
             if (size == null)
-                return false;
+                return null;
 
             if (expression.Current.ValueType == CssValueType.Slash)
             {
@@ -115,23 +126,14 @@ namespace Marius.Html.Css.Properties
 
                 height = context.LineHeight.Parse(context, expression);
                 if (height == null)
-                    return false;
+                    return null;
             }
 
             family = context.FontFamily.Parse(context, expression);
             if (family == null)
-                return false;
+                return null;
 
-            box.Font = null;
-
-            box.FontStyle = style ?? context.FontStyle.Initial;
-            box.FontVariant = variant ?? context.FontVariant.Initial;
-            box.FontWeight = weight ?? context.FontWeight.Initial;
-            box.FontSize = size;
-            box.LineHeight = height ?? context.LineHeight.Initial;
-            box.FontFamily = family ?? context.FontFamily.Initial;
-
-            return true;
+            return new[] { style, variant, weight, size, height, family, null };
         }
     }
 }

@@ -37,19 +37,29 @@ namespace Marius.Html.Css.Properties
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
-            CssValue inherit = MatchInherit(expression);
-            if (inherit != null)
-            {
-                if (!Valid(expression))
-                    return false;
+            CssValue[] values = Parse(context, expression);
+            if (values == null || !Valid(expression))
+                return false;
 
-                box.BackgroundAttachment = CssKeywords.Inherit;
-                box.BackgroundColor = CssKeywords.Inherit;
-                box.BackgroundImage = CssKeywords.Inherit;
-                box.BackgroundPosition= CssKeywords.Inherit;
-                box.BackgroundRepeat = CssKeywords.Inherit;
-                return true;
-            }
+            box.BackgroundAttachment = values[0] ?? context.BackgroundAttachment.Initial;
+            box.BackgroundColor = values[1] ?? context.BackgroundColor.Initial;
+            box.BackgroundImage = values[2] ?? context.BackgroundImage.Initial;
+            box.BackgroundPosition = values[3] ?? context.BackgroundPosition.Initial;
+            box.BackgroundRepeat = values[4] ?? context.BackgroundRepeat.Initial;
+
+            return true;
+        }
+
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
+        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        {
+            if (MatchInherit(expression) != null)
+                return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
 
             bool has = true;
             CssValue value;
@@ -62,7 +72,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (attachment != null)
-                        return false;
+                        return null;
 
                     has = true;
                     attachment = value;
@@ -72,7 +82,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (color != null)
-                        return false;
+                        return null;
 
                     has = true;
                     color = value;
@@ -82,7 +92,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (image != null)
-                        return false;
+                        return null;
 
                     has = true;
                     image = value;
@@ -92,7 +102,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (position != null)
-                        return false;
+                        return null;
 
                     has = true;
                     position = value;
@@ -102,7 +112,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (repeat != null)
-                        return false;
+                        return null;
 
                     has = true;
                     repeat = value;
@@ -110,18 +120,9 @@ namespace Marius.Html.Css.Properties
             }
 
             if (attachment == null && color == null && image == null && position == null && repeat == null)
-                return false;
+                return null;
 
-            if (!Valid(expression))
-                return false;
-
-            box.BackgroundAttachment = attachment ?? context.BackgroundAttachment.Initial;
-            box.BackgroundColor = color ?? context.BackgroundColor.Initial;
-            box.BackgroundImage = image ?? context.BackgroundImage.Initial;
-            box.BackgroundPosition = position ?? context.BackgroundPosition.Initial;
-            box.BackgroundRepeat = repeat ?? context.BackgroundRepeat.Initial;
-
-            return true;
+            return new[] { attachment, color, image, position, repeat };
         }
     }
 }

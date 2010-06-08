@@ -35,23 +35,33 @@ namespace Marius.Html.Css.Properties
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
+            CssValue[] values = Parse(context, expression);
+            if (values == null || !Valid(expression))
+                return false;
+
+            box.PauseBefore = values[0];
+            box.PauseAfter = values[1];
+
+            return true;
+        }
+
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
+        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        {
             if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression))
-                    return false;
-
-                box.PauseBefore = CssKeywords.Inherit;
-                box.PauseAfter = CssKeywords.Inherit;
-
-                return true;
-            }
+                return new[] { CssKeywords.Inherit, CssKeywords.Inherit };
 
             CssValue value = null;
             CssValue before, after;
 
             value = context.PauseBefore.Parse(context, expression);
             if (value == null)
-                return false;
+                return null;
 
             before = after = value;
 
@@ -59,12 +69,7 @@ namespace Marius.Html.Css.Properties
             if (value != null)
                 after = value;
 
-            if (!Valid(expression))
-                return false;
-
-            box.PauseBefore = before;
-            box.PauseAfter = after;
-            return true;
+            return new[] { before, after };
         }
     }
 }

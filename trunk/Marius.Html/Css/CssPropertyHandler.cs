@@ -38,6 +38,15 @@ namespace Marius.Html.Css
         public abstract bool IsInherited { get; }
         public abstract CssValue Initial { get; }
 
+        public virtual bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression))
+                return false;
+
+            return true;
+        }
+
         public virtual void Apply(CssBox box, CssValue value)
         {
             throw new NotImplementedException();

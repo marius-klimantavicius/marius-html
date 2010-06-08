@@ -35,17 +35,27 @@ namespace Marius.Html.Css.Properties
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
+            CssValue[] values = Parse(context, expression);
+            if (values == null || !Valid(expression))
+                return false;
+
+            box.ListStyleType = values[0] ?? context.ListStyleType.Initial;
+            box.ListStylePosition = values[1] ?? context.ListStylePosition.Initial;
+            box.ListStyleImage = values[2] ?? context.ListStyleImage.Initial;
+
+            return true;
+        }
+
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
+        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        {
             if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression))
-                    return false;
-
-                box.ListStyleImage = CssKeywords.Inherit;
-                box.ListStylePosition = CssKeywords.Inherit;
-                box.ListStyleType = CssKeywords.Inherit;
-
-                return true;
-            }
+                return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
 
             CssValue type = null, position = null, image = null;
             CssValue value = null;
@@ -59,7 +69,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (type != null)
-                        return false;
+                        return null;
 
                     has = true;
                     type = value;
@@ -69,7 +79,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (position != null)
-                        return false;
+                        return null;
 
                     has = true;
                     position = value;
@@ -79,7 +89,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (image != null)
-                        return false;
+                        return null;
 
                     has = true;
                     image = value;
@@ -87,16 +97,9 @@ namespace Marius.Html.Css.Properties
             }
 
             if (type == null && position == null && image == null)
-                return false;
+                return null;
 
-            if (!Valid(expression))
-                return false;
-
-            box.ListStyleType = type ?? context.ListStyleType.Initial;
-            box.ListStylePosition = position ?? context.ListStylePosition.Initial;
-            box.ListStyleImage = image ?? context.ListStyleImage.Initial;
-
-            return true;
+            return new[] { type, position, image };
         }
     }
 }
