@@ -43,7 +43,7 @@ namespace Marius.Html.Css.Properties
             box.BorderLeftStyle = left;
         }
 
-        protected override void RetrieveHandlers(CssContext context, out SideHandler top, out SideHandler right, out SideHandler bottom, out SideHandler left)
+        protected override void RetrieveHandlers(CssContext context, out CssPropertyHandler top, out CssPropertyHandler right, out CssPropertyHandler bottom, out CssPropertyHandler left)
         {
             top = context.BorderTopWidth;
             right = context.BorderRightWidth;

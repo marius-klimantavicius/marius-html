@@ -45,8 +45,6 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Auto; }
         }
 
-        protected abstract void Apply(CssBox box, CssValue value);
-
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
             CssValue value = Parse(context, expression);
@@ -78,7 +76,7 @@ namespace Marius.Html.Css.Properties
 
     public class Top: SideLocation
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.Top = value;
         }
@@ -86,7 +84,7 @@ namespace Marius.Html.Css.Properties
 
     public class Right: SideLocation
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.Right = value;
         }
@@ -94,7 +92,7 @@ namespace Marius.Html.Css.Properties
 
     public class Bottom: SideLocation
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.Bottom = value;
         }
@@ -102,7 +100,7 @@ namespace Marius.Html.Css.Properties
 
     public class Left: SideLocation
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.Left = value;
         }

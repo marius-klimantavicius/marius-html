@@ -39,5 +39,8 @@ namespace Marius.Html
         public string Class { get; set; }
         
         public IDictionary<string, string> Attributes { get; private set; }
+
+        public Element Parent { get; private set; }
+        public Element[] Children { get; private set; }
     }
 }
