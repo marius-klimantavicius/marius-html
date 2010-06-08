@@ -75,7 +75,7 @@ h1 { color: red; rotation: 70minutes }
             var e = CssStylesheet.Parse(@"
 h1, h2 {color: green }
 h6 {color: black }
-h1 { color: red; rotation: 70minutes }
+h1 { color: red }
 ");
             AssertStylesheetsEqual(e, s);
         }

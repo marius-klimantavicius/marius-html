@@ -41,9 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssPropertyParser.cs" />
     <Compile Include="Css\CssContext.cs" />
     <Compile Include="Css\CssShortcutHandler.cs" />
+    <Compile Include="Css\Dom\CssStylesheetSource.cs" />
+    <Compile Include="Css\NullPropertyParser.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
     <Compile Include="Css\Properties\Background.cs" />
     <Compile Include="Css\Properties\BackgroundPosition.cs" />
@@ -224,6 +227,7 @@
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
     <Compile Include="Css\Utils.cs" />
+    <Compile Include="Element.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

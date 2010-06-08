@@ -82,5 +82,10 @@ namespace Marius.Html.Css.Values
         {
             return Utils.GetHashCode(Units, Value, ValueType);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}{1}", Value, (Units).ToString().ToLowerInvariant());
+        }
     }
 }
