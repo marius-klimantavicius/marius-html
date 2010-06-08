@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SideBorderStyle: SideHandler
+    public abstract class SideBorderStyle: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -43,19 +43,6 @@ namespace Marius.Html.Css.Properties
         public override CssValue Initial
         {
             get { return CssKeywords.None; }
-        }
-
-        protected abstract void Apply(CssBox box, CssValue value);
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
-        {
-            CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression))
-                return false;
-
-            Apply(box, value);
-
-            return true;
         }
 
         public override CssValue Parse(CssContext context, CssExpression expression)
@@ -71,7 +58,7 @@ namespace Marius.Html.Css.Properties
 
     public class BorderTopStyle: SideBorderStyle
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.BorderTopStyle = value;
         }
@@ -79,7 +66,7 @@ namespace Marius.Html.Css.Properties
 
     public class BorderRightStyle: SideBorderStyle
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.BorderRightStyle = value;
         }
@@ -87,7 +74,7 @@ namespace Marius.Html.Css.Properties
 
     public class BorderBottomStyle: SideBorderStyle
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.BorderBottomStyle = value;
         }
@@ -95,7 +82,7 @@ namespace Marius.Html.Css.Properties
 
     public class BorderLeftStyle: SideBorderStyle
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.BorderLeftStyle = value;
         }

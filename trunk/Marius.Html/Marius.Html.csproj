@@ -44,7 +44,6 @@
     <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssPropertyParser.cs" />
     <Compile Include="Css\CssContext.cs" />
-    <Compile Include="Css\CssShortcutHandler.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\NullPropertyParser.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
@@ -84,7 +83,6 @@
     <Compile Include="Css\Properties\Richness.cs" />
     <Compile Include="Css\Properties\SidePadding.cs" />
     <Compile Include="Css\Properties\SideShortcut.cs" />
-    <Compile Include="Css\Properties\SideHandler.cs" />
     <Compile Include="Css\Properties\SideBorderStyle.cs" />
     <Compile Include="Css\Properties\SideBorderWidth.cs" />
     <Compile Include="Css\Properties\BorderSpacing.cs" />

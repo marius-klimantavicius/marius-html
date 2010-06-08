@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SidePadding: SideHandler
+    public abstract class SidePadding: CssPropertyHandler
     {
         public override bool IsInherited
         {
@@ -41,19 +41,6 @@ namespace Marius.Html.Css.Properties
         public override CssValue Initial
         {
             get { return CssNumber.Zero; }
-        }
-
-        protected abstract void Apply(CssBox box, CssValue value);
-
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
-        {
-            CssValue value = Parse(context, expression);
-            if (value == null || !Valid(expression))
-                return false;
-
-            Apply(box, value);
-
-            return true;
         }
 
         public override CssValue Parse(CssContext context, CssExpression expression)
@@ -71,7 +58,7 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingTop: SidePadding
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingTop = value;
         }
@@ -79,7 +66,7 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingRight: SidePadding
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingRight = value;
         }
@@ -87,7 +74,7 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingBottom: SidePadding
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingBottom = value;
         }
@@ -95,7 +82,7 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingLeft: SidePadding
     {
-        protected override void Apply(CssBox box, CssValue value)
+        public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingLeft = value;
         }
