@@ -37,17 +37,42 @@ namespace Marius.Html.Css.Properties
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
+            CssValue[][] values = Parse(context, expression);
+            if (values == null || !Valid(expression))
+                return false;
+
+            if (values[0] == null)
+                context.BorderWidth.Apply(box, context.BorderTopWidth.Initial, context.BorderRightWidth.Initial, context.BorderBottomWidth.Initial, context.BorderLeftWidth.Initial);
+            else
+                context.BorderWidth.ApplyValues(box, values[0]);
+
+            if (values[1] == null)
+                context.BorderStyle.Apply(box, context.BorderTopStyle.Initial, context.BorderRightStyle.Initial, context.BorderBottomStyle.Initial, context.BorderLeftStyle.Initial);
+            else
+                context.BorderStyle.ApplyValues(box, values[1]);
+
+            if (values[2] == null)
+                context.BorderColor.Apply(box, context.BorderTopColor.Initial, context.BorderRightColor.Initial, context.BorderBottomColor.Initial, context.BorderLeftColor.Initial);
+            else
+                context.BorderColor.ApplyValues(box, values[2]);
+
+            return true;
+        }
+
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[][] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
+        protected virtual CssValue[][] Parse(CssContext context, CssExpression expression)
+        {
             if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression))
-                    return false;
-
-                context.BorderWidth.Apply(box, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit);
-                context.BorderStyle.Apply(box, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit);
-                context.BorderColor.Apply(box, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit);
-
-                return true;
-            }
+                return new[]{
+                    new[]{ CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit},
+                    new[]{ CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit},
+                    new[]{ CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit}
+                };
 
             CssValue[] values;
             CssValue[] width = null, style = null, color = null;
@@ -61,7 +86,7 @@ namespace Marius.Html.Css.Properties
                 if (values != null)
                 {
                     if (width != null)
-                        return false;
+                        return null;
 
                     width = values;
                     has = true;
@@ -71,7 +96,7 @@ namespace Marius.Html.Css.Properties
                 if (values != null)
                 {
                     if (style != null)
-                        return false;
+                        return null;
 
                     style = values;
                     has = true;
@@ -81,7 +106,7 @@ namespace Marius.Html.Css.Properties
                 if (values != null)
                 {
                     if (color != null)
-                        return false;
+                        return null;
 
                     color = values;
                     has = true;
@@ -89,27 +114,9 @@ namespace Marius.Html.Css.Properties
             }
 
             if (width == null && style == null && color == null)
-                return false;
+                return null;
 
-            if (!Valid(expression))
-                return false;
-
-            if (width == null)
-                context.BorderWidth.Apply(box, context.BorderTopWidth.Initial, context.BorderRightWidth.Initial, context.BorderBottomWidth.Initial, context.BorderLeftWidth.Initial);
-            else
-                context.BorderWidth.ApplyValues(box, width);
-
-            if (style == null)
-                context.BorderStyle.Apply(box, context.BorderTopStyle.Initial, context.BorderRightStyle.Initial, context.BorderBottomStyle.Initial, context.BorderLeftStyle.Initial);
-            else
-                context.BorderStyle.ApplyValues(box, style);
-
-            if (color == null)
-                context.BorderColor.Apply(box, context.BorderTopColor.Initial, context.BorderRightColor.Initial, context.BorderBottomColor.Initial, context.BorderLeftColor.Initial);
-            else
-                context.BorderColor.ApplyValues(box, color);
-
-            return true;
+            return new[] { width, style, color };
         }
     }
 }

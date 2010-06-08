@@ -35,17 +35,27 @@ namespace Marius.Html.Css.Properties
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
+            CssValue[] values = Parse(context, expression);
+            if (values == null || !Valid(expression))
+                return false;
+
+            box.OutlineColor = values[0] ?? context.OutlineColor.Initial;
+            box.OutlineStyle = values[1] ?? context.OutlineStyle.Initial;
+            box.OutlineWidth = values[2] ?? context.OutlineWidth.Initial;
+
+            return true;
+        }
+
+        public override bool Validate(CssContext context, CssExpression expression)
+        {
+            CssValue[] values = Parse(context, expression);
+            return (values != null && Valid(expression));
+        }
+
+        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        {
             if (MatchInherit(expression) != null)
-            {
-                if (!Valid(expression))
-                    return false;
-
-                box.OutlineColor = CssKeywords.Inherit;
-                box.OutlineStyle = CssKeywords.Inherit;
-                box.OutlineWidth = CssKeywords.Inherit;
-
-                return true;
-            }
+                return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
 
             CssValue value = null;
             CssValue color = null, style = null, width = null;
@@ -59,7 +69,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (color != null)
-                        return false;
+                        return null;
 
                     has = true;
                     color = value;
@@ -69,7 +79,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (style != null)
-                        return false;
+                        return null;
 
                     has = true;
                     style = value;
@@ -79,7 +89,7 @@ namespace Marius.Html.Css.Properties
                 if (value != null)
                 {
                     if (width != null)
-                        return false;
+                        return null;
 
                     has = true;
                     width = value;
@@ -87,17 +97,9 @@ namespace Marius.Html.Css.Properties
             }
 
             if (color == null && style == null && width == null)
-                return false;
+                return null;
 
-            if (!Valid(expression))
-                return false;
-
-            box.OutlineColor = color ?? context.OutlineColor.Initial;
-            box.OutlineStyle = style ?? context.OutlineStyle.Initial;
-            box.OutlineWidth = width ?? context.OutlineWidth.Initial;
-
-            return true;
-
+            return new[] { color, style, width };
         }
     }
 }
