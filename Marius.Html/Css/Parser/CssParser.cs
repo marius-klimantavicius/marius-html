@@ -56,14 +56,14 @@ namespace Marius.Html.Css.Parser
             _scanner = new TokenBuffer(scanner);
         }
 
-        public CssStylesheet Parse()
+        public CssStylesheet Parse(CssStylesheetSource source = CssStylesheetSource.Author)
         {
             _scanner.MoveNext();
 
-            return Stylesheet();
+            return Stylesheet(source);
         }
 
-        private CssStylesheet Stylesheet()
+        private CssStylesheet Stylesheet(CssStylesheetSource source)
         {
             string charset = null;
             List<CssRule> rules = new List<CssRule>();
@@ -93,7 +93,7 @@ namespace Marius.Html.Css.Parser
                     rules.Add(rule);
                 _scanner.SkipSgml();
             }
-            return new CssStylesheet(rules.ToArray());
+            return new CssStylesheet(source, rules.ToArray());
         }
 
         private CssRule Rule()

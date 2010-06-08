@@ -36,12 +36,14 @@ namespace Marius.Html.Css.Dom
 {
     public class CssStylesheet: IEquatable<CssStylesheet>
     {
+        public CssStylesheetSource Source { get; private set; }
         public CssRule[] Rules { get; private set; }
 
-        public CssStylesheet(CssRule[] rules)
+        public CssStylesheet(CssStylesheetSource source, CssRule[] rules)
         {
             Contract.Requires(rules != null);
 
+            Source = source;
             Rules = rules;
         }
 

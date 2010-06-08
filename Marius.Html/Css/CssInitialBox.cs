@@ -30,39 +30,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css.Values
+namespace Marius.Html.Css
 {
-    public class CssUri: CssValue
+    public class CssInitialBox: CssBox
     {
-        public string Uri { get; private set; }
-
-        public CssUri(string uri)
-        {
-            Uri = uri;
-        }
-
-        public sealed override CssValueType ValueType
-        {
-            get { return CssValueType.Uri; }
-        }
-
-        public override string ToString()
-        {
-            return string.Format("url(\"{0}\")", Uri.Escape());
-        }
-
-        public override bool Equals(CssValue other)
-        {
-            CssUri o = other as CssUri;
-            if (o == null)
-                return false;
-
-            return o.Uri == this.Uri;
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Uri, ValueType);
-        }
     }
 }

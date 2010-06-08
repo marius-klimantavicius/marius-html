@@ -30,11 +30,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
+using System.Runtime.CompilerServices;
 
 namespace Marius.Html.Css
 {
     public class CssBox
     {
+        public CssBox Parent { get; private set; }
+        public CssBox FirstChild { get; private set; }
+        public CssBox NextSibling { get; private set; }
+
+        public Element Element { get; private set; }
+
+        #region Properties
         public CssValue Azimuth { get; set; }
         public CssValue BackgroundAttachment { get; set; }
         public CssValue BackgroundColor { get; set; }
@@ -135,6 +143,6 @@ namespace Marius.Html.Css
         public CssValue Width { get; set; }
         public CssValue WordSpacing { get; set; }
         public CssValue ZIndex { get; set; }
-
+        #endregion
     }
 }

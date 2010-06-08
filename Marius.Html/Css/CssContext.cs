@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Marius.Html.Css.Properties;
 using Marius.Html.Css.Parser;
+using Marius.Html.Css.Dom;
 
 namespace Marius.Html.Css
 {
@@ -41,6 +42,7 @@ namespace Marius.Html.Css
             FunctionFactory = new FunctionFactory();
             PseudoConditionFactory = new PseudoConditionFactory();
 
+            #region Initialization of default property handlers
             Azimuth = new Azimuth();
             Background = new Background();
             BackgroundAttachment = new BackgroundAttachment();
@@ -152,11 +154,13 @@ namespace Marius.Html.Css
             Width = new Width();
             WordSpacing = new WordSpacing();
             ZIndex = new ZIndex();
+            #endregion
         }
 
         public virtual FunctionFactory FunctionFactory { get; set; }
         public virtual PseudoConditionFactory PseudoConditionFactory { get; set; }
 
+        #region Property handlers
         public virtual Azimuth Azimuth { get; private set; }
         public virtual Background Background { get; private set; }
         public virtual BackgroundAttachment BackgroundAttachment { get; private set; }
@@ -268,5 +272,6 @@ namespace Marius.Html.Css
         public virtual Width Width { get; private set; }
         public virtual WordSpacing WordSpacing { get; private set; }
         public virtual ZIndex ZIndex { get; private set; }
+        #endregion
     }
 }
