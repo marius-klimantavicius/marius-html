@@ -48,7 +48,7 @@ namespace Marius.Html.Css.Selectors
         }
 
         public CssIdCondition(string attribute, string id)
-            : base(attribute, id, true)
+            : base(attribute, id)
         {
         }
 

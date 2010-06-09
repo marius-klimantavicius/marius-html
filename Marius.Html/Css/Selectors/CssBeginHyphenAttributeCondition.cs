@@ -40,7 +40,7 @@ namespace Marius.Html.Css.Selectors
         }
 
         public CssBeginHyphenAttributeCondition(string name, string value)
-            : base(name, value, true)
+            : base(name, value)
         {
 
         }

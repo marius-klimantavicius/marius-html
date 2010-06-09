@@ -38,24 +38,17 @@ namespace Marius.Html.Css.Selectors
 
         public string Attribute { get; private set; }
         public string Value { get; private set; }
-        public bool IsSpecified { get; private set; }
-
-        public CssAttributeCondition(string attribute, string value)
-            : this(attribute, value, false)
-        {
-
-        }
+        public bool IsSpecified { get { return Value != null; } }
 
         public override CssConditionType ConditionType
         {
             get { return CssConditionType.Attribute; }
         }
 
-        public CssAttributeCondition(string attribute, string value, bool isSpecified)
+        public CssAttributeCondition(string attribute, string value)
         {
             Attribute = attribute;
             Value = value;
-            IsSpecified = isSpecified;
         }
 
         public override string ToString()

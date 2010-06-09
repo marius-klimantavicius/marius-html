@@ -37,7 +37,6 @@ namespace Marius.Html.Css.Selectors
         Child,
         Descendant,
         Sibling,
-        Simple,
 
         Universal,
         Conditional,
