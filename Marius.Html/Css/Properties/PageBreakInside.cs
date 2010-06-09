@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class PageBreakInside: CssPropertyHandler
+    public class PageBreakInside: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

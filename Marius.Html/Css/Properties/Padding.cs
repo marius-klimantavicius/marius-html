@@ -41,7 +41,7 @@ namespace Marius.Html.Css.Properties
             box.PaddingLeft = left;
         }
 
-        protected override void RetrieveHandlers(CssContext context, out CssPropertyHandler top, out CssPropertyHandler right, out CssPropertyHandler bottom, out CssPropertyHandler left)
+        protected override void RetrieveHandlers(CssContext context, out CssSimplePropertyHandler top, out CssSimplePropertyHandler right, out CssSimplePropertyHandler bottom, out CssSimplePropertyHandler left)
         {
             top = context.PaddingTop;
             right = context.PaddingRight;

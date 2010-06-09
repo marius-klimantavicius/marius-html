@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class TextDecoration: CssPropertyHandler
+    public class TextDecoration: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class LetterSpacing: CssPropertyHandler
+    public class LetterSpacing: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

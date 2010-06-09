@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Visibility: CssPropertyHandler
+    public class Visibility: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

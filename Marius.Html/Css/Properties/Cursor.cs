@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Cursor: CssPropertyHandler
+    public class Cursor: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

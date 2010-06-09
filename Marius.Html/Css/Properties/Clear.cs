@@ -30,7 +30,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Clear: CssPropertyHandler
+    public class Clear: CssSimplePropertyHandler
     {
             // 	none | left | right | both | inherit
 

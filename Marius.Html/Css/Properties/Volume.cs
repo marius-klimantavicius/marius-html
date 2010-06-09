@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Volume: CssPropertyHandler
+    public class Volume: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

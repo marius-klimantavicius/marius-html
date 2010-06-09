@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Pitch: CssPropertyHandler
+    public class Pitch: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

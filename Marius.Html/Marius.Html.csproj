@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Css\CssInitialBox.cs" />
-    <Compile Include="Css\CssPropertyParser.cs" />
+    <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\NullPropertyParser.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="Css\Properties\Color.cs" />
     <Compile Include="Css\Properties\Content.cs" />
     <Compile Include="Css\Properties\CounterReset.cs" />
-    <Compile Include="Css\CssPropertyHandler.cs" />
+    <Compile Include="Css\CssSimplePropertyHandler.cs" />
     <Compile Include="Css\Properties\Cue.cs" />
     <Compile Include="Css\Properties\CueBefore.cs" />
     <Compile Include="Css\Properties\Cursor.cs" />

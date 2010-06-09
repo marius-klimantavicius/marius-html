@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Background: CssPropertyParser
+    public class Background: CssPropertyHandler
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {

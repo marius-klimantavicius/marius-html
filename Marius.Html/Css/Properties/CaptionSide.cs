@@ -30,7 +30,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CaptionSide: CssPropertyHandler
+    public class CaptionSide: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

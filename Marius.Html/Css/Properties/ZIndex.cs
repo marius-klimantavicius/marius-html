@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class ZIndex: CssPropertyHandler
+    public class ZIndex: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

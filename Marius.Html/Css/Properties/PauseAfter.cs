@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class PauseAfter: CssPropertyHandler
+    public class PauseAfter: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

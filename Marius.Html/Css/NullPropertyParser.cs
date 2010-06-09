@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Marius.Html.Css
 {
-    public class NullPropertyParser: CssPropertyParser
+    public class NullPropertyParser: CssPropertyHandler
     {
         public static readonly NullPropertyParser Instance = new NullPropertyParser();
 
