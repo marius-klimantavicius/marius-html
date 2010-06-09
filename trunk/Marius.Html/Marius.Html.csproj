@@ -44,6 +44,7 @@
     <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
+    <Compile Include="Css\CssSelectorMatcher.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />

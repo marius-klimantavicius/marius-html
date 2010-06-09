@@ -42,12 +42,12 @@ namespace Marius.Html.Css.Selectors
         }
 
         public CssClassCondition(string className)
-            : base(ClassAttribute, className, true)
+            : base(ClassAttribute, className)
         {
         }
 
         public CssClassCondition(string attribute, string className)
-            : base(attribute, className, true)
+            : base(attribute, className)
         {
         }
 

@@ -40,7 +40,7 @@ namespace Marius.Html.Css.Selectors
         }
 
         public CssIncludesAttributeCondition(string attribute, string value)
-            : base(attribute, value, true)
+            : base(attribute, value)
         {
         }
 
