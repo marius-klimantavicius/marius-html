@@ -27,37 +27,42 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css
 {
-    public class OutlineColor: CssSimplePropertyHandler
+    public abstract class CssSimplePropertyHandler: CssPropertyHandler
     {
-        public override bool IsInherited
+        public abstract bool IsInherited { get; }
+        public abstract CssValue Initial { get; }
+
+        public override bool Validate(CssContext context, CssExpression expression)
         {
-            get { return false; }
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression))
+                return false;
+
+            return true;
         }
 
-        public override CssValue Initial
+        public virtual void Apply(CssBox box, CssValue value)
         {
-            get { return CssKeywords.Invert; }
+            throw new NotImplementedException();
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {
-            box.OutlineColor = value;
+            CssValue value = Parse(context, expression);
+            if (value == null || !Valid(expression))
+                return false;
+
+            Apply(box, value);
+
+            return true;
         }
-
-        public override CssValue Parse(CssContext context, CssExpression expression)
-        {
-            CssValue result = null;
-            if (MatchColor(expression, ref result))
-                return result;
-
-            if (Match(expression, CssKeywords.Invert))
-                return result;
-
-            return MatchInherit(expression);
-        }
+        
+        public abstract CssValue Parse(CssContext context, CssExpression expression);
     }
 }

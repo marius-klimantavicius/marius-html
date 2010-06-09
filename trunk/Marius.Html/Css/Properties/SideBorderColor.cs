@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SideBorderColor: CssPropertyHandler
+    public abstract class SideBorderColor: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class VoiceFamily: CssPropertyHandler
+    public class VoiceFamily: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderSpacing: CssPropertyHandler
+    public class BorderSpacing: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

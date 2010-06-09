@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SideShortcut: CssPropertyParser
+    public abstract class SideShortcut: CssPropertyHandler
     {
         public abstract void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left);
 
@@ -59,7 +59,7 @@ namespace Marius.Html.Css.Properties
             if (MatchInherit(expression) != null)
                 return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
 
-            CssPropertyHandler topHandler, rightHandler, bottomHandler, leftHandler;
+            CssSimplePropertyHandler topHandler, rightHandler, bottomHandler, leftHandler;
             RetrieveHandlers(context, out topHandler, out rightHandler, out bottomHandler, out leftHandler);
 
             value = topHandler.Parse(context, expression);
@@ -88,7 +88,7 @@ namespace Marius.Html.Css.Properties
             return new[] { top, right, bottom, left };
         }
 
-        protected abstract void RetrieveHandlers(CssContext context, out CssPropertyHandler top, out CssPropertyHandler right, out CssPropertyHandler bottom, out CssPropertyHandler left);
+        protected abstract void RetrieveHandlers(CssContext context, out CssSimplePropertyHandler top, out CssSimplePropertyHandler right, out CssSimplePropertyHandler bottom, out CssSimplePropertyHandler left);
 
         public virtual bool ApplyValues(CssBox box, CssValue[] values)
         {

@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Stress: CssPropertyHandler
+    public class Stress: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

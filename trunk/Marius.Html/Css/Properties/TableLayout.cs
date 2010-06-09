@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class TableLayout: CssPropertyHandler
+    public class TableLayout: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

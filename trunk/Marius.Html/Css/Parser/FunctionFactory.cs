@@ -61,29 +61,29 @@ namespace Marius.Html.Css.Parser
 
             CssValue red = null, green = null, blue = null;
 
-            if (CssPropertyParser.MatchPercentage(args, ref red))
+            if (CssPropertyHandler.MatchPercentage(args, ref red))
             {
-                if (!CssPropertyParser.MatchPercentage(args, ref green))
+                if (!CssPropertyHandler.MatchPercentage(args, ref green))
                     return false;
 
-                if (!CssPropertyParser.MatchPercentage(args, ref blue))
+                if (!CssPropertyHandler.MatchPercentage(args, ref blue))
                     return false;
 
-                if (!CssPropertyParser.Valid(args))
+                if (!CssPropertyHandler.Valid(args))
                     return false;
 
                 result = new CssRgbColor(red, green, blue);
                 return true;
             }
-            else if (CssPropertyParser.MatchNumber(args, ref red))
+            else if (CssPropertyHandler.MatchNumber(args, ref red))
             {
-                if (!CssPropertyParser.MatchNumber(args, ref green))
+                if (!CssPropertyHandler.MatchNumber(args, ref green))
                     return false;
 
-                if (!CssPropertyParser.MatchNumber(args, ref blue))
+                if (!CssPropertyHandler.MatchNumber(args, ref blue))
                     return false;
 
-                if (!CssPropertyParser.Valid(args))
+                if (!CssPropertyHandler.Valid(args))
                     return false;
 
                 result = new CssRgbColor(red, green, blue);
@@ -98,19 +98,19 @@ namespace Marius.Html.Css.Parser
             args.Reset();
 
             CssValue top = null, right = null, bottom = null, left = null;
-            if (!CssPropertyParser.MatchLength(args, ref top) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref top))
+            if (!CssPropertyHandler.MatchLength(args, ref top) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref top))
                 return false;
 
-            if (!CssPropertyParser.MatchLength(args, ref right) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref right))
+            if (!CssPropertyHandler.MatchLength(args, ref right) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref right))
                 return false;
 
-            if (!CssPropertyParser.MatchLength(args, ref bottom) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref bottom))
+            if (!CssPropertyHandler.MatchLength(args, ref bottom) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref bottom))
                 return false;
 
-            if (!CssPropertyParser.MatchLength(args, ref left) && !CssPropertyParser.Match(args, CssKeywords.Auto, ref left))
+            if (!CssPropertyHandler.MatchLength(args, ref left) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref left))
                 return false;
 
-            if (!CssPropertyParser.Valid(args))
+            if (!CssPropertyHandler.Valid(args))
                 return false;
 
             result = new CssRect(top, right, bottom, left);

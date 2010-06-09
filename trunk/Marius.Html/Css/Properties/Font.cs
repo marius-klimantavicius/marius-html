@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Font: CssPropertyParser
+    public class Font: CssPropertyHandler
     {
         public override bool Apply(CssContext context, CssBox box, CssExpression expression)
         {

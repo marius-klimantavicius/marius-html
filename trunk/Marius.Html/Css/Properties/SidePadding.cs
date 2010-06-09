@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SidePadding: CssPropertyHandler
+    public abstract class SidePadding: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

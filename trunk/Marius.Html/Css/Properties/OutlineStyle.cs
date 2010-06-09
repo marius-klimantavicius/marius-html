@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class OutlineStyle: CssPropertyHandler
+    public class OutlineStyle: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

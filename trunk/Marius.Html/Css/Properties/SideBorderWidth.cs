@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public abstract class SideBorderWidth: CssPropertyHandler
+    public abstract class SideBorderWidth: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {
