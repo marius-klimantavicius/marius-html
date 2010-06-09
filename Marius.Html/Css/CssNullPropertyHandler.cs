@@ -32,9 +32,9 @@ using System.Text;
 
 namespace Marius.Html.Css
 {
-    public class NullPropertyParser: CssPropertyHandler
+    public class CssNullPropertyHandler: CssPropertyHandler
     {
-        public static readonly NullPropertyParser Instance = new NullPropertyParser();
+        public static readonly CssNullPropertyHandler Instance = new CssNullPropertyHandler();
 
         public override bool Apply(CssContext context, CssBox box, Values.CssExpression expression)
         {
