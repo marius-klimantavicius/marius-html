@@ -15,7 +15,7 @@ namespace Marius.Html.Css.Values
         public CssHexColor(string hex)
         {
             if (!ColorHex.IsMatch(hex))
-                throw new ArgumentException();
+                throw new CssInvalidStateException();
 
             _value = hex;
 
@@ -42,7 +42,7 @@ namespace Marius.Html.Css.Values
                 Blue = new CssNumber(b);
             }
             else
-                throw new ArgumentException(); // should not reach
+                throw new CssInvalidStateException(); // should not reach
         }
 
         public override string ToString()

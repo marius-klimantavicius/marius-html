@@ -41,10 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Cascade\CssPreparedSelector.cs" />
+    <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
+    <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
+    <Compile Include="Css\Cascade\CssStyleList.cs" />
     <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
-    <Compile Include="Css\CssSelectorMatcher.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
@@ -225,7 +228,7 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
-    <Compile Include="Css\Utils.cs" />
+    <Compile Include="Internal\Utils.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

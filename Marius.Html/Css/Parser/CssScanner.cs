@@ -72,7 +72,7 @@ namespace Marius.Html.Css.Parser
         public CssTokens NextToken()
         {
             CssTokens token;
-
+            
             token = _tokenizer.NextToken();
 
             switch (token)
@@ -100,7 +100,7 @@ namespace Marius.Html.Css.Parser
                 case CssTokens.Comment:
                 case CssTokens.SurogateUrl:
                 case CssTokens.ExclamationKeyword:
-                    throw new NotSupportedException("Token must not be returned from CssTokenizer");
+                    throw new CssInvalidStateException("Token must not be returned from CssTokenizer");
                 case CssTokens.Unknown:
                     return Token(token, _tokenizer.Value);
                 default:

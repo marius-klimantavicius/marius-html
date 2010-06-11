@@ -101,7 +101,7 @@ namespace Marius.Html.Css.Values
                     case CssValueType.PlayDuring:
                         return CssValueGroup.Custom;
                 }
-                throw new NotSupportedException();
+                throw new CssInvalidStateException();
             }
         }
 

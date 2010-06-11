@@ -29,40 +29,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
 
-namespace Marius.Html.Css.Dom
+namespace Marius.Html.Css.Cascade
 {
-    public class CssCharset: CssRule
+    public class CssStyleList
     {
-        public string Encoding { get; private set; }
-
-        public CssCharset(string encoding)
-        {
-            Encoding = encoding;
-        }
-
-        public override CssRuleType RuleType
-        {
-            get { return CssRuleType.Charset; }
-        }
-
-        public override string ToString()
-        {
-            return string.Format("@charset \"{0}\";", Encoding.Escape());
-        }
-
-        public override bool Equals(CssRule other)
-        {
-            CssCharset o = other as CssCharset;
-            if (o == null)
-                return false;
-            return o.Encoding == this.Encoding;
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Encoding, RuleType);
-        }
+        private CssPreparedStyle[] _list;
     }
 }

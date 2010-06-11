@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Values
 {
@@ -48,7 +49,7 @@ namespace Marius.Html.Css.Values
                     case CssUnits.KHz:
                         return CssValueType.KHz;
                 }
-                throw new NotSupportedException();
+                throw new CssInvalidStateException();
             }
         }
 

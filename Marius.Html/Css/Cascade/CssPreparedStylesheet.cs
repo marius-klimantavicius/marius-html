@@ -28,41 +28,17 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Marius.Html.Internal;
+using Marius.Html.Css.Dom;
+using System.Net;
+using System.IO;
 
-namespace Marius.Html.Css.Dom
+namespace Marius.Html.Css.Cascade
 {
-    public class CssCharset: CssRule
+    public class CssPreparedStylesheet
     {
-        public string Encoding { get; private set; }
-
-        public CssCharset(string encoding)
+        protected virtual void Prepare(CssStylesheet sheet)
         {
-            Encoding = encoding;
-        }
-
-        public override CssRuleType RuleType
-        {
-            get { return CssRuleType.Charset; }
-        }
-
-        public override string ToString()
-        {
-            return string.Format("@charset \"{0}\";", Encoding.Escape());
-        }
-
-        public override bool Equals(CssRule other)
-        {
-            CssCharset o = other as CssCharset;
-            if (o == null)
-                return false;
-            return o.Encoding == this.Encoding;
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Encoding, RuleType);
         }
     }
 }

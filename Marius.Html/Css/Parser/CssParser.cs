@@ -56,7 +56,7 @@ namespace Marius.Html.Css.Parser
             _scanner = new TokenBuffer(scanner);
         }
 
-        public CssStylesheet Parse(CssStylesheetSource source = CssStylesheetSource.Author)
+        public CssStylesheet Parse(CssStylesheetSource source)
         {
             _scanner.MoveNext();
 
