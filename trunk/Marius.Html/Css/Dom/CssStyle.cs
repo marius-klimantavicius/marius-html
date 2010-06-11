@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Selectors;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Dom
 {

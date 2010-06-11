@@ -34,8 +34,8 @@ namespace Marius.Html.Css.Dom
 {
     public enum CssStylesheetSource
     {
-        Agent,
-        Author,
-        User,
+        Agent = 0,
+        Author = 1,
+        User = 2,
     }
 }

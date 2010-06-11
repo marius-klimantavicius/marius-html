@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Values
 {
@@ -99,7 +100,7 @@ namespace Marius.Html.Css.Values
                 case CssValueType.Slash:
                     return '\\';
                 default:
-                    throw new ArgumentException();
+                    throw new CssInvalidStateException();
             }
         }
 

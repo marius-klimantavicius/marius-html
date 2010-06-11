@@ -29,40 +29,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
+using Marius.Html.Css.Dom;
 
-namespace Marius.Html.Css.Dom
+namespace Marius.Html.Css.Cascade
 {
-    public class CssCharset: CssRule
+    public class CssPreparedStyle
     {
-        public string Encoding { get; private set; }
+        public CssStylesheetSource Source { get; private set; }
+        public CssPreparedSelector Selector { get; private set; }
+        public bool IsImportant { get; private set; }
+        public int Index { get; private set; }
+        public List<CssDeclaration> Declarations { get; private set; }
 
-        public CssCharset(string encoding)
+        public int Count
         {
-            Encoding = encoding;
+            get { return Declarations.Count; }
         }
 
-        public override CssRuleType RuleType
+        public CssPreparedStyle(CssStylesheetSource source, CssPreparedSelector selector, bool isImportant, int index)
         {
-            get { return CssRuleType.Charset; }
+            Source = source;
+            Selector = selector;
+            IsImportant = isImportant;
+            Index = index;
+            Declarations = new List<CssDeclaration>();
         }
 
-        public override string ToString()
+        public void Add(CssDeclaration declaration)
         {
-            return string.Format("@charset \"{0}\";", Encoding.Escape());
-        }
-
-        public override bool Equals(CssRule other)
-        {
-            CssCharset o = other as CssCharset;
-            if (o == null)
-                return false;
-            return o.Encoding == this.Encoding;
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Encoding, RuleType);
+            Declarations.Add(declaration);
         }
     }
 }

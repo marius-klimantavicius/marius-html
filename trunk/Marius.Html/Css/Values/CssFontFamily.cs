@@ -27,6 +27,7 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Values
 {

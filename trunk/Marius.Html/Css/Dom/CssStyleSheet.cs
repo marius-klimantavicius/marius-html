@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
 using Marius.Html.Css.Parser;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Dom
 {
@@ -47,13 +48,13 @@ namespace Marius.Html.Css.Dom
             Rules = rules;
         }
 
-        public static CssStylesheet Parse(string source)
+        public static CssStylesheet Parse(string source, CssStylesheetSource sheetSource = CssStylesheetSource.Author)
         {
             CssScanner scanner = new CssScanner();
             scanner.SetSource(source, 0);
 
             CssParser parser = new CssParser(scanner);
-            return parser.Parse();
+            return parser.Parse(sheetSource);
         }
 
         public override string ToString()

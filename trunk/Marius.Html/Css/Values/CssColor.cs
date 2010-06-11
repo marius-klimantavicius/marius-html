@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Marius.Html.Css.Dom;
 using System.Text.RegularExpressions;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Values
 {
