@@ -250,7 +250,7 @@ namespace Marius.Html.Css.Parser
             //  ;
 
             CssSimpleSelector result;
-            CssCondition condition;
+            CssCondition[] conditions;
 
             if (_scanner.Current == CssTokens.Identifier || _scanner.Current == CssTokens.Star)
             {
@@ -258,34 +258,37 @@ namespace Marius.Html.Css.Parser
 
                 if (MatchesSpecifierStart())
                 {
-                    condition = Condition();
-                    result = new CssConditionalSelector(result, condition);
+                    conditions = Conditions();
+                    result = new CssConditionalSelector(result, conditions);
                 }
             }
             else
             {
                 result = CssUniversalSelector.Instance;
-                condition = Condition();
+                conditions = Conditions();
 
-                result = new CssConditionalSelector(result, condition);
+                result = new CssConditionalSelector(result, conditions);
             }
 
             return result;
         }
 
-        private CssCondition Condition()
+        private CssCondition[] Conditions()
         {
-            CssCondition result, other;
+            CssCondition other;
 
-            result = Specifier();
+            List<CssCondition> result = new List<CssCondition>();
+
+            other = Specifier();
+            result.Add(other);
 
             while (MatchesSpecifierStart())
             {
                 other = Specifier();
-                result = new CssAndCondition(result, other);
+                result.Add(other);
             }
 
-            return result;
+            return result.ToArray();
         }
 
         private CssCondition Specifier()

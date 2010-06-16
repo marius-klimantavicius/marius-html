@@ -39,7 +39,6 @@ namespace Marius.Html.Css.Selectors
         IncludesAttribute,
         Id,
         Class,
-        And,
 
         PseudoElement,
         PseudoClass,
