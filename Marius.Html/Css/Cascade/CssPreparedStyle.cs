@@ -30,13 +30,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Dom;
+using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Cascade
 {
     public class CssPreparedStyle
     {
         public CssStylesheetSource Source { get; private set; }
-        public CssPreparedSelector Selector { get; private set; }
+        public CssSelector Selector { get; private set; }
         public bool IsImportant { get; private set; }
         public int Index { get; private set; }
         public List<CssDeclaration> Declarations { get; private set; }
@@ -46,17 +47,20 @@ namespace Marius.Html.Css.Cascade
             get { return Declarations.Count; }
         }
 
-        public CssPreparedStyle(CssStylesheetSource source, CssPreparedSelector selector, bool isImportant, int index)
+        public CssPreparedStyle(CssStylesheetSource source, CssSelector selector, bool isImportant, int index, IEnumerable<CssDeclaration> declarations)
         {
             Source = source;
             Selector = selector;
             IsImportant = isImportant;
             Index = index;
-            Declarations = new List<CssDeclaration>();
+            Declarations = new List<CssDeclaration>(declarations);
         }
 
         public void Add(CssDeclaration declaration)
         {
+            if (declaration.Important != IsImportant)
+                throw new CssInvalidStateException();
+
             Declarations.Add(declaration);
         }
     }

@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Css\Cascade\CssPreparedSelector.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
     <Compile Include="Css\Cascade\CssStyleList.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="Css\Parser\CssSelectorCombinator.cs" />
     <Compile Include="Css\Parser\ParserHelper.cs" />
     <Compile Include="Css\Parser\TokenBuffer.cs" />
-    <Compile Include="Css\Selectors\CssAndCondition.cs" />
     <Compile Include="Css\Selectors\CssAttributeCondition.cs" />
     <Compile Include="Css\Selectors\CssBeginHyphenAttributeCondition.cs" />
     <Compile Include="Css\Selectors\CssChildSelector.cs" />

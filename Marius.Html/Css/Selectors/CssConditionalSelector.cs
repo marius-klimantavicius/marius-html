@@ -38,24 +38,34 @@ namespace Marius.Html.Css.Selectors
         private readonly CssSpecificity _specificity;
 
         public CssSimpleSelector SimpleSelector { get; private set; }
-        public CssCondition Condition { get; private set; }
+        public CssCondition[] Conditions { get; private set; }
 
         public override CssSelectorType SelectorType
         {
             get { return CssSelectorType.Conditional; }
         }
 
-        public CssConditionalSelector(CssSimpleSelector selector, CssCondition condition)
+        public CssConditionalSelector(CssSimpleSelector selector, CssCondition[] conditions)
         {
             SimpleSelector = selector;
-            Condition = condition;
+            Conditions = conditions;
 
-            _specificity = SimpleSelector.Specificity + Condition.Specificity;
+            _specificity = SimpleSelector.Specificity;
+            for (int i = 0; i < Conditions.Length; i++)
+            {
+                _specificity += Conditions[i].Specificity;
+            }
         }
 
         public override string ToString()
         {
-            return string.Format("{0}{1}", SimpleSelector, Condition);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(SimpleSelector);
+            for (int i = 0; i < Conditions.Length; i++)
+            {
+                sb.Append(Conditions[i].ToString());
+            }
+            return sb.ToString();
         }
 
         public override CssSpecificity Specificity
@@ -69,12 +79,12 @@ namespace Marius.Html.Css.Selectors
             if (o == null)
                 return false;
 
-            return o.SimpleSelector.Equals(this.SimpleSelector) && o.Condition.Equals(this.Condition);
+            return o.SimpleSelector.Equals(this.SimpleSelector) && o.Conditions.ArraysEqual(this.Conditions);
         }
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(SimpleSelector, Condition, SelectorType);
+            return Utils.GetHashCode(SimpleSelector, Conditions, SelectorType);
         }
     }
 }
