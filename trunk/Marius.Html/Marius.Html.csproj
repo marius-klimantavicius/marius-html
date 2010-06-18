@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
+    <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
     <Compile Include="Css\Cascade\CssStyleList.cs" />

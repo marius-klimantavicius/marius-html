@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Marius.Html.Css.Dom;
+
+namespace Marius.Html.Css.Cascade
+{
+    public sealed class StyleCacheManager
+    {
+        private int _index;
+        private CssContext _context;
+        private CssStylesheet[] _stylesheets;
+        private int _importDepth;
+        private List<CssPreparedStyle> _styles;
+
+        public static CssPreparedStylesheet Prepare(CssContext context, CssStylesheet[] stylesheets)
+        {
+            StyleCacheManager manager = new StyleCacheManager(context, stylesheets);
+            return manager.Prepare();
+        }
+
+        private StyleCacheManager(CssContext context, CssStylesheet[] stylesheets)
+        {
+            _context = context;
+            _stylesheets = stylesheets;
+
+            _styles = new List<CssPreparedStyle>();
+        }
+
+        private CssPreparedStylesheet Prepare()
+        {
+            for (int i = 0; i < _stylesheets.Length; i++)
+            {
+                PrepareSingle(_stylesheets[i]);
+            }
+
+            return new CssPreparedStylesheet(_context, _styles);
+        }
+
+        private void PrepareSingle(CssStylesheet sheet)
+        {
+            var rules = sheet.Rules;
+            for (int i = 0; i < rules.Length; i++)
+            {
+                PrepareRule(rules[i], sheet.Source);
+            }
+        }
+
+        private void PrepareRule(CssRule rule, CssStylesheetSource source)
+        {
+            switch (rule.RuleType)
+            {
+                case CssRuleType.Import:
+                    PrepareImport((CssImport)rule, source);
+                    break;
+                case CssRuleType.Media:
+                    PrepareMedia((CssMedia)rule, source);
+                    break;
+                case CssRuleType.Style:
+                    PrepareStyle((CssStyle)rule, source);
+                    break;
+            }
+        }
+
+        private void PrepareStyle(CssStyle style, CssStylesheetSource source)
+        {
+            List<CssDeclaration> normal = new List<CssDeclaration>();
+            List<CssDeclaration> important = new List<CssDeclaration>();
+
+            var decls = style.Declarations;
+            for (int i = 0; i < decls.Length; i++)
+            {
+                if (decls[i].Important)
+                    important.Add(decls[i]);
+                else
+                    normal.Add(decls[i]);
+            }
+
+            var sels = style.Selectors;
+            for (int i = 0; i < sels.Length; i++)
+            {
+                if (important.Count > 0)
+                    _styles.Add(new CssPreparedStyle(source, sels[i], true, _index++, important));
+
+                if (normal.Count > 0)
+                    _styles.Add(new CssPreparedStyle(source, sels[i], false, _index++, normal));
+            }
+        }
+
+        private void PrepareMedia(CssMedia media, CssStylesheetSource source)
+        {
+            if (!_context.IsMediaSupported(media.MediaList))
+                return;
+
+            var rules = media.Rules;
+            for (int i = 0; i < rules.Length; i++)
+            {
+                PrepareRule(rules[i], source);
+            }
+        }
+
+        private void PrepareImport(CssImport import, CssStylesheetSource source)
+        {
+            if (!_context.IsMediaSupported(import.MediaList))
+                return;
+
+            if (_importDepth >= _context.MaxImportDetpth)
+                return;
+
+            _importDepth++;
+
+            CssStylesheet sheet = _context.ImportStylesheet(import.Uri, source);
+            if (sheet == null)
+                return;
+
+            PrepareSingle(sheet);
+
+            _importDepth--;
+        }
+    }
+}

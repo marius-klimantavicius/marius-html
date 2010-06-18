@@ -32,110 +32,248 @@ using Marius.Html.Internal;
 using Marius.Html.Css.Dom;
 using System.Net;
 using System.IO;
+using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Cascade
 {
     public class CssPreparedStylesheet
     {
-        private int _ruleIndex = 0;
-        private List<CssPreparedStyle> _styles = new List<CssPreparedStyle>();
+        private CssContext _context;
+        private CssPreparedStyle[] _styles;
 
-        protected virtual void Prepare(CssStylesheet sheet)
+        public CssPreparedStylesheet(CssContext context, IEnumerable<CssPreparedStyle> styles)
         {
-            // split all rules into important/normal declarations
-            // order rules according to their specificity
-            // inline style (attribute style='') will not appear in the cache, it will be directly attached to the element
+            _context = context;
+            _styles = styles.ToArray();
 
-            _ruleIndex = 0;
-            for (int i = 0; i < sheet.Rules.Length; i++)
-            {
-                AddRule(sheet.Rules[i], sheet.Source);
-            }
+            Array.Sort<CssPreparedStyle>(_styles, _context.StyleComparer);
         }
 
-        protected virtual void AddRule(CssRule rule, CssStylesheetSource source)
+        public virtual IList<CssDeclaration> GetAplicableDeclarations(CssBox box)
         {
-            switch (rule.RuleType)
+            List<CssDeclaration> result = new List<CssDeclaration>();
+            for (int i = 0; i < _styles.Length; i++)
             {
-                case CssRuleType.Import:
-                    AddImport((CssImport)rule, source);
-                    break;
-                case CssRuleType.Media:
-                    AddMedia((CssMedia)rule, source);
-                    break;
-                case CssRuleType.Style:
-                    AddStyle((CssStyle)rule, source);
-                    break;
+                if (Applies(_styles[i].Selector, box))
+                    result.AddRange(_styles[i].Declarations);
             }
+
+            return null;
         }
 
-        private void AddStyle(CssStyle style, CssStylesheetSource source)
+        protected virtual bool Applies(CssSelector selector, CssBox box)
         {
-            List<CssDeclaration> normal = new List<CssDeclaration>();
-            List<CssDeclaration> important = new List<CssDeclaration>();
-
-            for (int i = 0; i < style.Declarations.Length; i++)
+            switch (selector.SelectorType)
             {
-                var decl = style.Declarations[i];
-                if (decl.Important)
-                    important.Add(decl);
-                else
-                    normal.Add(decl);
+                case CssSelectorType.Child:
+                    return AppliesChild((CssChildSelector)selector, box);
+                case CssSelectorType.Descendant:
+                    return AppliesDescendant((CssDescendantSelector)selector, box);
+                case CssSelectorType.Sibling:
+                    return AppliesSibling((CssSiblingSelector)selector, box);
+                case CssSelectorType.Universal:
+                    return true;
+                case CssSelectorType.Conditional:
+                    return AppliesConditional((CssConditionalSelector)selector, box);
+                case CssSelectorType.Element:
+                    return AppliesElement((CssElementSelector)selector, box);
             }
-
-            if (normal.Count == 0 && important.Count == 0)
-                return;
-
-            for (int i = 0; i < style.Selectors.Length; i++)
-            {
-                var sel = style.Selectors[i];
-
-                if (normal.Count > 0)
-                    _styles.Add(new CssPreparedStyle(source, sel, false, _ruleIndex++, normal.ToArray()));
-                else if (important.Count > 0)
-                    _styles.Add(new CssPreparedStyle(source, sel, false, _ruleIndex++, important.ToArray()));
-            }
+            throw new CssInvalidStateException();
         }
 
-        private void AddMedia(CssMedia media, CssStylesheetSource source)
+        protected bool AppliesConditional(CssConditionalSelector selector, CssBox box)
         {
-            if (!media.MediaList.Any(s => s.Equals("all", StringComparison.InvariantCultureIgnoreCase) || s.Equals("screen", StringComparison.InvariantCultureIgnoreCase)))
-                return;
+            if (!Applies(selector.SimpleSelector, box))
+                return false;
 
-            for (int i = 0; i < media.Ruleset.Length; i++)
+            var conditions = selector.Conditions;
+            for (int i = 0; i < conditions.Length; i++)
             {
-                AddRule(media.Ruleset[i], source);
+                if (!MatchesCondition(conditions[i], box))
+                    return false;
             }
+
+            return true;
         }
 
-        private int _importDepth = 0;
-        private const int MaxImportDepth = 20;
-
-        private void AddImport(CssImport import, CssStylesheetSource source)
+        private bool MatchesCondition(CssCondition condition, CssBox box)
         {
-            if (!import.MediaList.Any(s => s.Equals("all", StringComparison.InvariantCultureIgnoreCase) || s.Equals("screen", StringComparison.InvariantCultureIgnoreCase)))
-                return;
-
-            if (_importDepth >= MaxImportDepth)
-                return;
-
-            _importDepth++;
-
-            var request = WebRequest.Create(import.Uri);
-            var response = request.GetResponse();
-
-            string cssSource = null;
-
-            using (var stream = response.GetResponseStream())
-            using (var reader = new StreamReader(stream))
+            switch (condition.ConditionType)
             {
-                cssSource = reader.ReadToEnd();
+                case CssConditionType.Attribute:
+                    return MatchesAttribute((CssAttributeCondition)condition, box);
+                case CssConditionType.BeginHyphenAttribute:
+                    return MatchesBeginHypenAttribute((CssBeginHyphenAttributeCondition)condition, box);
+                case CssConditionType.IncludesAttribute:
+                    return MatchesIncludesAttribute((CssIncludesAttributeCondition)condition, box);
+                case CssConditionType.Id:
+                    return MatchesId((CssIdCondition)condition, box);
+                case CssConditionType.Class:
+                    return MatchesClass((CssClassCondition)condition, box);
+                case CssConditionType.PseudoElement:
+                    return MatchesPseudoElement((CssPseudoElementCondition)condition, box);
+                case CssConditionType.PseudoClass:
+                    return MatchesPseudoClass((CssPseudoClassCondition)condition, box);
             }
 
-            CssStylesheet sheet = CssStylesheet.Parse(cssSource, source);
-            Prepare(sheet);
+            throw new CssInvalidStateException();
+        }
 
-            _importDepth--;
+        private bool MatchesPseudoClass(CssPseudoClassCondition condition, CssBox box)
+        {
+            // currently pseudo elements and classes are not implemented
+            return false;
+        }
+
+        private bool MatchesPseudoElement(CssPseudoElementCondition condition, CssBox box)
+        {
+            // currently pseudo elements and classes are not implemented
+            return false;
+        }
+
+        private bool MatchesClass(CssClassCondition condition, CssBox box)
+        {
+            if (box.Element == null)
+                return false;
+
+            var element = box.Element;
+
+            if (condition.Value == null)
+                return false; // should not happen, maybe throw an exception?
+
+            return StringComparer.InvariantCultureIgnoreCase.Equals(element.Class, condition.Value);
+        }
+
+        private bool MatchesId(CssIdCondition condition, CssBox box)
+        {
+            if (box.Element == null)
+                return false;
+
+            var element = box.Element;
+
+            if (condition.Value == null)
+                return false; // should not happen, maybe throw an exception?
+
+            return StringComparer.InvariantCultureIgnoreCase.Equals(element.Id, condition.Value);
+        }
+
+        private bool MatchesIncludesAttribute(CssIncludesAttributeCondition condition, CssBox box)
+        {
+            if (box.Element == null)
+                return false;
+
+            var element = box.Element;
+            if (element.Attributes.ContainsKey(condition.Attribute))
+            {
+                if (condition.Value == null)
+                    return false; // should not happen, maybe throw an exception?
+
+                var values = element.Attributes[condition.Attribute].Split(); // TODO: specify split chars, as currently it is separated by whitespace, which might be a violation of spec
+                for (int i = 0; i < values.Length; i++)
+                {
+                    if (StringComparer.InvariantCultureIgnoreCase.Equals(values[i], condition.Value))
+                        return true;
+                }
+
+                return false;
+            }
+
+            return false;
+        }
+
+        private bool MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, CssBox box)
+        {
+            if (box.Element == null)
+                return false;
+
+            var element = box.Element;
+            if (element.Attributes.ContainsKey(condition.Attribute))
+            {
+                if (condition.Value == null)
+                    return false; // should not happen, maybe throw an exception?
+
+                var value = element.Attributes[condition.Attribute];
+                if (value.Contains('-'))
+                    value = value.Substring(0, value.IndexOf('-'));
+
+                return StringComparer.InvariantCultureIgnoreCase.Equals(value, condition.Value);
+            }
+
+            return false;
+        }
+
+        private bool MatchesAttribute(CssAttributeCondition condition, CssBox box)
+        {
+            if (box.Element == null)
+                return false;
+
+            var element = box.Element;
+            if (element.Attributes.ContainsKey(condition.Attribute))
+            {
+                if (condition.Value == null)
+                    return true;
+                return StringComparer.InvariantCultureIgnoreCase.Equals(element.Attributes[condition.Attribute], condition.Value);
+            }
+
+            return false;
+        }
+
+        protected bool AppliesDescendant(CssDescendantSelector selector, CssBox box)
+        {
+            if (!Applies(selector.Selector, box))
+                return false;
+
+            var parent = box.Parent;
+            while (parent != null)
+            {
+                if (Applies(selector.AncestorSelector, parent))
+                    return true;
+                parent = parent.Parent;
+            }
+            return false;
+        }
+
+        protected bool AppliesSibling(CssSiblingSelector selector, CssBox box)
+        {
+            var parent = box.Parent;
+            if (parent == null)
+                return false;
+
+            if (!Applies(selector.Selector, box))
+                return false;
+
+            var child = parent.FirstChild;
+            while (child.NextSibling != null)
+            {
+                if (child.NextSibling == box)
+                    return Applies(selector.SiblingSelector, child);
+
+                child = child.NextSibling;
+            }
+
+            throw new CssInvalidStateException();
+        }
+
+        protected bool AppliesChild(CssChildSelector selector, CssBox box)
+        {
+            if (!Applies(selector.Selector, box))
+                return false;
+
+            var parent = box.Parent;
+            if (parent == null)
+                return false;
+
+            return Applies(selector.AncestorSelector, parent);
+        }
+
+        protected bool AppliesElement(CssElementSelector selector, CssBox box)
+        {
+            if (box.Element == null)
+                return false;
+
+            var element = box.Element;
+
+            return StringComparer.InvariantCultureIgnoreCase.Equals(element.Name, selector.Name);
         }
     }
 }

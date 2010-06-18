@@ -32,11 +32,17 @@ using System.Text;
 using Marius.Html.Css.Properties;
 using Marius.Html.Css.Parser;
 using Marius.Html.Css.Dom;
+using System.Net;
+using System.IO;
+using Marius.Html.Css.Cascade;
 
 namespace Marius.Html.Css
 {
     public class CssContext
     {
+        public const string All = "all";
+        public const string Screen = "screen";
+
         public CssContext()
         {
             FunctionFactory = new FunctionFactory();
@@ -159,6 +165,8 @@ namespace Marius.Html.Css
 
         public virtual FunctionFactory FunctionFactory { get; set; }
         public virtual PseudoConditionFactory PseudoConditionFactory { get; set; }
+        public virtual int MaxImportDetpth { get { return 20; } }
+        public virtual IComparer<CssPreparedStyle> StyleComparer { get { return DefaultStyleComparer.Instance; } }
 
         #region Property handlers
         public virtual Azimuth Azimuth { get; private set; }
@@ -273,5 +281,42 @@ namespace Marius.Html.Css
         public virtual WordSpacing WordSpacing { get; private set; }
         public virtual ZIndex ZIndex { get; private set; }
         #endregion
+
+        public virtual bool IsMediaSupported(string[] media)
+        {
+            if (media == null || media.Length == 0)
+                return true;
+
+            for (int i = 0; i < media.Length; i++)
+            {
+                if (All.Equals(media[i], StringComparison.InvariantCultureIgnoreCase)
+                    || Screen.Equals(media[i], StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
+        public CssStylesheet ImportStylesheet(string uri, CssStylesheetSource stylesheetSource)
+        {
+            try
+            {
+                string source = null;
+
+                var request = WebRequest.Create(uri);
+                var response = request.GetResponse();
+
+                using (var stream = response.GetResponseStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    source = reader.ReadToEnd();
+                }
+
+                return CssStylesheet.Parse(this, source, stylesheetSource);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

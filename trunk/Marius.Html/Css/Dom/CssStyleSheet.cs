@@ -57,6 +57,15 @@ namespace Marius.Html.Css.Dom
             return parser.Parse(sheetSource);
         }
 
+        public static CssStylesheet Parse(CssContext context, string source, CssStylesheetSource sheetSource = CssStylesheetSource.Author)
+        {
+            CssScanner scanner = new CssScanner();
+            scanner.SetSource(source, 0);
+
+            CssParser parser = new CssParser(scanner, context);
+            return parser.Parse(sheetSource);
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

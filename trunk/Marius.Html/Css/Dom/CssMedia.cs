@@ -36,7 +36,7 @@ namespace Marius.Html.Css.Dom
     public class CssMedia: CssRule
     {
         public string[] MediaList { get; private set; }
-        public CssStyle[] Ruleset { get; private set; }
+        public CssStyle[] Rules { get; private set; }
 
         public sealed override CssRuleType RuleType
         {
@@ -46,7 +46,7 @@ namespace Marius.Html.Css.Dom
         public CssMedia(string[] mediaList, CssStyle[] ruleset)
         {
             MediaList = mediaList;
-            Ruleset = ruleset;
+            Rules = ruleset;
         }
 
         public override string ToString()
@@ -56,9 +56,9 @@ namespace Marius.Html.Css.Dom
             sb.AppendLine();
             sb.AppendLine("{");
 
-            for (int i = 0; i < Ruleset.Length; i++)
+            for (int i = 0; i < Rules.Length; i++)
             {
-                sb.AppendLine(Ruleset[i].ToString());
+                sb.AppendLine(Rules[i].ToString());
             }
 
             sb.AppendLine("}");
@@ -72,12 +72,12 @@ namespace Marius.Html.Css.Dom
             if (o == null)
                 return false;
 
-            return o.MediaList.ArraysEqual(this.MediaList) && o.Ruleset.ArraysEqual(this.Ruleset);
+            return o.MediaList.ArraysEqual(this.MediaList) && o.Rules.ArraysEqual(this.Rules);
         }
 
         public override int GetHashCode()
         {
-            return Utils.GetHashCode(MediaList, Ruleset, RuleType);
+            return Utils.GetHashCode(MediaList, Rules, RuleType);
         }
     }
 }
