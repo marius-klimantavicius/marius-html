@@ -45,7 +45,6 @@
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
-    <Compile Include="Css\Cascade\CssStyleList.cs" />
     <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
