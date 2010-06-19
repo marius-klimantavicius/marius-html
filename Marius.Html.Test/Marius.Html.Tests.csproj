@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Cascade\ElementSelectorTests.cs" />
     <Compile Include="Css\Parsing\ErrorRecoveryTests.cs" />
     <Compile Include="Css\Parsing\ScannerTests.cs" />
     <Compile Include="Css\Properties\AzimuthTests.cs" />

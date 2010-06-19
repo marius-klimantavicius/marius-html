@@ -42,5 +42,14 @@ namespace Marius.Html
 
         public Element Parent { get; private set; }
         public Element[] Children { get; private set; }
+
+        public Element(string name, Element parent, Element[] children)
+        {
+            Name = name;
+            Parent = parent;
+            Children = children;
+
+            Attributes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+        }
     }
 }
