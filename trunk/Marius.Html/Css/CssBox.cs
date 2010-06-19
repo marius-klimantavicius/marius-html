@@ -36,11 +36,12 @@ namespace Marius.Html.Css
 {
     public class CssBox
     {
-        public CssBox Parent { get; private set; }
-        public CssBox FirstChild { get; private set; }
-        public CssBox NextSibling { get; private set; }
+        // will have to make it private set later
+        public CssBox Parent { get; set; }
+        public CssBox FirstChild { get; set; }
+        public CssBox NextSibling { get; set; }
 
-        public Element Element { get; private set; }
+        public Element Element { get; set; }
 
         #region Properties
         public CssValue Azimuth { get; set; }

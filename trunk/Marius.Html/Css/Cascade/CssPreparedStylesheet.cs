@@ -58,7 +58,7 @@ namespace Marius.Html.Css.Cascade
                     result.AddRange(_styles[i].Declarations);
             }
 
-            return null;
+            return result;
         }
 
         protected virtual bool Applies(CssSelector selector, CssBox box)
