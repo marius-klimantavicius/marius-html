@@ -45,12 +45,17 @@ namespace Marius.Html.Css.Properties
             get { return new CssBorderSpacing(CssNumber.Zero, CssNumber.Zero); }
         }
 
+        public BorderSpacing(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderSpacing = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue horizontal = null, vertical = null;
             if (MatchLength(expression, ref horizontal))

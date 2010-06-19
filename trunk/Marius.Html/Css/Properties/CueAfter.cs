@@ -42,12 +42,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.None; }
         }
 
+        public CueAfter(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.CueAfter = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             if (Match(expression, CssKeywords.None))
                 return CssKeywords.None;

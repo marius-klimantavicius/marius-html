@@ -43,22 +43,27 @@ namespace Marius.Html.Css.Properties
             get { return CssNull.Value; }
         }
 
+        public VoiceFamily(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.VoiceFamily = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
-            if (MatchFamily(context, expression, ref result))
+            if (MatchFamily(_context, expression, ref result))
             {
                 List<CssValue> values = new List<CssValue>();
                 values.Add(result);
 
                 while (expression.Current.ValueType == CssValueType.Comma)
                 {
-                    if (!MatchFamily(context, expression, ref result))
+                    if (!MatchFamily(_context, expression, ref result))
                         return null;
                     values.Add(result);
                 }

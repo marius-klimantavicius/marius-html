@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Visible; }
         }
 
+        public Overflow(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Overflow = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.Visible, CssKeywords.Hidden, CssKeywords.Scroll, CssKeywords.Auto }, ref result))

@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Normal; }
         }
 
+        public FontStyle(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.FontStyle = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             //normal | italic | oblique | inherit
 

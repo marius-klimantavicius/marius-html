@@ -29,19 +29,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public class CssNullPropertyHandler: CssPropertyHandler
+    public sealed class CssNullPropertyHandler: CssPropertyHandler
     {
-        public static readonly CssNullPropertyHandler Instance = new CssNullPropertyHandler();
+        public static readonly CssNullPropertyHandler Instance = new CssNullPropertyHandler(null);
 
-        public override bool Apply(CssContext context, CssBox box, Values.CssExpression expression)
+        public CssNullPropertyHandler(CssContext context)
+            : base(context)
+        {
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
         {
             return false;
         }
 
-        public override bool Validate(CssContext context, Values.CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
             return false;
         }

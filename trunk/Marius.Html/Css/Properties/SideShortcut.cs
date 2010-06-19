@@ -37,22 +37,27 @@ namespace Marius.Html.Css.Properties
     {
         public abstract void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left);
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public SideShortcut(CssContext context)
+            : base(context)
         {
-            CssValue[] values = Parse(context, expression);
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))
                 return false;
 
             return ApplyValues(box, values);
         }
 
-        public override bool Validate(CssContext context, CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
-            CssValue[] values = Parse(context, expression);
+            CssValue[] values = Parse(expression);
             return (values != null && Valid(expression));
         }
 
-        public virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        public virtual CssValue[] Parse(CssExpression expression)
         {
             CssValue value;
             CssValue top, right, bottom, left;
@@ -60,27 +65,27 @@ namespace Marius.Html.Css.Properties
                 return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
 
             CssSimplePropertyHandler topHandler, rightHandler, bottomHandler, leftHandler;
-            RetrieveHandlers(context, out topHandler, out rightHandler, out bottomHandler, out leftHandler);
+            RetrieveHandlers(_context, out topHandler, out rightHandler, out bottomHandler, out leftHandler);
 
-            value = topHandler.Parse(context, expression);
+            value = topHandler.Parse(expression);
             if (value == null)
                 return null;
 
             top = right = bottom = left = value;
 
-            value = rightHandler.Parse(context, expression);
+            value = rightHandler.Parse(expression);
             if (value == null)
                 return new[] { top, right, bottom, left };
 
             left = value;
 
-            value = bottomHandler.Parse(context, expression);
+            value = bottomHandler.Parse(expression);
             if (value == null)
                 return new[] { top, right, bottom, left };
 
             bottom = value;
 
-            value = leftHandler.Parse(context, expression);
+            value = leftHandler.Parse(expression);
             if (value == null)
                 return new[] { top, right, bottom, left };
 

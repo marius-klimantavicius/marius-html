@@ -45,7 +45,12 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.None; }
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public SideBorderStyle(CssContext context)
+            : base(context)
+        {
+        }
+
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[]{CssKeywords.None, CssKeywords.Dotted, CssKeywords.Dashed, CssKeywords.Solid,
@@ -58,6 +63,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderTopStyle: SideBorderStyle
     {
+        public BorderTopStyle(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderTopStyle = value;
@@ -66,6 +76,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderRightStyle: SideBorderStyle
     {
+        public BorderRightStyle(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderRightStyle = value;
@@ -74,6 +89,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderBottomStyle: SideBorderStyle
     {
+        public BorderBottomStyle(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderBottomStyle = value;
@@ -82,6 +102,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderLeftStyle: SideBorderStyle
     {
+        public BorderLeftStyle(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderLeftStyle = value;

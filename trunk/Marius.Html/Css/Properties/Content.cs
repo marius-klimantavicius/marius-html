@@ -44,12 +44,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Normal; }
         }
 
+        public Content(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Content = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             // 	normal | none
             //         | [ <string>  | <uri> | <counter>  | attr(<identifier>) | open-quote | close-quote  | no-open-quote | no-close-quote ]+ 
@@ -64,7 +69,7 @@ namespace Marius.Html.Css.Properties
             CssValue result = null;
             List<CssValue> content = new List<CssValue>();
 
-            while (MatchContentElement(context, expression, ref result))
+            while (MatchContentElement(_context, expression, ref result))
                 content.Add(result);
 
             if (content.Count > 0)

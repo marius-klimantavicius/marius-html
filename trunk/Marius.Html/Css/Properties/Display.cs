@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Inline; }
         }
 
+        public Display(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Display = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.Inline, CssKeywords.Block, CssKeywords.ListItem, CssKeywords.RunIn, CssKeywords.InlineBlock,

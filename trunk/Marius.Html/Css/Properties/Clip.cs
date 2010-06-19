@@ -47,7 +47,12 @@ namespace Marius.Html.Css.Properties
             box.Clip = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public Clip(CssContext context)
+            : base(context)
+        {
+        }
+
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchShape(expression, ref result))

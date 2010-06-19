@@ -35,28 +35,33 @@ namespace Marius.Html.Css.Properties
 {
     public class Background: CssPropertyHandler
     {
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public Background(CssContext context)
+            : base(context)
         {
-            CssValue[] values = Parse(context, expression);
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))
                 return false;
 
-            box.BackgroundAttachment = values[0] ?? context.BackgroundAttachment.Initial;
-            box.BackgroundColor = values[1] ?? context.BackgroundColor.Initial;
-            box.BackgroundImage = values[2] ?? context.BackgroundImage.Initial;
-            box.BackgroundPosition = values[3] ?? context.BackgroundPosition.Initial;
-            box.BackgroundRepeat = values[4] ?? context.BackgroundRepeat.Initial;
+            box.BackgroundAttachment = values[0] ?? _context.BackgroundAttachment.Initial;
+            box.BackgroundColor = values[1] ?? _context.BackgroundColor.Initial;
+            box.BackgroundImage = values[2] ?? _context.BackgroundImage.Initial;
+            box.BackgroundPosition = values[3] ?? _context.BackgroundPosition.Initial;
+            box.BackgroundRepeat = values[4] ?? _context.BackgroundRepeat.Initial;
 
             return true;
         }
 
-        public override bool Validate(CssContext context, CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
-            CssValue[] values = Parse(context, expression);
+            CssValue[] values = Parse(expression);
             return (values != null && Valid(expression));
         }
 
-        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        protected virtual CssValue[] Parse(CssExpression expression)
         {
             if (MatchInherit(expression) != null)
                 return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
@@ -68,7 +73,7 @@ namespace Marius.Html.Css.Properties
             {
                 has = false;
 
-                value = context.BackgroundAttachment.Parse(context, expression);
+                value = _context.BackgroundAttachment.Parse(expression);
                 if (value != null)
                 {
                     if (attachment != null)
@@ -78,7 +83,7 @@ namespace Marius.Html.Css.Properties
                     attachment = value;
                 }
 
-                value = context.BackgroundColor.Parse(context, expression);
+                value = _context.BackgroundColor.Parse(expression);
                 if (value != null)
                 {
                     if (color != null)
@@ -88,7 +93,7 @@ namespace Marius.Html.Css.Properties
                     color = value;
                 }
 
-                value = context.BackgroundImage.Parse(context, expression);
+                value = _context.BackgroundImage.Parse(expression);
                 if (value != null)
                 {
                     if (image != null)
@@ -98,7 +103,7 @@ namespace Marius.Html.Css.Properties
                     image = value;
                 }
 
-                value = context.BackgroundPosition.Parse(context, expression);
+                value = _context.BackgroundPosition.Parse(expression);
                 if (value != null)
                 {
                     if (position != null)
@@ -108,7 +113,7 @@ namespace Marius.Html.Css.Properties
                     position = value;
                 }
 
-                value = context.BackgroundRepeat.Parse(context, expression);
+                value = _context.BackgroundRepeat.Parse(expression);
                 if (value != null)
                 {
                     if (repeat != null)

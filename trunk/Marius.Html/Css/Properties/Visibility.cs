@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Visible; }
         }
 
+        public Visibility(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Visibility = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             if (Match(expression, CssKeywords.Visible))
                 return CssKeywords.Visible;

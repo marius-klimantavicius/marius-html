@@ -33,6 +33,11 @@ namespace Marius.Html.Css.Properties
 {
     public class Padding: SideShortcut
     {
+        public Padding(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
             box.PaddingTop = top;

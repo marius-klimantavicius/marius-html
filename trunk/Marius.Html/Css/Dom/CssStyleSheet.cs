@@ -62,7 +62,7 @@ namespace Marius.Html.Css.Dom
             CssScanner scanner = new CssScanner();
             scanner.SetSource(source, 0);
 
-            CssParser parser = new CssParser(scanner, context);
+            CssParser parser = new CssParser(context, scanner);
             return parser.Parse(sheetSource);
         }
 

@@ -35,37 +35,42 @@ namespace Marius.Html.Css.Properties
 {
     public class Border: CssPropertyHandler
     {
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public Border(CssContext context)
+            : base(context)
         {
-            CssValue[][] values = Parse(context, expression);
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue[][] values = Parse(expression);
             if (values == null || !Valid(expression))
                 return false;
 
             if (values[0] == null)
-                context.BorderWidth.Apply(box, context.BorderTopWidth.Initial, context.BorderRightWidth.Initial, context.BorderBottomWidth.Initial, context.BorderLeftWidth.Initial);
+                _context.BorderWidth.Apply(box, _context.BorderTopWidth.Initial, _context.BorderRightWidth.Initial, _context.BorderBottomWidth.Initial, _context.BorderLeftWidth.Initial);
             else
-                context.BorderWidth.ApplyValues(box, values[0]);
+                _context.BorderWidth.ApplyValues(box, values[0]);
 
             if (values[1] == null)
-                context.BorderStyle.Apply(box, context.BorderTopStyle.Initial, context.BorderRightStyle.Initial, context.BorderBottomStyle.Initial, context.BorderLeftStyle.Initial);
+                _context.BorderStyle.Apply(box, _context.BorderTopStyle.Initial, _context.BorderRightStyle.Initial, _context.BorderBottomStyle.Initial, _context.BorderLeftStyle.Initial);
             else
-                context.BorderStyle.ApplyValues(box, values[1]);
+                _context.BorderStyle.ApplyValues(box, values[1]);
 
             if (values[2] == null)
-                context.BorderColor.Apply(box, context.BorderTopColor.Initial, context.BorderRightColor.Initial, context.BorderBottomColor.Initial, context.BorderLeftColor.Initial);
+                _context.BorderColor.Apply(box, _context.BorderTopColor.Initial, _context.BorderRightColor.Initial, _context.BorderBottomColor.Initial, _context.BorderLeftColor.Initial);
             else
-                context.BorderColor.ApplyValues(box, values[2]);
+                _context.BorderColor.ApplyValues(box, values[2]);
 
             return true;
         }
 
-        public override bool Validate(CssContext context, CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
-            CssValue[][] values = Parse(context, expression);
+            CssValue[][] values = Parse(expression);
             return (values != null && Valid(expression));
         }
 
-        protected virtual CssValue[][] Parse(CssContext context, CssExpression expression)
+        protected virtual CssValue[][] Parse(CssExpression expression)
         {
             if (MatchInherit(expression) != null)
                 return new[]{
@@ -82,7 +87,7 @@ namespace Marius.Html.Css.Properties
             {
                 has = false;
 
-                values = context.BorderWidth.Parse(context, expression);
+                values = _context.BorderWidth.Parse(expression);
                 if (values != null)
                 {
                     if (width != null)
@@ -92,7 +97,7 @@ namespace Marius.Html.Css.Properties
                     has = true;
                 }
 
-                values = context.BorderStyle.Parse(context, expression);
+                values = _context.BorderStyle.Parse(expression);
                 if (values != null)
                 {
                     if (style != null)
@@ -102,7 +107,7 @@ namespace Marius.Html.Css.Properties
                     has = true;
                 }
 
-                values = context.BorderColor.Parse(context, expression);
+                values = _context.BorderColor.Parse(expression);
                 if (values != null)
                 {
                     if (color != null)

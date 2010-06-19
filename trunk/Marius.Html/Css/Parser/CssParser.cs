@@ -44,11 +44,11 @@ namespace Marius.Html.Css.Parser
         private CssContext _context;
 
         public CssParser(CssScanner scanner)
-            : this(scanner, new CssContext())
+            : this(new CssContext(), scanner)
         {
         }
 
-        public CssParser(CssScanner scanner, CssContext context)
+        public CssParser(CssContext context, CssScanner scanner)
         {
             Contract.Requires(scanner != null);
 

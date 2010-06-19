@@ -45,7 +45,12 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Medium; }
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public SideBorderWidth(CssContext context)
+            : base(context)
+        {
+        }
+
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.Thin, CssKeywords.Thick, CssKeywords.Medium }, ref result))
@@ -60,6 +65,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderTopWidth: SideBorderWidth
     {
+        public BorderTopWidth(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderTopWidth = value;
@@ -68,6 +78,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderRightWidth: SideBorderWidth
     {
+        public BorderRightWidth(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderRightWidth = value;
@@ -76,6 +91,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderBottomWidth: SideBorderWidth
     {
+        public BorderBottomWidth(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderBottomWidth = value;
@@ -84,6 +104,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderLeftWidth: SideBorderWidth
     {
+        public BorderLeftWidth(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderLeftWidth = value;

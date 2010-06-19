@@ -41,13 +41,7 @@ namespace Marius.Html.Css.Cascade
         private int _importDepth;
         private List<CssPreparedStyle> _styles;
 
-        public static CssPreparedStylesheet Prepare(CssContext context, params CssStylesheet[] stylesheets)
-        {
-            StyleCacheManager manager = new StyleCacheManager(context, stylesheets);
-            return manager.Prepare();
-        }
-
-        private StyleCacheManager(CssContext context, CssStylesheet[] stylesheets)
+        public StyleCacheManager(CssContext context, CssStylesheet[] stylesheets)
         {
             _context = context;
             _stylesheets = stylesheets;
@@ -55,7 +49,7 @@ namespace Marius.Html.Css.Cascade
             _styles = new List<CssPreparedStyle>();
         }
 
-        private CssPreparedStylesheet Prepare()
+        public CssPreparedStylesheet Prepare()
         {
             for (int i = 0; i < _stylesheets.Length; i++)
             {

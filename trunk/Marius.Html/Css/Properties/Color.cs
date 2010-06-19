@@ -42,12 +42,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Black; }
         }
 
+        public Color(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Color = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchColor(expression, ref result))

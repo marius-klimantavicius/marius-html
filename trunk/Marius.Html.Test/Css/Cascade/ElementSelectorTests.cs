@@ -56,7 +56,7 @@ namespace Marius.Html.Tests.Css.Cascade
             box.Element = new Element("a", null, null);
 
             var sheet = CssStylesheet.Parse(_context, "a { color: green }");
-            var prep = StyleCacheManager.Prepare(_context, sheet);
+            var prep = _context.PrepareStylesheets(sheet);
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.IsNotNull(decls);
@@ -64,7 +64,7 @@ namespace Marius.Html.Tests.Css.Cascade
             Assert.AreEqual("color", decls[0].Property);
             Assert.IsFalse(decls[0].Important);
 
-            Assert.IsTrue(_context.Color.Apply(_context, box, decls[0].Value));
+            Assert.IsTrue(_context.Color.Apply(box, decls[0].Value));
             Assert.AreEqual(CssKeywords.Green, box.Color);
         }
 
@@ -75,7 +75,7 @@ namespace Marius.Html.Tests.Css.Cascade
             box.Element = new Element("a", null, null);
 
             var sheet = CssStylesheet.Parse(_context, "A { color: green }");
-            var prep = StyleCacheManager.Prepare(_context, sheet);
+            var prep = _context.PrepareStylesheets(sheet);
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.IsNotNull(decls);
@@ -83,7 +83,7 @@ namespace Marius.Html.Tests.Css.Cascade
             Assert.AreEqual("color", decls[0].Property);
             Assert.IsFalse(decls[0].Important);
 
-            Assert.IsTrue(_context.Color.Apply(_context, box, decls[0].Value));
+            Assert.IsTrue(_context.Color.Apply(box, decls[0].Value));
             Assert.AreEqual(CssKeywords.Green, box.Color);
         }
     }
