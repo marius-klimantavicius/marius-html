@@ -33,9 +33,14 @@ namespace Marius.Html.Css.Properties
 {
     public class Pause: CssPropertyHandler
     {
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public Pause(CssContext context)
+            : base(context)
         {
-            CssValue[] values = Parse(context, expression);
+        }
+        
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))
                 return false;
 
@@ -45,13 +50,13 @@ namespace Marius.Html.Css.Properties
             return true;
         }
 
-        public override bool Validate(CssContext context, CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
-            CssValue[] values = Parse(context, expression);
+            CssValue[] values = Parse(expression);
             return (values != null && Valid(expression));
         }
 
-        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        protected virtual CssValue[] Parse(CssExpression expression)
         {
             if (MatchInherit(expression) != null)
                 return new[] { CssKeywords.Inherit, CssKeywords.Inherit };
@@ -59,13 +64,13 @@ namespace Marius.Html.Css.Properties
             CssValue value = null;
             CssValue before, after;
 
-            value = context.PauseBefore.Parse(context, expression);
+            value = _context.PauseBefore.Parse(expression);
             if (value == null)
                 return null;
 
             before = after = value;
 
-            value = context.PauseAfter.Parse(context, expression);
+            value = _context.PauseAfter.Parse(expression);
             if (value != null)
                 after = value;
 

@@ -35,6 +35,11 @@ namespace Marius.Html.Css.Properties
 {
     public class BorderWidth: SideShortcut
     {
+        public BorderWidth(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
             box.BorderTopStyle = top;

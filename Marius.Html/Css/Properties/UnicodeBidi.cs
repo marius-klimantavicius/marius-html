@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Normal; }
         }
 
+        public UnicodeBidi(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.UnicodeBidi = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             if (Match(expression, CssKeywords.BidiOverride))
                 return CssKeywords.BidiOverride;

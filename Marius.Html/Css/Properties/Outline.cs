@@ -33,26 +33,31 @@ namespace Marius.Html.Css.Properties
 {
     public class Outline: CssPropertyHandler
     {
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public Outline(CssContext context)
+            : base(context)
         {
-            CssValue[] values = Parse(context, expression);
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))
                 return false;
 
-            box.OutlineColor = values[0] ?? context.OutlineColor.Initial;
-            box.OutlineStyle = values[1] ?? context.OutlineStyle.Initial;
-            box.OutlineWidth = values[2] ?? context.OutlineWidth.Initial;
+            box.OutlineColor = values[0] ?? _context.OutlineColor.Initial;
+            box.OutlineStyle = values[1] ?? _context.OutlineStyle.Initial;
+            box.OutlineWidth = values[2] ?? _context.OutlineWidth.Initial;
 
             return true;
         }
 
-        public override bool Validate(CssContext context, CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
-            CssValue[] values = Parse(context, expression);
+            CssValue[] values = Parse(expression);
             return (values != null && Valid(expression));
         }
 
-        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        protected virtual CssValue[] Parse(CssExpression expression)
         {
             if (MatchInherit(expression) != null)
                 return new[] { CssKeywords.Inherit, CssKeywords.Inherit, CssKeywords.Inherit };
@@ -65,7 +70,7 @@ namespace Marius.Html.Css.Properties
             {
                 has = false;
 
-                value = context.OutlineColor.Parse(context, expression);
+                value = _context.OutlineColor.Parse(expression);
                 if (value != null)
                 {
                     if (color != null)
@@ -75,7 +80,7 @@ namespace Marius.Html.Css.Properties
                     color = value;
                 }
 
-                value = context.OutlineStyle.Parse(context, expression);
+                value = _context.OutlineStyle.Parse(expression);
                 if (value != null)
                 {
                     if (style != null)
@@ -85,7 +90,7 @@ namespace Marius.Html.Css.Properties
                     style = value;
                 }
 
-                value = context.OutlineWidth.Parse(context, expression);
+                value = _context.OutlineWidth.Parse(expression);
                 if (value != null)
                 {
                     if (width != null)

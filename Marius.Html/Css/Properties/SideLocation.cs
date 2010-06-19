@@ -45,9 +45,14 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Auto; }
         }
 
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public SideLocation(CssContext context)
+            : base(context)
         {
-            CssValue value = Parse(context, expression);
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue value = Parse(expression);
             if (value == null || !Valid(expression))
                 return false;
 
@@ -56,7 +61,7 @@ namespace Marius.Html.Css.Properties
             return true;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             // 	<length>  | <percentage>  | auto | inherit
 
@@ -76,6 +81,11 @@ namespace Marius.Html.Css.Properties
 
     public class Top: SideLocation
     {
+        public Top(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Top = value;
@@ -84,6 +94,11 @@ namespace Marius.Html.Css.Properties
 
     public class Right: SideLocation
     {
+        public Right(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Right = value;
@@ -92,6 +107,11 @@ namespace Marius.Html.Css.Properties
 
     public class Bottom: SideLocation
     {
+        public Bottom(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Bottom = value;
@@ -100,6 +120,11 @@ namespace Marius.Html.Css.Properties
 
     public class Left: SideLocation
     {
+        public Left(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Left = value;

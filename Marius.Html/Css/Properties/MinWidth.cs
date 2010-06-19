@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssNumber.Zero; }
         }
 
+        public MinWidth(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.MinWidth = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchLength(expression, ref result))

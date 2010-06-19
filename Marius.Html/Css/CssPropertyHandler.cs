@@ -35,8 +35,15 @@ namespace Marius.Html.Css
 {
     public abstract class CssPropertyHandler
     {
-        public abstract bool Apply(CssContext context, CssBox box, CssExpression expression);
-        public abstract bool Validate(CssContext context, CssExpression expression);
+        protected CssContext _context;
+
+        protected CssPropertyHandler(CssContext context)
+        {
+            _context = context;
+        }
+
+        public abstract bool Apply(CssBox box, CssExpression expression);
+        public abstract bool Validate(CssExpression expression);
 
         public static bool Valid(CssExpression expression)
         {

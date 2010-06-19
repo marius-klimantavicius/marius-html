@@ -33,20 +33,25 @@ namespace Marius.Html.Css.Properties
 {
     public class Font: CssPropertyHandler
     {
-        public override bool Apply(CssContext context, CssBox box, CssExpression expression)
+        public Font(CssContext context)
+            : base(context)
         {
-            CssValue[] values = Parse(context, expression);
+        }
+
+        public override bool Apply(CssBox box, CssExpression expression)
+        {
+            CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))
                 return false;
 
             if (values[6] == null)
             {
-                box.FontStyle = values[0] ?? context.FontStyle.Initial;
-                box.FontVariant = values[1] ?? context.FontVariant.Initial;
-                box.FontWeight = values[2] ?? context.FontWeight.Initial;
+                box.FontStyle = values[0] ?? _context.FontStyle.Initial;
+                box.FontVariant = values[1] ?? _context.FontVariant.Initial;
+                box.FontWeight = values[2] ?? _context.FontWeight.Initial;
                 box.FontSize = values[3];
-                box.LineHeight = values[4] ?? context.LineHeight.Initial;
-                box.FontFamily = values[5] ?? context.FontFamily.Initial;
+                box.LineHeight = values[4] ?? _context.LineHeight.Initial;
+                box.FontFamily = values[5] ?? _context.FontFamily.Initial;
                 box.Font = null;
             }
             else
@@ -62,13 +67,13 @@ namespace Marius.Html.Css.Properties
             return true;
         }
 
-        public override bool Validate(CssContext context, CssExpression expression)
+        public override bool Validate(CssExpression expression)
         {
-            CssValue[] values = Parse(context, expression);
+            CssValue[] values = Parse(expression);
             return (values != null && Valid(expression));
         }
 
-        protected virtual CssValue[] Parse(CssContext context, CssExpression expression)
+        protected virtual CssValue[] Parse(CssExpression expression)
         {
             CssValue value = null;
             if (MatchAny(expression, new[] { CssKeywords.Caption, CssKeywords.Icon, CssKeywords.Menu, CssKeywords.MessageBox, CssKeywords.SmallCaption, CssKeywords.StatusBar }, ref value))
@@ -85,7 +90,7 @@ namespace Marius.Html.Css.Properties
             {
                 has = false;
 
-                value = context.FontStyle.Parse(context, expression);
+                value = _context.FontStyle.Parse(expression);
                 if (value != null)
                 {
                     if (style != null)
@@ -95,7 +100,7 @@ namespace Marius.Html.Css.Properties
                     style = value;
                 }
 
-                value = context.FontVariant.Parse(context, expression);
+                value = _context.FontVariant.Parse(expression);
                 if (value != null)
                 {
                     if (variant != null)
@@ -105,7 +110,7 @@ namespace Marius.Html.Css.Properties
                     variant = value;
                 }
 
-                value = context.FontWeight.Parse(context, expression);
+                value = _context.FontWeight.Parse(expression);
                 if (value != null)
                 {
                     if (weight != null)
@@ -116,7 +121,7 @@ namespace Marius.Html.Css.Properties
                 }
             }
 
-            size = context.FontSize.Parse(context, expression);
+            size = _context.FontSize.Parse(expression);
             if (size == null)
                 return null;
 
@@ -124,12 +129,12 @@ namespace Marius.Html.Css.Properties
             {
                 expression.MoveNext();
 
-                height = context.LineHeight.Parse(context, expression);
+                height = _context.LineHeight.Parse(expression);
                 if (height == null)
                     return null;
             }
 
-            family = context.FontFamily.Parse(context, expression);
+            family = _context.FontFamily.Parse(expression);
             if (family == null)
                 return null;
 

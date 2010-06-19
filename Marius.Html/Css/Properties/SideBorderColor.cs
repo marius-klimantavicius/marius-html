@@ -45,7 +45,12 @@ namespace Marius.Html.Css.Properties
             get { return CssBoxColor.Instance; }
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public SideBorderColor(CssContext context)
+            : base(context)
+        {
+        }
+
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchColor(expression, ref result))
@@ -60,6 +65,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderTopColor: SideBorderColor
     {
+        public BorderTopColor(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderTopColor = value;
@@ -68,6 +78,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderRightColor: SideBorderColor
     {
+        public BorderRightColor(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderRightColor = value;
@@ -76,6 +91,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderBottomColor: SideBorderColor
     {
+        public BorderBottomColor(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderBottomColor = value;
@@ -84,6 +104,11 @@ namespace Marius.Html.Css.Properties
 
     public class BorderLeftColor: SideBorderColor
     {
+        public BorderLeftColor(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.BorderLeftColor = value;

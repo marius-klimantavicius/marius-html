@@ -45,17 +45,22 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Auto; }
         }
 
+        public Cursor(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Cursor = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             List<CssValue> values = new List<CssValue>();
 
-            while (MatchCursorItem(context, expression, ref result))
+            while (MatchCursorItem(_context, expression, ref result))
                 values.Add(result);
 
             if (MatchAny(expression, new[] { CssKeywords.Crosshair, CssKeywords.Default, CssKeywords.Pointer, CssKeywords.Move, CssKeywords.EResize, CssKeywords.NEResize, CssKeywords.NWResize, CssKeywords.NResize, CssKeywords.SEResize, CssKeywords.SWResize, CssKeywords.SResize, CssKeywords.WResize, CssKeywords.Text, CssKeywords.Wait, CssKeywords.Help, CssKeywords.Progress }, ref result))

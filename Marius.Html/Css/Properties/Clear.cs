@@ -45,12 +45,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.None; }
         }
 
+        public Clear(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.Clear = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.None, CssKeywords.Left, CssKeywords.Ridge, CssKeywords.Bottom }, ref result))

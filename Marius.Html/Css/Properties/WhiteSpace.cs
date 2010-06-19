@@ -43,12 +43,17 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Normal; }
         }
 
+        public WhiteSpace(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.WhiteSpace = value;
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchAny(expression, new[] { CssKeywords.Normal, CssKeywords.Pre, CssKeywords.Nowrap, CssKeywords.PreWrap, CssKeywords.PreLine }, ref result))

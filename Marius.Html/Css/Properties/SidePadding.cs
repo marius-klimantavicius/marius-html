@@ -43,7 +43,12 @@ namespace Marius.Html.Css.Properties
             get { return CssNumber.Zero; }
         }
 
-        public override CssValue Parse(CssContext context, CssExpression expression)
+        public SidePadding(CssContext context)
+            : base(context)
+        {
+        }
+
+        public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
             if (MatchLength(expression, ref result))
@@ -58,6 +63,11 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingTop: SidePadding
     {
+        public PaddingTop(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingTop = value;
@@ -66,6 +76,11 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingRight: SidePadding
     {
+        public PaddingRight(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingRight = value;
@@ -74,6 +89,11 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingBottom: SidePadding
     {
+        public PaddingBottom(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingBottom = value;
@@ -82,6 +102,11 @@ namespace Marius.Html.Css.Properties
 
     public class PaddingLeft: SidePadding
     {
+        public PaddingLeft(CssContext context)
+            : base(context)
+        {
+        }
+
         public override void Apply(CssBox box, CssValue value)
         {
             box.PaddingLeft = value;
