@@ -50,7 +50,7 @@ namespace Marius.Html.Css.Parser
             }
         }
 
-        public char Current
+        private char Current
         {
             get
             {
@@ -62,7 +62,7 @@ namespace Marius.Html.Css.Parser
 
         public int Position { get { return _source.Position; } }
 
-        public void SetSource(string source, int index)
+        public CssTokenizer(string source, int index)
         {
             _source = new InputSource(source, index);
         }

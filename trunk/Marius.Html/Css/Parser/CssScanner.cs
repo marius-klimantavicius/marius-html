@@ -59,20 +59,21 @@ namespace Marius.Html.Css.Parser
         private static readonly Regex NewlineEscape = new Regex(kNewlineEscape, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
         private static readonly Regex DimensionRegex = new Regex(kDimension, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 
-        private CssTokenizer _tokenizer = new CssTokenizer();
+        private CssTokenizer _tokenizer;
+        private CssSourceToken _value;
 
-        public CssSourceToken Value { get; private set; }
+        public CssSourceToken Value { get { return _value; } }
 
         public void SetSource(string source, int index)
         {
-            _tokenizer.SetSource(source, index);
-            Value = null;
+            _tokenizer = new CssTokenizer(source, index);
+            _value = null;
         }
 
         public CssTokens NextToken()
         {
             CssTokens token;
-            
+
             token = _tokenizer.NextToken();
 
             switch (token)
@@ -293,8 +294,8 @@ namespace Marius.Html.Css.Parser
 
         private CssTokens Token<T>(CssTokens token, T value)
         {
-            Value = new CssSourceToken();
-            Value.Value = value;
+            _value = new CssSourceToken();
+            _value.Value = value;
             return token;
         }
 
