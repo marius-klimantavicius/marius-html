@@ -30,7 +30,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CueBefore: CssSimplePropertyHandler
+    public partial class CueBefore: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -59,9 +59,14 @@ namespace Marius.Html.Css.Properties
 
             return MatchInherit(expression);
         }
+
+        public CssValue ParseValue(CssExpression expression)
+        {
+            return Parse(expression);
+        }
     }
 
-    public class BorderTopStyle: SideBorderStyle
+    public partial class BorderTopStyle: SideBorderStyle
     {
         public BorderTopStyle(CssContext context)
             : base(context)
@@ -74,7 +79,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderRightStyle: SideBorderStyle
+    public partial class BorderRightStyle: SideBorderStyle
     {
         public BorderRightStyle(CssContext context)
             : base(context)
@@ -87,7 +92,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderBottomStyle: SideBorderStyle
+    public partial class BorderBottomStyle: SideBorderStyle
     {
         public BorderBottomStyle(CssContext context)
             : base(context)
@@ -100,7 +105,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderLeftStyle: SideBorderStyle
+    public partial class BorderLeftStyle: SideBorderStyle
     {
         public BorderLeftStyle(CssContext context)
             : base(context)

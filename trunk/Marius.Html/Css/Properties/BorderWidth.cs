@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderWidth: SideShortcut
+    public partial class BorderWidth: SideShortcut
     {
         public BorderWidth(CssContext context)
             : base(context)
@@ -42,10 +42,10 @@ namespace Marius.Html.Css.Properties
 
         public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
-            box.BorderTopStyle = top;
-            box.BorderRightStyle = right;
-            box.BorderBottomStyle = bottom;
-            box.BorderLeftStyle = left;
+            box.BorderTopWidth = top;
+            box.BorderRightWidth = right;
+            box.BorderBottomWidth = bottom;
+            box.BorderLeftWidth = left;
         }
 
         protected override void RetrieveHandlers(CssContext context, out CssSimplePropertyHandler top, out CssSimplePropertyHandler right, out CssSimplePropertyHandler bottom, out CssSimplePropertyHandler left)

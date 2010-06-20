@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Pause: CssPropertyHandler
+    public partial class Pause: CssPropertyHandler
     {
         public Pause(CssContext context)
             : base(context)

@@ -35,10 +35,15 @@ namespace Marius.Html.Css
 {
     public sealed class CssNullPropertyHandler: CssPropertyHandler
     {
-        public static readonly CssNullPropertyHandler Instance = new CssNullPropertyHandler(null);
+        public static readonly CssNullPropertyHandler Instance = new CssNullPropertyHandler();
 
-        public CssNullPropertyHandler(CssContext context)
-            : base(context)
+        public override string Property
+        {
+            get { return null; }
+        }
+
+        private CssNullPropertyHandler()
+            : base(null)
         {
         }
 

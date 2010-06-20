@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class MaxWidth: CssSimplePropertyHandler
+    public partial class MaxWidth: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

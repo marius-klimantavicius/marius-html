@@ -37,6 +37,8 @@ namespace Marius.Html.Css
     {
         protected CssContext _context;
 
+        public abstract string Property { get; }
+
         protected CssPropertyHandler(CssContext context)
         {
             _context = context;
@@ -273,6 +275,16 @@ namespace Marius.Html.Css
                 return true;
             }
 
+            return false;
+        }
+
+        public static bool MatchComma(CssExpression expression)
+        {
+            if (expression.Current.ValueType == CssValueType.Comma)
+            {
+                expression.MoveNext();
+                return true;
+            }
             return false;
         }
     }

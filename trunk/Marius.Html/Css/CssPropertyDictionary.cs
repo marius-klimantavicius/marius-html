@@ -26,53 +26,51 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using Marius.Html.Css.Values;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css
 {
-    public partial class Cue: CssPropertyHandler
+    public sealed class CssPropertyDictionary
     {
-        public Cue(CssContext context)
-            : base(context)
+        private Dictionary<string, CssPropertyHandler> _properties;
+
+        public CssPropertyDictionary()
         {
+            _properties = new Dictionary<string, CssPropertyHandler>(StringComparer.InvariantCultureIgnoreCase);
         }
 
-        public override bool Apply(CssBox box, CssExpression expression)
+        public void Add(CssPropertyHandler handler)
         {
-            CssValue[] values = Parse(expression);
-            if (values == null || !Valid(expression))
-                return false;
-
-            box.CueBefore = values[0];
-            box.CueAfter = values[1];
-            return true;
+            Add(handler.Property, handler);
         }
 
-        public override bool Validate(CssExpression expression)
+        public bool Remove(string key)
         {
-            CssValue[] values = Parse(expression);
-            return (values != null && Valid(expression));
+            return _properties.Remove(key);
         }
 
-        protected virtual CssValue[] Parse(CssExpression expression)
+        public CssPropertyHandler this[string key]
         {
-            if (MatchInherit(expression) != null)
-                return new[] { CssKeywords.Inherit, CssKeywords.Inherit };
+            get
+            {
+                if (_properties.ContainsKey(key))
+                    return _properties[key];
+                return CssNullPropertyHandler.Instance;
+            }
+            set
+            {
+                if (!_properties.ContainsKey(key))
+                    _properties.Add(key, value);
+                else
+                    _properties[key] = value;
+            }
+        }
 
-            CssValue value = null;
-            CssValue before, after;
-
-            value = _context.CueBefore.Parse(expression);
-            if (value == null)
-                return null;
-
-            before = after = value;
-
-            value = _context.CueAfter.Parse(expression);
-            if (value != null)
-                after = value;
-
-            return new[] { before, after };
+        private void Add(string key, CssPropertyHandler value)
+        {
+            _properties.Add(key, value);
         }
     }
 }

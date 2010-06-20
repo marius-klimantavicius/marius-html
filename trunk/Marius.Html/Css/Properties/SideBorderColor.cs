@@ -63,7 +63,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderTopColor: SideBorderColor
+    public partial class BorderTopColor: SideBorderColor
     {
         public BorderTopColor(CssContext context)
             : base(context)
@@ -76,7 +76,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderRightColor: SideBorderColor
+    public partial class BorderRightColor: SideBorderColor
     {
         public BorderRightColor(CssContext context)
             : base(context)
@@ -89,7 +89,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderBottomColor: SideBorderColor
+    public partial class BorderBottomColor: SideBorderColor
     {
         public BorderBottomColor(CssContext context)
             : base(context)
@@ -102,7 +102,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderLeftColor: SideBorderColor
+    public partial class BorderLeftColor: SideBorderColor
     {
         public BorderLeftColor(CssContext context)
             : base(context)

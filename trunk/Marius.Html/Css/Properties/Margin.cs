@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Margin: SideShortcut
+    public partial class Margin: SideShortcut
     {
         public Margin(CssContext context)
             : base(context)

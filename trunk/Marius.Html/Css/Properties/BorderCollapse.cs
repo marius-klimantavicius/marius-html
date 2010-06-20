@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderCollapse: CssSimplePropertyHandler
+    public partial class BorderCollapse: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class VerticalAlign: CssSimplePropertyHandler
+    public partial class VerticalAlign: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

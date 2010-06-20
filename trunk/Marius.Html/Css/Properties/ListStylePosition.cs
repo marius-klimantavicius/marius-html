@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class ListStylePosition: CssSimplePropertyHandler
+    public partial class ListStylePosition: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -41,5 +41,10 @@ namespace Marius.Html.Css.Values
             Green = green;
             Blue = blue;
         }
+
+        public override string ToString()
+        {
+            return string.Format("rgb({0}, {1}, {2})", Red, Green, Blue);
+        }
     }
 }

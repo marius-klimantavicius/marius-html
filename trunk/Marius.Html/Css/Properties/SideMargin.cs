@@ -64,7 +64,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class MarginTop: SideMargin
+    public partial class MarginTop: SideMargin
     {
         public MarginTop(CssContext context)
             : base(context)
@@ -77,7 +77,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class MarginRight: SideMargin
+    public partial class MarginRight: SideMargin
     {
         public MarginRight(CssContext context)
             : base(context)
@@ -90,7 +90,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class MarginBottom: SideMargin
+    public partial class MarginBottom: SideMargin
     {
         public MarginBottom(CssContext context)
             : base(context)
@@ -103,7 +103,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class MarginLeft: SideMargin
+    public partial class MarginLeft: SideMargin
     {
         public MarginLeft(CssContext context)
             : base(context)

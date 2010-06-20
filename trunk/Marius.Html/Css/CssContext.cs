@@ -48,239 +48,251 @@ namespace Marius.Html.Css
             FunctionFactory = new FunctionFactory();
             PseudoConditionFactory = new PseudoConditionFactory();
 
+            Properties = new CssPropertyDictionary();
+
             #region Initialization of default property handlers
-            Azimuth = new Azimuth(this);
-            Background = new Background(this);
-            BackgroundAttachment = new BackgroundAttachment(this);
-            BackgroundColor = new BackgroundColor(this);
-            BackgroundImage = new BackgroundImage(this);
-            BackgroundPosition = new BackgroundPosition(this);
-            BackgroundRepeat = new BackgroundRepeat(this);
-            Border = new Border(this);
-            BorderCollapse = new BorderCollapse(this);
-            BorderColor = new BorderColor(this);
-            BorderTopColor = new BorderTopColor(this);
-            BorderRightColor = new BorderRightColor(this);
-            BorderBottomColor = new BorderBottomColor(this);
-            BorderLeftColor = new BorderLeftColor(this);
-            BorderSpacing = new BorderSpacing(this);
-            BorderStyle = new BorderStyle(this);
-            BorderTopStyle = new BorderTopStyle(this);
-            BorderRightStyle = new BorderRightStyle(this);
-            BorderBottomStyle = new BorderBottomStyle(this);
-            BorderLeftStyle = new BorderLeftStyle(this);
-            BorderWidth = new BorderWidth(this);
-            BorderTopWidth = new BorderTopWidth(this);
-            BorderRightWidth = new BorderRightWidth(this);
-            BorderBottomWidth = new BorderBottomWidth(this);
-            BorderLeftWidth = new BorderLeftWidth(this);
-            Bottom = new Bottom(this);
-            CaptionSide = new CaptionSide(this);
-            Clear = new Clear(this);
-            Clip = new Clip(this);
-            Color = new Color(this);
-            Content = new Content(this);
-            CounterReset = new CounterReset(this);
-            CounterIncrement = new CounterIncrement(this);
-            Cue = new Cue(this);
-            CueAfter = new CueAfter(this);
-            CueBefore = new CueBefore(this);
-            Cursor = new Cursor(this);
-            Direction = new Direction(this);
-            Display = new Display(this);
-            Elevation = new Elevation(this);
-            EmptyCells = new EmptyCells(this);
-            Float = new Float(this);
-            Font = new Font(this);
-            FontFamily = new FontFamily(this);
-            FontSize = new FontSize(this);
-            FontStyle = new FontStyle(this);
-            FontVariant = new FontVariant(this);
-            FontWeight = new FontWeight(this);
-            Height = new Height(this);
-            Left = new Left(this);
-            LetterSpacing = new LetterSpacing(this);
-            LineHeight = new LineHeight(this);
-            ListStyle = new ListStyle(this);
-            ListStyleImage = new ListStyleImage(this);
-            ListStylePosition = new ListStylePosition(this);
-            ListStyleType = new ListStyleType(this);
-            Margin = new Margin(this);
-            MarginTop = new MarginTop(this);
-            MarginRight = new MarginRight(this);
-            MarginBottom = new MarginBottom(this);
-            MarginLeft = new MarginLeft(this);
-            MaxHeight = new MaxHeight(this);
-            MaxWidth = new MaxWidth(this);
-            MinHeight = new MinHeight(this);
-            MinWidth = new MinWidth(this);
-            Orphans = new Orphans(this);
-            Outline = new Outline(this);
-            OutlineColor = new OutlineColor(this);
-            OutlineStyle = new OutlineStyle(this);
-            OutlineWidth = new OutlineWidth(this);
-            Overflow = new Overflow(this);
-            Padding = new Padding(this);
-            PaddingTop = new PaddingTop(this);
-            PaddingRight = new PaddingRight(this);
-            PaddingBottom = new PaddingBottom(this);
-            PaddingLeft = new PaddingLeft(this);
-            PageBreakAfter = new PageBreakAfter(this);
-            PageBreakBefore = new PageBreakBefore(this);
-            PageBreakInside = new PageBreakInside(this);
-            Pause = new Pause(this);
-            PauseAfter = new PauseAfter(this);
-            PauseBefore = new PauseBefore(this);
-            Pitch = new Pitch(this);
-            PitchRange = new PitchRange(this);
-            PlayDuring = new PlayDuring(this);
-            Position = new Position(this);
-            Quotes = new Quotes(this);
-            Richness = new Richness(this);
-            Right = new Right(this);
-            Speak = new Speak(this);
-            SpeakHeader = new SpeakHeader(this);
-            SpeakNumeral = new SpeakNumeral(this);
-            SpeakPunctuation = new SpeakPunctuation(this);
-            SpeechRate = new SpeechRate(this);
-            Stress = new Stress(this);
-            TableLayout = new TableLayout(this);
-            TextAlign = new TextAlign(this);
-            TextDecoration = new TextDecoration(this);
-            TextIndent = new TextIndent(this);
-            TextTransform = new TextTransform(this);
-            Top = new Top(this);
-            UnicodeBidi = new UnicodeBidi(this);
-            VerticalAlign = new VerticalAlign(this);
-            Visibility = new Visibility(this);
-            VoiceFamily = new VoiceFamily(this);
-            Volume = new Volume(this);
-            WhiteSpace = new WhiteSpace(this);
-            Widows = new Widows(this);
-            Width = new Width(this);
-            WordSpacing = new WordSpacing(this);
-            ZIndex = new ZIndex(this);
+            Properties.Add(new Azimuth(this));
+            Properties.Add(new Background(this));
+            Properties.Add(new BackgroundAttachment(this));
+            Properties.Add(new BackgroundColor(this));
+            Properties.Add(new BackgroundImage(this));
+            Properties.Add(new BackgroundPosition(this));
+            Properties.Add(new BackgroundRepeat(this));
+            Properties.Add(new Border(this));
+            Properties.Add(new BorderCollapse(this));
+            Properties.Add(new BorderColor(this));
+            Properties.Add(new BorderTopColor(this));
+            Properties.Add(new BorderRightColor(this));
+            Properties.Add(new BorderBottomColor(this));
+            Properties.Add(new BorderLeftColor(this));
+            Properties.Add(new BorderSpacing(this));
+            Properties.Add(new BorderStyle(this));
+            Properties.Add(new BorderTopStyle(this));
+            Properties.Add(new BorderRightStyle(this));
+            Properties.Add(new BorderBottomStyle(this));
+            Properties.Add(new BorderLeftStyle(this));
+            Properties.Add(new BorderWidth(this));
+            Properties.Add(new BorderTopWidth(this));
+            Properties.Add(new BorderRightWidth(this));
+            Properties.Add(new BorderBottomWidth(this));
+            Properties.Add(new BorderLeftWidth(this));
+            Properties.Add(new Bottom(this));
+            Properties.Add(new CaptionSide(this));
+            Properties.Add(new Clear(this));
+            Properties.Add(new Clip(this));
+            Properties.Add(new Color(this));
+            Properties.Add(new Content(this));
+            Properties.Add(new CounterReset(this));
+            Properties.Add(new CounterIncrement(this));
+            Properties.Add(new Cue(this));
+            Properties.Add(new CueAfter(this));
+            Properties.Add(new CueBefore(this));
+            Properties.Add(new Cursor(this));
+            Properties.Add(new Direction(this));
+            Properties.Add(new Display(this));
+            Properties.Add(new Elevation(this));
+            Properties.Add(new EmptyCells(this));
+            Properties.Add(new Float(this));
+            Properties.Add(new Font(this));
+            Properties.Add(new FontFamily(this));
+            Properties.Add(new FontSize(this));
+            Properties.Add(new FontStyle(this));
+            Properties.Add(new FontVariant(this));
+            Properties.Add(new FontWeight(this));
+            Properties.Add(new Height(this));
+            Properties.Add(new Left(this));
+            Properties.Add(new LetterSpacing(this));
+            Properties.Add(new LineHeight(this));
+            Properties.Add(new ListStyle(this));
+            Properties.Add(new ListStyleImage(this));
+            Properties.Add(new ListStylePosition(this));
+            Properties.Add(new ListStyleType(this));
+            Properties.Add(new Margin(this));
+            Properties.Add(new MarginTop(this));
+            Properties.Add(new MarginRight(this));
+            Properties.Add(new MarginBottom(this));
+            Properties.Add(new MarginLeft(this));
+            Properties.Add(new MaxHeight(this));
+            Properties.Add(new MaxWidth(this));
+            Properties.Add(new MinHeight(this));
+            Properties.Add(new MinWidth(this));
+            Properties.Add(new Orphans(this));
+            Properties.Add(new Outline(this));
+            Properties.Add(new OutlineColor(this));
+            Properties.Add(new OutlineStyle(this));
+            Properties.Add(new OutlineWidth(this));
+            Properties.Add(new Overflow(this));
+            Properties.Add(new Padding(this));
+            Properties.Add(new PaddingTop(this));
+            Properties.Add(new PaddingRight(this));
+            Properties.Add(new PaddingBottom(this));
+            Properties.Add(new PaddingLeft(this));
+            Properties.Add(new PageBreakAfter(this));
+            Properties.Add(new PageBreakBefore(this));
+            Properties.Add(new PageBreakInside(this));
+            Properties.Add(new Pause(this));
+            Properties.Add(new PauseAfter(this));
+            Properties.Add(new PauseBefore(this));
+            Properties.Add(new Pitch(this));
+            Properties.Add(new PitchRange(this));
+            Properties.Add(new PlayDuring(this));
+            Properties.Add(new Position(this));
+            Properties.Add(new Quotes(this));
+            Properties.Add(new Richness(this));
+            Properties.Add(new Right(this));
+            Properties.Add(new Speak(this));
+            Properties.Add(new SpeakHeader(this));
+            Properties.Add(new SpeakNumeral(this));
+            Properties.Add(new SpeakPunctuation(this));
+            Properties.Add(new SpeechRate(this));
+            Properties.Add(new Stress(this));
+            Properties.Add(new TableLayout(this));
+            Properties.Add(new TextAlign(this));
+            Properties.Add(new TextDecoration(this));
+            Properties.Add(new TextIndent(this));
+            Properties.Add(new TextTransform(this));
+            Properties.Add(new Top(this));
+            Properties.Add(new UnicodeBidi(this));
+            Properties.Add(new VerticalAlign(this));
+            Properties.Add(new Visibility(this));
+            Properties.Add(new VoiceFamily(this));
+            Properties.Add(new Volume(this));
+            Properties.Add(new WhiteSpace(this));
+            Properties.Add(new Widows(this));
+            Properties.Add(new Width(this));
+            Properties.Add(new WordSpacing(this));
+            Properties.Add(new ZIndex(this));
             #endregion
         }
 
+        public virtual CssPropertyDictionary Properties { get; private set; }
         public virtual FunctionFactory FunctionFactory { get; set; }
         public virtual PseudoConditionFactory PseudoConditionFactory { get; set; }
-        public virtual int MaxImportDetpth { get { return 20; } }
+        public virtual int MaxImportDepth { get { return 20; } }
         public virtual IComparer<CssPreparedStyle> StyleComparer { get { return DefaultStyleComparer.Instance; } }
 
         #region Property handlers
-        public virtual Azimuth Azimuth { get; private set; }
-        public virtual Background Background { get; private set; }
-        public virtual BackgroundAttachment BackgroundAttachment { get; private set; }
-        public virtual BackgroundColor BackgroundColor { get; private set; }
-        public virtual BackgroundImage BackgroundImage { get; private set; }
-        public virtual BackgroundPosition BackgroundPosition { get; private set; }
-        public virtual BackgroundRepeat BackgroundRepeat { get; private set; }
-        public virtual Border Border { get; private set; }
-        public virtual BorderCollapse BorderCollapse { get; private set; }
-        public virtual BorderColor BorderColor { get; private set; }
-        public virtual BorderTopColor BorderTopColor { get; private set; }
-        public virtual BorderRightColor BorderRightColor { get; private set; }
-        public virtual BorderBottomColor BorderBottomColor { get; private set; }
-        public virtual BorderLeftColor BorderLeftColor { get; private set; }
-        public virtual BorderSpacing BorderSpacing { get; private set; }
-        public virtual BorderStyle BorderStyle { get; private set; }
-        public virtual BorderTopStyle BorderTopStyle { get; private set; }
-        public virtual BorderRightStyle BorderRightStyle { get; private set; }
-        public virtual BorderBottomStyle BorderBottomStyle { get; private set; }
-        public virtual BorderLeftStyle BorderLeftStyle { get; private set; }
-        public virtual BorderWidth BorderWidth { get; private set; }
-        public virtual BorderTopWidth BorderTopWidth { get; private set; }
-        public virtual BorderRightWidth BorderRightWidth { get; private set; }
-        public virtual BorderBottomWidth BorderBottomWidth { get; private set; }
-        public virtual BorderLeftWidth BorderLeftWidth { get; private set; }
-        public virtual Bottom Bottom { get; private set; }
-        public virtual CaptionSide CaptionSide { get; private set; }
-        public virtual Clear Clear { get; private set; }
-        public virtual Clip Clip { get; private set; }
-        public virtual Color Color { get; private set; }
-        public virtual Content Content { get; private set; }
-        public virtual CounterReset CounterReset { get; private set; }
-        public virtual CounterIncrement CounterIncrement { get; private set; }
-        public virtual Cue Cue { get; private set; }
-        public virtual CueAfter CueAfter { get; private set; }
-        public virtual CueBefore CueBefore { get; private set; }
-        public virtual Cursor Cursor { get; private set; }
-        public virtual Direction Direction { get; private set; }
-        public virtual Display Display { get; private set; }
-        public virtual Elevation Elevation { get; private set; }
-        public virtual EmptyCells EmptyCells { get; private set; }
-        public virtual Float Float { get; private set; }
-        public virtual Font Font { get; private set; }
-        public virtual FontFamily FontFamily { get; private set; }
-        public virtual FontSize FontSize { get; private set; }
-        public virtual FontStyle FontStyle { get; private set; }
-        public virtual FontVariant FontVariant { get; private set; }
-        public virtual FontWeight FontWeight { get; private set; }
-        public virtual Height Height { get; private set; }
-        public virtual Left Left { get; private set; }
-        public virtual LetterSpacing LetterSpacing { get; private set; }
-        public virtual LineHeight LineHeight { get; private set; }
-        public virtual ListStyle ListStyle { get; private set; }
-        public virtual ListStyleImage ListStyleImage { get; private set; }
-        public virtual ListStylePosition ListStylePosition { get; private set; }
-        public virtual ListStyleType ListStyleType { get; private set; }
-        public virtual Margin Margin { get; private set; }
-        public virtual MarginTop MarginTop { get; private set; }
-        public virtual MarginRight MarginRight { get; private set; }
-        public virtual MarginBottom MarginBottom { get; private set; }
-        public virtual MarginLeft MarginLeft { get; private set; }
-        public virtual MaxHeight MaxHeight { get; private set; }
-        public virtual MaxWidth MaxWidth { get; private set; }
-        public virtual MinHeight MinHeight { get; private set; }
-        public virtual MinWidth MinWidth { get; private set; }
-        public virtual Orphans Orphans { get; private set; }
-        public virtual Outline Outline { get; private set; }
-        public virtual OutlineColor OutlineColor { get; private set; }
-        public virtual OutlineStyle OutlineStyle { get; private set; }
-        public virtual OutlineWidth OutlineWidth { get; private set; }
-        public virtual Overflow Overflow { get; private set; }
-        public virtual Padding Padding { get; private set; }
-        public virtual PaddingTop PaddingTop { get; private set; }
-        public virtual PaddingRight PaddingRight { get; private set; }
-        public virtual PaddingBottom PaddingBottom { get; private set; }
-        public virtual PaddingLeft PaddingLeft { get; private set; }
-        public virtual PageBreakAfter PageBreakAfter { get; private set; }
-        public virtual PageBreakBefore PageBreakBefore { get; private set; }
-        public virtual PageBreakInside PageBreakInside { get; private set; }
-        public virtual Pause Pause { get; private set; }
-        public virtual PauseAfter PauseAfter { get; private set; }
-        public virtual PauseBefore PauseBefore { get; private set; }
-        public virtual Pitch Pitch { get; private set; }
-        public virtual PitchRange PitchRange { get; private set; }
-        public virtual PlayDuring PlayDuring { get; private set; }
-        public virtual Position Position { get; private set; }
-        public virtual Quotes Quotes { get; private set; }
-        public virtual Richness Richness { get; private set; }
-        public virtual Right Right { get; private set; }
-        public virtual Speak Speak { get; private set; }
-        public virtual SpeakHeader SpeakHeader { get; private set; }
-        public virtual SpeakNumeral SpeakNumeral { get; private set; }
-        public virtual SpeakPunctuation SpeakPunctuation { get; private set; }
-        public virtual SpeechRate SpeechRate { get; private set; }
-        public virtual Stress Stress { get; private set; }
-        public virtual TableLayout TableLayout { get; private set; }
-        public virtual TextAlign TextAlign { get; private set; }
-        public virtual TextDecoration TextDecoration { get; private set; }
-        public virtual TextIndent TextIndent { get; private set; }
-        public virtual TextTransform TextTransform { get; private set; }
-        public virtual Top Top { get; private set; }
-        public virtual UnicodeBidi UnicodeBidi { get; private set; }
-        public virtual VerticalAlign VerticalAlign { get; private set; }
-        public virtual Visibility Visibility { get; private set; }
-        public virtual VoiceFamily VoiceFamily { get; private set; }
-        public virtual Volume Volume { get; private set; }
-        public virtual WhiteSpace WhiteSpace { get; private set; }
-        public virtual Widows Widows { get; private set; }
-        public virtual Width Width { get; private set; }
-        public virtual WordSpacing WordSpacing { get; private set; }
-        public virtual ZIndex ZIndex { get; private set; }
+        public virtual Azimuth Azimuth { get { return (Azimuth)Properties[CssProperty.Azimuth]; } }
+        public virtual Background Background { get { return (Background)Properties[CssProperty.Background]; } }
+        public virtual BackgroundAttachment BackgroundAttachment { get { return (BackgroundAttachment)Properties[CssProperty.BackgroundAttachment]; } }
+        public virtual BackgroundColor BackgroundColor { get { return (BackgroundColor)Properties[CssProperty.BackgroundColor]; } }
+        public virtual BackgroundImage BackgroundImage { get { return (BackgroundImage)Properties[CssProperty.BackgroundImage]; } }
+        public virtual BackgroundPosition BackgroundPosition { get { return (BackgroundPosition)Properties[CssProperty.BackgroundPosition]; } }
+        public virtual BackgroundRepeat BackgroundRepeat { get { return (BackgroundRepeat)Properties[CssProperty.BackgroundRepeat]; } }
+        public virtual Border Border { get { return (Border)Properties[CssProperty.Border]; } }
+        public virtual BorderCollapse BorderCollapse { get { return (BorderCollapse)Properties[CssProperty.BorderCollapse]; } }
+        public virtual BorderColor BorderColor { get { return (BorderColor)Properties[CssProperty.BorderColor]; } }
+        public virtual BorderTopColor BorderTopColor { get { return (BorderTopColor)Properties[CssProperty.BorderTopColor]; } }
+        public virtual BorderRightColor BorderRightColor { get { return (BorderRightColor)Properties[CssProperty.BorderRightColor]; } }
+        public virtual BorderBottomColor BorderBottomColor { get { return (BorderBottomColor)Properties[CssProperty.BorderBottomColor]; } }
+        public virtual BorderLeftColor BorderLeftColor { get { return (BorderLeftColor)Properties[CssProperty.BorderLeftColor]; } }
+        public virtual BorderSpacing BorderSpacing { get { return (BorderSpacing)Properties[CssProperty.BorderSpacing]; } }
+        public virtual BorderStyle BorderStyle { get { return (BorderStyle)Properties[CssProperty.BorderStyle]; } }
+        public virtual BorderTopStyle BorderTopStyle { get { return (BorderTopStyle)Properties[CssProperty.BorderTopStyle]; } }
+        public virtual BorderRightStyle BorderRightStyle { get { return (BorderRightStyle)Properties[CssProperty.BorderRightStyle]; } }
+        public virtual BorderBottomStyle BorderBottomStyle { get { return (BorderBottomStyle)Properties[CssProperty.BorderBottomStyle]; } }
+        public virtual BorderLeftStyle BorderLeftStyle { get { return (BorderLeftStyle)Properties[CssProperty.BorderLeftStyle]; } }
+        public virtual BorderWidth BorderWidth { get { return (BorderWidth)Properties[CssProperty.BorderWidth]; } }
+        public virtual BorderTopWidth BorderTopWidth { get { return (BorderTopWidth)Properties[CssProperty.BorderTopWidth]; } }
+        public virtual BorderRightWidth BorderRightWidth { get { return (BorderRightWidth)Properties[CssProperty.BorderRightWidth]; } }
+        public virtual BorderBottomWidth BorderBottomWidth { get { return (BorderBottomWidth)Properties[CssProperty.BorderBottomWidth]; } }
+        public virtual BorderLeftWidth BorderLeftWidth { get { return (BorderLeftWidth)Properties[CssProperty.BorderLeftWidth]; } }
+        public virtual Bottom Bottom { get { return (Bottom)Properties[CssProperty.Bottom]; } }
+        public virtual CaptionSide CaptionSide { get { return (CaptionSide)Properties[CssProperty.CaptionSide]; } }
+        public virtual Clear Clear { get { return (Clear)Properties[CssProperty.Clear]; } }
+        public virtual Clip Clip { get { return (Clip)Properties[CssProperty.Clip]; } }
+        public virtual Color Color { get { return (Color)Properties[CssProperty.Color]; } }
+        public virtual Content Content { get { return (Content)Properties[CssProperty.Content]; } }
+        public virtual CounterReset CounterReset { get { return (CounterReset)Properties[CssProperty.CounterReset]; } }
+        public virtual CounterIncrement CounterIncrement { get { return (CounterIncrement)Properties[CssProperty.CounterIncrement]; } }
+        public virtual Cue Cue { get { return (Cue)Properties[CssProperty.Cue]; } }
+        public virtual CueAfter CueAfter { get { return (CueAfter)Properties[CssProperty.CueAfter]; } }
+        public virtual CueBefore CueBefore { get { return (CueBefore)Properties[CssProperty.CueBefore]; } }
+        public virtual Cursor Cursor { get { return (Cursor)Properties[CssProperty.Cursor]; } }
+        public virtual Direction Direction { get { return (Direction)Properties[CssProperty.Direction]; } }
+        public virtual Display Display { get { return (Display)Properties[CssProperty.Display]; } }
+        public virtual Elevation Elevation { get { return (Elevation)Properties[CssProperty.Elevation]; } }
+        public virtual EmptyCells EmptyCells { get { return (EmptyCells)Properties[CssProperty.EmptyCells]; } }
+        public virtual Float Float { get { return (Float)Properties[CssProperty.Float]; } }
+        public virtual Font Font { get { return (Font)Properties[CssProperty.Font]; } }
+        public virtual FontFamily FontFamily { get { return (FontFamily)Properties[CssProperty.FontFamily]; } }
+        public virtual FontSize FontSize { get { return (FontSize)Properties[CssProperty.FontSize]; } }
+        public virtual FontStyle FontStyle { get { return (FontStyle)Properties[CssProperty.FontStyle]; } }
+        public virtual FontVariant FontVariant { get { return (FontVariant)Properties[CssProperty.FontVariant]; } }
+        public virtual FontWeight FontWeight { get { return (FontWeight)Properties[CssProperty.FontWeight]; } }
+        public virtual Height Height { get { return (Height)Properties[CssProperty.Height]; } }
+        public virtual Left Left { get { return (Left)Properties[CssProperty.Left]; } }
+        public virtual LetterSpacing LetterSpacing { get { return (LetterSpacing)Properties[CssProperty.LetterSpacing]; } }
+        public virtual LineHeight LineHeight { get { return (LineHeight)Properties[CssProperty.LineHeight]; } }
+        public virtual ListStyle ListStyle { get { return (ListStyle)Properties[CssProperty.ListStyle]; } }
+        public virtual ListStyleImage ListStyleImage { get { return (ListStyleImage)Properties[CssProperty.ListStyleImage]; } }
+        public virtual ListStylePosition ListStylePosition { get { return (ListStylePosition)Properties[CssProperty.ListStylePosition]; } }
+        public virtual ListStyleType ListStyleType { get { return (ListStyleType)Properties[CssProperty.ListStyleType]; } }
+        public virtual Margin Margin { get { return (Margin)Properties[CssProperty.Margin]; } }
+        public virtual MarginTop MarginTop { get { return (MarginTop)Properties[CssProperty.MarginTop]; } }
+        public virtual MarginRight MarginRight { get { return (MarginRight)Properties[CssProperty.MarginRight]; } }
+        public virtual MarginBottom MarginBottom { get { return (MarginBottom)Properties[CssProperty.MarginBottom]; } }
+        public virtual MarginLeft MarginLeft { get { return (MarginLeft)Properties[CssProperty.MarginLeft]; } }
+        public virtual MaxHeight MaxHeight { get { return (MaxHeight)Properties[CssProperty.MaxHeight]; } }
+        public virtual MaxWidth MaxWidth { get { return (MaxWidth)Properties[CssProperty.MaxWidth]; } }
+        public virtual MinHeight MinHeight { get { return (MinHeight)Properties[CssProperty.MinHeight]; } }
+        public virtual MinWidth MinWidth { get { return (MinWidth)Properties[CssProperty.MinWidth]; } }
+        public virtual Orphans Orphans { get { return (Orphans)Properties[CssProperty.Orphans]; } }
+        public virtual Outline Outline { get { return (Outline)Properties[CssProperty.Outline]; } }
+        public virtual OutlineColor OutlineColor { get { return (OutlineColor)Properties[CssProperty.OutlineColor]; } }
+        public virtual OutlineStyle OutlineStyle { get { return (OutlineStyle)Properties[CssProperty.OutlineStyle]; } }
+        public virtual OutlineWidth OutlineWidth { get { return (OutlineWidth)Properties[CssProperty.OutlineWidth]; } }
+        public virtual Overflow Overflow { get { return (Overflow)Properties[CssProperty.Overflow]; } }
+        public virtual Padding Padding { get { return (Padding)Properties[CssProperty.Padding]; } }
+        public virtual PaddingTop PaddingTop { get { return (PaddingTop)Properties[CssProperty.PaddingTop]; } }
+        public virtual PaddingRight PaddingRight { get { return (PaddingRight)Properties[CssProperty.PaddingRight]; } }
+        public virtual PaddingBottom PaddingBottom { get { return (PaddingBottom)Properties[CssProperty.PaddingBottom]; } }
+        public virtual PaddingLeft PaddingLeft { get { return (PaddingLeft)Properties[CssProperty.PaddingLeft]; } }
+        public virtual PageBreakAfter PageBreakAfter { get { return (PageBreakAfter)Properties[CssProperty.PageBreakAfter]; } }
+        public virtual PageBreakBefore PageBreakBefore { get { return (PageBreakBefore)Properties[CssProperty.PageBreakBefore]; } }
+        public virtual PageBreakInside PageBreakInside { get { return (PageBreakInside)Properties[CssProperty.PageBreakInside]; } }
+        public virtual Pause Pause { get { return (Pause)Properties[CssProperty.Pause]; } }
+        public virtual PauseAfter PauseAfter { get { return (PauseAfter)Properties[CssProperty.PauseAfter]; } }
+        public virtual PauseBefore PauseBefore { get { return (PauseBefore)Properties[CssProperty.PauseBefore]; } }
+        public virtual Pitch Pitch { get { return (Pitch)Properties[CssProperty.Pitch]; } }
+        public virtual PitchRange PitchRange { get { return (PitchRange)Properties[CssProperty.PitchRange]; } }
+        public virtual PlayDuring PlayDuring { get { return (PlayDuring)Properties[CssProperty.PlayDuring]; } }
+        public virtual Position Position { get { return (Position)Properties[CssProperty.Position]; } }
+        public virtual Quotes Quotes { get { return (Quotes)Properties[CssProperty.Quotes]; } }
+        public virtual Richness Richness { get { return (Richness)Properties[CssProperty.Richness]; } }
+        public virtual Right Right { get { return (Right)Properties[CssProperty.Right]; } }
+        public virtual Speak Speak { get { return (Speak)Properties[CssProperty.Speak]; } }
+        public virtual SpeakHeader SpeakHeader { get { return (SpeakHeader)Properties[CssProperty.SpeakHeader]; } }
+        public virtual SpeakNumeral SpeakNumeral { get { return (SpeakNumeral)Properties[CssProperty.SpeakNumeral]; } }
+        public virtual SpeakPunctuation SpeakPunctuation { get { return (SpeakPunctuation)Properties[CssProperty.SpeakPunctuation]; } }
+        public virtual SpeechRate SpeechRate { get { return (SpeechRate)Properties[CssProperty.SpeechRate]; } }
+        public virtual Stress Stress { get { return (Stress)Properties[CssProperty.Stress]; } }
+        public virtual TableLayout TableLayout { get { return (TableLayout)Properties[CssProperty.TableLayout]; } }
+        public virtual TextAlign TextAlign { get { return (TextAlign)Properties[CssProperty.TextAlign]; } }
+        public virtual TextDecoration TextDecoration { get { return (TextDecoration)Properties[CssProperty.TextDecoration]; } }
+        public virtual TextIndent TextIndent { get { return (TextIndent)Properties[CssProperty.TextIndent]; } }
+        public virtual TextTransform TextTransform { get { return (TextTransform)Properties[CssProperty.TextTransform]; } }
+        public virtual Top Top { get { return (Top)Properties[CssProperty.Top]; } }
+        public virtual UnicodeBidi UnicodeBidi { get { return (UnicodeBidi)Properties[CssProperty.UnicodeBidi]; } }
+        public virtual VerticalAlign VerticalAlign { get { return (VerticalAlign)Properties[CssProperty.VerticalAlign]; } }
+        public virtual Visibility Visibility { get { return (Visibility)Properties[CssProperty.Visibility]; } }
+        public virtual VoiceFamily VoiceFamily { get { return (VoiceFamily)Properties[CssProperty.VoiceFamily]; } }
+        public virtual Volume Volume { get { return (Volume)Properties[CssProperty.Volume]; } }
+        public virtual WhiteSpace WhiteSpace { get { return (WhiteSpace)Properties[CssProperty.WhiteSpace]; } }
+        public virtual Widows Widows { get { return (Widows)Properties[CssProperty.Widows]; } }
+        public virtual Width Width { get { return (Width)Properties[CssProperty.Width]; } }
+        public virtual WordSpacing WordSpacing { get { return (WordSpacing)Properties[CssProperty.WordSpacing]; } }
+        public virtual ZIndex ZIndex { get { return (ZIndex)Properties[CssProperty.ZIndex]; } }
         #endregion
+
+        public virtual CssStylesheet Parse(string source, CssStylesheetSource stylesheetSource)
+        {
+            CssScanner scanner = new CssScanner();
+            scanner.SetSource(source, 0);
+
+            CssParser parser = new CssParser(this, scanner);
+            return parser.Parse(stylesheetSource);
+        }
 
         public virtual bool IsMediaSupported(string[] media)
         {
@@ -296,7 +308,7 @@ namespace Marius.Html.Css
             return false;
         }
 
-        public CssStylesheet ImportStylesheet(string uri, CssStylesheetSource stylesheetSource)
+        public virtual CssStylesheet ImportStylesheet(string uri, CssStylesheetSource stylesheetSource)
         {
             try
             {
@@ -323,6 +335,16 @@ namespace Marius.Html.Css
         {
             StyleCacheManager manager = new StyleCacheManager(this, stylesheets);
             return manager.Prepare();
+        }
+
+        public virtual void Apply(CssPreparedStylesheet sheet, CssBox box)
+        {
+            var decls = sheet.GetAplicableDeclarations(box);
+
+            for (int i = 0; i < decls.Count; i++)
+            {
+                Properties[decls[i].Property].Apply(box, decls[i].Value);
+            }
         }
     }
 }

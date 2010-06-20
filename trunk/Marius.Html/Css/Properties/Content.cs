@@ -32,7 +32,7 @@ using System.Linq.Expressions;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Content: CssSimplePropertyHandler
+    public partial class Content: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

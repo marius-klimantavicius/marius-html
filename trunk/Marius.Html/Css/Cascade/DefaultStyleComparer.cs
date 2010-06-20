@@ -47,13 +47,13 @@ namespace Marius.Html.Css.Cascade
             yweight = Importance(y);
 
             if (xweight != yweight)
-                return -(xweight - yweight);
+                return xweight - yweight;
 
             int speccomp = x.Selector.Specificity.CompareTo(y.Selector.Specificity);
             if (speccomp != 0)
-                return -speccomp;
+                return speccomp;
 
-            return -(x.Index - y.Index);
+            return x.Index - y.Index;
         }
 
         private int Importance(CssPreparedStyle s)

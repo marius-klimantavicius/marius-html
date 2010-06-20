@@ -61,7 +61,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class PaddingTop: SidePadding
+    public partial class PaddingTop: SidePadding
     {
         public PaddingTop(CssContext context)
             : base(context)
@@ -74,7 +74,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class PaddingRight: SidePadding
+    public partial class PaddingRight: SidePadding
     {
         public PaddingRight(CssContext context)
             : base(context)
@@ -87,7 +87,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class PaddingBottom: SidePadding
+    public partial class PaddingBottom: SidePadding
     {
         public PaddingBottom(CssContext context)
             : base(context)
@@ -100,7 +100,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class PaddingLeft: SidePadding
+    public partial class PaddingLeft: SidePadding
     {
         public PaddingLeft(CssContext context)
             : base(context)

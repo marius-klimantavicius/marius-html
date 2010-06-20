@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CounterIncrement: CssSimplePropertyHandler
+    public partial class CounterIncrement: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

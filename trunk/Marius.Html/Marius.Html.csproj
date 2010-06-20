@@ -46,6 +46,8 @@
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
     <Compile Include="Css\CssInitialBox.cs" />
+    <Compile Include="Css\CssProperty.cs" />
+    <Compile Include="Css\CssPropertyDictionary.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Css\Properties\BorderCollapse.cs" />
     <Compile Include="Css\Properties\BorderColor.cs" />
     <Compile Include="Css\Properties\CounterIncrement.cs" />
+    <Compile Include="Css\Properties\_Property.cs" />
     <Compile Include="Css\Properties\SideBorderColor.cs" />
     <Compile Include="Css\Properties\CueAfter.cs" />
     <Compile Include="Css\Properties\Margin.cs" />
@@ -231,7 +234,9 @@
     <Compile Include="Element.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class MinHeight: CssSimplePropertyHandler
+    public partial class MinHeight: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

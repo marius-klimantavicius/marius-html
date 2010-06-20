@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class ListStyle: CssPropertyHandler
+    public partial class ListStyle: CssPropertyHandler
     {
         public ListStyle(CssContext context)
             : base(context)

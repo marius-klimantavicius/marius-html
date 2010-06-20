@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Background: CssPropertyHandler
+    public partial class Background: CssPropertyHandler
     {
         public Background(CssContext context)
             : base(context)
