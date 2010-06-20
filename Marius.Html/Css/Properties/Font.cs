@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Font: CssPropertyHandler
+    public partial class Font: CssPropertyHandler
     {
         public Font(CssContext context)
             : base(context)

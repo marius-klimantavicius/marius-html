@@ -30,7 +30,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Color: CssSimplePropertyHandler
+    public partial class Color: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

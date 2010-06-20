@@ -73,6 +73,19 @@ namespace Marius.Html.Css.Values
         {
             return Utils.GetHashCode(Operator, ValueType);
         }
+
+        public override string ToString()
+        {
+            switch (Operator)
+            {
+                case CssOperatorType.Slash:
+                    return "/";
+                case CssOperatorType.Comma:
+                    return ",";
+            }
+
+            throw new CssInvalidStateException();
+        }
     }
 
     public enum CssOperatorType

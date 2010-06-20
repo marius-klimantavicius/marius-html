@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Border: CssPropertyHandler
+    public partial class Border: CssPropertyHandler
     {
         public Border(CssContext context)
             : base(context)

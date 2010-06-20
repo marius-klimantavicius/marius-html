@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Outline: CssPropertyHandler
+    public partial class Outline: CssPropertyHandler
     {
         public Outline(CssContext context)
             : base(context)

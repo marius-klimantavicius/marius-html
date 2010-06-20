@@ -61,9 +61,14 @@ namespace Marius.Html.Css.Properties
 
             return MatchInherit(expression);
         }
+
+        public CssValue ParseValue(CssExpression expression)
+        {
+            return Parse(expression);
+        }
     }
 
-    public class BorderTopWidth: SideBorderWidth
+    public partial class BorderTopWidth: SideBorderWidth
     {
         public BorderTopWidth(CssContext context)
             : base(context)
@@ -76,7 +81,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderRightWidth: SideBorderWidth
+    public partial class BorderRightWidth: SideBorderWidth
     {
         public BorderRightWidth(CssContext context)
             : base(context)
@@ -89,7 +94,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderBottomWidth: SideBorderWidth
+    public partial class BorderBottomWidth: SideBorderWidth
     {
         public BorderBottomWidth(CssContext context)
             : base(context)
@@ -102,7 +107,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class BorderLeftWidth: SideBorderWidth
+    public partial class BorderLeftWidth: SideBorderWidth
     {
         public BorderLeftWidth(CssContext context)
             : base(context)

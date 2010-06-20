@@ -126,7 +126,7 @@ namespace Marius.Html.Css.Cascade
             if (!_context.IsMediaSupported(import.MediaList))
                 return;
 
-            if (_importDepth >= _context.MaxImportDetpth)
+            if (_importDepth >= _context.MaxImportDepth)
                 return;
 
             _importDepth++;

@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class OutlineWidth: CssSimplePropertyHandler
+    public partial class OutlineWidth: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {
@@ -55,7 +55,7 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Parse(CssExpression expression)
         {
-            CssValue result = _context.BorderTopWidth.Parse(expression);
+            CssValue result = _context.BorderTopWidth.ParseValue(expression);
             if (result != null)
                 return result;
 

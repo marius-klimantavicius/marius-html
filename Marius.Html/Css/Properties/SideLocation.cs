@@ -79,7 +79,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class Top: SideLocation
+    public partial class Top: SideLocation
     {
         public Top(CssContext context)
             : base(context)
@@ -92,7 +92,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class Right: SideLocation
+    public partial class Right: SideLocation
     {
         public Right(CssContext context)
             : base(context)
@@ -105,7 +105,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class Bottom: SideLocation
+    public partial class Bottom: SideLocation
     {
         public Bottom(CssContext context)
             : base(context)
@@ -118,7 +118,7 @@ namespace Marius.Html.Css.Properties
         }
     }
 
-    public class Left: SideLocation
+    public partial class Left: SideLocation
     {
         public Left(CssContext context)
             : base(context)

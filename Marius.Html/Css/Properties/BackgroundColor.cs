@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BackgroundColor: CssSimplePropertyHandler
+    public partial class BackgroundColor: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

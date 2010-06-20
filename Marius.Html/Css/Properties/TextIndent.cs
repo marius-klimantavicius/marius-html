@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class TextIndent: CssSimplePropertyHandler
+    public partial class TextIndent: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

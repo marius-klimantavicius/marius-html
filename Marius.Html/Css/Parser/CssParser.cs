@@ -36,7 +36,7 @@ using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Parser
 {
-    public class CssParser
+    public partial class CssParser
     {
         private static readonly string[] EmptyStringArray = new string[0];
 

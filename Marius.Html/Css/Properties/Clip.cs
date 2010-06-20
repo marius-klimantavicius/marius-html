@@ -30,7 +30,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Clip: CssSimplePropertyHandler
+    public partial class Clip: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

@@ -34,7 +34,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class Azimuth: CssSimplePropertyHandler
+    public partial class Azimuth: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

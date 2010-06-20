@@ -63,10 +63,12 @@ namespace Marius.Html.Css.Parser
 
             if (CssPropertyHandler.MatchPercentage(args, ref red))
             {
-                if (!CssPropertyHandler.MatchPercentage(args, ref green))
-                    return false;
+                bool presult = CssPropertyHandler.MatchComma(args)
+                    && CssPropertyHandler.MatchPercentage(args, ref green)
+                    && CssPropertyHandler.MatchComma(args)
+                    && CssPropertyHandler.MatchPercentage(args, ref blue);
 
-                if (!CssPropertyHandler.MatchPercentage(args, ref blue))
+                if (!presult)
                     return false;
 
                 if (!CssPropertyHandler.Valid(args))
@@ -77,10 +79,12 @@ namespace Marius.Html.Css.Parser
             }
             else if (CssPropertyHandler.MatchNumber(args, ref red))
             {
-                if (!CssPropertyHandler.MatchNumber(args, ref green))
-                    return false;
+                bool presult = CssPropertyHandler.MatchComma(args)
+                    && CssPropertyHandler.MatchNumber(args, ref green)
+                    && CssPropertyHandler.MatchComma(args)
+                    && CssPropertyHandler.MatchNumber(args, ref blue);
 
-                if (!CssPropertyHandler.MatchNumber(args, ref blue))
+                if (!presult)
                     return false;
 
                 if (!CssPropertyHandler.Valid(args))
@@ -101,10 +105,19 @@ namespace Marius.Html.Css.Parser
             if (!CssPropertyHandler.MatchLength(args, ref top) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref top))
                 return false;
 
+            if (!CssPropertyHandler.MatchComma(args))
+                return false;
+
             if (!CssPropertyHandler.MatchLength(args, ref right) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref right))
                 return false;
 
+            if (!CssPropertyHandler.MatchComma(args))
+                return false;
+
             if (!CssPropertyHandler.MatchLength(args, ref bottom) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref bottom))
+                return false;
+
+            if (!CssPropertyHandler.MatchComma(args))
                 return false;
 
             if (!CssPropertyHandler.MatchLength(args, ref left) && !CssPropertyHandler.Match(args, CssKeywords.Auto, ref left))

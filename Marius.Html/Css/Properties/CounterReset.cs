@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 namespace Marius.Html.Css.Properties
 {
-    public class CounterReset: CssSimplePropertyHandler
+    public partial class CounterReset: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

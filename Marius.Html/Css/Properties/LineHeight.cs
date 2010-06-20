@@ -31,7 +31,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class LineHeight: CssSimplePropertyHandler
+    public partial class LineHeight: CssSimplePropertyHandler
     {
         public override bool IsInherited
         {

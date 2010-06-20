@@ -33,7 +33,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
-    public class BorderColor: SideShortcut
+    public partial class BorderColor: SideShortcut
     {
         public BorderColor(CssContext context)
             : base(context)
