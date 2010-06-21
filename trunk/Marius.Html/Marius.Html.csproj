@@ -232,6 +232,7 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
+    <Compile Include="Document.cs" />
     <Compile Include="Hap\Crc32.cs" />
     <Compile Include="Hap\EncodingFoundException.cs" />
     <Compile Include="Hap\HtmlAttribute.cs" />

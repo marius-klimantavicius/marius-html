@@ -29,25 +29,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Hap;
 
 namespace Marius.Html
 {
-    public class Element
+    public class Document
     {
-        public string Name { get; private set; }
-        public string Id { get; set; }
-        public string Class { get; set; }
-        
-        public IDictionary<string, string> Attributes { get; private set; }
+        private Element _root;
 
-        public Element Parent { get; set; }
-        public Element[] Children { get; set; }
+        public Element Root { get { return _root; } }
 
-        public Element(string name)
+        public Document(Element root)
         {
-            Name = name;
-
-            Attributes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            _root = root;
         }
     }
 }
