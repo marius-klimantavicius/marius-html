@@ -118,12 +118,11 @@ namespace Marius.Html.Css.Parser
             try
             {
                 //ruleset
-                //  : first [ ',' S* first ]*
+                //  : selector [ ',' S* selector ]*
                 //    '{' S* declaration? [ ';' S* declaration? ]* '}' S*
                 //  ;
 
                 List<CssSelector> selectors = new List<CssSelector>();
-                List<CssDeclaration> decls = new List<CssDeclaration>();
 
                 CssSelector sel;
 
@@ -143,23 +142,13 @@ namespace Marius.Html.Css.Parser
                 Match(CssTokens.OpenBrace);
                 nesting++;
 
-                _scanner.SkipWhitespace();
-
-                MaybeDeclaration(decls);
-
-                while (_scanner.Current == CssTokens.SemiColon)
-                {
-                    Match(CssTokens.SemiColon);
-
-                    _scanner.SkipWhitespace();
-                    MaybeDeclaration(decls);
-                }
+                CssDeclaration[] decls = Declarations();
 
                 MatchEof(CssTokens.CloseBrace);
                 nesting--;
                 _scanner.SkipWhitespace();
 
-                return new CssStyle(selectors.ToArray(), decls.ToArray());
+                return new CssStyle(selectors.ToArray(), decls);
             }
             catch (CssParsingException)
             {
@@ -167,6 +156,26 @@ namespace Marius.Html.Css.Parser
                 _scanner.SkipWhitespace();
             }
             return null;
+        }
+
+        // for style='<declarations>' parsing
+        public CssDeclaration[] Declarations()
+        {
+            List<CssDeclaration> decls = new List<CssDeclaration>();
+
+            _scanner.SkipWhitespace();
+
+            MaybeDeclaration(decls);
+
+            while (_scanner.Current == CssTokens.SemiColon)
+            {
+                Match(CssTokens.SemiColon);
+
+                _scanner.SkipWhitespace();
+                MaybeDeclaration(decls);
+            }
+
+            return decls.ToArray();
         }
 
         private void MaybeDeclaration(List<CssDeclaration> decls)
