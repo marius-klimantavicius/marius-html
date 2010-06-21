@@ -37,15 +37,14 @@ namespace Marius.Html.Css.Parser
     {
         private const int UnicodeEscapeMaxLength = 6;
 
-        private InputSource _source;
+        private IInputSource _source;
         private string _value;
-        private int _start, _end;
 
         public string Value
         {
             get
             {
-                if (_value == null) _value = _source.Value(_start, _end);
+                if (_value == null) _value = _source.Value;
                 return _value;
             }
         }
@@ -58,13 +57,11 @@ namespace Marius.Html.Css.Parser
             }
         }
 
-        public InputSource Peek { get { return _source; } }
-
-        public int Position { get { return _source.Position; } }
+        public IInputSource Peek { get { return _source; } }
 
         public CssTokenizer(string source, int index)
         {
-            _source = new InputSource(source, index);
+            _source = new StringSource(source, index);
         }
 
         public void PushState()
@@ -84,7 +81,7 @@ namespace Marius.Html.Css.Parser
 
         private void MoveNext()
         {
-            Skip(1);
+            _source.MoveNext();
         }
 
         public CssTokens NextToken()
@@ -94,9 +91,8 @@ namespace Marius.Html.Css.Parser
             do
             {
                 _value = null;
-                _start = Position;
+                _source.ClearValue();
                 token = Next(false);
-                _end = Position;
 
             } while (token == CssTokens.Comment);
 
@@ -110,9 +106,8 @@ namespace Marius.Html.Css.Parser
             do
             {
                 _value = null;
-                _start = Position;
+                _source.ClearValue();
                 token = Next(true);
-                _end = Position;
 
             } while (token == CssTokens.Comment);
 
