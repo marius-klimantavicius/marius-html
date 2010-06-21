@@ -53,6 +53,7 @@
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
+    <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />
     <Compile Include="Css\Properties\BackgroundPosition.cs" />
     <Compile Include="Css\Properties\BackgroundImage.cs" />
@@ -223,7 +224,7 @@
     <Compile Include="Css\Properties\BackgroundAttachment.cs" />
     <Compile Include="Css\Properties\BackgroundColor.cs" />
     <Compile Include="Css\CssBox.cs" />
-    <Compile Include="Css\Parser\InputSource.cs" />
+    <Compile Include="Css\Parser\StringSource.cs" />
     <Compile Include="Css\Parser\CssParser.cs" />
     <Compile Include="Css\Parser\CssScanner.cs" />
     <Compile Include="Css\Parser\CssSourceToken.cs" />

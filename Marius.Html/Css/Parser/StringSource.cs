@@ -32,11 +32,12 @@ using System.Text;
 
 namespace Marius.Html.Css.Parser
 {
-    public class InputSource
+    public class StringSource: IInputSource
     {
         private char[] _source;
         private int _index;
         private Stack<int> _state = new Stack<int>();
+        private StringBuilder _value = new StringBuilder();
 
         public char this[int index]
         {
@@ -53,27 +54,43 @@ namespace Marius.Html.Css.Parser
             get { if (_index >= 0 && _index < _source.Length) return _source[_index]; return '\0'; }
         }
 
-        public int Position
+        public string Value
         {
-            get { return _index; }
+            get
+            {
+                return _value.ToString();
+            }
         }
 
         public bool Eof { get { return _index >= _source.Length; } }
 
-        public InputSource(string source, int startIndex)
+        public StringSource(string source, int startIndex)
         {
             _source = source.ToCharArray();
             _index = startIndex;
+            _value = new StringBuilder();
+        }
+
+        public void ClearValue()
+        {
+            _value.Clear();
+        }
+
+        public void MoveNext()
+        {
+            if (_index < _source.Length)
+                _value.Append(_source[_index]);
+            _index++;
         }
 
         public void Skip(int count)
         {
-            _index += count;
-        }
-
-        public string Value(int start, int end)
-        {
-            return new string(_source, start, end - start);
+            for (int i = 0; i < count; i++)
+            {
+                if (_index < _source.Length)
+                    _value.Append(_source[_index]);
+                _index++;
+            }
         }
 
         public void PushState()
