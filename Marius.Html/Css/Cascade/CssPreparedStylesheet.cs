@@ -163,7 +163,7 @@ namespace Marius.Html.Css.Cascade
                 return false;
 
             var element = box.Element;
-            if (element.Attributes.ContainsKey(condition.Attribute))
+            if (element.Attributes.ContainsAttribute(condition.Attribute))
             {
                 if (condition.Value == null)
                     return false; // should not happen, maybe throw an exception?
@@ -187,7 +187,7 @@ namespace Marius.Html.Css.Cascade
                 return false;
 
             var element = box.Element;
-            if (element.Attributes.ContainsKey(condition.Attribute))
+            if (element.Attributes.ContainsAttribute(condition.Attribute))
             {
                 if (condition.Value == null)
                     return false; // should not happen, maybe throw an exception?
@@ -208,7 +208,7 @@ namespace Marius.Html.Css.Cascade
                 return false;
 
             var element = box.Element;
-            if (element.Attributes.ContainsKey(condition.Attribute))
+            if (element.Attributes.ContainsAttribute(condition.Attribute))
             {
                 if (condition.Value == null)
                     return true;

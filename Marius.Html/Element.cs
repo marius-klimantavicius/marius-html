@@ -34,20 +34,67 @@ namespace Marius.Html
 {
     public class Element
     {
+        public virtual ElementType ElementType { get { return ElementType.Element; } }
+
         public string Name { get; private set; }
-        public string Id { get; set; }
-        public string Class { get; set; }
-        
-        public IDictionary<string, string> Attributes { get; private set; }
+        public string Id { get { return Attributes.Id; } }
+        public string Class { get { return Attributes.Class; } }
+        public string Style { get { return Attributes.Style; } }
 
-        public Element Parent { get; set; }
-        public Element[] Children { get; set; }
+        public AttributeCollection Attributes { get; private set; }
 
+        public Element Parent { get; private set; }
+        public Element[] Children { get; private set; }
+
+        // used for testing
         public Element(string name)
+            : this(name, null, null)
+        {
+        }
+
+        public Element(string name, string id)
+            : this(name, new AttributeCollection(id, null, null, null), null)
+        {
+        }
+
+        public Element(string name, AttributeCollection attributes, Element[] children)
         {
             Name = name;
+            Attributes = attributes ?? AttributeCollection.Empty;
+            Children = children;
 
-            Attributes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            if (Children != null)
+            {
+                for (int i = 0; i < Children.Length; i++)
+                    Children[i].Parent = this;
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append('<').Append(Name);
+            for (int i = 0; i < Attributes.Count; i++)
+            {
+                sb.Append(' ');
+                // TODO: handle escapes and entities
+                sb.Append(Attributes[i].Item1).Append("='").Append(Attributes[i].Item2).Append('\'');
+            }
+            if (Children.Length == 0)
+            {
+                sb.AppendLine("/>");
+            }
+            else
+            {
+                // TODO: add indentation
+                sb.AppendLine(">");
+                for (int i = 0; i < Children.Length; i++)
+                {
+                    sb.Append(Children[i].ToString());
+                }
+                sb.Append("</").Append(Name).AppendLine(">");
+            }
+            return sb.ToString();
         }
     }
 }
