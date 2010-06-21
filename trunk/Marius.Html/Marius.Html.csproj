@@ -232,12 +232,44 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
+    <Compile Include="Hap\Crc32.cs" />
+    <Compile Include="Hap\EncodingFoundException.cs" />
+    <Compile Include="Hap\HtmlAttribute.cs" />
+    <Compile Include="Hap\HtmlAttributeCollection.cs" />
+    <Compile Include="Hap\HtmlCmdLine.cs" />
+    <Compile Include="Hap\HtmlCommentNode.cs" />
+    <Compile Include="Hap\HtmlConsoleListener.cs" />
+    <Compile Include="Hap\HtmlDocument.cs" />
+    <Compile Include="Hap\HtmlElementFlag.cs" />
+    <Compile Include="Hap\HtmlEntity.cs" />
+    <Compile Include="Hap\HtmlNameTable.cs" />
+    <Compile Include="Hap\HtmlNode.cs" />
+    <Compile Include="Hap\HtmlNodeCollection.cs" />
+    <Compile Include="Hap\HtmlNodeNavigator.cs" />
+    <Compile Include="Hap\HtmlNodeType.cs" />
+    <Compile Include="Hap\HtmlParseError.cs" />
+    <Compile Include="Hap\HtmlParseErrorCode.cs" />
+    <Compile Include="Hap\HtmlTextNode.cs" />
+    <Compile Include="Hap\HtmlWeb.cs" />
+    <Compile Include="Hap\HtmlWebException.cs" />
+    <Compile Include="Hap\IOLibrary.cs" />
+    <Compile Include="Hap\MixedCodeDocument.cs" />
+    <Compile Include="Hap\MixedCodeDocumentCodeFragment.cs" />
+    <Compile Include="Hap\MixedCodeDocumentFragment.cs" />
+    <Compile Include="Hap\MixedCodeDocumentFragmentList.cs" />
+    <Compile Include="Hap\MixedCodeDocumentFragmentType.cs" />
+    <Compile Include="Hap\MixedCodeDocumentTextFragment.cs" />
+    <Compile Include="Hap\NameValuePair.cs" />
+    <Compile Include="Hap\NameValuePairList.cs" />
     <Compile Include="Internal\Utils.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Hap\License.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
