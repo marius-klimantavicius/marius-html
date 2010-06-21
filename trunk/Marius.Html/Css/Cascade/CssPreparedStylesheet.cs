@@ -81,7 +81,7 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        protected bool AppliesConditional(CssConditionalSelector selector, CssBox box)
+        protected virtual bool AppliesConditional(CssConditionalSelector selector, CssBox box)
         {
             if (!Applies(selector.SimpleSelector, box))
                 return false;
@@ -96,7 +96,7 @@ namespace Marius.Html.Css.Cascade
             return true;
         }
 
-        private bool MatchesCondition(CssCondition condition, CssBox box)
+        protected virtual bool MatchesCondition(CssCondition condition, CssBox box)
         {
             switch (condition.ConditionType)
             {
@@ -119,19 +119,19 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        private bool MatchesPseudoClass(CssPseudoClassCondition condition, CssBox box)
+        protected virtual bool MatchesPseudoClass(CssPseudoClassCondition condition, CssBox box)
         {
             // currently pseudo elements and classes are not implemented
             return false;
         }
 
-        private bool MatchesPseudoElement(CssPseudoElementCondition condition, CssBox box)
+        protected virtual bool MatchesPseudoElement(CssPseudoElementCondition condition, CssBox box)
         {
             // currently pseudo elements and classes are not implemented
             return false;
         }
 
-        private bool MatchesClass(CssClassCondition condition, CssBox box)
+        protected virtual bool MatchesClass(CssClassCondition condition, CssBox box)
         {
             if (box.Element == null)
                 return false;
@@ -144,7 +144,7 @@ namespace Marius.Html.Css.Cascade
             return StringComparer.InvariantCultureIgnoreCase.Equals(element.Class, condition.Value);
         }
 
-        private bool MatchesId(CssIdCondition condition, CssBox box)
+        protected virtual bool MatchesId(CssIdCondition condition, CssBox box)
         {
             if (box.Element == null)
                 return false;
@@ -157,7 +157,7 @@ namespace Marius.Html.Css.Cascade
             return StringComparer.InvariantCultureIgnoreCase.Equals(element.Id, condition.Value);
         }
 
-        private bool MatchesIncludesAttribute(CssIncludesAttributeCondition condition, CssBox box)
+        protected virtual bool MatchesIncludesAttribute(CssIncludesAttributeCondition condition, CssBox box)
         {
             if (box.Element == null)
                 return false;
@@ -181,7 +181,7 @@ namespace Marius.Html.Css.Cascade
             return false;
         }
 
-        private bool MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, CssBox box)
+        protected virtual bool MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, CssBox box)
         {
             if (box.Element == null)
                 return false;
@@ -202,7 +202,7 @@ namespace Marius.Html.Css.Cascade
             return false;
         }
 
-        private bool MatchesAttribute(CssAttributeCondition condition, CssBox box)
+        protected virtual bool MatchesAttribute(CssAttributeCondition condition, CssBox box)
         {
             if (box.Element == null)
                 return false;
@@ -218,7 +218,7 @@ namespace Marius.Html.Css.Cascade
             return false;
         }
 
-        protected bool AppliesDescendant(CssDescendantSelector selector, CssBox box)
+        protected virtual bool AppliesDescendant(CssDescendantSelector selector, CssBox box)
         {
             if (!Applies(selector.Selector, box))
                 return false;
@@ -233,7 +233,7 @@ namespace Marius.Html.Css.Cascade
             return false;
         }
 
-        protected bool AppliesSibling(CssSiblingSelector selector, CssBox box)
+        protected virtual bool AppliesSibling(CssSiblingSelector selector, CssBox box)
         {
             var parent = box.Parent;
             if (parent == null)
@@ -254,7 +254,7 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        protected bool AppliesChild(CssChildSelector selector, CssBox box)
+        protected virtual bool AppliesChild(CssChildSelector selector, CssBox box)
         {
             if (!Applies(selector.Selector, box))
                 return false;
@@ -266,7 +266,7 @@ namespace Marius.Html.Css.Cascade
             return Applies(selector.AncestorSelector, parent);
         }
 
-        protected bool AppliesElement(CssElementSelector selector, CssBox box)
+        protected virtual bool AppliesElement(CssElementSelector selector, CssBox box)
         {
             if (box.Element == null)
                 return false;
