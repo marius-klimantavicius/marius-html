@@ -63,8 +63,7 @@ namespace Marius.Html.Tests.Css.Cascade
             var prep = _context.PrepareStylesheets(agents, users, authors);
 
             var box = new CssBox();
-            box.Element = new Element("a");
-            box.Element.Id = "id";
+            box.Element = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(6, decls.Count);
@@ -92,8 +91,7 @@ namespace Marius.Html.Tests.Css.Cascade
             var prep = _context.PrepareStylesheets(s);
 
             var box = new CssBox();
-            box.Element = new Element("a");
-            box.Element.Id = "id";
+            box.Element = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(5, decls.Count);
@@ -115,8 +113,7 @@ a#id { color: green }
             var prep = _context.PrepareStylesheets(s);
 
             var box = new CssBox();
-            box.Element = new Element("a");
-            box.Element.Id = "id";
+            box.Element = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(2, decls.Count);
