@@ -37,25 +37,33 @@ namespace Marius.Html.Tests.Css.Parsing
     [TestFixture]
     public class ErrorRecoveryTests
     {
+        private CssContext _context;
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            _context = new CssContext();
+        }
+
         [Test]
         public void UnexpectedSemicolonShouldBeConsideredPartOfNextRule_EvilTest()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 .demo1 { color: green; };
 .demo1 { color: red; }
 ");
-            var e = CssStylesheet.Parse(@".demo1 { color: green; }");
+            var e = _context.ParseStylesheet(@".demo1 { color: green; }");
             AssertStylesheetsEqual(e, s);
         }
 
         [Test]
         public void AllOpenConstructsShouldBeClosedOnEOF()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 @media screen {
     p:before#m[id][lang|='lt'] { content: 'Hello\
 ");
-            var e = CssStylesheet.Parse(@"
+            var e = _context.ParseStylesheet(@"
 @media screen {
     p:before#m[id][lang|='lt'] { content: 'Hello' }
 }
@@ -66,13 +74,13 @@ namespace Marius.Html.Tests.Css.Parsing
         [Test]
         public void ShouldIgnoreRulesetWithInvalidTokenInSelectorList()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 h1, h2 {color: green }
 h3, h4 & h5 {color: red }
 h6 {color: black }
 h1 { color: red; rotation: 70minutes }
 ");
-            var e = CssStylesheet.Parse(@"
+            var e = _context.ParseStylesheet(@"
 h1, h2 {color: green }
 h6 {color: black }
 h1 { color: red }
@@ -83,7 +91,7 @@ h1 { color: red }
         [Test]
         public void IgnoreUnknownAtRules()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 @three-dee {
   @background-lighting {
     azimuth: 30deg;
@@ -93,7 +101,7 @@ h1 { color: red }
 }
 h1 { color: blue }
 ");
-            var e = CssStylesheet.Parse(@"
+            var e = _context.ParseStylesheet(@"
 h1 { color: blue }
 ");
             AssertStylesheetsEqual(e, s);
@@ -102,20 +110,20 @@ h1 { color: blue }
         [Test]
         public void IgnoreMalformedStatements()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 p @here {color: red}     /* ruleset with unexpected at-keyword '@here' */
 @foo @bar;               /* at-rule with unexpected at-keyword '@bar' */
 }} {{ - }}               /* ruleset with unexpected right brace */
 ) ( {} ) p {color: red } /* ruleset with unexpected right parenthesis */
 ");
-            var e = CssStylesheet.Parse(@"");
+            var e = _context.ParseStylesheet(@"");
             AssertStylesheetsEqual(e, s);
         }
 
         [Test]
         public void IgnoreMalformedDeclarations()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 p { color:rgb(0, 255, 0) }
 p { color:green; color }  /* malformed declaration missing ':', value */
 p { color:red;   color; color:green }  /* same with expected recovery */
@@ -124,7 +132,7 @@ p { color:red;   color:; color:green } /* same with expected recovery */
 p { color:green; color{;color:maroon} } /* unexpected tokens { } */
 p { color:red;   color{;color:maroon}; color:green } /* same with recovery */
 ");
-            var e = CssStylesheet.Parse(@"
+            var e = _context.ParseStylesheet(@"
 p { color:rgb(0, 255, 0) }
 p { color:green }
 p { color:red; color:green }
@@ -139,7 +147,7 @@ p { color:red; color:green }
         [Test]
         public void IgnoreMisplacedImports()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 @import 'subs.css';
 h1 { color: blue }
 
@@ -151,7 +159,7 @@ h1 {color: blue }
 
 @import 'list.css';
 ");
-            var e = CssStylesheet.Parse(@"
+            var e = _context.ParseStylesheet(@"
 @import 'subs.css';
 h1 { color: blue }
 
@@ -166,7 +174,7 @@ h1 { color: blue }
         [Test]
         public void EnsureThatWhitespacesAreHandledCorrectly()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 P:first-letter{ color: blue; }
 P:first-letter:hover { color: blue; }
 P:first-letter { color: blue; } /* note the space */
@@ -178,7 +186,7 @@ P:hover:first-letter { color: blue; } /* note the ordering */
         [Test]
         public void IgnoreStatementsWithSgmlCommentsInInvalidLocations()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 OL { list-style-type: lower-alpha; }
 
 <!--
@@ -220,7 +228,7 @@ OL { list-style-type: lower-alpha; }
   .xf { color: yellow; background: red none; }
 
 ");
-            var e = CssStylesheet.Parse(@"
+            var e = _context.ParseStylesheet(@"
 OL { list-style-type: lower-alpha; }
 .a { color: green; background: white none; }
 .b { color: green; background: white none; }
@@ -243,7 +251,7 @@ OL { list-style-type: lower-alpha; }
         [Test]
         public void TestSelectorConditions()
         {
-            var s = CssStylesheet.Parse(@"
+            var s = _context.ParseStylesheet(@"
 a > b, a {}
 a + b {}
 a:lang(en) + b[a] {}

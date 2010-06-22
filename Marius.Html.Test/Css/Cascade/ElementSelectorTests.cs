@@ -35,6 +35,7 @@ using Marius.Html.Css.Selectors;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Cascade;
 using Marius.Html.Css.Values;
+using Marius.Html.Hap;
 
 namespace Marius.Html.Tests.Css.Cascade
 {
@@ -53,9 +54,9 @@ namespace Marius.Html.Tests.Css.Cascade
         public void ShouldMatchSingleElement()
         {
             CssBox box = new CssBox(_context);
-            box.Element = new Element("a");
+            box.Element = new HapElement("a");
 
-            var sheet = CssStylesheet.Parse(_context, "a { color: green }");
+            var sheet = _context.ParseStylesheet("a { color: green }");
             var prep = _context.PrepareStylesheets(sheet);
 
             var decls = prep.GetAplicableDeclarations(box);
@@ -72,9 +73,9 @@ namespace Marius.Html.Tests.Css.Cascade
         public void ShouldIgnoreCase()
         {
             CssBox box = new CssBox(_context);
-            box.Element = new Element("a");
+            box.Element = new HapElement("a");
 
-            var sheet = CssStylesheet.Parse(_context, "A { color: green }");
+            var sheet = _context.ParseStylesheet("A { color: green }");
             var prep = _context.PrepareStylesheets(sheet);
 
             var decls = prep.GetAplicableDeclarations(box);

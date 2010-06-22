@@ -32,9 +32,19 @@ using System.Text;
 
 namespace Marius.Html
 {
-    public enum ElementType
+    public interface IElement
     {
-        Element,
-        Text,
+        ElementType ElementType { get; }
+
+        string Name { get; }
+
+        // id, class and style attributes can be missing in this collection though Id, Class and Style might be set
+        AttributeCollection Attributes { get; }
+        string Id { get; }
+        string Class { get; }
+        string Style { get; }
+
+        IElement Parent { get; }
+        IElement[] Children { get; }
     }
 }

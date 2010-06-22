@@ -48,24 +48,6 @@ namespace Marius.Html.Css.Dom
             Rules = rules;
         }
 
-        public static CssStylesheet Parse(string source, CssStylesheetSource sheetSource = CssStylesheetSource.Author)
-        {
-            CssScanner scanner = new CssScanner();
-            scanner.SetSource(source, 0);
-
-            CssParser parser = new CssParser(scanner);
-            return parser.Parse(sheetSource);
-        }
-
-        public static CssStylesheet Parse(CssContext context, string source, CssStylesheetSource sheetSource = CssStylesheetSource.Author)
-        {
-            CssScanner scanner = new CssScanner();
-            scanner.SetSource(source, 0);
-
-            CssParser parser = new CssParser(context, scanner);
-            return parser.Parse(sheetSource);
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

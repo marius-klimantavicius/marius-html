@@ -32,9 +32,14 @@ using System.Text;
 
 namespace Marius.Html
 {
-    public enum ElementType
+    // corresponds to initial box
+    public class Document
     {
-        Element,
-        Text,
+        public IElement[] Children { get; private set; }
+
+        public Document(params IElement[] children)
+        {
+            Children = children;
+        }
     }
 }

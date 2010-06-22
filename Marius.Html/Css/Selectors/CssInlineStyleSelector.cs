@@ -38,14 +38,14 @@ namespace Marius.Html.Css.Selectors
     {
         private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
 
-        public Element Element { get; private set; }
+        public IElement Element { get; private set; }
 
         public override CssSelectorType SelectorType
         {
             get { return CssSelectorType.InlineStyle; }
         }
 
-        public CssInlineStyleSelector(Element element)
+        public CssInlineStyleSelector(IElement element)
         {
             Element = element;
         }
