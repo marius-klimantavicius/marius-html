@@ -62,7 +62,7 @@ namespace Marius.Html.Tests.Css.Cascade
 
             var prep = _context.PrepareStylesheets(agents, users, authors);
 
-            var box = new CssBox();
+            var box = new CssBox(_context);
             box.Element = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
@@ -90,7 +90,7 @@ namespace Marius.Html.Tests.Css.Cascade
 
             var prep = _context.PrepareStylesheets(s);
 
-            var box = new CssBox();
+            var box = new CssBox(_context);
             box.Element = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
@@ -112,7 +112,7 @@ a#id { color: green }
 
             var prep = _context.PrepareStylesheets(s);
 
-            var box = new CssBox();
+            var box = new CssBox(_context);
             box.Element = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);

@@ -34,12 +34,17 @@ namespace Marius.Html.Hap
 {
     public class HapElementAdapter: ElementAdapter<HtmlDocument>
     {
-        public override Element Adapt(HtmlDocument document)
+        public override Element Transform(HtmlDocument documentRoot)
         {
-            HtmlNode root = document.DocumentNode;
+            HtmlNode root = documentRoot.DocumentNode;
 
-            // not the best way, afraid of too deep recursion
-            return new DocumentElement(CreateChildren(root.ChildNodes));
+            if (root.NodeType == HtmlNodeType.Document)
+                // not the best way, afraid of too deep recursion
+                return new DocumentElement(CreateChildren(root.ChildNodes));
+            else if (root.NodeType == HtmlNodeType.Element)
+                return new Element(root.Name, CreateAttributes(root.Attributes), CreateChildren(root.ChildNodes));
+
+            return null;
         }
 
         private AttributeCollection CreateAttributes(HtmlAttributeCollection attributes)

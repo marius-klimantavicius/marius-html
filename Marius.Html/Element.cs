@@ -34,6 +34,8 @@ namespace Marius.Html
 {
     public class Element
     {
+        private static readonly Element[] EmptyArray = new Element[0];
+
         public virtual ElementType ElementType { get { return ElementType.Element; } }
 
         public string Name { get; private set; }
@@ -61,9 +63,9 @@ namespace Marius.Html
         {
             Name = name;
             Attributes = attributes ?? AttributeCollection.Empty;
-            Children = children;
+            Children = children ?? EmptyArray;
 
-            if (Children != null)
+            if (children != null)
             {
                 for (int i = 0; i < Children.Length; i++)
                     Children[i].Parent = this;

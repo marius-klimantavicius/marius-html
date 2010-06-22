@@ -27,21 +27,37 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Marius.Html.Hap;
+using Marius.Html.Css.Values;
 
-namespace Marius.Html
+namespace Marius.Html.Css
 {
-    public class Document
+    public class CssPropertyValueDictionary
     {
-        private Element _root;
+        private CssContext _context;
+        private Dictionary<string, CssValue> _values;
 
-        public Element Root { get { return _root; } }
-
-        public Document(Element root)
+        public CssPropertyValueDictionary(CssContext context)
         {
-            _root = root;
+            _context = context;
+            _values = new Dictionary<string, CssValue>(StringComparer.InvariantCultureIgnoreCase);
+        }
+
+        public CssValue this[string property]
+        {
+            get
+            {
+                CssValue result = null;
+                if (!_values.TryGetValue(property, out result))
+                    return null;
+                return result;
+            }
+            set {
+                if (_values.ContainsKey(property))
+                    _values[property] = value;
+                else
+                    _values.Add(property, value);
+            }
         }
     }
 }

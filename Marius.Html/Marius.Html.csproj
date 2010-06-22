@@ -52,6 +52,7 @@
     <Compile Include="Css\CssPropertyDictionary.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
+    <Compile Include="Css\CssPropertyValueDictionary.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
@@ -233,7 +234,6 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
-    <Compile Include="Document.cs" />
     <Compile Include="DocumentElement.cs" />
     <Compile Include="ElementAdapter.cs" />
     <Compile Include="ElementType.cs" />

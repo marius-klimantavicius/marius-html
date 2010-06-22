@@ -32,6 +32,7 @@ using System.Text;
 
 namespace Marius.Html
 {
+    // anonynous inline box
     public class TextElement: Element
     {
         public string Text { get; private set; }
