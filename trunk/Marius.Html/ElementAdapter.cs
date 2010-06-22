@@ -34,6 +34,6 @@ namespace Marius.Html
 {
     public abstract class ElementAdapter<T>
     {
-        public abstract Element Transform(T documentRoot);
+        public abstract Document Transform(T documentRoot);
     }
 }

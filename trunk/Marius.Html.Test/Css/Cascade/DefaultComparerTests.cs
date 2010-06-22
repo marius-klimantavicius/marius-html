@@ -33,6 +33,7 @@ using NUnit.Framework;
 using Marius.Html.Css;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
+using Marius.Html.Hap;
 
 namespace Marius.Html.Tests.Css.Cascade
 {
@@ -50,20 +51,20 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void ShouldOrderAccordingImporance()
         {
-            var agents = _context.Parse(@"
+            var agents = _context.ParseStylesheet(@"
 #id { color: red; border-width: 3px !important }
 ", CssStylesheetSource.Agent);
-            var users = _context.Parse(@"
+            var users = _context.ParseStylesheet(@"
 #id { color: green; border-width: 4px !important }
 ", CssStylesheetSource.User);
-            var authors = _context.Parse(@"
+            var authors = _context.ParseStylesheet(@"
 #id { color: blue; border-width: 5px !important }
 ", CssStylesheetSource.Author);
 
             var prep = _context.PrepareStylesheets(agents, users, authors);
 
             var box = new CssBox(_context);
-            box.Element = new Element("a", "id");
+            box.Element = new HapElement("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(6, decls.Count);
@@ -81,7 +82,7 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void IfRulesHaveSameImporanceAndSpecificityOrderByIndex()
         {
-            var s = _context.Parse(@"
+            var s = _context.ParseStylesheet(@"
 #id { color: red; background-color: rgb(100, 100, 100) }
 #id { color: green }
 #id { background-color: black }
@@ -91,7 +92,7 @@ namespace Marius.Html.Tests.Css.Cascade
             var prep = _context.PrepareStylesheets(s);
 
             var box = new CssBox(_context);
-            box.Element = new Element("a", "id");
+            box.Element = new HapElement("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(5, decls.Count);
@@ -105,7 +106,7 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void MoreSpecificRuleShouldBeApplied()
         {
-            var s = _context.Parse(@"
+            var s = _context.ParseStylesheet(@"
 #id { color: red }
 a#id { color: green }
 ", CssStylesheetSource.Author);
@@ -113,7 +114,7 @@ a#id { color: green }
             var prep = _context.PrepareStylesheets(s);
 
             var box = new CssBox(_context);
-            box.Element = new Element("a", "id");
+            box.Element = new HapElement("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(2, decls.Count);

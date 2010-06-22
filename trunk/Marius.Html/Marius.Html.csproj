@@ -234,7 +234,7 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
-    <Compile Include="DocumentElement.cs" />
+    <Compile Include="Document.cs" />
     <Compile Include="ElementAdapter.cs" />
     <Compile Include="ElementType.cs" />
     <Compile Include="Hap\Crc32.cs" />
@@ -267,10 +267,11 @@
     <Compile Include="Hap\MixedCodeDocumentTextFragment.cs" />
     <Compile Include="Hap\NameValuePair.cs" />
     <Compile Include="Hap\NameValuePairList.cs" />
+    <Compile Include="IElement.cs" />
     <Compile Include="Internal\Utils.cs" />
-    <Compile Include="Element.cs" />
+    <Compile Include="Hap\HapElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextElement.cs" />
+    <Compile Include="Hap\HapTextElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

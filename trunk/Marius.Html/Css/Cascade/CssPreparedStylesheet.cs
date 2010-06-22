@@ -77,8 +77,18 @@ namespace Marius.Html.Css.Cascade
                     return AppliesConditional((CssConditionalSelector)selector, box);
                 case CssSelectorType.Element:
                     return AppliesElement((CssElementSelector)selector, box);
+                case CssSelectorType.InlineStyle:
+                    return AppliesInlineStyle((CssInlineStyleSelector)selector, box);
             }
             throw new CssInvalidStateException();
+        }
+
+        private bool AppliesInlineStyle(CssInlineStyleSelector selector, CssBox box)
+        {
+            if (box.Element == selector.Element)
+                return true;
+
+            return false;
         }
 
         protected virtual bool AppliesConditional(CssConditionalSelector selector, CssBox box)

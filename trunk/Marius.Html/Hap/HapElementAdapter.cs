@@ -34,23 +34,23 @@ namespace Marius.Html.Hap
 {
     public class HapElementAdapter: ElementAdapter<HtmlDocument>
     {
-        public override Element Transform(HtmlDocument documentRoot)
+        public override Document Transform(HtmlDocument documentRoot)
         {
             HtmlNode root = documentRoot.DocumentNode;
 
+            // not the best way, afraid of too deep recursion
             if (root.NodeType == HtmlNodeType.Document)
-                // not the best way, afraid of too deep recursion
-                return new DocumentElement(CreateChildren(root.ChildNodes));
+                return new Document(CreateChildren(root.ChildNodes));
             else if (root.NodeType == HtmlNodeType.Element)
-                return new Element(root.Name, CreateAttributes(root.Attributes), CreateChildren(root.ChildNodes));
+                return new Document(new HapElement(root.Name, CreateAttributes(root.Attributes), CreateChildren(root.ChildNodes)));
+            else if (root.NodeType == HtmlNodeType.Text)
+                return new Document(new HapTextElement(((HtmlTextNode)root).Text));
 
             return null;
         }
 
         private AttributeCollection CreateAttributes(HtmlAttributeCollection attributes)
         {
-            // those will be overriden, however I am not sure for how long this architecture is going to stay
-            // so just in case...
             string id = AttributeValue(attributes["id"]);
             string @class = AttributeValue(attributes["class"]);
             string style = AttributeValue(attributes["style"]);
@@ -65,9 +65,9 @@ namespace Marius.Html.Hap
             return attribute.Value;
         }
 
-        private Element[] CreateChildren(HtmlNodeCollection children)
+        private HapElement[] CreateChildren(HtmlNodeCollection children)
         {
-            List<Element> result = new List<Element>();
+            List<HapElement> result = new List<HapElement>();
 
             for (int i = 0; i < children.Count; i++)
             {
@@ -75,10 +75,10 @@ namespace Marius.Html.Hap
                 switch (current.NodeType)
                 {
                     case HtmlNodeType.Element:
-                        result.Add(new Element(current.Name, CreateAttributes(current.Attributes), CreateChildren(current.ChildNodes)));
+                        result.Add(new HapElement(current.Name, CreateAttributes(current.Attributes), CreateChildren(current.ChildNodes)));
                         break;
                     case HtmlNodeType.Text:
-                        result.Add(new TextElement(((HtmlTextNode)current).Text));
+                        result.Add(new HapTextElement(((HtmlTextNode)current).Text));
                         break;
                 }
             }

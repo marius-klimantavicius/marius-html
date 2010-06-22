@@ -58,7 +58,12 @@ namespace Marius.Html.Css
         public virtual int MaxImportDepth { get { return 20; } }
         public virtual IComparer<CssPreparedStyle> StyleComparer { get { return DefaultStyleComparer.Instance; } }
 
-        public virtual CssStylesheet Parse(string source, CssStylesheetSource stylesheetSource)
+        public virtual CssStylesheet ParseStylesheet(string source)
+        {
+            return ParseStylesheet(source, CssStylesheetSource.Author);
+        }
+
+        public virtual CssStylesheet ParseStylesheet(string source, CssStylesheetSource stylesheetSource)
         {
             CssScanner scanner = new CssScanner();
             scanner.SetSource(source, 0);
@@ -96,7 +101,7 @@ namespace Marius.Html.Css
                     source = reader.ReadToEnd();
                 }
 
-                return CssStylesheet.Parse(this, source, stylesheetSource);
+                return this.ParseStylesheet(source, stylesheetSource);
             }
             catch (Exception)
             {

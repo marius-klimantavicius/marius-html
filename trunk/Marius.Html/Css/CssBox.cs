@@ -49,7 +49,7 @@ namespace Marius.Html.Css
         public CssBox FirstChild { get; set; }
         public CssBox NextSibling { get; set; }
 
-        public Element Element { get; set; }
+        public IElement Element { get; set; }
 
         public CssPropertyValueDictionary Properties { get; private set; }
 

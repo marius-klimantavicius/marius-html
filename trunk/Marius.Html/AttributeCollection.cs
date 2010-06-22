@@ -52,13 +52,6 @@ namespace Marius.Html
 
             _attributes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-            if (Id != null)
-                _attributes.Add("id", Id);
-            if (Class != null)
-                _attributes.Add("class", Class);
-            if (Style != null)
-                _attributes.Add("style", Style);
-
             if (attributes != null)
             {
                 _attributeArray = attributes.ToArray();
@@ -72,15 +65,7 @@ namespace Marius.Html
                         _attributes[attributes[i].Item1] = attributes[i].Item2;
                 }
 
-                // might have been overwritten (how should I handle this case?)
-                if (_attributes.ContainsKey("id"))
-                    Id = _attributes["id"];
-
-                if (_attributes.ContainsKey("class"))
-                    Class = _attributes["class"];
-
-                if (_attributes.ContainsKey("style"))
-                    Style = _attributes["style"];
+                // do not rely on attributes to provide id, class and style [attribute names might be different]
             }
             else
             {

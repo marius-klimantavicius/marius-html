@@ -30,11 +30,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html
+namespace Marius.Html.Hap
 {
-    public enum ElementType
+    // anonynous inline box
+    public class HapTextElement: HapElement
     {
-        Element,
-        Text,
+        public string Text { get; private set; }
+
+        public HapTextElement(string text)
+            : base(null, null, null)
+        {
+            Text = text;
+        }
     }
 }
