@@ -52,8 +52,6 @@ namespace Marius.Html.Tests.Css.Properties
         [Test]
         public void ShouldAcceptSingleKeyword()
         {
-            CssBox box = new CssBox();
-
             Assert.IsTrue(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("center") })));
             Assert.IsTrue(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("leftwards") })));
             Assert.IsTrue(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("inherit") })));
@@ -64,8 +62,6 @@ namespace Marius.Html.Tests.Css.Properties
         [Test]
         public void ShouldIgnoreInvalidValues()
         {
-            CssBox box = new CssBox();
-
             Assert.IsFalse(_context.Azimuth.Validate(new CssExpression(new CssValue[0])));
             Assert.IsFalse(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("centruotas") })));
             Assert.IsFalse(_context.Azimuth.Validate(new CssExpression(new[] { new CssLength(10, CssUnits.Cm) })));
@@ -76,8 +72,6 @@ namespace Marius.Html.Tests.Css.Properties
         [Test]
         public void ShouldHandleValueWithBehind()
         {
-            CssBox box = new CssBox();
-
             Assert.IsTrue(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("center"), new CssIdentifier("behind") })));
             Assert.IsTrue(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("center") })));
             Assert.IsTrue(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("center-right"), new CssIdentifier("behind") })));
@@ -87,8 +81,6 @@ namespace Marius.Html.Tests.Css.Properties
         [Test]
         public void ShouldIgnoreInvalidDoubleValues()
         {
-            CssBox box = new CssBox();
-
             Assert.IsFalse(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("behind") })));
             Assert.IsFalse(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("leftwards"), new CssIdentifier("behind") })));
             Assert.IsFalse(_context.Azimuth.Validate(new CssExpression(new[] { new CssIdentifier("behind"), new CssIdentifier("inherit") })));

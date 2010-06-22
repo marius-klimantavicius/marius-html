@@ -34,6 +34,7 @@ namespace Marius.Html
 {
     public class AttributeCollection
     {
+        private static readonly Tuple<string, string>[] EmptyArray = new Tuple<string, string>[0];
         public static readonly AttributeCollection Empty = new AttributeCollection(null, null, null, null);
 
         private Dictionary<string, string> _attributes;
@@ -51,9 +52,12 @@ namespace Marius.Html
 
             _attributes = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-            _attributes.Add("id", Id);
-            _attributes.Add("class", Class);
-            _attributes.Add("style", Style);
+            if (Id != null)
+                _attributes.Add("id", Id);
+            if (Class != null)
+                _attributes.Add("class", Class);
+            if (Style != null)
+                _attributes.Add("style", Style);
 
             if (attributes != null)
             {
@@ -69,13 +73,18 @@ namespace Marius.Html
                 }
 
                 // might have been overwritten (how should I handle this case?)
-                Id = _attributes["id"];
-                Class = _attributes["class"];
-                Style = _attributes["style"];
+                if (_attributes.ContainsKey("id"))
+                    Id = _attributes["id"];
+
+                if (_attributes.ContainsKey("class"))
+                    Class = _attributes["class"];
+
+                if (_attributes.ContainsKey("style"))
+                    Style = _attributes["style"];
             }
             else
             {
-                _attributeArray = new Tuple<string, string>[0];
+                _attributeArray = EmptyArray;
             }
         }
 

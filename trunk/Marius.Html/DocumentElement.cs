@@ -32,6 +32,7 @@ using System.Text;
 
 namespace Marius.Html
 {
+    // corresponds to initial box
     public class DocumentElement: Element
     {
         public override ElementType ElementType

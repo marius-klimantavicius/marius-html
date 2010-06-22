@@ -34,5 +34,10 @@ namespace Marius.Html.Css
 {
     public class CssInitialBox: CssBox
     {
+        public CssInitialBox(CssContext context)
+            : base(context)
+        {
+
+        }
     }
 }

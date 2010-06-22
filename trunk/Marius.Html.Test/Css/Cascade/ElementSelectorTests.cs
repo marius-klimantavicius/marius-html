@@ -52,7 +52,7 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void ShouldMatchSingleElement()
         {
-            CssBox box = new CssBox();
+            CssBox box = new CssBox(_context);
             box.Element = new Element("a");
 
             var sheet = CssStylesheet.Parse(_context, "a { color: green }");
@@ -71,7 +71,7 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void ShouldIgnoreCase()
         {
-            CssBox box = new CssBox();
+            CssBox box = new CssBox(_context);
             box.Element = new Element("a");
 
             var sheet = CssStylesheet.Parse(_context, "A { color: green }");

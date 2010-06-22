@@ -36,114 +36,524 @@ namespace Marius.Html.Css
 {
     public class CssBox
     {
-        // will have to make it private set later
+        private CssPropertyValueDictionary _properties;
+        private CssContext _context;
+
+        public CssBox(CssContext context)
+        {
+            _context = context;
+            _properties = new CssPropertyValueDictionary(_context);
+        }
+
         public CssBox Parent { get; set; }
         public CssBox FirstChild { get; set; }
         public CssBox NextSibling { get; set; }
 
         public Element Element { get; set; }
 
+        public CssPropertyValueDictionary Properties { get; private set; }
+
         #region Properties
-        public CssValue Azimuth { get; set; }
-        public CssValue BackgroundAttachment { get; set; }
-        public CssValue BackgroundColor { get; set; }
-        public CssValue BackgroundImage { get; set; }
-        public CssValue BackgroundPosition { get; set; }
-        public CssValue BackgroundRepeat { get; set; }
-        public CssValue BorderCollapse { get; set; }
-        public CssValue BorderSpacing { get; set; }
-        public CssValue BorderTopColor { get; set; }
-        public CssValue BorderTopWidth { get; set; }
-        public CssValue BorderTopStyle { get; set; }
-        public CssValue BorderRightColor { get; set; }
-        public CssValue BorderRightWidth { get; set; }
-        public CssValue BorderRightStyle { get; set; }
-        public CssValue BorderBottomColor { get; set; }
-        public CssValue BorderBottomWidth { get; set; }
-        public CssValue BorderBottomStyle { get; set; }
-        public CssValue BorderLeftColor { get; set; }
-        public CssValue BorderLeftWidth { get; set; }
-        public CssValue BorderLeftStyle { get; set; }
-        public CssValue Bottom { get; set; }
-        public CssValue CaptionSide { get; set; }
-        public CssValue Clear { get; set; }
-        public CssValue Clip { get; set; }
-        public CssValue Color { get; set; }
-        public CssValue Content { get; set; }
-        public CssValue CounterIncrement { get; set; }
-        public CssValue CounterReset { get; set; }
-        public CssValue CueBefore { get; set; }
-        public CssValue CueAfter { get; set; }
-        public CssValue Cursor { get; set; }
-        public CssValue Direction { get; set; }
-        public CssValue Display { get; set; }
-        public CssValue Elevation { get; set; }
-        public CssValue EmptyCells { get; set; }
-        public CssValue Float { get; set; }
-        public CssValue FontFamily { get; set; }
-        public CssValue FontSize { get; set; }
-        public CssValue FontStyle { get; set; }
-        public CssValue FontVariant { get; set; }
-        public CssValue FontWeight { get; set; }
-        public CssValue Font { get; set; }
-        public CssValue Height { get; set; }
-        public CssValue Left { get; set; }
-        public CssValue LetterSpacing { get; set; }
-        public CssValue LineHeight { get; set; }
-        public CssValue ListStyleImage { get; set; }
-        public CssValue ListStylePosition { get; set; }
-        public CssValue ListStyleType { get; set; }
-        public CssValue MarginRight { get; set; }
-        public CssValue MarginLeft { get; set; }
-        public CssValue MarginTop { get; set; }
-        public CssValue MarginBottom { get; set; }
-        public CssValue MaxHeight { get; set; }
-        public CssValue MaxWidth { get; set; }
-        public CssValue MinHeight { get; set; }
-        public CssValue MinWidth { get; set; }
-        public CssValue Orphans { get; set; }
-        public CssValue OutlineColor { get; set; }
-        public CssValue OutlineStyle { get; set; }
-        public CssValue OutlineWidth { get; set; }
-        public CssValue Overflow { get; set; }
-        public CssValue PaddingTop { get; set; }
-        public CssValue PaddingRight { get; set; }
-        public CssValue PaddingBottom { get; set; }
-        public CssValue PaddingLeft { get; set; }
-        public CssValue PageBreakAfter { get; set; }
-        public CssValue PageBreakBefore { get; set; }
-        public CssValue PageBreakInside { get; set; }
-        public CssValue PauseAfter { get; set; }
-        public CssValue PauseBefore { get; set; }
-        public CssValue PitchRange { get; set; }
-        public CssValue Pitch { get; set; }
-        public CssValue PlayDuring { get; set; }
-        public CssValue Position { get; set; }
-        public CssValue Quotes { get; set; }
-        public CssValue Richness { get; set; }
-        public CssValue Right { get; set; }
-        public CssValue SpeakHeader { get; set; }
-        public CssValue SpeakNumeral { get; set; }
-        public CssValue SpeakPunctuation { get; set; }
-        public CssValue Speak { get; set; }
-        public CssValue SpeechRate { get; set; }
-        public CssValue Stress { get; set; }
-        public CssValue TableLayout { get; set; }
-        public CssValue TextAlign { get; set; }
-        public CssValue TextDecoration { get; set; }
-        public CssValue TextIndent { get; set; }
-        public CssValue TextTransform { get; set; }
-        public CssValue Top { get; set; }
-        public CssValue UnicodeBidi { get; set; }
-        public CssValue VerticalAlign { get; set; }
-        public CssValue Visibility { get; set; }
-        public CssValue VoiceFamily { get; set; }
-        public CssValue Volume { get; set; }
-        public CssValue WhiteSpace { get; set; }
-        public CssValue Widows { get; set; }
-        public CssValue Width { get; set; }
-        public CssValue WordSpacing { get; set; }
-        public CssValue ZIndex { get; set; }
+        public virtual CssValue Azimuth
+        {
+            get { return _properties[CssProperty.Azimuth]; }
+            set { _properties[CssProperty.Azimuth] = value; }
+        }
+        public virtual CssValue BackgroundAttachment
+        {
+            get { return _properties[CssProperty.BackgroundAttachment]; }
+            set { _properties[CssProperty.BackgroundAttachment] = value; }
+        }
+        public virtual CssValue BackgroundColor
+        {
+            get { return _properties[CssProperty.BackgroundColor]; }
+            set { _properties[CssProperty.BackgroundColor] = value; }
+        }
+        public virtual CssValue BackgroundImage
+        {
+            get { return _properties[CssProperty.BackgroundImage]; }
+            set { _properties[CssProperty.BackgroundImage] = value; }
+        }
+        public virtual CssValue BackgroundPosition
+        {
+            get { return _properties[CssProperty.BackgroundPosition]; }
+            set { _properties[CssProperty.BackgroundPosition] = value; }
+        }
+        public virtual CssValue BackgroundRepeat
+        {
+            get { return _properties[CssProperty.BackgroundRepeat]; }
+            set { _properties[CssProperty.BackgroundRepeat] = value; }
+        }
+        public virtual CssValue BorderCollapse
+        {
+            get { return _properties[CssProperty.BorderCollapse]; }
+            set { _properties[CssProperty.BorderCollapse] = value; }
+        }
+        public virtual CssValue BorderSpacing
+        {
+            get { return _properties[CssProperty.BorderSpacing]; }
+            set { _properties[CssProperty.BorderSpacing] = value; }
+        }
+        public virtual CssValue BorderTopColor
+        {
+            get { return _properties[CssProperty.BorderTopColor]; }
+            set { _properties[CssProperty.BorderTopColor] = value; }
+        }
+        public virtual CssValue BorderTopWidth
+        {
+            get { return _properties[CssProperty.BorderTopWidth]; }
+            set { _properties[CssProperty.BorderTopWidth] = value; }
+        }
+        public virtual CssValue BorderTopStyle
+        {
+            get { return _properties[CssProperty.BorderTopStyle]; }
+            set { _properties[CssProperty.BorderTopStyle] = value; }
+        }
+        public virtual CssValue BorderRightColor
+        {
+            get { return _properties[CssProperty.BorderRightColor]; }
+            set { _properties[CssProperty.BorderRightColor] = value; }
+        }
+        public virtual CssValue BorderRightWidth
+        {
+            get { return _properties[CssProperty.BorderRightWidth]; }
+            set { _properties[CssProperty.BorderRightWidth] = value; }
+        }
+        public virtual CssValue BorderRightStyle
+        {
+            get { return _properties[CssProperty.BorderRightStyle]; }
+            set { _properties[CssProperty.BorderRightStyle] = value; }
+        }
+        public virtual CssValue BorderBottomColor
+        {
+            get { return _properties[CssProperty.BorderBottomColor]; }
+            set { _properties[CssProperty.BorderBottomColor] = value; }
+        }
+        public virtual CssValue BorderBottomWidth
+        {
+            get { return _properties[CssProperty.BorderBottomWidth]; }
+            set { _properties[CssProperty.BorderBottomWidth] = value; }
+        }
+        public virtual CssValue BorderBottomStyle
+        {
+            get { return _properties[CssProperty.BorderBottomStyle]; }
+            set { _properties[CssProperty.BorderBottomStyle] = value; }
+        }
+        public virtual CssValue BorderLeftColor
+        {
+            get { return _properties[CssProperty.BorderLeftColor]; }
+            set { _properties[CssProperty.BorderLeftColor] = value; }
+        }
+        public virtual CssValue BorderLeftWidth
+        {
+            get { return _properties[CssProperty.BorderLeftWidth]; }
+            set { _properties[CssProperty.BorderLeftWidth] = value; }
+        }
+        public virtual CssValue BorderLeftStyle
+        {
+            get { return _properties[CssProperty.BorderLeftStyle]; }
+            set { _properties[CssProperty.BorderLeftStyle] = value; }
+        }
+        public virtual CssValue Bottom
+        {
+            get { return _properties[CssProperty.Bottom]; }
+            set { _properties[CssProperty.Bottom] = value; }
+        }
+        public virtual CssValue CaptionSide
+        {
+            get { return _properties[CssProperty.CaptionSide]; }
+            set { _properties[CssProperty.CaptionSide] = value; }
+        }
+        public virtual CssValue Clear
+        {
+            get { return _properties[CssProperty.Clear]; }
+            set { _properties[CssProperty.Clear] = value; }
+        }
+        public virtual CssValue Clip
+        {
+            get { return _properties[CssProperty.Clip]; }
+            set { _properties[CssProperty.Clip] = value; }
+        }
+        public virtual CssValue Color
+        {
+            get { return _properties[CssProperty.Color]; }
+            set { _properties[CssProperty.Color] = value; }
+        }
+        public virtual CssValue Content
+        {
+            get { return _properties[CssProperty.Content]; }
+            set { _properties[CssProperty.Content] = value; }
+        }
+        public virtual CssValue CounterIncrement
+        {
+            get { return _properties[CssProperty.CounterIncrement]; }
+            set { _properties[CssProperty.CounterIncrement] = value; }
+        }
+        public virtual CssValue CounterReset
+        {
+            get { return _properties[CssProperty.CounterReset]; }
+            set { _properties[CssProperty.CounterReset] = value; }
+        }
+        public virtual CssValue CueBefore
+        {
+            get { return _properties[CssProperty.CueBefore]; }
+            set { _properties[CssProperty.CueBefore] = value; }
+        }
+        public virtual CssValue CueAfter
+        {
+            get { return _properties[CssProperty.CueAfter]; }
+            set { _properties[CssProperty.CueAfter] = value; }
+        }
+        public virtual CssValue Cursor
+        {
+            get { return _properties[CssProperty.Cursor]; }
+            set { _properties[CssProperty.Cursor] = value; }
+        }
+        public virtual CssValue Direction
+        {
+            get { return _properties[CssProperty.Direction]; }
+            set { _properties[CssProperty.Direction] = value; }
+        }
+        public virtual CssValue Display
+        {
+            get { return _properties[CssProperty.Display]; }
+            set { _properties[CssProperty.Display] = value; }
+        }
+        public virtual CssValue Elevation
+        {
+            get { return _properties[CssProperty.Elevation]; }
+            set { _properties[CssProperty.Elevation] = value; }
+        }
+        public virtual CssValue EmptyCells
+        {
+            get { return _properties[CssProperty.EmptyCells]; }
+            set { _properties[CssProperty.EmptyCells] = value; }
+        }
+        public virtual CssValue Float
+        {
+            get { return _properties[CssProperty.Float]; }
+            set { _properties[CssProperty.Float] = value; }
+        }
+        public virtual CssValue FontFamily
+        {
+            get { return _properties[CssProperty.FontFamily]; }
+            set { _properties[CssProperty.FontFamily] = value; }
+        }
+        public virtual CssValue FontSize
+        {
+            get { return _properties[CssProperty.FontSize]; }
+            set { _properties[CssProperty.FontSize] = value; }
+        }
+        public virtual CssValue FontStyle
+        {
+            get { return _properties[CssProperty.FontStyle]; }
+            set { _properties[CssProperty.FontStyle] = value; }
+        }
+        public virtual CssValue FontVariant
+        {
+            get { return _properties[CssProperty.FontVariant]; }
+            set { _properties[CssProperty.FontVariant] = value; }
+        }
+        public virtual CssValue FontWeight
+        {
+            get { return _properties[CssProperty.FontWeight]; }
+            set { _properties[CssProperty.FontWeight] = value; }
+        }
+        public virtual CssValue Font
+        {
+            get { return _properties[CssProperty.Font]; }
+            set { _properties[CssProperty.Font] = value; }
+        }
+        public virtual CssValue Height
+        {
+            get { return _properties[CssProperty.Height]; }
+            set { _properties[CssProperty.Height] = value; }
+        }
+        public virtual CssValue Left
+        {
+            get { return _properties[CssProperty.Left]; }
+            set { _properties[CssProperty.Left] = value; }
+        }
+        public virtual CssValue LetterSpacing
+        {
+            get { return _properties[CssProperty.LetterSpacing]; }
+            set { _properties[CssProperty.LetterSpacing] = value; }
+        }
+        public virtual CssValue LineHeight
+        {
+            get { return _properties[CssProperty.LineHeight]; }
+            set { _properties[CssProperty.LineHeight] = value; }
+        }
+        public virtual CssValue ListStyleImage
+        {
+            get { return _properties[CssProperty.ListStyleImage]; }
+            set { _properties[CssProperty.ListStyleImage] = value; }
+        }
+        public virtual CssValue ListStylePosition
+        {
+            get { return _properties[CssProperty.ListStylePosition]; }
+            set { _properties[CssProperty.ListStylePosition] = value; }
+        }
+        public virtual CssValue ListStyleType
+        {
+            get { return _properties[CssProperty.ListStyleType]; }
+            set { _properties[CssProperty.ListStyleType] = value; }
+        }
+        public virtual CssValue MarginRight
+        {
+            get { return _properties[CssProperty.MarginRight]; }
+            set { _properties[CssProperty.MarginRight] = value; }
+        }
+        public virtual CssValue MarginLeft
+        {
+            get { return _properties[CssProperty.MarginLeft]; }
+            set { _properties[CssProperty.MarginLeft] = value; }
+        }
+        public virtual CssValue MarginTop
+        {
+            get { return _properties[CssProperty.MarginTop]; }
+            set { _properties[CssProperty.MarginTop] = value; }
+        }
+        public virtual CssValue MarginBottom
+        {
+            get { return _properties[CssProperty.MarginBottom]; }
+            set { _properties[CssProperty.MarginBottom] = value; }
+        }
+        public virtual CssValue MaxHeight
+        {
+            get { return _properties[CssProperty.MaxHeight]; }
+            set { _properties[CssProperty.MaxHeight] = value; }
+        }
+        public virtual CssValue MaxWidth
+        {
+            get { return _properties[CssProperty.MaxWidth]; }
+            set { _properties[CssProperty.MaxWidth] = value; }
+        }
+        public virtual CssValue MinHeight
+        {
+            get { return _properties[CssProperty.MinHeight]; }
+            set { _properties[CssProperty.MinHeight] = value; }
+        }
+        public virtual CssValue MinWidth
+        {
+            get { return _properties[CssProperty.MinWidth]; }
+            set { _properties[CssProperty.MinWidth] = value; }
+        }
+        public virtual CssValue Orphans
+        {
+            get { return _properties[CssProperty.Orphans]; }
+            set { _properties[CssProperty.Orphans] = value; }
+        }
+        public virtual CssValue OutlineColor
+        {
+            get { return _properties[CssProperty.OutlineColor]; }
+            set { _properties[CssProperty.OutlineColor] = value; }
+        }
+        public virtual CssValue OutlineStyle
+        {
+            get { return _properties[CssProperty.OutlineStyle]; }
+            set { _properties[CssProperty.OutlineStyle] = value; }
+        }
+        public virtual CssValue OutlineWidth
+        {
+            get { return _properties[CssProperty.OutlineWidth]; }
+            set { _properties[CssProperty.OutlineWidth] = value; }
+        }
+        public virtual CssValue Overflow
+        {
+            get { return _properties[CssProperty.Overflow]; }
+            set { _properties[CssProperty.Overflow] = value; }
+        }
+        public virtual CssValue PaddingTop
+        {
+            get { return _properties[CssProperty.PaddingTop]; }
+            set { _properties[CssProperty.PaddingTop] = value; }
+        }
+        public virtual CssValue PaddingRight
+        {
+            get { return _properties[CssProperty.PaddingRight]; }
+            set { _properties[CssProperty.PaddingRight] = value; }
+        }
+        public virtual CssValue PaddingBottom
+        {
+            get { return _properties[CssProperty.PaddingBottom]; }
+            set { _properties[CssProperty.PaddingBottom] = value; }
+        }
+        public virtual CssValue PaddingLeft
+        {
+            get { return _properties[CssProperty.PaddingLeft]; }
+            set { _properties[CssProperty.PaddingLeft] = value; }
+        }
+        public virtual CssValue PageBreakAfter
+        {
+            get { return _properties[CssProperty.PageBreakAfter]; }
+            set { _properties[CssProperty.PageBreakAfter] = value; }
+        }
+        public virtual CssValue PageBreakBefore
+        {
+            get { return _properties[CssProperty.PageBreakBefore]; }
+            set { _properties[CssProperty.PageBreakBefore] = value; }
+        }
+        public virtual CssValue PageBreakInside
+        {
+            get { return _properties[CssProperty.PageBreakInside]; }
+            set { _properties[CssProperty.PageBreakInside] = value; }
+        }
+        public virtual CssValue PauseAfter
+        {
+            get { return _properties[CssProperty.PauseAfter]; }
+            set { _properties[CssProperty.PauseAfter] = value; }
+        }
+        public virtual CssValue PauseBefore
+        {
+            get { return _properties[CssProperty.PauseBefore]; }
+            set { _properties[CssProperty.PauseBefore] = value; }
+        }
+        public virtual CssValue PitchRange
+        {
+            get { return _properties[CssProperty.PitchRange]; }
+            set { _properties[CssProperty.PitchRange] = value; }
+        }
+        public virtual CssValue Pitch
+        {
+            get { return _properties[CssProperty.Pitch]; }
+            set { _properties[CssProperty.Pitch] = value; }
+        }
+        public virtual CssValue PlayDuring
+        {
+            get { return _properties[CssProperty.PlayDuring]; }
+            set { _properties[CssProperty.PlayDuring] = value; }
+        }
+        public virtual CssValue Position
+        {
+            get { return _properties[CssProperty.Position]; }
+            set { _properties[CssProperty.Position] = value; }
+        }
+        public virtual CssValue Quotes
+        {
+            get { return _properties[CssProperty.Quotes]; }
+            set { _properties[CssProperty.Quotes] = value; }
+        }
+        public virtual CssValue Richness
+        {
+            get { return _properties[CssProperty.Richness]; }
+            set { _properties[CssProperty.Richness] = value; }
+        }
+        public virtual CssValue Right
+        {
+            get { return _properties[CssProperty.Right]; }
+            set { _properties[CssProperty.Right] = value; }
+        }
+        public virtual CssValue SpeakHeader
+        {
+            get { return _properties[CssProperty.SpeakHeader]; }
+            set { _properties[CssProperty.SpeakHeader] = value; }
+        }
+        public virtual CssValue SpeakNumeral
+        {
+            get { return _properties[CssProperty.SpeakNumeral]; }
+            set { _properties[CssProperty.SpeakNumeral] = value; }
+        }
+        public virtual CssValue SpeakPunctuation
+        {
+            get { return _properties[CssProperty.SpeakPunctuation]; }
+            set { _properties[CssProperty.SpeakPunctuation] = value; }
+        }
+        public virtual CssValue Speak
+        {
+            get { return _properties[CssProperty.Speak]; }
+            set { _properties[CssProperty.Speak] = value; }
+        }
+        public virtual CssValue SpeechRate
+        {
+            get { return _properties[CssProperty.SpeechRate]; }
+            set { _properties[CssProperty.SpeechRate] = value; }
+        }
+        public virtual CssValue Stress
+        {
+            get { return _properties[CssProperty.Stress]; }
+            set { _properties[CssProperty.Stress] = value; }
+        }
+        public virtual CssValue TableLayout
+        {
+            get { return _properties[CssProperty.TableLayout]; }
+            set { _properties[CssProperty.TableLayout] = value; }
+        }
+        public virtual CssValue TextAlign
+        {
+            get { return _properties[CssProperty.TextAlign]; }
+            set { _properties[CssProperty.TextAlign] = value; }
+        }
+        public virtual CssValue TextDecoration
+        {
+            get { return _properties[CssProperty.TextDecoration]; }
+            set { _properties[CssProperty.TextDecoration] = value; }
+        }
+        public virtual CssValue TextIndent
+        {
+            get { return _properties[CssProperty.TextIndent]; }
+            set { _properties[CssProperty.TextIndent] = value; }
+        }
+        public virtual CssValue TextTransform
+        {
+            get { return _properties[CssProperty.TextTransform]; }
+            set { _properties[CssProperty.TextTransform] = value; }
+        }
+        public virtual CssValue Top
+        {
+            get { return _properties[CssProperty.Top]; }
+            set { _properties[CssProperty.Top] = value; }
+        }
+        public virtual CssValue UnicodeBidi
+        {
+            get { return _properties[CssProperty.UnicodeBidi]; }
+            set { _properties[CssProperty.UnicodeBidi] = value; }
+        }
+        public virtual CssValue VerticalAlign
+        {
+            get { return _properties[CssProperty.VerticalAlign]; }
+            set { _properties[CssProperty.VerticalAlign] = value; }
+        }
+        public virtual CssValue Visibility
+        {
+            get { return _properties[CssProperty.Visibility]; }
+            set { _properties[CssProperty.Visibility] = value; }
+        }
+        public virtual CssValue VoiceFamily
+        {
+            get { return _properties[CssProperty.VoiceFamily]; }
+            set { _properties[CssProperty.VoiceFamily] = value; }
+        }
+        public virtual CssValue Volume
+        {
+            get { return _properties[CssProperty.Volume]; }
+            set { _properties[CssProperty.Volume] = value; }
+        }
+        public virtual CssValue WhiteSpace
+        {
+            get { return _properties[CssProperty.WhiteSpace]; }
+            set { _properties[CssProperty.WhiteSpace] = value; }
+        }
+        public virtual CssValue Widows
+        {
+            get { return _properties[CssProperty.Widows]; }
+            set { _properties[CssProperty.Widows] = value; }
+        }
+        public virtual CssValue Width
+        {
+            get { return _properties[CssProperty.Width]; }
+            set { _properties[CssProperty.Width] = value; }
+        }
+        public virtual CssValue WordSpacing
+        {
+            get { return _properties[CssProperty.WordSpacing]; }
+            set { _properties[CssProperty.WordSpacing] = value; }
+        }
+        public virtual CssValue ZIndex
+        {
+            get { return _properties[CssProperty.ZIndex]; }
+            set { _properties[CssProperty.ZIndex] = value; }
+        }
         #endregion
     }
 }
