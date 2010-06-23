@@ -237,11 +237,11 @@
     <Compile Include="Dom\IAttribute.cs" />
     <Compile Include="Dom\IElement.cs" />
     <Compile Include="Dom\INode.cs" />
-    <Compile Include="Dom\IText.cs" />
+    <Compile Include="Dom\ITextNode.cs" />
     <Compile Include="Dom\Simple\Attribute.cs" />
     <Compile Include="Dom\Simple\AttributeCollection.cs" />
     <Compile Include="Dom\Simple\Element.cs" />
-    <Compile Include="Dom\Simple\Text.cs" />
+    <Compile Include="Dom\Simple\TextNode.cs" />
     <Compile Include="Hap\Crc32.cs" />
     <Compile Include="Hap\EncodingFoundException.cs" />
     <Compile Include="Hap\HtmlAttribute.cs" />
