@@ -30,26 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Dom.Simple
+namespace Marius.Html.Dom
 {
-    public class Text: IText
+    public interface ITextNode: INode
     {
-        private string _data;
-        private INode _parent;
-
-        public string Data
-        {
-            get { return _data; }
-        }
-
-        public INode Parent
-        {
-            get { return _parent; }
-        }
-
-        public Text(string data)
-        {
-            _data = data;
-        }
+        string Value { get; }
     }
 }
