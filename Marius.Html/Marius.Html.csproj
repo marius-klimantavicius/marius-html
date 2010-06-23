@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributeCollection.cs" />
     <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
@@ -234,12 +233,17 @@
     <Compile Include="Css\Parser\CssTokenizer.cs" />
     <Compile Include="Css\Parser\CssTokens.cs" />
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="ElementAdapter.cs" />
-    <Compile Include="ElementType.cs" />
+    <Compile Include="Dom\IAttributeCollection.cs" />
+    <Compile Include="Dom\IAttribute.cs" />
+    <Compile Include="Dom\IElement.cs" />
+    <Compile Include="Dom\INode.cs" />
+    <Compile Include="Dom\IText.cs" />
+    <Compile Include="Dom\Simple\Attribute.cs" />
+    <Compile Include="Dom\Simple\AttributeCollection.cs" />
+    <Compile Include="Dom\Simple\Element.cs" />
+    <Compile Include="Dom\Simple\Text.cs" />
     <Compile Include="Hap\Crc32.cs" />
     <Compile Include="Hap\EncodingFoundException.cs" />
-    <Compile Include="Hap\HapElementAdapter.cs" />
     <Compile Include="Hap\HtmlAttribute.cs" />
     <Compile Include="Hap\HtmlAttributeCollection.cs" />
     <Compile Include="Hap\HtmlCmdLine.cs" />
@@ -267,11 +271,8 @@
     <Compile Include="Hap\MixedCodeDocumentTextFragment.cs" />
     <Compile Include="Hap\NameValuePair.cs" />
     <Compile Include="Hap\NameValuePairList.cs" />
-    <Compile Include="IElement.cs" />
     <Compile Include="Internal\Utils.cs" />
-    <Compile Include="Hap\HapElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Hap\HapTextElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

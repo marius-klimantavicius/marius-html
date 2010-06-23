@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
 using System.Runtime.CompilerServices;
+using Marius.Html.Dom;
 
 namespace Marius.Html.Css
 {
@@ -49,7 +50,8 @@ namespace Marius.Html.Css
         public CssBox FirstChild { get; set; }
         public CssBox NextSibling { get; set; }
 
-        public IElement Element { get; set; }
+        public INode Node { get; set; }
+        public IElement Element { get { return Node as IElement; } }
 
         public CssPropertyValueDictionary Properties { get; private set; }
 

@@ -30,10 +30,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html
+namespace Marius.Html.Dom
 {
-    public abstract class ElementAdapter<T>
+    public interface IElement: INode
     {
-        public abstract Document Transform(T documentRoot);
+        string Name { get; }
+        IAttributeCollection Attributes { get; }
+
+        string Id { get; }
+        string Class { get; }
+        string Style { get; }
+
+        INode[] Children { get; }
+        INode FirstChild { get; }
+        INode LastChild { get; }
+        INode NextSibling { get; }
+        INode PreviousSibling { get; }
     }
 }
