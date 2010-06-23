@@ -30,16 +30,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html
+namespace Marius.Html.Dom
 {
-    // corresponds to initial box
-    public class Document
+    public interface IAttribute
     {
-        public IElement[] Children { get; private set; }
-
-        public Document(params IElement[] children)
-        {
-            Children = children;
-        }
+        string Name { get; }
+        string Value { get; }
     }
 }

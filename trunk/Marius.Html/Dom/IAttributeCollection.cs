@@ -30,21 +30,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html
+namespace Marius.Html.Dom
 {
-    public interface IElement
+    public interface IAttributeCollection
     {
-        ElementType ElementType { get; }
-
-        string Name { get; }
-
-        // id, class and style attributes can be missing in this collection though Id, Class and Style might be set
-        AttributeCollection Attributes { get; }
         string Id { get; }
         string Class { get; }
         string Style { get; }
 
-        IElement Parent { get; }
-        IElement[] Children { get; }
+        int Count { get; }
+        
+        IAttribute this[int index] { get; }
+        IAttribute this[string name] { get; }
+
+        string ValueOf(string name);
+        bool Contains(string name);
     }
 }

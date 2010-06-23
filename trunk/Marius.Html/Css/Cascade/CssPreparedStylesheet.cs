@@ -33,6 +33,7 @@ using Marius.Html.Css.Dom;
 using System.Net;
 using System.IO;
 using Marius.Html.Css.Selectors;
+using Marius.Html.Dom;
 
 namespace Marius.Html.Css.Cascade
 {
@@ -173,12 +174,12 @@ namespace Marius.Html.Css.Cascade
                 return false;
 
             var element = box.Element;
-            if (element.Attributes.ContainsAttribute(condition.Attribute))
+            if (element.Attributes.Contains(condition.Attribute))
             {
                 if (condition.Value == null)
                     return false; // should not happen, maybe throw an exception?
 
-                var values = element.Attributes[condition.Attribute].Split(); // TODO: specify split chars, as currently it is separated by whitespace, which might be a violation of spec
+                var values = element.Attributes.ValueOf(condition.Attribute).Split(); // TODO: specify split chars, as currently it is separated by whitespace, which might be a violation of spec
                 for (int i = 0; i < values.Length; i++)
                 {
                     if (StringComparer.InvariantCultureIgnoreCase.Equals(values[i], condition.Value))
@@ -197,12 +198,12 @@ namespace Marius.Html.Css.Cascade
                 return false;
 
             var element = box.Element;
-            if (element.Attributes.ContainsAttribute(condition.Attribute))
+            if (element.Attributes.Contains(condition.Attribute))
             {
                 if (condition.Value == null)
                     return false; // should not happen, maybe throw an exception?
 
-                var value = element.Attributes[condition.Attribute];
+                var value = element.Attributes.ValueOf(condition.Attribute);
                 if (value.Contains('-'))
                     value = value.Substring(0, value.IndexOf('-'));
 
@@ -218,7 +219,7 @@ namespace Marius.Html.Css.Cascade
                 return false;
 
             var element = box.Element;
-            if (element.Attributes.ContainsAttribute(condition.Attribute))
+            if (element.Attributes.Contains(condition.Attribute))
             {
                 if (condition.Value == null)
                     return true;

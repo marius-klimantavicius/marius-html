@@ -1,5 +1,5 @@
 // HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
-
+// Marius: Added pragma warning to disable obsolete warnings
 #region
 
 using System;
@@ -857,7 +857,7 @@ namespace Marius.Html.Hap
         #endregion
 
         #region Public Methods
-
+        #pragma warning disable 618
         /// <summary>
         /// Gets the MIME content type for a given path extension.
         /// </summary>
@@ -936,6 +936,8 @@ namespace Marius.Html.Hap
             }
             return ext;
         }
+
+        #pragma warning restore 618
 
         /// <summary>
         /// Creates an instance of the given type from the specified Internet resource.

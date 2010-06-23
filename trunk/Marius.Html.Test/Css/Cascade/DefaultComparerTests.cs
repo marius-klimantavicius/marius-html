@@ -34,6 +34,7 @@ using Marius.Html.Css;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
 using Marius.Html.Hap;
+using Marius.Html.Dom.Simple;
 
 namespace Marius.Html.Tests.Css.Cascade
 {
@@ -64,7 +65,7 @@ namespace Marius.Html.Tests.Css.Cascade
             var prep = _context.PrepareStylesheets(agents, users, authors);
 
             var box = new CssBox(_context);
-            box.Element = new HapElement("a", "id");
+            box.Node = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(6, decls.Count);
@@ -92,7 +93,7 @@ namespace Marius.Html.Tests.Css.Cascade
             var prep = _context.PrepareStylesheets(s);
 
             var box = new CssBox(_context);
-            box.Element = new HapElement("a", "id");
+            box.Node = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(5, decls.Count);
@@ -114,7 +115,7 @@ a#id { color: green }
             var prep = _context.PrepareStylesheets(s);
 
             var box = new CssBox(_context);
-            box.Element = new HapElement("a", "id");
+            box.Node = new Element("a", "id");
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(2, decls.Count);

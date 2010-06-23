@@ -30,11 +30,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html
+namespace Marius.Html.Dom.Simple
 {
-    public enum ElementType
+    public class Attribute: IAttribute
     {
-        Element,
-        Text,
+        private string _name;
+        private string _value;
+
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        public string Value
+        {
+            get { return _value; }
+        }
+
+        public Attribute(string name, string value)
+        {
+            _name = name;
+            _value = value;
+        }
     }
 }
