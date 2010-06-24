@@ -70,7 +70,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderTopColor = value;
         }
@@ -83,7 +83,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderRightColor = value;
         }
@@ -96,7 +96,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderBottomColor = value;
         }
@@ -109,7 +109,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderLeftColor = value;
         }

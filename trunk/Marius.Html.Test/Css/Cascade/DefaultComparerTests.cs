@@ -72,12 +72,12 @@ namespace Marius.Html.Tests.Css.Cascade
 
             _context.Apply(prep, box);
 
-            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.BorderTopWidth);
-            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.BorderLeftWidth);
-            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.BorderBottomWidth);
-            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.BorderRightWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderTopWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderLeftWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderBottomWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderRightWidth);
 
-            Assert.AreEqual(CssKeywords.Blue, box.Color);
+            Assert.AreEqual(CssKeywords.Blue, box.Style.Color);
         }
 
         [Test]
@@ -100,8 +100,8 @@ namespace Marius.Html.Tests.Css.Cascade
 
             _context.Apply(prep, box);
 
-            Assert.AreEqual(CssKeywords.Black, box.BackgroundColor);
-            Assert.AreEqual(CssKeywords.Blue, box.Color);
+            Assert.AreEqual(CssKeywords.Black, box.Style.BackgroundColor);
+            Assert.AreEqual(CssKeywords.Blue, box.Style.Color);
         }
 
         [Test]
@@ -122,7 +122,7 @@ a#id { color: green }
 
             _context.Apply(prep, box);
 
-            Assert.AreEqual(CssKeywords.Green, box.Color);
+            Assert.AreEqual(CssKeywords.Green, box.Style.Color);
         }
     }
 }

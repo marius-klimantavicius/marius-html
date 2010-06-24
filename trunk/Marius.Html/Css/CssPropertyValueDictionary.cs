@@ -32,7 +32,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public class CssPropertyValueDictionary
+    public class CssPropertyValueDictionary: IEnumerable<Tuple<string, CssValue>>
     {
         private CssContext _context;
         private Dictionary<string, CssValue> _values;
@@ -52,12 +52,27 @@ namespace Marius.Html.Css
                     return null;
                 return result;
             }
-            set {
+            set
+            {
                 if (_values.ContainsKey(property))
                     _values[property] = value;
                 else
                     _values.Add(property, value);
             }
+        }
+
+        public IEnumerator<Tuple<string, CssValue>> GetEnumerator()
+        {
+            foreach (var key in _values.Keys)
+            {
+                yield return new Tuple<string, CssValue>(key, _values[key]);
+            }
+            yield break;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<Tuple<string, CssValue>>)this).GetEnumerator();
         }
     }
 }

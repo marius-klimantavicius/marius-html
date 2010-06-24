@@ -35,14 +35,14 @@ namespace Marius.Html.Css.Properties
 {
     public abstract class SideShortcut: CssPropertyHandler
     {
-        public abstract void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left);
+        public abstract void Apply(IWithStyle box, CssValue top, CssValue right, CssValue bottom, CssValue left);
 
         public SideShortcut(CssContext context)
             : base(context)
         {
         }
 
-        public override bool Apply(CssBox box, CssExpression expression)
+        public override bool Apply(IWithStyle box, CssExpression expression)
         {
             CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))
@@ -95,7 +95,7 @@ namespace Marius.Html.Css.Properties
 
         protected abstract void RetrieveHandlers(CssContext context, out CssSimplePropertyHandler top, out CssSimplePropertyHandler right, out CssSimplePropertyHandler bottom, out CssSimplePropertyHandler left);
 
-        public virtual bool ApplyValues(CssBox box, CssValue[] values)
+        public virtual bool ApplyValues(IWithStyle box, CssValue[] values)
         {
             Apply(box, values[0], values[1], values[2], values[3]);
             return true;

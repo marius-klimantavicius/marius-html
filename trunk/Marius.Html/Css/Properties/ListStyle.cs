@@ -38,7 +38,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override bool Apply(CssBox box, CssExpression expression)
+        public override bool Apply(IWithStyle box, CssExpression expression)
         {
             CssValue[] values = Parse(expression);
             if (values == null || !Valid(expression))

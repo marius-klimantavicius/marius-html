@@ -44,7 +44,7 @@ namespace Marius.Html.Css
             _context = context;
         }
 
-        public abstract bool Apply(CssBox box, CssExpression expression);
+        public abstract bool Apply(IWithStyle box, CssExpression expression);
         public abstract bool Validate(CssExpression expression);
 
         public static bool Valid(CssExpression expression)

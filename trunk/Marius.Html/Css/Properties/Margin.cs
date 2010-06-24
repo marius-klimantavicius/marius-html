@@ -38,7 +38,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue top, CssValue right, CssValue bottom, CssValue left)
+        public override void Apply(IWithStyle box, CssValue top, CssValue right, CssValue bottom, CssValue left)
         {
             box.MarginTop = top;
             box.MarginRight = right;

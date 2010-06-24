@@ -54,6 +54,7 @@
     <Compile Include="Css\CssPropertyValueDictionary.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
+    <Compile Include="Css\IWithStyle.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Css\Selectors\CssSimpleSelector.cs" />
     <Compile Include="Css\Selectors\CssSpecifity.cs" />
     <Compile Include="Css\Selectors\CssUniversalSelector.cs" />
+    <Compile Include="Css\StyleHolder.cs" />
     <Compile Include="Css\Values\CssAngle.cs" />
     <Compile Include="Css\Dom\CssCharset.cs" />
     <Compile Include="Css\Values\CssAzimuth.cs" />

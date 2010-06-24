@@ -52,7 +52,7 @@ namespace Marius.Html.Css
             return true;
         }
 
-        public override bool Apply(CssBox box, CssExpression expression)
+        public override bool Apply(IWithStyle box, CssExpression expression)
         {
             CssValue value = Parse(expression);
             if (value == null || !Valid(expression))
@@ -63,7 +63,7 @@ namespace Marius.Html.Css
             return true;
         }
 
-        public abstract void Apply(CssBox box, CssValue value);
+        public abstract void Apply(IWithStyle box, CssValue value);
         public abstract CssValue Parse(CssExpression expression);
     }
 }

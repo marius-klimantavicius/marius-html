@@ -42,7 +42,7 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Auto; }
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.Clip = value;
         }
