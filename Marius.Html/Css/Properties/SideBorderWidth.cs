@@ -75,7 +75,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderTopWidth = value;
         }
@@ -88,7 +88,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderRightWidth = value;
         }
@@ -101,7 +101,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderBottomWidth = value;
         }
@@ -114,7 +114,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.BorderLeftWidth = value;
         }

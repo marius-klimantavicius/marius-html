@@ -37,6 +37,7 @@ using Marius.Html.Css.Cascade;
 using Marius.Html.Css.Values;
 using Marius.Html.Hap;
 using Marius.Html.Dom.Simple;
+using Marius.Html.Dom;
 
 namespace Marius.Html.Tests.Css.Cascade
 {
@@ -54,10 +55,13 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void ShouldMatchSingleElement()
         {
-            CssBox box = new CssBox(_context);
-            box.Node = new Element("a");
+            //CssBox box = new CssBox(_context);
+            //box.Node = new Element("a");
 
-            var sheet = _context.ParseStylesheet("a { color: green }");
+            CssInitialBox initial = _context.PreprareDocument(new Element("a", new INode[]{new TextNode("Visit"), new Element("span", new INode[]{new TextNode("this site")})}));
+            CssBox box = initial.FirstChild;
+
+            var sheet = _context.ParseStylesheet("a { color: green } a > span { color: red }");
             var prep = _context.PrepareStylesheets(sheet);
 
             var decls = prep.GetAplicableDeclarations(box);
@@ -66,8 +70,10 @@ namespace Marius.Html.Tests.Css.Cascade
             Assert.AreEqual("color", decls[0].Property);
             Assert.IsFalse(decls[0].Important);
 
-            Assert.IsTrue(_context.Color.Apply(box, decls[0].Value));
-            Assert.AreEqual(CssKeywords.Green, box.Color);
+            Assert.IsTrue(_context.Color.Apply(box.Style, decls[0].Value));
+            Assert.AreEqual(CssKeywords.Green, box.Style.Color);
+
+            _context.Apply(prep, initial);
         }
 
         [Test]
@@ -85,8 +91,8 @@ namespace Marius.Html.Tests.Css.Cascade
             Assert.AreEqual("color", decls[0].Property);
             Assert.IsFalse(decls[0].Important);
 
-            Assert.IsTrue(_context.Color.Apply(box, decls[0].Value));
-            Assert.AreEqual(CssKeywords.Green, box.Color);
+            Assert.IsTrue(_context.Color.Apply(box.Style, decls[0].Value));
+            Assert.AreEqual(CssKeywords.Green, box.Style.Color);
         }
     }
 }

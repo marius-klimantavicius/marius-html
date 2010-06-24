@@ -37,6 +37,18 @@ namespace Marius.Html.Css.Parser
 {
     public class PseudoConditionFactory
     {
+        public static readonly CssPseudoIdentifier FirstChild = new CssPseudoIdentifier("first-child");
+        public static readonly CssPseudoIdentifier Link = new CssPseudoIdentifier("link");
+        public static readonly CssPseudoIdentifier Visited = new CssPseudoIdentifier("visited");
+        public static readonly CssPseudoIdentifier Hover = new CssPseudoIdentifier("hover");
+        public static readonly CssPseudoIdentifier Active = new CssPseudoIdentifier("active");
+        public static readonly CssPseudoIdentifier Focus = new CssPseudoIdentifier("focus");
+
+        public static readonly CssPseudoIdentifier FirstLine = new CssPseudoIdentifier("first-line");
+        public static readonly CssPseudoIdentifier FirstLetter = new CssPseudoIdentifier("first-letter");
+        public static readonly CssPseudoIdentifier Before = new CssPseudoIdentifier("before");
+        public static readonly CssPseudoIdentifier After = new CssPseudoIdentifier("after");
+
         public virtual CssCondition PseudoIdentifierCondition(string identifier)
         {
             CssPseudoValue condition = new CssPseudoIdentifier(identifier);
@@ -70,6 +82,26 @@ namespace Marius.Html.Css.Parser
             }
 
             throw new CssParsingException();
+        }
+
+        public virtual bool IsFirstLine(CssPseudoElementCondition condition)
+        {
+            return FirstLine.Equals(condition.Condition);
+        }
+
+        public virtual bool IsFirstLetter(CssPseudoElementCondition condition)
+        {
+            return FirstLetter.Equals(condition.Condition);
+        }
+
+        public virtual bool IsBefore(CssPseudoElementCondition condition)
+        {
+            return Before.Equals(condition.Condition);
+        }
+
+        public virtual bool IsAfter(CssPseudoElementCondition condition)
+        {
+            return After.Equals(condition.Condition);
         }
     }
 }

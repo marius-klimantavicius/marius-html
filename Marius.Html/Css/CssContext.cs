@@ -35,6 +35,7 @@ using Marius.Html.Css.Dom;
 using System.Net;
 using System.IO;
 using Marius.Html.Css.Cascade;
+using Marius.Html.Dom;
 
 namespace Marius.Html.Css
 {
@@ -115,13 +116,79 @@ namespace Marius.Html.Css
             return manager.Prepare();
         }
 
+        /// <summary>
+        /// Applies recursively
+        /// </summary>
         public virtual void Apply(CssPreparedStylesheet sheet, CssBox box)
         {
-            var decls = sheet.GetAplicableDeclarations(box);
+            var current = box;
+            bool down = true;
 
-            for (int i = 0; i < decls.Count; i++)
+            while (true)
             {
-                Properties[decls[i].Property].Apply(box, decls[i].Value);
+                if (down)
+                {
+                    if (current.FirstChild != null)
+                        current = current.FirstChild;
+                    else
+                        down = false;
+                }
+                else
+                {
+                    if (current.NextSibling == null)
+                    {
+                        current = current.Parent;
+                        if (current == null || current == box)
+                            break;
+                        continue;
+                    }
+                    else
+                    {
+                        current = current.NextSibling;
+                        down = true;
+                    }
+                }
+                sheet.Apply(current);
+            }
+        }
+
+        public virtual CssInitialBox PreprareDocument(INode rootNode)
+        {
+            CssInitialBox result = new CssInitialBox(this);
+            result.Parent = null;
+            result.NextSibling = result.PreviousSibling = null;
+            CreateBoxTree(result, rootNode);
+            return result;
+        }
+
+        private void CreateBoxTree(CssBox parent, INode node)
+        {
+            CssBox result = new CssBox(this);
+            result.Parent = parent;
+            if (parent.FirstChild == null)
+            {
+                parent.FirstChild = parent.LastChild = result;
+            }
+            else
+            {
+                var prevLast = parent.LastChild;
+                parent.LastChild = result;
+
+                prevLast.NextSibling = result;
+                result.PreviousSibling = prevLast;
+            }
+
+            result.Node = node;
+
+            if (node is IElement)
+            {
+                IElement elem = (IElement)node;
+                INode current;
+                for (int i = 0; i < elem.Children.Length; i++)
+                {
+                    current = elem.Children[i];
+                    CreateBoxTree(result, current);
+                }
             }
         }
     }

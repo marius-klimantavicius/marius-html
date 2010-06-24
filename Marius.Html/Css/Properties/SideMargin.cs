@@ -71,7 +71,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.MarginTop = value;
         }
@@ -84,7 +84,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.MarginRight = value;
         }
@@ -97,7 +97,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.MarginBottom = value;
         }
@@ -110,7 +110,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.MarginLeft = value;
         }

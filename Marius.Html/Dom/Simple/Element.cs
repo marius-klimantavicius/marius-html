@@ -122,5 +122,24 @@ namespace Marius.Html.Dom.Simple
             _attributes = new AttributeCollection(id);
             _children = EmptyChildren;
         }
+
+        public Element(string name, INode[] children)
+        {
+            _name = name;
+            _attributes = AttributeCollection.Empty;
+            _children = children ?? EmptyChildren;
+
+            for (int i = 0; i < _children.Length; i++)
+            {
+                if (_children[i] is Element)
+                {
+                    Element e = (Element)_children[i];
+                    if (i > 0)
+                        e._previousSibling = _children[i - 1];
+                    if ((i + 1) < _children.Length)
+                        e._nextSibling = _children[i + 1];
+                }
+            }
+        }
     }
 }

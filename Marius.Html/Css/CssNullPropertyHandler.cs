@@ -47,7 +47,7 @@ namespace Marius.Html.Css
         {
         }
 
-        public override bool Apply(CssBox box, CssExpression expression)
+        public override bool Apply(IWithStyle box, CssExpression expression)
         {
             return false;
         }

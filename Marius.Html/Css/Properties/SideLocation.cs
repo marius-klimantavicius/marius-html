@@ -50,7 +50,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override bool Apply(CssBox box, CssExpression expression)
+        public override bool Apply(IWithStyle box, CssExpression expression)
         {
             CssValue value = Parse(expression);
             if (value == null || !Valid(expression))
@@ -86,7 +86,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.Top = value;
         }
@@ -99,7 +99,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.Right = value;
         }
@@ -112,7 +112,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.Bottom = value;
         }
@@ -125,7 +125,7 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(CssBox box, CssValue value)
+        public override void Apply(IWithStyle box, CssValue value)
         {
             box.Left = value;
         }

@@ -37,6 +37,16 @@ using Marius.Html.Dom;
 
 namespace Marius.Html.Css.Cascade
 {
+    public enum CssStyleTarget
+    {
+        None,
+        Style,
+        FirstLine,
+        FirstLetter,
+        Before,
+        After,
+    }
+
     public class CssPreparedStylesheet
     {
         private CssContext _context;
@@ -50,19 +60,62 @@ namespace Marius.Html.Css.Cascade
             Array.Sort<CssPreparedStyle>(_styles, _context.StyleComparer);
         }
 
+        public virtual void Apply(CssBox box)
+        {
+            for (int i = 0; i < _styles.Length; i++)
+            {
+                Apply(_styles[i], box);
+            }
+        }
+
+        protected virtual void Apply(CssPreparedStyle style, CssBox box)
+        {
+            CssStyleTarget target = Applies(style.Selector, box);
+            switch (target)
+            {
+                case CssStyleTarget.None:
+                    break;
+                case CssStyleTarget.Style:
+                    ApplyDeclarations(style.Declarations, box.Style);
+                    break;
+                case CssStyleTarget.FirstLine:
+                    ApplyDeclarations(style.Declarations, box.FirstLineStyle);
+                    break;
+                case CssStyleTarget.FirstLetter:
+                    ApplyDeclarations(style.Declarations, box.FirstLetterStyle);
+                    break;
+                case CssStyleTarget.Before:
+                    ApplyDeclarations(style.Declarations, box.BeforeStyle);
+                    break;
+                case CssStyleTarget.After:
+                    ApplyDeclarations(style.Declarations, box.AfterStyle);
+                    break;
+                default:
+                    throw new CssInvalidStateException();
+            }
+        }
+
+        protected virtual void ApplyDeclarations(IList<CssDeclaration> list, IWithStyle box)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                _context.Properties[list[i].Property].Apply(box, list[i].Value);
+            }
+        }
+
         public virtual IList<CssDeclaration> GetAplicableDeclarations(CssBox box)
         {
             List<CssDeclaration> result = new List<CssDeclaration>();
             for (int i = 0; i < _styles.Length; i++)
             {
-                if (Applies(_styles[i].Selector, box))
+                if (Applies(_styles[i].Selector, box) != CssStyleTarget.None)
                     result.AddRange(_styles[i].Declarations);
             }
 
             return result;
         }
 
-        protected virtual bool Applies(CssSelector selector, CssBox box)
+        protected virtual CssStyleTarget Applies(CssSelector selector, CssBox box)
         {
             switch (selector.SelectorType)
             {
@@ -73,7 +126,7 @@ namespace Marius.Html.Css.Cascade
                 case CssSelectorType.Sibling:
                     return AppliesSibling((CssSiblingSelector)selector, box);
                 case CssSelectorType.Universal:
-                    return true;
+                    return box.Element != null ? CssStyleTarget.Style : CssStyleTarget.None;
                 case CssSelectorType.Conditional:
                     return AppliesConditional((CssConditionalSelector)selector, box);
                 case CssSelectorType.Element:
@@ -84,30 +137,40 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        private bool AppliesInlineStyle(CssInlineStyleSelector selector, CssBox box)
+        private CssStyleTarget AppliesInlineStyle(CssInlineStyleSelector selector, CssBox box)
         {
             if (box.Element == selector.Element)
-                return true;
+                return CssStyleTarget.Style;
 
-            return false;
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool AppliesConditional(CssConditionalSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesConditional(CssConditionalSelector selector, CssBox box)
         {
-            if (!Applies(selector.SimpleSelector, box))
-                return false;
+            var target = Applies(selector.SimpleSelector, box);
+            if (target == CssStyleTarget.None)
+                return CssStyleTarget.None;
 
+            var prev = target;
             var conditions = selector.Conditions;
             for (int i = 0; i < conditions.Length; i++)
             {
-                if (!MatchesCondition(conditions[i], box))
-                    return false;
+                target = MatchesCondition(conditions[i], box);
+
+                if (target == CssStyleTarget.None)
+                    return CssStyleTarget.None;
+
+                if (prev != CssStyleTarget.Style && target != CssStyleTarget.Style)
+                    return CssStyleTarget.None;
+
+                if (target != CssStyleTarget.Style)
+                    prev = target;
             }
 
-            return true;
+            return prev;
         }
 
-        protected virtual bool MatchesCondition(CssCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesCondition(CssCondition condition, CssBox box)
         {
             switch (condition.ConditionType)
             {
@@ -130,161 +193,194 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        protected virtual bool MatchesPseudoClass(CssPseudoClassCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesPseudoClass(CssPseudoClassCondition condition, CssBox box)
         {
             // currently pseudo elements and classes are not implemented
-            return false;
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool MatchesPseudoElement(CssPseudoElementCondition condition, CssBox box)
-        {
-            // currently pseudo elements and classes are not implemented
-            return false;
-        }
-
-        protected virtual bool MatchesClass(CssClassCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesPseudoElement(CssPseudoElementCondition condition, CssBox box)
         {
             if (box.Element == null)
-                return false;
+                return CssStyleTarget.None;
+
+            if (_context.PseudoConditionFactory.IsFirstLine(condition))
+                return CssStyleTarget.FirstLine;
+
+            if (_context.PseudoConditionFactory.IsFirstLetter(condition))
+                return CssStyleTarget.FirstLetter;
+
+            if (_context.PseudoConditionFactory.IsAfter(condition))
+                return CssStyleTarget.After;
+
+            if (_context.PseudoConditionFactory.IsBefore(condition))
+                return CssStyleTarget.Before;
+
+            // TODO: unknown pseudo element - need to think of a way to provide custom pseudo handlers (that would select how and when to apply style)
+            return CssStyleTarget.None;
+        }
+
+        protected virtual CssStyleTarget MatchesClass(CssClassCondition condition, CssBox box)
+        {
+            if (condition.Value == null)
+                throw new CssInvalidStateException();   // this must not happen
+
+            if (box.Element == null)
+                return CssStyleTarget.None;
 
             var element = box.Element;
 
-            if (condition.Value == null)
-                return false; // should not happen, maybe throw an exception?
+            if (StringComparer.InvariantCultureIgnoreCase.Equals(element.Class, condition.Value))
+                return CssStyleTarget.Style;
 
-            return StringComparer.InvariantCultureIgnoreCase.Equals(element.Class, condition.Value);
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool MatchesId(CssIdCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesId(CssIdCondition condition, CssBox box)
         {
+            if (condition.Value == null)
+                throw new CssInvalidStateException();   // this must not happen
+
             if (box.Element == null)
-                return false;
+                return CssStyleTarget.None;
 
             var element = box.Element;
 
-            if (condition.Value == null)
-                return false; // should not happen, maybe throw an exception?
+            if (StringComparer.InvariantCultureIgnoreCase.Equals(element.Id, condition.Value))
+                return CssStyleTarget.Style;
 
-            return StringComparer.InvariantCultureIgnoreCase.Equals(element.Id, condition.Value);
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool MatchesIncludesAttribute(CssIncludesAttributeCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesIncludesAttribute(CssIncludesAttributeCondition condition, CssBox box)
         {
+            if (condition.Value == null)
+                throw new CssInvalidStateException();   // this must not happen
+
             if (box.Element == null)
-                return false;
+                return CssStyleTarget.None;
 
             var element = box.Element;
             if (element.Attributes.Contains(condition.Attribute))
             {
-                if (condition.Value == null)
-                    return false; // should not happen, maybe throw an exception?
-
                 var values = element.Attributes.ValueOf(condition.Attribute).Split(); // TODO: specify split chars, as currently it is separated by whitespace, which might be a violation of spec
                 for (int i = 0; i < values.Length; i++)
                 {
                     if (StringComparer.InvariantCultureIgnoreCase.Equals(values[i], condition.Value))
-                        return true;
+                        return CssStyleTarget.Style;
                 }
-
-                return false;
             }
 
-            return false;
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, CssBox box)
         {
+            if (condition.Value == null)
+                throw new CssInvalidStateException();   // this must not happen
+
             if (box.Element == null)
-                return false;
+                return CssStyleTarget.None;
 
             var element = box.Element;
             if (element.Attributes.Contains(condition.Attribute))
             {
-                if (condition.Value == null)
-                    return false; // should not happen, maybe throw an exception?
-
                 var value = element.Attributes.ValueOf(condition.Attribute);
                 if (value.Contains('-'))
                     value = value.Substring(0, value.IndexOf('-'));
 
-                return StringComparer.InvariantCultureIgnoreCase.Equals(value, condition.Value);
+                if (StringComparer.InvariantCultureIgnoreCase.Equals(value, condition.Value))
+                    return CssStyleTarget.Style;
             }
 
-            return false;
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool MatchesAttribute(CssAttributeCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesAttribute(CssAttributeCondition condition, CssBox box)
         {
             if (box.Element == null)
-                return false;
+                return CssStyleTarget.None;
 
             var element = box.Element;
             if (element.Attributes.Contains(condition.Attribute))
             {
                 if (condition.Value == null)
-                    return true;
-                return StringComparer.InvariantCultureIgnoreCase.Equals(element.Attributes[condition.Attribute], condition.Value);
+                    return CssStyleTarget.Style;
+                if (StringComparer.InvariantCultureIgnoreCase.Equals(element.Attributes[condition.Attribute], condition.Value))
+                    return CssStyleTarget.Style;
             }
 
-            return false;
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool AppliesDescendant(CssDescendantSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesDescendant(CssDescendantSelector selector, CssBox box)
         {
-            if (!Applies(selector.Selector, box))
-                return false;
+            var target = Applies(selector.Selector, box);
+            if (target == CssStyleTarget.None)
+                return CssStyleTarget.None;
 
             var parent = box.Parent;
             while (parent != null)
             {
-                if (Applies(selector.AncestorSelector, parent))
-                    return true;
+                var prev = Applies(selector.AncestorSelector, parent);
+                if (prev == CssStyleTarget.Style)
+                    return target;
+                else if (prev != CssStyleTarget.None) // the pseudo-element selector MUST be the last simple selector
+                    return CssStyleTarget.None;
                 parent = parent.Parent;
             }
-            return false;
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool AppliesSibling(CssSiblingSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesSibling(CssSiblingSelector selector, CssBox box)
         {
             var parent = box.Parent;
             if (parent == null)
-                return false;
+                return CssStyleTarget.None;
 
-            if (!Applies(selector.Selector, box))
-                return false;
+            var target = Applies(selector.Selector, box);
+            if (target == CssStyleTarget.None)
+                return CssStyleTarget.None;
 
-            var child = parent.FirstChild;
-            while (child.NextSibling != null)
-            {
-                if (child.NextSibling == box)
-                    return Applies(selector.SiblingSelector, child);
+            var sibling = box.PreviousSibling;
+            if (sibling == null)
+                return CssStyleTarget.None;
 
-                child = child.NextSibling;
-            }
+            var prev = Applies(selector.SiblingSelector, sibling);
+            if (prev == CssStyleTarget.Style)
+                return target;
 
-            throw new CssInvalidStateException();
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool AppliesChild(CssChildSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesChild(CssChildSelector selector, CssBox box)
         {
-            if (!Applies(selector.Selector, box))
-                return false;
+            var target = Applies(selector.Selector, box);
+            if (target == CssStyleTarget.None)
+                return CssStyleTarget.None;
 
             var parent = box.Parent;
             if (parent == null)
-                return false;
+                return CssStyleTarget.None;
 
-            return Applies(selector.AncestorSelector, parent);
+            var prev = Applies(selector.AncestorSelector, parent);
+            if (prev == CssStyleTarget.Style)
+                return target;
+
+            return CssStyleTarget.None;
         }
 
-        protected virtual bool AppliesElement(CssElementSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesElement(CssElementSelector selector, CssBox box)
         {
             if (box.Element == null)
-                return false;
+                return CssStyleTarget.None;
 
             var element = box.Element;
 
-            return StringComparer.InvariantCultureIgnoreCase.Equals(element.Name, selector.Name);
+            if (StringComparer.InvariantCultureIgnoreCase.Equals(element.Name, selector.Name))
+                return CssStyleTarget.Style;
+
+            return CssStyleTarget.None;
         }
     }
 }
