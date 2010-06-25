@@ -52,7 +52,7 @@ namespace Marius.Html.Tests.Support
 
         public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
         {
-            if (binder.Operation == ExpressionType.LessThanOrEqual && arg is string)
+            if ((binder.Operation == ExpressionType.LessThanOrEqual || binder.Operation == ExpressionType.LessThan) && arg is string)
             {
                 result = new ElementAttribute(_name, (string)arg);
                 return true;
