@@ -30,13 +30,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Dom.Simple
 {
-    public class CssInitialBox: CssBox
+    public class ElementAttribute: IAttribute
     {
-        public CssInitialBox(CssContext context)
-            : base(context, null)
+        private string _name;
+        private string _value;
+
+        public string Name
         {
+            get { return _name; }
+        }
+
+        public string Value
+        {
+            get { return _value; }
+        }
+
+        public ElementAttribute(string name, string value)
+        {
+            _name = name;
+            _value = value;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}='{1}'", _name, _value);
         }
     }
 }

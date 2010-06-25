@@ -35,5 +35,8 @@ namespace Marius.Html.Dom
     public interface INode
     {
         INode Parent { get; }
+
+        INode NextSibling { get; }
+        INode PreviousSibling { get; }
     }
 }

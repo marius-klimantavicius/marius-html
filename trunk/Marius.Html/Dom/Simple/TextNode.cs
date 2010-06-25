@@ -37,6 +37,9 @@ namespace Marius.Html.Dom.Simple
         private string _data;
         private INode _parent;
 
+        private INode _previouSibling;
+        private INode _nextSibling;
+
         public string Value
         {
             get { return _data; }
@@ -45,6 +48,16 @@ namespace Marius.Html.Dom.Simple
         public INode Parent
         {
             get { return _parent; }
+        }
+
+        public INode PreviousSibling
+        {
+            get { return _previouSibling; }
+        }
+
+        public INode NextSibling
+        {
+            get { return _nextSibling; }
         }
 
         public TextNode(string data)

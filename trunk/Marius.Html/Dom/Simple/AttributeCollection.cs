@@ -131,5 +131,10 @@ namespace Marius.Html.Dom.Simple
                     _attributeMap.Add(_attributes[i].Name, _attributes[i]); 
             }
         }
+
+        public override string ToString()
+        {
+            return String.Join<ElementAttribute>(" ", (IList<ElementAttribute>)_attributes);
+        }
     }
 }

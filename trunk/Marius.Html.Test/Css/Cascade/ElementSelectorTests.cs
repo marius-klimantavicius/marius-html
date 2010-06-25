@@ -25,24 +25,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using Marius.Html.Css;
-using Marius.Html.Css.Selectors;
-using Marius.Html.Css.Dom;
-using Marius.Html.Css.Cascade;
 using Marius.Html.Css.Values;
-using Marius.Html.Hap;
-using Marius.Html.Dom.Simple;
 using Marius.Html.Dom;
+using Marius.Html.Dom.Simple;
+using NUnit.Framework;
+using Marius.Html.Tests.Support;
 
 namespace Marius.Html.Tests.Css.Cascade
 {
     [TestFixture]
-    public class ElementSelectorTests
+    public class ElementSelectorTests: BaseTestsWithDom
     {
         private CssContext _context;
 
@@ -58,7 +51,7 @@ namespace Marius.Html.Tests.Css.Cascade
             //CssBox box = new CssBox(_context);
             //box.Node = new Element("a");
 
-            CssInitialBox initial = _context.PreprareDocument(new Element("a", new INode[]{new TextNode("Visit"), new Element("span", new INode[]{new TextNode("this site")})}));
+            CssInitialBox initial = _context.PreprareDocument(a("visit"));
             CssBox box = initial.FirstChild;
 
             var sheet = _context.ParseStylesheet("a { color: green } a > span { color: red }");
@@ -72,15 +65,12 @@ namespace Marius.Html.Tests.Css.Cascade
 
             Assert.IsTrue(_context.Color.Apply(box.Style, decls[0].Value));
             Assert.AreEqual(CssKeywords.Green, box.Style.Color);
-
-            _context.Apply(prep, initial);
         }
 
         [Test]
         public void ShouldIgnoreCase()
         {
-            CssBox box = new CssBox(_context);
-            box.Node = new Element("a");
+            CssBox box = new CssBox(_context, a("visit"));
 
             var sheet = _context.ParseStylesheet("A { color: green }");
             var prep = _context.PrepareStylesheets(sheet);

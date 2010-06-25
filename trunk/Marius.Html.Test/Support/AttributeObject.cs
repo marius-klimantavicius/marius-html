@@ -25,18 +25,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Dynamic;
+using System.Linq.Expressions;
+using Marius.Html.Dom.Simple;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Tests.Support
 {
-    public class CssInitialBox: CssBox
+    public class AttributeObject: DynamicObject
     {
-        public CssInitialBox(CssContext context)
-            : base(context, null)
+        private string _name;
+        public AttributeObject(string name)
         {
+            _name = name;
+        }
+
+        public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
+        {
+            if (args.Length == 1 && args[0] is string)
+            {
+                result = new ElementAttribute(_name, (string)args[0]);
+                return true;
+            }
+
+            return base.TryInvoke(binder, args, out result);
+        }
+
+        public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
+        {
+            if (binder.Operation == ExpressionType.LessThanOrEqual && arg is string)
+            {
+                result = new ElementAttribute(_name, (string)arg);
+                return true;
+            }
+
+            return base.TryBinaryOperation(binder, arg, out result);
         }
     }
 }

@@ -25,32 +25,49 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Dynamic;
+using Marius.Html.Dom.Simple;
 
-namespace Marius.Html.Dom.Simple
+namespace Marius.Html.Tests.Support
 {
-    public class Attribute: IAttribute
+    public class ElementObject: DynamicObject
     {
         private string _name;
-        private string _value;
 
         public string Name
         {
             get { return _name; }
         }
 
-        public string Value
+        public ElementObject(string elementName)
         {
-            get { return _value; }
+            _name = elementName;
         }
 
-        public Attribute(string name, string value)
+        public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
         {
-            _name = name;
-            _value = value;
+            ElementStub stub = new ElementStub(_name, new ElementAttribute[0]);
+
+            stub.TryInvoke(null, args, out result);
+
+            return true;
+        }
+
+        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
+        {
+            List<ElementAttribute> attributes = new List<ElementAttribute>();
+            for (int i = 0; i < indexes.Length; i++)
+            {
+                if (indexes[i] == null || !(indexes[i] is ElementAttribute))
+                    continue;
+
+                ElementAttribute a = (ElementAttribute)indexes[i];
+                attributes.Add(a);
+            }
+
+            result = new ElementStub(_name, attributes.ToArray());
+            return true;
         }
     }
 }

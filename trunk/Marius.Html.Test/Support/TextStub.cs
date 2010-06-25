@@ -29,14 +29,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Dom;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Tests.Support
 {
-    public class CssInitialBox: CssBox
+    public class TextStub: ITextNode
     {
-        public CssInitialBox(CssContext context)
-            : base(context, null)
+        private string _value;
+        private INode _parent;
+
+        private INode _nextSibling;
+        private INode _previousSibling;
+
+        public string Value
         {
+            get { return _value; }
+        }
+
+        public INode Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
+        }
+
+        public INode NextSibling
+        {
+            get { return _nextSibling; }
+            set { _nextSibling = value; }
+        }
+
+        public INode PreviousSibling
+        {
+            get { return _previousSibling; }
+            set { _previousSibling = value; }
+        }
+
+        public TextStub(string value)
+        {
+            _value = value;
+        }
+
+        public override string ToString()
+        {
+            return _value;
         }
     }
 }
