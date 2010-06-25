@@ -35,11 +35,13 @@ using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
 using Marius.Html.Hap;
 using Marius.Html.Dom.Simple;
+using System.Linq.Expressions;
+using Marius.Html.Tests.Support;
 
 namespace Marius.Html.Tests.Css.Cascade
 {
     [TestFixture]
-    public class DefaultComparerTests
+    public class DefaultComparerTests: BaseTestsWithDom
     {
         private CssContext _context;
 
@@ -64,8 +66,7 @@ namespace Marius.Html.Tests.Css.Cascade
 
             var prep = _context.PrepareStylesheets(agents, users, authors);
 
-            var box = new CssBox(_context);
-            box.Node = new Element("a", "id");
+            var box = new CssBox(_context, a[id <= "id", expected <= "color: blue, border-width: 4px"]);
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(6, decls.Count);
@@ -92,8 +93,7 @@ namespace Marius.Html.Tests.Css.Cascade
 
             var prep = _context.PrepareStylesheets(s);
 
-            var box = new CssBox(_context);
-            box.Node = new Element("a", "id");
+            var box = new CssBox(_context, a[id <= "id", expected <="background-color: black; color: blue"]);
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(5, decls.Count);
@@ -114,8 +114,7 @@ a#id { color: green }
 
             var prep = _context.PrepareStylesheets(s);
 
-            var box = new CssBox(_context);
-            box.Node = new Element("a", "id");
+            var box = new CssBox(_context, a[id <= "id", expected <= "color: green"]);
 
             var decls = prep.GetAplicableDeclarations(box);
             Assert.AreEqual(2, decls.Count);

@@ -117,7 +117,7 @@ namespace Marius.Html.Css
         }
 
         /// <summary>
-        /// Applies recursively
+        /// Applies recursively in any order
         /// </summary>
         public virtual void Apply(CssPreparedStylesheet sheet, CssBox box)
         {
@@ -155,31 +155,13 @@ namespace Marius.Html.Css
         public virtual CssInitialBox PreprareDocument(INode rootNode)
         {
             CssInitialBox result = new CssInitialBox(this);
-            result.Parent = null;
-            result.NextSibling = result.PreviousSibling = null;
             CreateBoxTree(result, rootNode);
             return result;
         }
 
         private void CreateBoxTree(CssBox parent, INode node)
         {
-            CssBox result = new CssBox(this);
-            result.Parent = parent;
-            if (parent.FirstChild == null)
-            {
-                parent.FirstChild = parent.LastChild = result;
-            }
-            else
-            {
-                var prevLast = parent.LastChild;
-                parent.LastChild = result;
-
-                prevLast.NextSibling = result;
-                result.PreviousSibling = prevLast;
-            }
-
-            result.Node = node;
-
+            CssBox result = parent.AddLast(node);
             if (node is IElement)
             {
                 IElement elem = (IElement)node;

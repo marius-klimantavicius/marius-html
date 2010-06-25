@@ -240,7 +240,7 @@
     <Compile Include="Dom\IElement.cs" />
     <Compile Include="Dom\INode.cs" />
     <Compile Include="Dom\ITextNode.cs" />
-    <Compile Include="Dom\Simple\Attribute.cs" />
+    <Compile Include="Dom\Simple\ElementAttribute.cs" />
     <Compile Include="Dom\Simple\AttributeCollection.cs" />
     <Compile Include="Dom\Simple\Element.cs" />
     <Compile Include="Dom\Simple\TextNode.cs" />

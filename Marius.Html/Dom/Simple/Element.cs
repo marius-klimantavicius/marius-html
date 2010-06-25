@@ -134,11 +134,14 @@ namespace Marius.Html.Dom.Simple
                 if (_children[i] is Element)
                 {
                     Element e = (Element)_children[i];
+
+                    e._parent = this;
                     if (i > 0)
                         e._previousSibling = _children[i - 1];
                     if ((i + 1) < _children.Length)
                         e._nextSibling = _children[i + 1];
                 }
+                // TODO: change, as if there is text node, this will work incorrectly
             }
         }
     }
