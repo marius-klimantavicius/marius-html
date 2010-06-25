@@ -108,8 +108,8 @@ namespace Marius.Html.Tests.Css.Cascade
         public void MoreSpecificRuleShouldBeApplied()
         {
             var s = _context.ParseStylesheet(@"
-#id { color: red }
 a#id { color: green }
+#id { color: red }
 ", CssStylesheetSource.Author);
 
             var prep = _context.PrepareStylesheets(s);
