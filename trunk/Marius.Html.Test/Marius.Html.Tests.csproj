@@ -59,11 +59,9 @@
     <Compile Include="Css\Properties\AzimuthTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Support\AttributeObject.cs" />
+    <Compile Include="Support\AttributeDynamicObject.cs" />
     <Compile Include="Support\BaseTestWithDom.cs" />
-    <Compile Include="Support\ElementObject.cs" />
-    <Compile Include="Support\ElementStub.cs" />
-    <Compile Include="Support\TextStub.cs" />
+    <Compile Include="Support\ElementDynamicObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marius.Html\Marius.Html.csproj">

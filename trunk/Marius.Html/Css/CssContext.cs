@@ -119,7 +119,7 @@ namespace Marius.Html.Css
         /// <summary>
         /// Applies recursively in any order
         /// </summary>
-        public virtual void Apply(CssPreparedStylesheet sheet, CssBox box)
+        public virtual void Apply(CssPreparedStylesheet sheet, IStyleTree box)
         {
             var current = box;
             bool down = true;
@@ -152,21 +152,21 @@ namespace Marius.Html.Css
             }
         }
 
-        public virtual CssInitialBox PreprareDocument(INode rootNode)
+        public virtual CssInitialBox PreprareDocument(Node rootNode)
         {
             CssInitialBox result = new CssInitialBox(this);
             CreateBoxTree(result, rootNode);
             return result;
         }
 
-        private void CreateBoxTree(CssBox parent, INode node)
+        private void CreateBoxTree(CssBox parent, Node node)
         {
             CssBox result = parent.AddLast(node);
-            if (node is IElement)
+            if (node is Element)
             {
-                IElement elem = (IElement)node;
-                INode current;
-                for (int i = 0; i < elem.Children.Length; i++)
+                Element elem = (Element)node;
+                Node current;
+                for (int i = 0; i < elem.Children.Count; i++)
                 {
                     current = elem.Children[i];
                     CreateBoxTree(result, current);

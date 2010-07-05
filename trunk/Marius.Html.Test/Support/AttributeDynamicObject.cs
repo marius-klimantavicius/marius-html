@@ -29,44 +29,52 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
+using System.Dynamic;
 using Marius.Html.Dom;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Tests.Support
 {
-    // specifity 1,0,0,0
-    public class CssInlineStyleSelector: CssSelector
+    public class AttributeDynamicObject: DynamicObject
     {
-        private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
+        private string _name;
 
-        public Element Element { get; private set; }
+        public string Name { get { return _name; } }
 
-        public override CssSelectorType SelectorType
+        public AttributeDynamicObject(string name)
         {
-            get { return CssSelectorType.InlineStyle; }
+            _name = name;
         }
 
-        public CssInlineStyleSelector(Element element)
+        public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
         {
-            Element = element;
+            result = CreateAttribute(arg);
+            return true;
         }
 
-        public override CssSpecificity Specificity
+        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            get { return StyleSpecificity; }
-        }
-
-        public override bool Equals(CssSelector other)
-        {
-            CssInlineStyleSelector o = other as CssInlineStyleSelector;
-            if (o == null)
+            result = null;
+            if (indexes.Length != 1)
                 return false;
-            return o.Element.Equals(this.Element);
+
+            result = CreateAttribute(indexes[0]);
+            return true;
         }
 
-        public override int GetHashCode()
+        public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
         {
-            return Utils.GetHashCode(Element, SelectorType);
+            result = null;
+            if (args.Length != 1)
+                return false;
+
+            result = CreateAttribute(args[0]);
+            return true;
+        }
+
+        private ElementAttribute CreateAttribute(object arg)
+        {
+            dynamic value = arg;
+            return new ElementAttribute(_name, value);
         }
     }
 }

@@ -29,44 +29,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
-using Marius.Html.Dom;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Dom
 {
-    // specifity 1,0,0,0
-    public class CssInlineStyleSelector: CssSelector
+    [Serializable]
+    public class DomException: Exception
     {
-        private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
-
-        public Element Element { get; private set; }
-
-        public override CssSelectorType SelectorType
-        {
-            get { return CssSelectorType.InlineStyle; }
-        }
-
-        public CssInlineStyleSelector(Element element)
-        {
-            Element = element;
-        }
-
-        public override CssSpecificity Specificity
-        {
-            get { return StyleSpecificity; }
-        }
-
-        public override bool Equals(CssSelector other)
-        {
-            CssInlineStyleSelector o = other as CssInlineStyleSelector;
-            if (o == null)
-                return false;
-            return o.Element.Equals(this.Element);
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Element, SelectorType);
-        }
+        public DomException() { }
+        public DomException(string message) : base(message) { }
+        public DomException(string message, Exception inner) : base(message, inner) { }
+        protected DomException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context)
+            : base(info, context) { }
     }
 }

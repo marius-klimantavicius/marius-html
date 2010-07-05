@@ -29,44 +29,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
-using Marius.Html.Dom;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Dom
 {
-    // specifity 1,0,0,0
-    public class CssInlineStyleSelector: CssSelector
+    public class Element: Node
     {
-        private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
+        public string Name { get; private set; }
 
-        public Element Element { get; private set; }
+        public AttributeCollection Attributes { get; private set; }
 
-        public override CssSelectorType SelectorType
+        public string Id { get { return Attributes.Id; } set { Attributes.Id = value; } }
+        public string Class { get { return Attributes.Class; } set { Attributes.Class = value; } }
+        public string Style { get { return Attributes.Style; } set { Attributes.Style = value; } }
+
+        public Element(string tagName)
+            : this(tagName, (string)null)
         {
-            get { return CssSelectorType.InlineStyle; }
         }
 
-        public CssInlineStyleSelector(Element element)
+        public Element(string tagName, string id)
+            : this(tagName, new AttributeCollection(id))
         {
-            Element = element;
         }
 
-        public override CssSpecificity Specificity
+        public Element(string tagName, ElementAttribute[] attributes)
+            : this(tagName, new AttributeCollection(null, null, null, attributes))
         {
-            get { return StyleSpecificity; }
+
         }
 
-        public override bool Equals(CssSelector other)
+        public Element(string tagName, AttributeCollection attributes)
         {
-            CssInlineStyleSelector o = other as CssInlineStyleSelector;
-            if (o == null)
-                return false;
-            return o.Element.Equals(this.Element);
+            Name = tagName;
+            Attributes = attributes;
         }
 
-        public override int GetHashCode()
+        public override string ToString()
         {
-            return Utils.GetHashCode(Element, SelectorType);
+            return string.Format("<{0} {1}>{2}</{0}>", Name, Attributes, Children);
         }
     }
 }
