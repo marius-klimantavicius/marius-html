@@ -54,82 +54,74 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void ShouldOrderAccordingImporance()
         {
-//            var agents = _context.ParseStylesheet(@"
-//#id { color: red; border-width: 3px !important }
-//", CssStylesheetSource.Agent);
-//            var users = _context.ParseStylesheet(@"
-//#id { color: green; border-width: 4px !important }
-//", CssStylesheetSource.User);
-//            var authors = _context.ParseStylesheet(@"
-//#id { color: blue; border-width: 5px !important }
-//", CssStylesheetSource.Author);
+            var agents = _context.ParseStylesheet(@"
+#id { color: red; border-width: 3px !important }
+", CssStylesheetSource.Agent);
+            var users = _context.ParseStylesheet(@"
+#id { color: green; border-width: 4px !important }
+", CssStylesheetSource.User);
+            var authors = _context.ParseStylesheet(@"
+#id { color: blue; border-width: 5px !important }
+", CssStylesheetSource.Author);
 
-//            var prep = _context.PrepareStylesheets(agents, users, authors);
+            var prep = _context.PrepareStylesheets(agents, users, authors);
 
-//            Element e = a[id <= "id", expected <= "color: blue, border-width: 4px"];
-//            var box = new CssBox(_context, e);
+            INode node = a[id <= "id", expected <= "color: blue, border-width: 4px"];
 
-//            var decls = prep.GetAplicableDeclarations(box);
-//            Assert.AreEqual(6, decls.Count);
+            var decls = prep.GetAplicableDeclarations(node);
+            Assert.AreEqual(6, decls.Count);
 
-//            _context.Apply(prep, box);
+            _context.Apply(prep, node);
 
-//            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderTopWidth);
-//            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderLeftWidth);
-//            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderBottomWidth);
-//            Assert.AreEqual(new CssLength(4, CssUnits.Px), box.Style.BorderRightWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), node.Style.BorderTopWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), node.Style.BorderLeftWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), node.Style.BorderBottomWidth);
+            Assert.AreEqual(new CssLength(4, CssUnits.Px), node.Style.BorderRightWidth);
 
-//            Assert.AreEqual(CssKeywords.Blue, box.Style.Color);
-            
-            Assert.Inconclusive();
+            Assert.AreEqual(CssKeywords.Blue, node.Style.Color);
         }
 
         [Test]
         public void IfRulesHaveSameImporanceAndSpecificityOrderByIndex()
         {
-//            var s = _context.ParseStylesheet(@"
-//#id { color: red; background-color: rgb(100, 100, 100) }
-//#id { color: green }
-//#id { background-color: black }
-//#id { color: blue }
-//", CssStylesheetSource.Author);
+            var s = _context.ParseStylesheet(@"
+            #id { color: red; background-color: rgb(100, 100, 100) }
+            #id { color: green }
+            #id { background-color: black }
+            #id { color: blue }
+            ", CssStylesheetSource.Author);
 
-//            var prep = _context.PrepareStylesheets(s);
+            var prep = _context.PrepareStylesheets(s);
 
-//            Element e = a[id <= "id", expected <= "background-color: black; color: blue"];
-//            var box = new CssBox(_context, e);
+            INode node = a[id <= "id", expected <= "background-color: black; color: blue"];
 
-//            var decls = prep.GetAplicableDeclarations(box);
-//            Assert.AreEqual(5, decls.Count);
+            var decls = prep.GetAplicableDeclarations(node);
+            Assert.AreEqual(5, decls.Count);
 
-//            _context.Apply(prep, box);
+            _context.Apply(prep, node);
 
-//            Assert.AreEqual(CssKeywords.Black, box.Style.BackgroundColor);
-//            Assert.AreEqual(CssKeywords.Blue, box.Style.Color);
-
-            Assert.Inconclusive();
+            Assert.AreEqual(CssKeywords.Black, node.Style.BackgroundColor);
+            Assert.AreEqual(CssKeywords.Blue, node.Style.Color);
         }
 
         [Test]
         public void MoreSpecificRuleShouldBeApplied()
         {
-//            var s = _context.ParseStylesheet(@"
-//a#id { color: green }
-//#id { color: red }
-//", CssStylesheetSource.Author);
+            var s = _context.ParseStylesheet(@"
+            a#id { color: green }
+            #id { color: red }
+            ", CssStylesheetSource.Author);
 
-//            var prep = _context.PrepareStylesheets(s);
+            var prep = _context.PrepareStylesheets(s);
 
-//            var box = new CssBox(_context, (Node)a[id <= "id", expected <= "color: green"]);
+            INode node = a[id <= "id", expected <= "color: green"];
 
-//            var decls = prep.GetAplicableDeclarations(box);
-//            Assert.AreEqual(2, decls.Count);
+            var decls = prep.GetAplicableDeclarations(node);
+            Assert.AreEqual(2, decls.Count);
 
-//            _context.Apply(prep, box);
+            _context.Apply(prep, node);
 
-//            Assert.AreEqual(CssKeywords.Green, box.Style.Color);
-
-            Assert.Inconclusive();
+            Assert.AreEqual(CssKeywords.Green, node.Style.Color);
         }
     }
 }

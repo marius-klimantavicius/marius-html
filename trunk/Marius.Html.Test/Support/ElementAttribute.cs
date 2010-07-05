@@ -29,52 +29,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Dynamic;
-using Marius.Html.Dom;
 
 namespace Marius.Html.Tests.Support
 {
-    public class AttributeDynamicObject: DynamicObject
+    public class ElementAttribute
     {
-        private string _name;
+        public string Name { get; private set; }
+        public string Value { get; private set; }
 
-        public string Name { get { return _name; } }
-
-        public AttributeDynamicObject(string name)
+        public ElementAttribute(string name, string value)
         {
-            _name = name;
+            Name = name;
+            Value = value;
         }
 
-        public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
+        public override string ToString()
         {
-            result = CreateAttribute(arg);
-            return true;
-        }
-
-        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
-        {
-            result = null;
-            if (indexes.Length != 1)
-                return false;
-
-            result = CreateAttribute(indexes[0]);
-            return true;
-        }
-
-        public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
-        {
-            result = null;
-            if (args.Length != 1)
-                return false;
-
-            result = CreateAttribute(args[0]);
-            return true;
-        }
-
-        private object CreateAttribute(object arg)
-        {
-            dynamic value = arg;
-            return new ElementAttribute(_name, value);
+            if (Value == null)
+                return Name;
+            return string.Format("{0}='{1}'", Name, Value);
         }
     }
 }
