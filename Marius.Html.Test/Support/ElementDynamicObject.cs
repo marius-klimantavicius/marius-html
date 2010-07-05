@@ -38,103 +38,63 @@ namespace Marius.Html.Tests.Support
     public class ElementDynamicObject: DynamicObject
     {
         private string _name;
-        private List<object> _attributes;
-        private List<object> _children;
 
         public ElementDynamicObject(string name)
-            : this(name, null, null)
-        {
-        }
-
-        private ElementDynamicObject(string name, List<object> attributes)
-            : this(name, attributes, null)
-        {
-        }
-
-        private ElementDynamicObject(string name, List<object> attributes, List<object> children)
         {
             _name = name;
-            _attributes = attributes;
-            _children = children;
         }
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            //List<ElementAttribute> attributes = _attributes ?? new List<ElementAttribute>();
-            //for (int i = 0; i < indexes.Length; i++)
-            //{
-            //    if (indexes[i] is ElementAttribute)
-            //        attributes.Add((ElementAttribute)indexes[i]);
-            //    else if (indexes[i] is string)
-            //        attributes.Add(new ElementAttribute((string)indexes[i]));
-            //    else if (indexes[i] is AttributeDynamicObject)
-            //        attributes.Add(new ElementAttribute(((AttributeDynamicObject)indexes[i]).Name));
-            //}
+            List<ElementAttribute> attributes = new List<ElementAttribute>();
 
-            //result = new ElementDynamicObject(_name, attributes);
-            result = null;
+            for (int i = 0; i < indexes.Length; i++)
+            {
+                if (indexes[i] is string)
+                    attributes.Add(new ElementAttribute((string)indexes[i], null));
+                else if (indexes[i] is ElementAttribute)
+                    attributes.Add((ElementAttribute)indexes[i]);
+            }
+
+            result = new ElementNode(_name, attributes);
             return true;
         }
 
         public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
         {
-            //List<object> children = _children ?? new List<object>();
+            List<INode> children = NodeListFromArgs(args);
 
-            //for (int i = 0; i < args.Length; i++)
-            //{
-            //    if (args[i] is ElementDynamicObject)
-            //        children.Add((ElementDynamicObject)args[i]);
-            //    else if (args[i] is string)
-            //        children.Add(new TextNode((string)args[i]));
-            //}
-
-            //result = new ElementDynamicObject(_name, _attributes, children);
-            result = null;
+            result = new ElementNode(_name, children);
             return true;
         }
 
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
-            //result = null;
-            //if (binder.Type != typeof(Element) && binder.Type != typeof(Node))
-            //    return false;
+            if (binder.Type != typeof(INode))
+                return base.TryConvert(binder, out result);
 
-            //AttributeCollection attributes;
-            //if (_attributes == null)
-            //    attributes = new AttributeCollection();
-            //else
-            //{
-            //    string id = null, klass = null, style = null;
-
-            //    for (int i = 0; i < _attributes.Count; i++)
-            //    {
-            //        if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "id"))
-            //            id = _attributes[i].Value;
-            //        if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "class"))
-            //            klass = _attributes[i].Value;
-            //        if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "style"))
-            //            style = _attributes[i].Value;
-            //    }
-
-            //    attributes = new AttributeCollection(id, klass, style, _attributes);
-            //}
-
-            //Element item = new Element(_name, attributes);
-
-            //if (_children != null)
-            //{
-            //    dynamic child;
-            //    for (int i = 0; i < _children.Count; i++)
-            //    {
-            //        child = _children[i];
-            //        item.Append(child);
-            //    }
-            //}
-
-            //result = item;
-
-            result = null;
+            result = new ElementNode(_name, null, null);
             return true;
+        }
+
+        public static List<INode> NodeListFromArgs(object[] args)
+        {
+            List<INode> children = new List<INode>();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i] is string)
+                    children.Add(new TextNode((string)args[i]));
+                else if (args[i] is ElementDynamicObject)
+                    children.Add(NodeFromDynamic((ElementDynamicObject)args[i]));
+                else if (args[i] is INode)
+                    children.Add((INode)args[i]);
+            }
+            return children;
+        }
+
+        private static INode NodeFromDynamic(ElementDynamicObject elem)
+        {
+            return new ElementNode(elem._name, null, null);
         }
     }
 }

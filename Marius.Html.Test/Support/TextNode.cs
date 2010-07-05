@@ -29,52 +29,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Dynamic;
 using Marius.Html.Dom;
+using Marius.Html.Css;
 
 namespace Marius.Html.Tests.Support
 {
-    public class AttributeDynamicObject: DynamicObject
+    public class TextNode: ITextNode
     {
-        private string _name;
+        public string Data { get; private set; }
 
-        public string Name { get { return _name; } }
+        public NodeType NodeType { get { return NodeType.Text; } }
 
-        public AttributeDynamicObject(string name)
+        public INode Parent { get; set; }
+
+        public INode PreviousSibling { get; set; }
+        public INode NextSibling { get; set; }
+
+        public INode FirstChild { get; set; }
+        public INode LastChild { get; set; }
+
+        public IWithStyle Style { get; private set; }
+        public IWithStyle FirstLineStyle { get; private set; }
+        public IWithStyle FirstLetterStyle { get; private set; }
+        public IWithStyle BeforeStyle { get; private set; }
+        public IWithStyle AfterStyle { get; private set; }
+
+        public TextNode(string data)
         {
-            _name = name;
-        }
+            Data = data;
 
-        public override bool TryBinaryOperation(BinaryOperationBinder binder, object arg, out object result)
-        {
-            result = CreateAttribute(arg);
-            return true;
-        }
-
-        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
-        {
-            result = null;
-            if (indexes.Length != 1)
-                return false;
-
-            result = CreateAttribute(indexes[0]);
-            return true;
-        }
-
-        public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
-        {
-            result = null;
-            if (args.Length != 1)
-                return false;
-
-            result = CreateAttribute(args[0]);
-            return true;
-        }
-
-        private object CreateAttribute(object arg)
-        {
-            dynamic value = arg;
-            return new ElementAttribute(_name, value);
+            Style = new StyleInfo();
+            FirstLineStyle = new StyleInfo();
+            FirstLetterStyle = new StyleInfo();
+            BeforeStyle = new StyleInfo();
+            AfterStyle = new StyleInfo();
         }
     }
 }

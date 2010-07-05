@@ -47,42 +47,37 @@ namespace Marius.Html.Tests.Css.Cascade
         [Test]
         public void ShouldMatchSingleElement()
         {
-            //CssInitialBox initial = _context.PreprareDocument((Node)a("visit"));
-            //CssBox box = initial.FirstChild;
+            INode node = a("visit");
 
-            //var sheet = _context.ParseStylesheet("a { color: green } a > span { color: red }");
-            //var prep = _context.PrepareStylesheets(sheet);
+            var sheet = _context.ParseStylesheet("a { color: green } a > span { color: red }");
+            var prep = _context.PrepareStylesheets(sheet);
 
-            //var decls = prep.GetAplicableDeclarations(box);
-            //Assert.IsNotNull(decls);
-            //Assert.AreEqual(1, decls.Count);
-            //Assert.AreEqual("color", decls[0].Property);
-            //Assert.IsFalse(decls[0].Important);
+            var decls = prep.GetAplicableDeclarations(node);
+            Assert.IsNotNull(decls);
+            Assert.AreEqual(1, decls.Count);
+            Assert.AreEqual("color", decls[0].Property);
+            Assert.IsFalse(decls[0].Important);
 
-            //Assert.IsTrue(_context.Color.Apply(box.Style, decls[0].Value));
-            //Assert.AreEqual(CssKeywords.Green, box.Style.Color);
-
-            Assert.Inconclusive();
+            Assert.IsTrue(_context.Color.Apply(node.Style, decls[0].Value));
+            Assert.AreEqual(CssKeywords.Green, node.Style.Color);
         }
 
         [Test]
         public void ShouldIgnoreCase()
         {
-            //CssBox box = new CssBox(_context, (Node)a("visit"));
+            INode node = a("visit");
 
-            //var sheet = _context.ParseStylesheet("A { color: green }");
-            //var prep = _context.PrepareStylesheets(sheet);
+            var sheet = _context.ParseStylesheet("A { color: green }");
+            var prep = _context.PrepareStylesheets(sheet);
 
-            //var decls = prep.GetAplicableDeclarations(box);
-            //Assert.IsNotNull(decls);
-            //Assert.AreEqual(1, decls.Count);
-            //Assert.AreEqual("color", decls[0].Property);
-            //Assert.IsFalse(decls[0].Important);
+            var decls = prep.GetAplicableDeclarations(node);
+            Assert.IsNotNull(decls);
+            Assert.AreEqual(1, decls.Count);
+            Assert.AreEqual("color", decls[0].Property);
+            Assert.IsFalse(decls[0].Important);
 
-            //Assert.IsTrue(_context.Color.Apply(box.Style, decls[0].Value));
-            //Assert.AreEqual(CssKeywords.Green, box.Style.Color);
-
-            Assert.Inconclusive();
+            Assert.IsTrue(_context.Color.Apply(node.Style, decls[0].Value));
+            Assert.AreEqual(CssKeywords.Green, node.Style.Color);
         }
     }
 }
