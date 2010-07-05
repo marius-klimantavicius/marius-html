@@ -38,7 +38,7 @@ namespace Marius.Html.Tests.Support
     public class ElementDynamicObject: DynamicObject
     {
         private string _name;
-        private List<ElementAttribute> _attributes;
+        private List<object> _attributes;
         private List<object> _children;
 
         public ElementDynamicObject(string name)
@@ -46,12 +46,12 @@ namespace Marius.Html.Tests.Support
         {
         }
 
-        private ElementDynamicObject(string name, List<ElementAttribute> attributes)
+        private ElementDynamicObject(string name, List<object> attributes)
             : this(name, attributes, null)
         {
         }
 
-        private ElementDynamicObject(string name, List<ElementAttribute> attributes, List<object> children)
+        private ElementDynamicObject(string name, List<object> attributes, List<object> children)
         {
             _name = name;
             _attributes = attributes;
@@ -60,82 +60,81 @@ namespace Marius.Html.Tests.Support
 
         public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
-            List<ElementAttribute> attributes = _attributes ?? new List<ElementAttribute>();
-            for (int i = 0; i < indexes.Length; i++)
-            {
-                if (indexes[i] is ElementAttribute)
-                    attributes.Add((ElementAttribute)indexes[i]);
-                else if (indexes[i] is string)
-                    attributes.Add(new ElementAttribute((string)indexes[i]));
-                else if (indexes[i] is AttributeDynamicObject)
-                    attributes.Add(new ElementAttribute(((AttributeDynamicObject)indexes[i]).Name));
-            }
+            //List<ElementAttribute> attributes = _attributes ?? new List<ElementAttribute>();
+            //for (int i = 0; i < indexes.Length; i++)
+            //{
+            //    if (indexes[i] is ElementAttribute)
+            //        attributes.Add((ElementAttribute)indexes[i]);
+            //    else if (indexes[i] is string)
+            //        attributes.Add(new ElementAttribute((string)indexes[i]));
+            //    else if (indexes[i] is AttributeDynamicObject)
+            //        attributes.Add(new ElementAttribute(((AttributeDynamicObject)indexes[i]).Name));
+            //}
 
-            result = new ElementDynamicObject(_name, attributes);
+            //result = new ElementDynamicObject(_name, attributes);
+            result = null;
             return true;
         }
 
         public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
         {
-            List<object> children = _children ?? new List<object>();
+            //List<object> children = _children ?? new List<object>();
 
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i] is ElementDynamicObject)
-                    children.Add((ElementDynamicObject)args[i]);
-                else if (args[i] is string)
-                    children.Add(new TextNode((string)args[i]));
-            }
+            //for (int i = 0; i < args.Length; i++)
+            //{
+            //    if (args[i] is ElementDynamicObject)
+            //        children.Add((ElementDynamicObject)args[i]);
+            //    else if (args[i] is string)
+            //        children.Add(new TextNode((string)args[i]));
+            //}
 
-            result = new ElementDynamicObject(_name, _attributes, children);
+            //result = new ElementDynamicObject(_name, _attributes, children);
+            result = null;
             return true;
         }
 
         public override bool TryConvert(ConvertBinder binder, out object result)
         {
+            //result = null;
+            //if (binder.Type != typeof(Element) && binder.Type != typeof(Node))
+            //    return false;
+
+            //AttributeCollection attributes;
+            //if (_attributes == null)
+            //    attributes = new AttributeCollection();
+            //else
+            //{
+            //    string id = null, klass = null, style = null;
+
+            //    for (int i = 0; i < _attributes.Count; i++)
+            //    {
+            //        if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "id"))
+            //            id = _attributes[i].Value;
+            //        if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "class"))
+            //            klass = _attributes[i].Value;
+            //        if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "style"))
+            //            style = _attributes[i].Value;
+            //    }
+
+            //    attributes = new AttributeCollection(id, klass, style, _attributes);
+            //}
+
+            //Element item = new Element(_name, attributes);
+
+            //if (_children != null)
+            //{
+            //    dynamic child;
+            //    for (int i = 0; i < _children.Count; i++)
+            //    {
+            //        child = _children[i];
+            //        item.Append(child);
+            //    }
+            //}
+
+            //result = item;
+
             result = null;
-            if (binder.Type != typeof(Element) && binder.Type != typeof(Node))
-                return false;
-
-            AttributeCollection attributes;
-            if (_attributes == null)
-                attributes = new AttributeCollection();
-            else
-            {
-                string id = null, klass = null, style = null;
-
-                for (int i = 0; i < _attributes.Count; i++)
-                {
-                    if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "id"))
-                        id = _attributes[i].Value;
-                    if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "class"))
-                        klass = _attributes[i].Value;
-                    if (StringComparer.InvariantCultureIgnoreCase.Equals(_attributes[i].Name, "style"))
-                        style = _attributes[i].Value;
-                }
-
-                attributes = new AttributeCollection(id, klass, style, _attributes);
-            }
-
-            Element item = new Element(_name, attributes);
-
-            if (_children != null)
-            {
-                dynamic child;
-                for (int i = 0; i < _children.Count; i++)
-                {
-                    child = _children[i];
-                    item.Append(child);
-                }
-            }
-
-            result = item;
             return true;
-        }
-
-        public override DynamicMetaObject GetMetaObject(Expression parameter)
-        {
-            return base.GetMetaObject(parameter);
         }
     }
 }

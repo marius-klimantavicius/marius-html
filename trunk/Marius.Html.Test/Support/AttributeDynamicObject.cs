@@ -71,10 +71,11 @@ namespace Marius.Html.Tests.Support
             return true;
         }
 
-        private ElementAttribute CreateAttribute(object arg)
+        private object CreateAttribute(object arg)
         {
-            dynamic value = arg;
-            return new ElementAttribute(_name, value);
+            //dynamic value = arg;
+            //return new ElementAttribute(_name, value);
+            return null;
         }
     }
 }

@@ -25,49 +25,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using Marius.Html.Dom.Simple;
+using System.Linq;
+using System.Text;
 
-namespace Marius.Html.Tests.Support
+namespace Marius.Html.Dom
 {
-    public class ElementObject: DynamicObject
+    public interface IAttributeCollection
     {
-        private string _name;
+        string Style { get; }
+        string Class { get; }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        string this[string attributeName] { get; set; }
 
-        public ElementObject(string elementName)
-        {
-            _name = elementName;
-        }
-
-        public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
-        {
-            ElementStub stub = new ElementStub(_name, new ElementAttribute[0]);
-
-            stub.TryInvoke(null, args, out result);
-
-            return true;
-        }
-
-        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
-        {
-            List<ElementAttribute> attributes = new List<ElementAttribute>();
-            for (int i = 0; i < indexes.Length; i++)
-            {
-                if (indexes[i] == null || !(indexes[i] is ElementAttribute))
-                    continue;
-
-                ElementAttribute a = (ElementAttribute)indexes[i];
-                attributes.Add(a);
-            }
-
-            result = new ElementStub(_name, attributes.ToArray());
-            return true;
-        }
+        bool Contains(string attributeName);
     }
 }
