@@ -54,7 +54,6 @@
     <Compile Include="Css\CssPropertyValueDictionary.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
-    <Compile Include="Css\IStyleTree.cs" />
     <Compile Include="Css\IWithStyle.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
@@ -240,8 +239,13 @@
     <Compile Include="Dom\ElementAttribute.cs" />
     <Compile Include="Dom\AttributeCollection.cs" />
     <Compile Include="Dom\Element.cs" />
+    <Compile Include="Dom\IAttributeCollection.cs" />
+    <Compile Include="Dom\IElementNode.cs" />
+    <Compile Include="Dom\INode.cs" />
+    <Compile Include="Dom\ITextNode.cs" />
     <Compile Include="Dom\Node.cs" />
     <Compile Include="Dom\NodeList.cs" />
+    <Compile Include="Dom\NodeType.cs" />
     <Compile Include="Dom\TextNode.cs" />
     <Compile Include="Hap\Crc32.cs" />
     <Compile Include="Hap\EncodingFoundException.cs" />

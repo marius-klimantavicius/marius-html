@@ -30,32 +30,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Dom.Simple
+namespace Marius.Html.Dom
 {
-    public class ElementAttribute: IAttribute
+    public interface IElementNode: INode
     {
-        private string _name;
-        private string _value;
+        string TagName { get; }
+        string Id { get; }
 
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public string Value
-        {
-            get { return _value; }
-        }
-
-        public ElementAttribute(string name, string value)
-        {
-            _name = name;
-            _value = value;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0}='{1}'", _name, _value);
-        }
+        IAttributeCollection Attributes { get; }
     }
 }

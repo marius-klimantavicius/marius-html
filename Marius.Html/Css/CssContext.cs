@@ -119,7 +119,7 @@ namespace Marius.Html.Css
         /// <summary>
         /// Applies recursively in any order
         /// </summary>
-        public virtual void Apply(CssPreparedStylesheet sheet, IStyleTree box)
+        public virtual void Apply(CssPreparedStylesheet sheet, INode box)
         {
             var current = box;
             bool down = true;
