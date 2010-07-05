@@ -60,7 +60,7 @@ namespace Marius.Html.Css.Cascade
             Array.Sort<CssPreparedStyle>(_styles, _context.StyleComparer);
         }
 
-        public virtual void Apply(CssBox box)
+        public virtual void Apply(IStyleTree box)
         {
             for (int i = 0; i < _styles.Length; i++)
             {
@@ -68,7 +68,7 @@ namespace Marius.Html.Css.Cascade
             }
         }
 
-        protected virtual void Apply(CssPreparedStyle style, CssBox box)
+        protected virtual void Apply(CssPreparedStyle style, IStyleTree box)
         {
             CssStyleTarget target = Applies(style.Selector, box);
             switch (target)
@@ -103,7 +103,7 @@ namespace Marius.Html.Css.Cascade
             }
         }
 
-        public virtual IList<CssDeclaration> GetAplicableDeclarations(CssBox box)
+        public virtual IList<CssDeclaration> GetAplicableDeclarations(IStyleTree box)
         {
             List<CssDeclaration> result = new List<CssDeclaration>();
             for (int i = 0; i < _styles.Length; i++)
@@ -115,7 +115,7 @@ namespace Marius.Html.Css.Cascade
             return result;
         }
 
-        protected virtual CssStyleTarget Applies(CssSelector selector, CssBox box)
+        protected virtual CssStyleTarget Applies(CssSelector selector, IStyleTree box)
         {
             switch (selector.SelectorType)
             {
@@ -137,7 +137,7 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        private CssStyleTarget AppliesInlineStyle(CssInlineStyleSelector selector, CssBox box)
+        private CssStyleTarget AppliesInlineStyle(CssInlineStyleSelector selector, IStyleTree box)
         {
             if (box.Element == selector.Element)
                 return CssStyleTarget.Style;
@@ -145,7 +145,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget AppliesConditional(CssConditionalSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesConditional(CssConditionalSelector selector, IStyleTree box)
         {
             var target = Applies(selector.SimpleSelector, box);
             if (target == CssStyleTarget.None)
@@ -170,7 +170,7 @@ namespace Marius.Html.Css.Cascade
             return prev;
         }
 
-        protected virtual CssStyleTarget MatchesCondition(CssCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesCondition(CssCondition condition, IStyleTree box)
         {
             switch (condition.ConditionType)
             {
@@ -193,13 +193,13 @@ namespace Marius.Html.Css.Cascade
             throw new CssInvalidStateException();
         }
 
-        protected virtual CssStyleTarget MatchesPseudoClass(CssPseudoClassCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesPseudoClass(CssPseudoClassCondition condition, IStyleTree box)
         {
             // currently pseudo elements and classes are not implemented
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget MatchesPseudoElement(CssPseudoElementCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesPseudoElement(CssPseudoElementCondition condition, IStyleTree box)
         {
             if (box.Element == null)
                 return CssStyleTarget.None;
@@ -220,7 +220,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget MatchesClass(CssClassCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesClass(CssClassCondition condition, IStyleTree box)
         {
             if (condition.Value == null)
                 throw new CssInvalidStateException();   // this must not happen
@@ -236,7 +236,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget MatchesId(CssIdCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesId(CssIdCondition condition, IStyleTree box)
         {
             if (condition.Value == null)
                 throw new CssInvalidStateException();   // this must not happen
@@ -252,7 +252,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget MatchesIncludesAttribute(CssIncludesAttributeCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesIncludesAttribute(CssIncludesAttributeCondition condition, IStyleTree box)
         {
             if (condition.Value == null)
                 throw new CssInvalidStateException();   // this must not happen
@@ -263,7 +263,7 @@ namespace Marius.Html.Css.Cascade
             var element = box.Element;
             if (element.Attributes.Contains(condition.Attribute))
             {
-                var values = element.Attributes.ValueOf(condition.Attribute).Split(); // TODO: specify split chars, as currently it is separated by whitespace, which might be a violation of spec
+                var values = element.Attributes[condition.Attribute].Split(); // TODO: specify split chars, as currently it is separated by whitespace, which might be a violation of spec
                 for (int i = 0; i < values.Length; i++)
                 {
                     if (StringComparer.InvariantCultureIgnoreCase.Equals(values[i], condition.Value))
@@ -274,7 +274,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesBeginHypenAttribute(CssBeginHyphenAttributeCondition condition, IStyleTree box)
         {
             if (condition.Value == null)
                 throw new CssInvalidStateException();   // this must not happen
@@ -285,7 +285,7 @@ namespace Marius.Html.Css.Cascade
             var element = box.Element;
             if (element.Attributes.Contains(condition.Attribute))
             {
-                var value = element.Attributes.ValueOf(condition.Attribute);
+                var value = element.Attributes[condition.Attribute];
                 if (value.Contains('-'))
                     value = value.Substring(0, value.IndexOf('-'));
 
@@ -296,7 +296,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget MatchesAttribute(CssAttributeCondition condition, CssBox box)
+        protected virtual CssStyleTarget MatchesAttribute(CssAttributeCondition condition, IStyleTree box)
         {
             if (box.Element == null)
                 return CssStyleTarget.None;
@@ -313,7 +313,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget AppliesDescendant(CssDescendantSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesDescendant(CssDescendantSelector selector, IStyleTree box)
         {
             var target = Applies(selector.Selector, box);
             if (target == CssStyleTarget.None)
@@ -332,7 +332,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget AppliesSibling(CssSiblingSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesSibling(CssSiblingSelector selector, IStyleTree box)
         {
             var parent = box.Parent;
             if (parent == null)
@@ -353,7 +353,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget AppliesChild(CssChildSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesChild(CssChildSelector selector, IStyleTree box)
         {
             var target = Applies(selector.Selector, box);
             if (target == CssStyleTarget.None)
@@ -370,7 +370,7 @@ namespace Marius.Html.Css.Cascade
             return CssStyleTarget.None;
         }
 
-        protected virtual CssStyleTarget AppliesElement(CssElementSelector selector, CssBox box)
+        protected virtual CssStyleTarget AppliesElement(CssElementSelector selector, IStyleTree box)
         {
             if (box.Element == null)
                 return CssStyleTarget.None;

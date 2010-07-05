@@ -30,13 +30,13 @@ namespace Marius.Html.Tests.Support
 {
     public abstract class BaseTestsWithDom
     {
-        public static dynamic id = new AttributeObject("id");
-        public static dynamic style = new AttributeObject("style");
-        public static dynamic @class = new AttributeObject("class");
-        public static dynamic expected = new AttributeObject("#expected");
+        public static dynamic id = new AttributeDynamicObject("id");
+        public static dynamic style = new AttributeDynamicObject("style");
+        public static dynamic @class = new AttributeDynamicObject("class");
+        public static dynamic expected = new AttributeDynamicObject("#expected");
 
-        public static dynamic body = new ElementObject("body");
-        public static dynamic a = new ElementObject("a");
-        public static dynamic span = new ElementObject("span");
+        public static dynamic body = new ElementDynamicObject("body");
+        public static dynamic a = new ElementDynamicObject("a");
+        public static dynamic span = new ElementDynamicObject("span");
     }
 }

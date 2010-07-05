@@ -29,44 +29,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
-using Marius.Html.Dom;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Dom
 {
-    // specifity 1,0,0,0
-    public class CssInlineStyleSelector: CssSelector
+    public class NodeList
     {
-        private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
+        private Node[] _nodes;
+        private int _count;
 
-        public Element Element { get; private set; }
-
-        public override CssSelectorType SelectorType
+        public Node this[int index]
         {
-            get { return CssSelectorType.InlineStyle; }
+            get
+            {
+                if (index < 0)
+                    return null;
+                if (index >= _count)
+                    return null;
+
+                return _nodes[index];
+            }
         }
 
-        public CssInlineStyleSelector(Element element)
+        public int this[Node node]
         {
-            Element = element;
+            get { return Array.IndexOf<Node>(_nodes, node); }
         }
 
-        public override CssSpecificity Specificity
+        public int Count
         {
-            get { return StyleSpecificity; }
+            get { return _count; }
         }
 
-        public override bool Equals(CssSelector other)
+        public NodeList()
         {
-            CssInlineStyleSelector o = other as CssInlineStyleSelector;
-            if (o == null)
-                return false;
-            return o.Element.Equals(this.Element);
+            _nodes = new Node[3];
+            _count = 0;
         }
 
-        public override int GetHashCode()
+        public void InsertAt(int index, Node node)
         {
-            return Utils.GetHashCode(Element, SelectorType);
+            if (index > _count)
+                throw new ArgumentException();
+
+            if (_count + 1 >= _nodes.Length)
+                Array.Resize(ref _nodes, _count + 10);
+
+            Array.Copy(_nodes, index, _nodes, index + 1, _count - index);
+            _nodes[index] = node;
+            _count++;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < _count; i++)
+            {
+                sb.Append(_nodes[i].ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -29,44 +29,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Internal;
-using Marius.Html.Dom;
 
-namespace Marius.Html.Css.Selectors
+namespace Marius.Html.Dom
 {
-    // specifity 1,0,0,0
-    public class CssInlineStyleSelector: CssSelector
+    public class TextNode: Node
     {
-        private static readonly CssSpecificity StyleSpecificity = new CssSpecificity(1, 0, 0, 0);
+        public string Data { get; private set; }
 
-        public Element Element { get; private set; }
-
-        public override CssSelectorType SelectorType
+        public TextNode(string data)
         {
-            get { return CssSelectorType.InlineStyle; }
+            Data = data;
         }
 
-        public CssInlineStyleSelector(Element element)
+        public override string ToString()
         {
-            Element = element;
-        }
-
-        public override CssSpecificity Specificity
-        {
-            get { return StyleSpecificity; }
-        }
-
-        public override bool Equals(CssSelector other)
-        {
-            CssInlineStyleSelector o = other as CssInlineStyleSelector;
-            if (o == null)
-                return false;
-            return o.Element.Equals(this.Element);
-        }
-
-        public override int GetHashCode()
-        {
-            return Utils.GetHashCode(Element, SelectorType);
+            return Data;
         }
     }
 }

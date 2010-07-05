@@ -40,29 +40,21 @@ namespace Marius.Html.Css
         private CssPropertyValueDictionary _properties;
         private CssContext _context;
 
-        public CssBox(CssContext context, INode node)
+        public CssBox(CssContext context, Node node)
         {
             _context = context;
             _properties = new CssPropertyValueDictionary(_context);
 
             Node = node;
-
-            FirstLineStyle = new StyleHolder(_context);
-            FirstLetterStyle = new StyleHolder(_context);
-            Style = new StyleHolder(_context);
         }
 
-        protected CssBox(CssContext context, CssBox parent, INode node)
+        protected CssBox(CssContext context, CssBox parent, Node node)
         {
             _context = context;
             _properties = new CssPropertyValueDictionary(_context);
 
             Parent = parent;
             Node = node;
-
-            FirstLineStyle = new StyleHolder(_context);
-            FirstLetterStyle = new StyleHolder(_context);
-            Style = new StyleHolder(_context);
         }
 
         public CssBox Parent { get; private set; }
@@ -71,16 +63,10 @@ namespace Marius.Html.Css
         public CssBox PreviousSibling { get; private set; }
         public CssBox NextSibling { get; private set; }
 
-        public INode Node { get; private set; }
-        public IElement Element { get { return Node as IElement; } }
+        public Node Node { get; private set; }
+        public Element Element { get { return Node as Element; } }
 
         public CssPropertyValueDictionary Properties { get; private set; }
-
-        public StyleHolder FirstLineStyle { get; private set; }
-        public StyleHolder FirstLetterStyle { get; private set; }
-        public StyleHolder Style { get; private set; }
-        public StyleHolder BeforeStyle { get; private set; }
-        public StyleHolder AfterStyle { get; private set; }
 
         public override string ToString()
         {
@@ -91,7 +77,7 @@ namespace Marius.Html.Css
                 sb.AppendFormat("<{0} id='{1}' class='{2}' style='{3}'>: ", e.Name, e.Id, e.Class, e.Style);
             }
 
-            sb.AppendFormat("Style: {0}", Style);
+            //sb.AppendFormat("Style: {0}", Style);
 
             return sb.ToString();
         }
@@ -103,7 +89,7 @@ namespace Marius.Html.Css
             return result;
         }
 
-        public virtual CssBox AddLast(INode node)
+        public virtual CssBox AddLast(Node node)
         {
             CssBox child = new CssBox(_context, this, node);
 
