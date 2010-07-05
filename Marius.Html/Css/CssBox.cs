@@ -40,21 +40,18 @@ namespace Marius.Html.Css
         private CssPropertyValueDictionary _properties;
         private CssContext _context;
 
-        public CssBox(CssContext context, Node node)
+        public CssBox(CssContext context)
         {
             _context = context;
             _properties = new CssPropertyValueDictionary(_context);
-
-            Node = node;
         }
 
-        protected CssBox(CssContext context, CssBox parent, Node node)
+        protected CssBox(CssContext context, CssBox parent)
         {
             _context = context;
             _properties = new CssPropertyValueDictionary(_context);
 
             Parent = parent;
-            Node = node;
         }
 
         public CssBox Parent { get; private set; }
@@ -63,58 +60,6 @@ namespace Marius.Html.Css
         public CssBox PreviousSibling { get; private set; }
         public CssBox NextSibling { get; private set; }
 
-        public Node Node { get; private set; }
-        public Element Element { get { return Node as Element; } }
-
         public CssPropertyValueDictionary Properties { get; private set; }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (Element != null)
-            {
-                var e = Element;
-                sb.AppendFormat("<{0} id='{1}' class='{2}' style='{3}'>: ", e.Name, e.Id, e.Class, e.Style);
-            }
-
-            //sb.AppendFormat("Style: {0}", Style);
-
-            return sb.ToString();
-        }
-
-        public virtual CssBox AddLast()
-        {
-            var result = new CssBox(_context, null);
-            AddLast(result);
-            return result;
-        }
-
-        public virtual CssBox AddLast(Node node)
-        {
-            CssBox child = new CssBox(_context, this, node);
-
-            AddLast(child);
-
-            return child;
-        }
-
-        public virtual void AddLast(CssBox child)
-        {
-            if (_context != child._context)
-                throw new CssInvalidStateException("The whole box tree must be in the same context");
-
-            child.Parent = this;
-            if (FirstChild == null)
-            {
-                FirstChild = LastChild = child;
-            }
-            else
-            {
-                var prevLast = LastChild;
-                LastChild = child;
-                child.PreviousSibling = prevLast;
-                prevLast.NextSibling = child;
-            }
-        }
     }
 }

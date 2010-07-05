@@ -29,21 +29,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css;
 
 namespace Marius.Html.Dom
 {
-    public class TextNode: Node
+    public interface INode
     {
-        public string Data { get; private set; }
+        NodeType NodeType { get; }
 
-        public TextNode(string data)
-        {
-            Data = data;
-        }
+        INode Parent { get; }
 
-        public override string ToString()
-        {
-            return Data;
-        }
+        INode PreviousSibling { get; }
+        INode NextSibling { get; }
+
+        INode FirstChild { get; }
+        INode LastChild { get; }
+
+        IWithStyle Style { get; }
+        IWithStyle FirstLineStyle { get; }
+        IWithStyle FirstLetterStyle { get; }
+        IWithStyle BeforeStyle { get; }
+        IWithStyle AfterStyle { get; }
     }
 }

@@ -32,41 +32,8 @@ using System.Text;
 
 namespace Marius.Html.Dom
 {
-    public class Element: Node
+    public interface ITextNode: INode
     {
-        public string Name { get; private set; }
-
-        public AttributeCollection Attributes { get; private set; }
-
-        public string Id { get { return Attributes.Id; } set { Attributes.Id = value; } }
-        public string Class { get { return Attributes.Class; } set { Attributes.Class = value; } }
-        public string Style { get { return Attributes.Style; } set { Attributes.Style = value; } }
-
-        public Element(string tagName)
-            : this(tagName, (string)null)
-        {
-        }
-
-        public Element(string tagName, string id)
-            : this(tagName, new AttributeCollection(id))
-        {
-        }
-
-        public Element(string tagName, ElementAttribute[] attributes)
-            : this(tagName, new AttributeCollection(null, null, null, attributes))
-        {
-
-        }
-
-        public Element(string tagName, AttributeCollection attributes)
-        {
-            Name = tagName;
-            Attributes = attributes;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("<{0} {1}>{2}</{0}>", Name, Attributes, Children);
-        }
+        string Data { get; }
     }
 }

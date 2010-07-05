@@ -151,27 +151,5 @@ namespace Marius.Html.Css
                 sheet.Apply(current);
             }
         }
-
-        public virtual CssInitialBox PreprareDocument(Node rootNode)
-        {
-            CssInitialBox result = new CssInitialBox(this);
-            CreateBoxTree(result, rootNode);
-            return result;
-        }
-
-        private void CreateBoxTree(CssBox parent, Node node)
-        {
-            CssBox result = parent.AddLast(node);
-            if (node is Element)
-            {
-                Element elem = (Element)node;
-                Node current;
-                for (int i = 0; i < elem.Children.Count; i++)
-                {
-                    current = elem.Children[i];
-                    CreateBoxTree(result, current);
-                }
-            }
-        }
     }
 }

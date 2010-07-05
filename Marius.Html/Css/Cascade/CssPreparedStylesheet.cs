@@ -132,12 +132,12 @@ namespace Marius.Html.Css.Cascade
                 case CssSelectorType.Element:
                     return AppliesElement((CssElementSelector)selector, box);
                 case CssSelectorType.InlineStyle:
-                    return AppliesInlineStyle((CssInlineStyleSelector)selector, box);
+                    return AppliesInlineStyle((CssInlineElementSelector)selector, box);
             }
             throw new CssInvalidStateException();
         }
 
-        private CssStyleTarget AppliesInlineStyle(CssInlineStyleSelector selector, INode box)
+        private CssStyleTarget AppliesInlineStyle(CssInlineElementSelector selector, INode box)
         {
             if (box == selector.Element)
                 return CssStyleTarget.Style;
