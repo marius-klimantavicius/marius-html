@@ -30,32 +30,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
-using System.Runtime.CompilerServices;
-using Marius.Html.Dom;
 
 namespace Marius.Html.Css
 {
-    public class CssBox
+    public class CssAnonymousBlockBox: CssBox
     {
-        private CssPropertyValueDictionary _properties;
-        private CssContext _context;
-
-        public CssBox(CssContext context)
+        public CssAnonymousBlockBox(CssContext context)
+            : base(context)
         {
-            _context = context;
-            _properties = new CssPropertyValueDictionary(_context);
+            Properties.Display = CssKeywords.Block;
         }
-
-        protected CssBox(CssContext context, CssBox parent)
-        {
-            _context = context;
-            _properties = new CssPropertyValueDictionary(_context);
-
-            Parent = parent;
-        }
-
-        public CssBox Parent { get; private set; }
-
-        public CssPropertyValueDictionary Properties { get; private set; }
     }
 }
