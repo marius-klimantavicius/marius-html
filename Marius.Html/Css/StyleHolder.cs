@@ -561,5 +561,16 @@ namespace Marius.Html.Css
             sb.Append("}");
             return sb.ToString();
         }
+
+
+        public bool HasStyle
+        {
+            get { return _properties.HasStyle; }
+        }
+
+        public void CopyTo(CssPropertyValueDictionary target)
+        {
+            _properties.CopyTo(target);
+        }
     }
 }

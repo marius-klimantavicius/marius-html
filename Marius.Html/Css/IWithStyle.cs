@@ -131,5 +131,9 @@ namespace Marius.Html.Css
         CssValue Width { get; set; }
         CssValue WordSpacing { get; set; }
         CssValue ZIndex { get; set; }
+
+        // does it have any style set?
+        bool HasStyle { get; }
+        void CopyTo(CssPropertyValueDictionary target);
     }
 }

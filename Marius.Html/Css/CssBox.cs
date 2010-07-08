@@ -38,24 +38,26 @@ namespace Marius.Html.Css
     public class CssBox
     {
         private CssPropertyValueDictionary _properties;
+        private CssPropertyValueDictionary _firstLineProperties;
+        private CssPropertyValueDictionary _firstLetterProperties;
         private CssContext _context;
 
         public CssBox(CssContext context)
         {
             _context = context;
             _properties = new CssPropertyValueDictionary(_context);
-        }
-
-        protected CssBox(CssContext context, CssBox parent)
-        {
-            _context = context;
-            _properties = new CssPropertyValueDictionary(_context);
-
-            Parent = parent;
+            _firstLineProperties = new CssPropertyValueDictionary(_context);
+            _firstLetterProperties = new CssPropertyValueDictionary(_context);
         }
 
         public CssBox Parent { get; private set; }
+        public CssPropertyValueDictionary Properties { get { return _properties; } }
+        public CssPropertyValueDictionary FirstLineProperties { get { return _firstLineProperties; } }
+        public CssPropertyValueDictionary FirstLetterProperties { get { return _firstLetterProperties; } }
 
-        public CssPropertyValueDictionary Properties { get; private set; }
+        public virtual void Append(CssBox child)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

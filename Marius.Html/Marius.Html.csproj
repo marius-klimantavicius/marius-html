@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Box\CssAnonymousSpaceBox.cs" />
     <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Css\CssAnonymousBlockBox.cs" />
     <Compile Include="Css\CssAnonymousInlineBox.cs" />
     <Compile Include="Css\CssContext.Properties.cs" />
+    <Compile Include="Css\CssGeneratedBox.cs" />
     <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssProperty.cs" />
     <Compile Include="Css\CssPropertyDictionary.cs" />
@@ -57,6 +59,7 @@
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\IWithStyle.cs" />
+    <Compile Include="Css\Layout\CssBoxGenerator.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />

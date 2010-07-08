@@ -29,16 +29,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
-    public class CssInitialBox: CssBox
+    public class CssGeneratedBox: CssBox
     {
-        public CssInitialBox(CssContext context)
+        public CssGeneratedBox(CssContext context)
             : base(context)
         {
-            Properties.Display = CssKeywords.Block;
         }
     }
 }
