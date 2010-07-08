@@ -61,6 +61,11 @@ namespace Marius.Html.Css
             }
         }
 
+        public bool HasStyle
+        {
+            get { return _values.Count > 0; }
+        }
+
         public IEnumerator<Tuple<string, CssValue>> GetEnumerator()
         {
             foreach (var key in _values.Keys)
@@ -577,5 +582,13 @@ namespace Marius.Html.Css
             set { this[CssProperty.ZIndex] = value; }
         }
         #endregion
+
+        public void CopyTo(CssPropertyValueDictionary target)
+        {
+            foreach (var item in _values)
+            {
+                target[item.Key] = item.Value;
+            }
+        }
     }
 }

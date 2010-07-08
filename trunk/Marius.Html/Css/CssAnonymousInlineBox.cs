@@ -29,14 +29,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {
     public class CssAnonymousInlineBox: CssBox
     {
-        public CssAnonymousInlineBox(CssContext context)
+        public string Text { get; private set; }
+
+        public CssAnonymousInlineBox(CssContext context, string text)
             : base(context)
         {
+            Text = text;
+            Properties.Display = CssKeywords.Inline;
         }
     }
 }
