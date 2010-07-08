@@ -29,26 +29,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css;
 
-namespace Marius.Html.Dom
+namespace Marius.Html
 {
-    public interface INode: ITreeNode<INode>
+    public interface ITreeNode<T>
+        where T: ITreeNode<T>
     {
-        NodeType NodeType { get; }
-
-        INode Parent { get; }
-
-        INode PreviousSibling { get; }
-        INode NextSibling { get; }
-
-        INode FirstChild { get; }
-        INode LastChild { get; }
-
-        IWithStyle Style { get; }
-        IWithStyle FirstLineStyle { get; }
-        IWithStyle FirstLetterStyle { get; }
-        IWithStyle BeforeStyle { get; }
-        IWithStyle AfterStyle { get; }
+        T Parent { get; }
+        T FirstChild { get; }
+        T NextSibling { get; }
     }
 }
