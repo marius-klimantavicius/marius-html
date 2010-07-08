@@ -41,16 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Box\CssAnonymousBlockBox.cs" />
+    <Compile Include="Css\Box\CssAnonymousInlineBox.cs" />
     <Compile Include="Css\Box\CssAnonymousSpaceBox.cs" />
+    <Compile Include="Css\Box\CssBox.cs" />
+    <Compile Include="Css\Box\CssGeneratedBox.cs" />
+    <Compile Include="Css\Box\CssInitialBox.cs" />
     <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
-    <Compile Include="Css\CssAnonymousBlockBox.cs" />
-    <Compile Include="Css\CssAnonymousInlineBox.cs" />
     <Compile Include="Css\CssContext.Properties.cs" />
-    <Compile Include="Css\CssGeneratedBox.cs" />
-    <Compile Include="Css\CssInitialBox.cs" />
     <Compile Include="Css\CssProperty.cs" />
     <Compile Include="Css\CssPropertyDictionary.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
@@ -232,7 +233,6 @@
     <Compile Include="Css\Properties\Azimuth.cs" />
     <Compile Include="Css\Properties\BackgroundAttachment.cs" />
     <Compile Include="Css\Properties\BackgroundColor.cs" />
-    <Compile Include="Css\CssBox.cs" />
     <Compile Include="Css\Parser\StringSource.cs" />
     <Compile Include="Css\Parser\CssParser.cs" />
     <Compile Include="Css\Parser\CssScanner.cs" />
