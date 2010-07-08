@@ -36,6 +36,7 @@ using System.Net;
 using System.IO;
 using Marius.Html.Css.Cascade;
 using Marius.Html.Dom;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css
 {
@@ -121,35 +122,7 @@ namespace Marius.Html.Css
         /// </summary>
         public virtual void Apply(CssPreparedStylesheet sheet, INode box)
         {
-            var current = box;
-            bool down = true;
-
-            while (true)
-            {
-                if (down)
-                {
-                    if (current.FirstChild != null)
-                        current = current.FirstChild;
-                    else
-                        down = false;
-                }
-                else
-                {
-                    if (current.NextSibling == null)
-                    {
-                        current = current.Parent;
-                        if (current == null || current == box)
-                            break;
-                        continue;
-                    }
-                    else
-                    {
-                        current = current.NextSibling;
-                        down = true;
-                    }
-                }
-                sheet.Apply(current);
-            }
+            Utils.RecurseTree(box, current => sheet.Apply(current));
         }
     }
 }

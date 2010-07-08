@@ -29,17 +29,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css
 {
     public class CssPropertyValueDictionary: IEnumerable<Tuple<string, CssValue>>
     {
-        private CssContext _context;
+        private CssBox _box;
         private Dictionary<string, CssValue> _values;
 
-        public CssPropertyValueDictionary(CssContext context)
+        public CssPropertyValueDictionary(CssBox box)
         {
-            _context = context;
+            _box = box;
             _values = new Dictionary<string, CssValue>(StringComparer.InvariantCultureIgnoreCase);
         }
 
@@ -589,6 +590,11 @@ namespace Marius.Html.Css
             {
                 target[item.Key] = item.Value;
             }
+        }
+
+        public CssValue Computed(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

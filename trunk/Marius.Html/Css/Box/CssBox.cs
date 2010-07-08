@@ -35,27 +35,46 @@ using Marius.Html.Dom;
 
 namespace Marius.Html.Css.Box
 {
-    public class CssBox
+    public class CssBox: ITreeNode<CssBox>
     {
+        private CssContext _context;
+
         private CssPropertyValueDictionary _properties;
         private CssPropertyValueDictionary _firstLineProperties;
         private CssPropertyValueDictionary _firstLetterProperties;
-        private CssContext _context;
 
         public CssBox(CssContext context)
         {
             _context = context;
-            _properties = new CssPropertyValueDictionary(_context);
-            _firstLineProperties = new CssPropertyValueDictionary(_context);
-            _firstLetterProperties = new CssPropertyValueDictionary(_context);
+
+            _properties = new CssPropertyValueDictionary(this);
+            _firstLineProperties = new CssPropertyValueDictionary(this);
+            _firstLetterProperties = new CssPropertyValueDictionary(this);
         }
 
+        public CssContext Context { get { return _context; } }
+
         public CssBox Parent { get; private set; }
+        public CssBox FirstChild { get; private set; }
+        public CssBox NextSibling { get; private set; }
+
         public CssPropertyValueDictionary Properties { get { return _properties; } }
         public CssPropertyValueDictionary FirstLineProperties { get { return _firstLineProperties; } }
         public CssPropertyValueDictionary FirstLetterProperties { get { return _firstLetterProperties; } }
 
+        public bool IsRunIn { get; set; }
+
         public virtual void Append(CssBox child)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(CssBox child)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Replace(CssBox start, CssBox end, CssBox  with)
         {
             throw new NotImplementedException();
         }

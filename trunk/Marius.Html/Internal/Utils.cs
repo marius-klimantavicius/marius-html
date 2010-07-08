@@ -30,6 +30,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
+using Marius.Html.Dom;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Internal
 {
@@ -129,6 +131,40 @@ namespace Marius.Html.Internal
             }
 
             return result;
+        }
+
+        public static void RecurseTree<T>(T root, Action<T> onNode)
+            where T: ITreeNode<T>
+        {
+            var current = root;
+            bool down = true;
+
+            while (true)
+            {
+                if (down)
+                {
+                    if (current.FirstChild != null)
+                        current = current.FirstChild;
+                    else
+                        down = false;
+                }
+                else
+                {
+                    if (current.NextSibling == null)
+                    {
+                        current = current.Parent;
+                        if (current == null || object.ReferenceEquals(current, root))
+                            break;
+                        continue;
+                    }
+                    else
+                    {
+                        current = current.NextSibling;
+                        down = true;
+                    }
+                }
+                onNode(current);
+            }
         }
     }
 }

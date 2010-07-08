@@ -35,7 +35,7 @@ namespace Marius.Html.Css.Box
 {
     public class CssAnonymousBlockBox: CssBox
     {
-        public CssAnonymousBlockBox(CssContext context)
+        public CssAnonymousBlockBox(CssContext context, CssBox start, CssBox end)
             : base(context)
         {
             Properties.Display = CssKeywords.Block;

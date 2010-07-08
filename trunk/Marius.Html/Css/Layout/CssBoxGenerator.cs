@@ -40,6 +40,8 @@ namespace Marius.Html.Css.Layout
     {
         private CssContext _context;
 
+        private Dictionary<CssBox, bool> _hasBlock;
+
         public CssBoxGenerator(CssContext context)
         {
             _context = context;
@@ -51,14 +53,15 @@ namespace Marius.Html.Css.Layout
 
             AddNode(result, root);
 
-            FixBoxes(result);
+            _hasBlock = new Dictionary<CssBox, bool>();
+
+            RunInBoxes(result);
+            FixBlockBoxes(result);
+            FixInlineBoxes(result);
+
+            _hasBlock = null;
 
             return result;
-        }
-
-        private void FixBoxes(CssBox box)
-        {
-            throw new NotImplementedException();
         }
 
         private void AddNode(CssBox parent, INode node)
@@ -82,7 +85,7 @@ namespace Marius.Html.Css.Layout
             else
             {
                 current = new CssBox(_context);
-                
+
                 if (node.FirstLineStyle.HasStyle)
                     node.FirstLineStyle.CopyTo(current.FirstLineProperties);
 
@@ -118,6 +121,177 @@ namespace Marius.Html.Css.Layout
             }
 
             parent.Append(current);
+        }
+
+        private void RunInBoxes(CssBox box)
+        {
+            CssBox current = box.FirstChild;
+            while (current != null)
+            {
+                RunInBoxes(current);
+                current = current.NextSibling;
+            }
+
+            current = box.FirstChild;
+            while (current != null)
+            {
+                CssBox next = current.NextSibling;
+
+                var display = current.Properties.Computed(CssProperty.Display);
+                if (display.Equals(CssKeywords.RunIn))
+                {
+                    bool rfixed = false;
+
+                    //1. If the run-in box contains a block box, the run-in box becomes a block box.
+                    if (ContainsBlockBox(current))
+                    {
+                        current.Properties.Display = CssKeywords.Block;
+                        rfixed = true;
+                    }
+
+                    //2. If a sibling block box (that does not float and is not absolutely positioned) follows the run-in box, the run-in box becomes the first inline box of the block box. A run-in cannot run in to a block that already starts with a run-in or that itself is a run-in.
+                    if (!rfixed && next != null && IsBlockBox(next))
+                    {
+                        var nfloat = next.Properties.Computed(CssProperty.Float);
+                        var npos = next.Properties.Computed(CssProperty.Position);
+
+                        if (nfloat.Equals(CssKeywords.None)
+                            && !(npos.Equals(CssKeywords.Absolute) || npos.Equals(CssKeywords.Fixed)))
+                        {
+                            if (next.FirstChild == null || (!next.FirstChild.IsRunIn))
+                            {
+                                current.Properties.Display = CssKeywords.Inline;
+                                current.IsRunIn = true;
+                                next.Insert(current);
+                                rfixed = true;
+                            }
+                        }
+                    }
+
+                    //3. Otherwise, the run-in box becomes a block box.
+                    if (!rfixed)
+                    {
+                        current.Properties.Display = CssKeywords.Block;
+                        rfixed = true;
+                    }
+                }
+
+                current = next;
+            }
+        }
+
+        // after this all block boxes will have either block or inline only children
+        // next step is to fix block in inlines
+        private void FixBlockBoxes(CssBox box)
+        {
+            CssBox current = box.FirstChild;
+            while (current != null)
+            {
+                FixBlockBoxes(current);  // we have to fix children as they might be split (in case of inline having block) or compacted
+                current = current.NextSibling;
+            }
+
+            if (IsBlockBox(box))
+                FixBlockBox(box);
+        }
+
+        private void FixBlockBox(CssBox box)
+        {
+            bool hasBlock = false;
+            CssBox start, end;
+
+            start = end = null;
+
+            CssBox current = box.FirstChild;
+            while (current != null)
+            {
+                CssBox next = current.NextSibling;
+
+                if (IsBlockBox(current))
+                {
+                    hasBlock = true;
+                    if (start != null)
+                        box.Replace(start, end, new CssAnonymousBlockBox(_context, start, end));
+
+                    start = end = current;
+                }
+                else
+                {
+                    if (start == null)
+                        start = end = current;
+                    else
+                        end = current;
+                }
+
+                current = next;
+            }
+
+            if (hasBlock && start != null)
+                box.Replace(start, end, new CssAnonymousBlockBox(_context, start, end));
+        }
+
+        private void FixInlineBoxes(CssBox box)
+        {
+            /*
+             * NOT sure how to understand this:
+             * When an inline box contains a block box, 
+             * the inline box (and its inline ancestors within the same line box) are broken around the block. 
+             * The line boxes before the break and after the break are enclosed in anonymous boxes, 
+             * and the block box becomes a sibling of those anonymous boxes. When such an inline box is affected by relative positioning, 
+             * the relative positioning also affects the block box. 
+             */
+
+            CssBox current = box.FirstChild;
+            while (current != null)
+            {
+                CssBox next = current.NextSibling;
+
+                if (IsBlockBox(current))
+                    FixInlineBoxes(current);
+
+                current = next;
+            }
+        }
+
+        private bool ContainsBlockBox(CssBox box)
+        {
+            if (_hasBlock.ContainsKey(box))
+                return _hasBlock[box];
+
+            var current = box.FirstChild;
+            while (current != null)
+            {
+                if (IsBlockBox(current))
+                {
+                    _hasBlock.Add(box, true);
+                    return true;
+                }
+
+                current = current.NextSibling;
+            }
+
+            current = box.FirstChild;
+            while (current != null)
+            {
+                if (ContainsBlockBox(current))
+                {
+                    _hasBlock.Add(box, true);
+                    return true;
+                }
+                current = current.NextSibling;
+            }
+
+            return false;
+        }
+
+        private bool IsBlockBox(CssBox box)
+        {
+            // TODO: performance, this method might be called frequently and might need optimizations
+            // for now leaving as is as it is simpler and no one knows if this code survives for long
+            var display = box.Properties.Computed(CssProperty.Display);
+            return display.Equals(CssKeywords.Block)
+                || display.Equals(CssKeywords.ListItem)
+                || display.Equals(CssKeywords.Table);
         }
     }
 }

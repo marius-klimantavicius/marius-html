@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css
 {
@@ -37,9 +38,9 @@ namespace Marius.Html.Css
     {
         private CssPropertyValueDictionary _properties;
 
-        public StyleHolder(CssContext context)
+        public StyleHolder(CssBox box)
         {
-            _properties = new CssPropertyValueDictionary(context);
+            _properties = new CssPropertyValueDictionary(box);
         }
 
         #region Properties

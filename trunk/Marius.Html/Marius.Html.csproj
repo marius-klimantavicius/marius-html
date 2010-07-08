@@ -275,6 +275,7 @@
     <Compile Include="Hap\NameValuePair.cs" />
     <Compile Include="Hap\NameValuePairList.cs" />
     <Compile Include="Internal\Utils.cs" />
+    <Compile Include="ITreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
