@@ -594,7 +594,31 @@ namespace Marius.Html.Css
 
         public CssValue Computed(string name)
         {
-            throw new NotImplementedException();
+            CssContext context = _box.Context;
+
+            CssSimplePropertyHandler handler = context.Properties[name] as CssSimplePropertyHandler;
+            if (handler == null)
+                return CssNull.Value;
+
+            CssValue value;
+            if (_values.ContainsKey(name))
+            {
+                value = _values[name];
+                if (value.Equals(CssKeywords.Inherit))
+                {
+                    if (_box.Parent != null)
+                        return _box.Parent.Properties.Computed(name);
+                    return handler.Initial;
+                }
+                // TODO: figure out a way to compute values (note that some might be difficult to do until the layout)
+                return value;
+            }
+            else
+            {
+                if (handler.IsInherited && _box.Parent != null)
+                    return _box.Parent.Properties.Computed(name);
+                return handler.Initial;
+            }
         }
     }
 }

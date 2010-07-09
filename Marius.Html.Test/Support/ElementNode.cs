@@ -89,6 +89,8 @@ namespace Marius.Html.Tests.Support
                 {
                     dynamic current = children[i];
 
+                    current.Parent = this;
+
                     if (i == 0)
                         FirstChild = current;
 

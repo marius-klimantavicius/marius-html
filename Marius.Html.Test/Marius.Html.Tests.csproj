@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Css\Cascade\DefaultComparerTests.cs" />
     <Compile Include="Css\Cascade\ElementSelectorTests.cs" />
+    <Compile Include="Css\Layout\BoxGeneration.cs" />
     <Compile Include="Css\Parsing\ErrorRecoveryTests.cs" />
     <Compile Include="Css\Parsing\ScannerTests.cs" />
     <Compile Include="Css\Properties\AzimuthTests.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\AttributeCollection.cs" />
     <Compile Include="Support\AttributeDynamicObject.cs" />
-    <Compile Include="Support\BaseTestWithDom.cs" />
+    <Compile Include="Support\BaseTestsWithDom.cs" />
     <Compile Include="Support\ElementAttribute.cs" />
     <Compile Include="Support\ElementDynamicObject.cs" />
     <Compile Include="Support\ElementNode.cs" />

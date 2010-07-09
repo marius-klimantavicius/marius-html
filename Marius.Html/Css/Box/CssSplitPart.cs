@@ -30,13 +30,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Box
 {
-    public class CssGeneratedBox: CssBox
+    public enum CssSplitPart
     {
-        public CssGeneratedBox(CssContext context)
-            : base(context)
-        {
-        }
+        Start,
+        End,
+        Middle,
     }
 }

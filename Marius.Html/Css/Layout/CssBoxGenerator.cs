@@ -33,6 +33,7 @@ using Marius.Html.Dom;
 using Marius.Html.Css.Values;
 using Marius.Html.Css.Box;
 using System.Diagnostics;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Layout
 {
@@ -57,7 +58,6 @@ namespace Marius.Html.Css.Layout
 
             RunInBoxes(result);
             FixBlockBoxes(result);
-            FixInlineBoxes(result);
 
             _hasBlock = null;
 
@@ -85,6 +85,7 @@ namespace Marius.Html.Css.Layout
             else
             {
                 current = new CssBox(_context);
+                node.Style.CopyTo(current.Properties);
 
                 if (node.FirstLineStyle.HasStyle)
                     node.FirstLineStyle.CopyTo(current.FirstLineProperties);
@@ -162,6 +163,8 @@ namespace Marius.Html.Css.Layout
                             {
                                 current.Properties.Display = CssKeywords.Inline;
                                 current.IsRunIn = true;
+                                current.InheritanceParent = current.Parent;
+
                                 next.Insert(current);
                                 rfixed = true;
                             }
@@ -180,14 +183,12 @@ namespace Marius.Html.Css.Layout
             }
         }
 
-        // after this all block boxes will have either block or inline only children
-        // next step is to fix block in inlines
         private void FixBlockBoxes(CssBox box)
         {
             CssBox current = box.FirstChild;
             while (current != null)
             {
-                FixBlockBoxes(current);  // we have to fix children as they might be split (in case of inline having block) or compacted
+                FixBlockBoxes(current);
                 current = current.NextSibling;
             }
 
@@ -211,7 +212,7 @@ namespace Marius.Html.Css.Layout
                 {
                     hasBlock = true;
                     if (start != null)
-                        box.Replace(start, end, new CssAnonymousBlockBox(_context, start, end));
+                        FixInlineBoxes(box, start, end);
 
                     start = end = current;
                 }
@@ -227,10 +228,10 @@ namespace Marius.Html.Css.Layout
             }
 
             if (hasBlock && start != null)
-                box.Replace(start, end, new CssAnonymousBlockBox(_context, start, end));
+                FixInlineBoxes(box, start, end);
         }
 
-        private void FixInlineBoxes(CssBox box)
+        private void FixInlineBoxes(CssBox parent, CssBox start, CssBox end)
         {
             /*
              * NOT sure how to understand this:
@@ -241,15 +242,107 @@ namespace Marius.Html.Css.Layout
              * the relative positioning also affects the block box. 
              */
 
+            bool needsFixing = false;
+            CssBox current = start;
+            while (current != end)
+            {
+                if (ContainsBlockBox(current))
+                {
+                    needsFixing = true;
+                    break;
+                }
+            }
+
+            if (!needsFixing)
+            {
+                ReplaceWithAnonymousBlock(parent, start, end);
+                return;
+            }
+
+            CssBox finish = end.NextSibling;    // end might be split so it would become invalid
+            current = start;
+            while (current != finish)
+            {
+                if (!IsBlockBox(current))
+                    SplitInlineBox(ref current);
+
+                current = current.NextSibling;
+            }
+
+            CssBox istart = null, iend = null;
+
+            current = start;
+            while (current!=finish)
+            {
+                if (IsBlockBox(current))
+                {
+                    if (istart != null)
+                        ReplaceWithAnonymousBlock(parent, istart, iend);
+                    istart = iend = null;
+                }
+                else
+                {
+                    if (istart == null)
+                        istart = iend = current;
+                    else
+                        iend = current;
+                }
+            }
+        }
+
+        private void ReplaceWithAnonymousBlock(CssBox parent, CssBox start, CssBox end)
+        {
+            var block = new CssAnonymousBlockBox(_context);
+
+            var current = start;
+            while (current != end)
+            {
+                var next = current.NextSibling;
+                block.Append(current);
+                current = next;
+            }
+
+            parent.Replace(start, end, block);
+        }
+
+        private void SplitInlineBox(ref CssBox box)
+        {
             CssBox current = box.FirstChild;
             while (current != null)
             {
-                CssBox next = current.NextSibling;
+                if (!IsBlockBox(current))
+                    SplitInlineBox(ref current);
+                current = current.NextSibling;
+            }
 
+            CssBox block;
+            current = box.FirstChild;
+            while (current != null)
+            {
                 if (IsBlockBox(current))
-                    FixInlineBoxes(current);
+                {
+                    block = current;
+                    current = current.NextSibling;
 
-                current = next;
+                    if (block.PreviousSibling == null)
+                    {
+                        // first
+                        if (block.InheritanceParent == null)
+                            block.InheritanceParent = current.Parent;
+                        box.Parent.InsertBefore(current, box);
+                    }
+                    else if (block.NextSibling == null)
+                    {
+                        if (block.InheritanceParent == null)
+                            block.InheritanceParent = current.Parent;
+                        box.Parent.InsertAfter(current, box);
+                    }
+                    else
+                    {
+                        CssBox.Split(ref box, block);
+                        current = null;
+                    }
+                }
             }
         }
 
@@ -258,7 +351,7 @@ namespace Marius.Html.Css.Layout
             if (_hasBlock.ContainsKey(box))
                 return _hasBlock[box];
 
-            var current = box.FirstChild;
+            CssBox current = box.FirstChild;
             while (current != null)
             {
                 if (IsBlockBox(current))

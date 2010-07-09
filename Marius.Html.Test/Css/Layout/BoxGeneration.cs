@@ -29,16 +29,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
+using NUnit.Framework;
+using Marius.Html.Tests.Support;
+using Marius.Html.Css;
+using Marius.Html.Dom;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Tests.Css.Layout
 {
-    public class CssInitialBox: CssBox
+    [TestFixture]
+    public class BoxGeneration: BaseTestsWithDom
     {
-        public CssInitialBox(CssContext context)
-            : base(context)
+        CssContext _context;
+
+        [TestFixtureSetUp]
+        public void Setup()
         {
-            Properties.Display = CssKeywords.Block;
+            _context = new CssContext();
+        }
+
+        [Test]
+        public void BlockBoxShouldContainOnlyBlockBoxes()
+        {
+            INode root = body(span("inline"), div("block"));
+            var sheet = _context.ParseStylesheet(@"
+body, div { display: block }
+span { display: inline }
+");
+            var prep = _context.PrepareStylesheets(sheet);
+            _context.Apply(prep, root);
+
+            var box = _context.GenerateBoxes(root);
+            Assert.IsNotNull(box);
         }
     }
 }

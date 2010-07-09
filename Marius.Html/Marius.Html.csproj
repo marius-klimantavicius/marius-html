@@ -47,6 +47,8 @@
     <Compile Include="Css\Box\CssBox.cs" />
     <Compile Include="Css\Box\CssGeneratedBox.cs" />
     <Compile Include="Css\Box\CssInitialBox.cs" />
+    <Compile Include="Css\Box\CssSplitBox.cs" />
+    <Compile Include="Css\Box\CssSplitPart.cs" />
     <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
