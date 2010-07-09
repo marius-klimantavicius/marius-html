@@ -37,6 +37,8 @@ using System.IO;
 using Marius.Html.Css.Cascade;
 using Marius.Html.Dom;
 using Marius.Html.Internal;
+using Marius.Html.Css.Box;
+using Marius.Html.Css.Layout;
 
 namespace Marius.Html.Css
 {
@@ -123,6 +125,12 @@ namespace Marius.Html.Css
         public virtual void Apply(CssPreparedStylesheet sheet, INode box)
         {
             Utils.RecurseTree(box, current => sheet.Apply(current));
+        }
+
+        public virtual CssInitialBox GenerateBoxes(INode root)
+        {
+            CssBoxGenerator gen = new CssBoxGenerator(this);
+            return gen.Generate(root);
         }
     }
 }

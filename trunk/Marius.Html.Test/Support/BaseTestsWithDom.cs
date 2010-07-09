@@ -25,20 +25,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Tests.Support
 {
-    public class CssAnonymousBlockBox: CssBox
+    public abstract class BaseTestsWithDom
     {
-        public CssAnonymousBlockBox(CssContext context)
-            : base(context)
-        {
-            Properties.Display = CssKeywords.Block;
-        }
+        public static dynamic id = new AttributeDynamicObject("id");
+        public static dynamic style = new AttributeDynamicObject("style");
+        public static dynamic @class = new AttributeDynamicObject("class");
+        public static dynamic expected = new AttributeDynamicObject("#expected");
+
+        public static dynamic body = new ElementDynamicObject("body");
+        public static dynamic a = new ElementDynamicObject("a");
+        public static dynamic span = new ElementDynamicObject("span");
+        public static dynamic div = new ElementDynamicObject("div");
     }
 }

@@ -29,35 +29,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
-using System.Runtime.CompilerServices;
-using Marius.Html.Dom;
 
-namespace Marius.Html.Css
+namespace Marius.Html.Css.Box
 {
-    public class CssBox
+    public class CssSplitBox: CssBox
     {
-        private CssPropertyValueDictionary _properties;
-        private CssPropertyValueDictionary _firstLineProperties;
-        private CssPropertyValueDictionary _firstLetterProperties;
-        private CssContext _context;
+        public CssSplitPart Part { get; private set; }
 
-        public CssBox(CssContext context)
+        public CssSplitBox(CssBox original, CssSplitPart part)
+            : base(original.Context)
         {
-            _context = context;
-            _properties = new CssPropertyValueDictionary(_context);
-            _firstLineProperties = new CssPropertyValueDictionary(_context);
-            _firstLetterProperties = new CssPropertyValueDictionary(_context);
-        }
+            Part = part;
 
-        public CssBox Parent { get; private set; }
-        public CssPropertyValueDictionary Properties { get { return _properties; } }
-        public CssPropertyValueDictionary FirstLineProperties { get { return _firstLineProperties; } }
-        public CssPropertyValueDictionary FirstLetterProperties { get { return _firstLetterProperties; } }
+            original.Properties.CopyTo(this.Properties);
+            original.FirstLineProperties.CopyTo(this.Properties);
+            original.FirstLetterProperties.CopyTo(this.Properties);
 
-        public virtual void Append(CssBox child)
-        {
-            throw new NotImplementedException();
+            InheritanceParent = original.InheritanceParent;
+            IsRunIn = original.IsRunIn;
         }
     }
 }
