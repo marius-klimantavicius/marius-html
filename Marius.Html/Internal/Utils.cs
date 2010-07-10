@@ -139,14 +139,20 @@ namespace Marius.Html.Internal
             var current = root;
             bool down = true;
 
+            onNode(current);
             while (true)
             {
                 if (down)
                 {
                     if (current.FirstChild != null)
+                    {
                         current = current.FirstChild;
+                    }
                     else
+                    {
                         down = false;
+                        continue;
+                    }
                 }
                 else
                 {

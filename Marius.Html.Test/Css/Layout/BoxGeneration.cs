@@ -33,6 +33,7 @@ using NUnit.Framework;
 using Marius.Html.Tests.Support;
 using Marius.Html.Css;
 using Marius.Html.Dom;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Tests.Css.Layout
 {
@@ -50,7 +51,7 @@ namespace Marius.Html.Tests.Css.Layout
         [Test]
         public void BlockBoxShouldContainOnlyBlockBoxes()
         {
-            INode root = body(span("inline"), div("block"));
+            INode root = body(span("span text"), div("div text"), span("more span"));
             var sheet = _context.ParseStylesheet(@"
 body, div { display: block }
 span { display: inline }
@@ -60,6 +61,35 @@ span { display: inline }
 
             var box = _context.GenerateBoxes(root);
             Assert.IsNotNull(box);
+
+            var bodyBox = box.FirstChild;
+            Assert.IsNotNull(bodyBox);
+            Assert.IsNotInstanceOf<CssAnonymousBlockBox>(bodyBox);
+
+            var anonSpanBox = bodyBox.FirstChild;
+            Assert.IsNotNull(anonSpanBox);
+            Assert.IsInstanceOf<CssAnonymousBlockBox>(anonSpanBox);
+
+            var divBox = anonSpanBox.NextSibling;
+            Assert.IsNotNull(divBox);
+            Assert.IsNotInstanceOf<CssAnonymousBlockBox>(divBox);
+        }
+
+        [Test]
+        public void InlineShouldBeBrokenAroundIfContainsBlock()
+        {
+            INode root = body(span("span text"), div("div text"), div("div text"), span("middle span"), div("div text"), "simple text");
+            var sheet = _context.ParseStylesheet(@"
+div { display: block }
+body, span { display: inline }
+");
+            var prep = _context.PrepareStylesheets(sheet);
+            _context.Apply(prep, root);
+
+            var box = _context.GenerateBoxes(root);
+            Assert.IsNotNull(box);
+            box.Debug();
+            Assert.Inconclusive("Check that structure is generated correctly");
         }
     }
 }

@@ -57,6 +57,7 @@ namespace Marius.Html.Css.Layout
             _hasBlock = new Dictionary<CssBox, bool>();
 
             RunInBoxes(result);
+            FixInlineBoxes(result);
             FixBlockBoxes(result);
 
             _hasBlock = null;
@@ -212,9 +213,9 @@ namespace Marius.Html.Css.Layout
                 {
                     hasBlock = true;
                     if (start != null)
-                        FixInlineBoxes(box, start, end);
+                        ReplaceWithAnonymousBlock(box, start, end);
 
-                    start = end = current;
+                    start = end = null;
                 }
                 else
                 {
@@ -227,11 +228,11 @@ namespace Marius.Html.Css.Layout
                 current = next;
             }
 
-            if (hasBlock && start != null)
-                FixInlineBoxes(box, start, end);
+            if (start != null && hasBlock)
+                ReplaceWithAnonymousBlock(box, start, end);
         }
 
-        private void FixInlineBoxes(CssBox parent, CssBox start, CssBox end)
+        private void FixInlineBoxes(CssBox box)
         {
             /*
              * NOT sure how to understand this:
@@ -242,51 +243,22 @@ namespace Marius.Html.Css.Layout
              * the relative positioning also affects the block box. 
              */
 
-            bool needsFixing = false;
-            CssBox current = start;
-            while (current != end)
+            var current = box.FirstChild;
+            while (current != null)
             {
-                if (ContainsBlockBox(current))
-                {
-                    needsFixing = true;
-                    break;
-                }
+                var next = current.NextSibling;
+                if (!IsBlockBox(current))
+                    FixInlineBoxes(current);
+                current = next;
             }
 
-            if (!needsFixing)
-            {
-                ReplaceWithAnonymousBlock(parent, start, end);
-                return;
-            }
-
-            CssBox finish = end.NextSibling;    // end might be split so it would become invalid
-            current = start;
-            while (current != finish)
+            current = box.FirstChild;
+            while (current != null)
             {
                 if (!IsBlockBox(current))
                     SplitInlineBox(ref current);
 
                 current = current.NextSibling;
-            }
-
-            CssBox istart = null, iend = null;
-
-            current = start;
-            while (current!=finish)
-            {
-                if (IsBlockBox(current))
-                {
-                    if (istart != null)
-                        ReplaceWithAnonymousBlock(parent, istart, iend);
-                    istart = iend = null;
-                }
-                else
-                {
-                    if (istart == null)
-                        istart = iend = current;
-                    else
-                        iend = current;
-                }
             }
         }
 
@@ -294,15 +266,7 @@ namespace Marius.Html.Css.Layout
         {
             var block = new CssAnonymousBlockBox(_context);
 
-            var current = start;
-            while (current != end)
-            {
-                var next = current.NextSibling;
-                block.Append(current);
-                current = next;
-            }
-
-            parent.Replace(start, end, block);
+            parent.Wrap(start, end, block);
         }
 
         private void SplitInlineBox(ref CssBox box)
@@ -328,20 +292,24 @@ namespace Marius.Html.Css.Layout
                     {
                         // first
                         if (block.InheritanceParent == null)
-                            block.InheritanceParent = current.Parent;
-                        box.Parent.InsertBefore(current, box);
+                            block.InheritanceParent = block.Parent;
+                        box.Parent.InsertBefore(block, box);
                     }
                     else if (block.NextSibling == null)
                     {
                         if (block.InheritanceParent == null)
-                            block.InheritanceParent = current.Parent;
-                        box.Parent.InsertAfter(current, box);
+                            block.InheritanceParent = block.Parent;
+                        box.Parent.InsertAfter(block, box);
                     }
                     else
                     {
                         CssBox.Split(ref box, block);
                         current = null;
                     }
+                }
+                else
+                {
+                    current = current.NextSibling;
                 }
             }
         }
