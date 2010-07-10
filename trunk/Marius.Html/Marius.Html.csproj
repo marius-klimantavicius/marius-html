@@ -34,6 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +51,12 @@
     <Compile Include="Css\Box\CssInitialBox.cs" />
     <Compile Include="Css\Box\CssSplitBox.cs" />
     <Compile Include="Css\Box\CssSplitPart.cs" />
+    <Compile Include="Css\Box\Debug\BoxDebugDisplay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Css\Box\Debug\BoxDebugDisplay.Designer.cs">
+      <DependentUpon>BoxDebugDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
@@ -285,6 +293,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Hap\License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Css\Box\Debug\BoxDebugDisplay.resx">
+      <DependentUpon>BoxDebugDisplay.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

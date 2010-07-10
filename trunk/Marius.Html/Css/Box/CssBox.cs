@@ -32,6 +32,9 @@ using System.Text;
 using Marius.Html.Css.Values;
 using System.Runtime.CompilerServices;
 using Marius.Html.Dom;
+using System.Diagnostics;
+using Marius.Html.Css.Box.Debug;
+using System.ComponentModel;
 
 namespace Marius.Html.Css.Box
 {
@@ -159,35 +162,21 @@ namespace Marius.Html.Css.Box
             child.PreviousSibling = child.NextSibling = null;
         }
 
-        public virtual void Replace(CssBox start, CssBox end, CssBox with)
+        public virtual void Wrap(CssBox start, CssBox end, CssBox within)
         {
             if (start.Parent != this || end.Parent != this)
                 throw new CssInvalidStateException();
 
-            if (with.Parent != null)
-                with.Parent.Remove(with);
+            this.InsertBefore(within, start);
 
-            with.Parent = this;
-
-            var prev = start.PreviousSibling;
-            var next = end.NextSibling;
-
-            if (prev != null)
-                prev.NextSibling = with;
-
-            if (next != null)
-                next.PreviousSibling = with;
-
-            with.PreviousSibling = prev;
-            with.NextSibling = next;
-
-            if (start == FirstChild)
-                FirstChild = with;
-            if (end == LastChild)
-                LastChild = with;
-
-            start.PreviousSibling = null;
-            end.NextSibling = null;
+            var finish = end.NextSibling;
+            var current = start;
+            while (current != finish)
+            {
+                var next = current.NextSibling;
+                within.Append(current);
+                current = next;
+            }
         }
 
         public virtual void Replace(CssBox box, CssBox with)
@@ -340,6 +329,14 @@ namespace Marius.Html.Css.Box
             }
 
             parent = left;
+        }
+
+        [Conditional("DEBUG")]
+        public virtual void Debug()
+        {
+            BoxDebugDisplay debug = new BoxDebugDisplay();
+            debug.Box = this;
+            debug.ShowDialog();
         }
     }
 }
