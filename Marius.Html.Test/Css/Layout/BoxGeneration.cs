@@ -34,6 +34,7 @@ using Marius.Html.Tests.Support;
 using Marius.Html.Css;
 using Marius.Html.Dom;
 using Marius.Html.Css.Box;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Tests.Css.Layout
 {
@@ -73,6 +74,8 @@ span { display: inline }
             var divBox = anonSpanBox.NextSibling;
             Assert.IsNotNull(divBox);
             Assert.IsNotInstanceOf<CssAnonymousBlockBox>(divBox);
+
+            AssertThatBlocksAreCorrect(box);
         }
 
         [Test]
@@ -88,8 +91,55 @@ body, span { display: inline }
 
             var box = _context.GenerateBoxes(root);
             Assert.IsNotNull(box);
-            box.Debug();
-            Assert.Inconclusive("Check that structure is generated correctly");
+
+            AssertThatBlocksAreCorrect(box);
+        }
+
+        private void AssertThatBlocksAreCorrect(CssBox box)
+        {
+            bool hasInline = false;
+            bool hasBlock = false;
+
+            var current = box.FirstChild;
+            while (current != null)
+            {
+                if (IsBlockBox(box))
+                    hasBlock = true;
+                else
+                    hasInline = true;
+
+                current = current.NextSibling;
+            }
+
+            Assert.True(hasInline && !hasBlock || hasBlock && !hasInline || !hasInline && !hasBlock);
+
+            current = box.FirstChild;
+            while (current != null)
+            {
+                if (IsBlockBox(current))
+                    AssertThatBlocksAreCorrect(current);
+                else
+                    AssertThatInlinesAreCorrect(current);
+
+                current = current.NextSibling;
+            }
+        }
+
+        private void AssertThatInlinesAreCorrect(CssBox current)
+        {
+            Assert.IsFalse(IsBlockBox(current));
+
+            bool hasBlock = false;
+            current.RecurseTree(s => hasBlock = hasBlock || IsBlockBox(s));
+            Assert.IsFalse(hasBlock);
+        }
+
+        private static bool IsBlockBox(CssBox box)
+        {
+            var display = box.Properties.Computed(CssProperty.Display);
+            return display.Equals(CssKeywords.Block)
+                || display.Equals(CssKeywords.ListItem)
+                || display.Equals(CssKeywords.Table);
         }
     }
 }

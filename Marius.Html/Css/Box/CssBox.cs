@@ -35,6 +35,7 @@ using Marius.Html.Dom;
 using System.Diagnostics;
 using Marius.Html.Css.Box.Debug;
 using System.ComponentModel;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Box
 {
@@ -337,6 +338,11 @@ namespace Marius.Html.Css.Box
             BoxDebugDisplay debug = new BoxDebugDisplay();
             debug.Box = this;
             debug.ShowDialog();
+        }
+
+        public void RecurseTree(Action<CssBox> onItem)
+        {
+            Utils.RecurseTree(this, onItem);
         }
     }
 }
