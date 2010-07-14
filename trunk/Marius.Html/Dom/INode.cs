@@ -37,12 +37,7 @@ namespace Marius.Html.Dom
     {
         NodeType NodeType { get; }
 
-        INode Parent { get; }
-
         INode PreviousSibling { get; }
-        INode NextSibling { get; }
-
-        INode FirstChild { get; }
         INode LastChild { get; }
 
         IWithStyle Style { get; }

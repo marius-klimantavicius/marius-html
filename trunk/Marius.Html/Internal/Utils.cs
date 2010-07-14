@@ -158,6 +158,9 @@ namespace Marius.Html.Internal
                 {
                     if (current.NextSibling == null)
                     {
+                        if (object.ReferenceEquals(current, root))
+                            break;
+
                         current = current.Parent;
                         if (current == null || object.ReferenceEquals(current, root))
                             break;
