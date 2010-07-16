@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css
 {
@@ -65,5 +66,32 @@ namespace Marius.Html.Css
 
         public abstract void Apply(IWithStyle box, CssValue value);
         public abstract CssValue Parse(CssExpression expression);
+        
+        // will become abstract later, making virtual to not break build
+        public virtual CssValue Compute(CssBox box)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected CssValue Inherit(CssBox box, CssValue value)
+        {
+            if ((value == null && IsInherited) || CssKeywords.Inherit.Equals(value))
+            {
+                if (box.InheritanceParent != null)
+                    return Compute(box.InheritanceParent);
+
+                if (box.Parent != null)
+                    return Compute(box.Parent);
+            }
+
+            return Initial;
+        }
+
+        protected CssValue AsSpecified(CssBox box, CssValue value)
+        {
+            if (value != null)
+                return value;
+            return Inherit(box, value);
+        }
     }
 }

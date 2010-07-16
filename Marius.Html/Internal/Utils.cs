@@ -32,6 +32,8 @@ using System.Text;
 using System.Diagnostics.Contracts;
 using Marius.Html.Dom;
 using Marius.Html.Css.Box;
+using Marius.Html.Css.Values;
+using Marius.Html.Css;
 
 namespace Marius.Html.Internal
 {
@@ -91,11 +93,11 @@ namespace Marius.Html.Internal
         public static bool ArraysEqual<T>(this T[] first, T[] second)
             where T: IEquatable<T>
         {
-            if(first.Length!=second.Length)
+            if (first.Length != second.Length)
                 return false;
-            
+
             for (int i = 0; i < first.Length; i++)
-                if(!first[i].Equals((T)second[i]))
+                if (!first[i].Equals((T)second[i]))
                     return false;
 
             return true;
@@ -117,13 +119,15 @@ namespace Marius.Html.Internal
         public static int GetHashCode(params object[] items)
         {
             int result = 0;
-            
+
             for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] != null)
                 {
                     if (items[i] is object[])
                         result += ArrayHashCode((object[])items[i]);
+                    else if (items[i] is string)
+                        result += StringComparer.InvariantCultureIgnoreCase.GetHashCode((string)items[i]);
                     else
                         result += items[i].GetHashCode();
                 }
@@ -174,6 +178,21 @@ namespace Marius.Html.Internal
                 }
                 onNode(current);
             }
+        }
+
+        public static double ToDegrees(CssAngle value)
+        {
+            switch (value.Units)
+            {
+                case CssUnits.Deg:
+                    return value.Value;
+                case CssUnits.Rad:
+                    return value.Value * (180.0 / Math.PI);
+                case CssUnits.Grad:
+                    return value.Value * 9.0 / 10.0;
+            }
+
+            throw new CssInvalidStateException();
         }
     }
 }
