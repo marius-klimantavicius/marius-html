@@ -59,7 +59,7 @@ namespace Marius.Html.Css.Properties
             if (Match(expression, CssKeywords.Normal))
                 return CssKeywords.Normal;
 
-            CssValue result=null;
+            CssValue result = null;
             if (MatchNumber(expression, ref result))
                 return result;
 

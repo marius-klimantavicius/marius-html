@@ -63,5 +63,10 @@ namespace Marius.Html.Css.Properties
 
             return MatchInherit(expression);
         }
+
+        public override CssValue Compute(Box.CssBox box)
+        {
+            return AsSpecified(box, box.Properties.BackgroundAttachment);
+        }
     }
 }
