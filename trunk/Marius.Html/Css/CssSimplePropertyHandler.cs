@@ -59,39 +59,33 @@ namespace Marius.Html.Css
             if (value == null || !Valid(expression))
                 return false;
 
-            Apply(box, value);
+            SetValue(box, value);
 
             return true;
         }
 
-        public abstract void Apply(IWithStyle box, CssValue value);
         public abstract CssValue Parse(CssExpression expression);
-        
-        // will become abstract later, making virtual to not break build
+
+        public abstract void SetValue(IWithStyle box, CssValue value);
+        public abstract CssValue GetValue(IWithStyle box);
+
+        // default implementation: as specified
         public virtual CssValue Compute(CssBox box)
         {
-            throw new NotImplementedException();
-        }
-
-        protected CssValue Inherit(CssBox box, CssValue value)
-        {
+            var value = GetValue(box.Properties);
             if ((value == null && IsInherited) || CssKeywords.Inherit.Equals(value))
             {
                 if (box.InheritanceParent != null)
                     return Compute(box.InheritanceParent);
-
                 if (box.Parent != null)
                     return Compute(box.Parent);
+                return Initial;
             }
 
-            return Initial;
-        }
+            if (value == null)
+                return Initial;
 
-        protected CssValue AsSpecified(CssBox box, CssValue value)
-        {
-            if (value != null)
-                return value;
-            return Inherit(box, value);
+            return value;
         }
     }
 }

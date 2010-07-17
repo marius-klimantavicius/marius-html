@@ -50,11 +50,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderSpacing = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             CssValue horizontal = null, vertical = null;

@@ -67,11 +67,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.PaddingTop = value;
-        }
     }
 
     public partial class PaddingRight: SidePadding
@@ -79,11 +74,6 @@ namespace Marius.Html.Css.Properties
         public PaddingRight(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.PaddingRight = value;
         }
     }
 
@@ -93,11 +83,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.PaddingBottom = value;
-        }
     }
 
     public partial class PaddingLeft: SidePadding
@@ -105,11 +90,6 @@ namespace Marius.Html.Css.Properties
         public PaddingLeft(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.PaddingLeft = value;
         }
     }
 }

@@ -47,11 +47,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-        
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.MinHeight = value;
-        }
 
         public override CssValue Parse(CssExpression expression)
         {

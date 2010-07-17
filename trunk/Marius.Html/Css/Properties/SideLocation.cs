@@ -50,17 +50,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override bool Apply(IWithStyle box, CssExpression expression)
-        {
-            CssValue value = Parse(expression);
-            if (value == null || !Valid(expression))
-                return false;
-
-            Apply(box, value);
-
-            return true;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             // 	<length>  | <percentage>  | auto | inherit
@@ -85,11 +74,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.Top = value;
-        }
     }
 
     public partial class Right: SideLocation
@@ -97,11 +81,6 @@ namespace Marius.Html.Css.Properties
         public Right(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.Right = value;
         }
     }
 
@@ -111,11 +90,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.Bottom = value;
-        }
     }
 
     public partial class Left: SideLocation
@@ -123,11 +97,6 @@ namespace Marius.Html.Css.Properties
         public Left(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.Left = value;
         }
     }
 }

@@ -48,11 +48,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.CounterReset = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             // [ <identifier>  <integer>? ]+ | none | inherit

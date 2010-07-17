@@ -48,11 +48,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.MaxHeight = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;

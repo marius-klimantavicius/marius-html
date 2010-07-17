@@ -48,18 +48,13 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.LineHeight = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             // 	normal | <number>  | <length>  | <percentage>  | inherit
             if (Match(expression, CssKeywords.Normal))
                 return CssKeywords.Normal;
 
-            CssValue result = null;
+            CssValue result=null;
             if (MatchNumber(expression, ref result))
                 return result;
 

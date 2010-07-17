@@ -42,11 +42,6 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Auto; }
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.Clip = value;
-        }
-
         public Clip(CssContext context)
             : base(context)
         {

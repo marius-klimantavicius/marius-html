@@ -33,7 +33,7 @@ using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css
 {
-    public class CssPropertyValueDictionary: IEnumerable<Tuple<string, CssValue>>
+    public class CssPropertyValueDictionary: IEnumerable<Tuple<string, CssValue>>, IWithStyle
     {
         private CssBox _box;
         private Dictionary<string, CssValue> _values;
