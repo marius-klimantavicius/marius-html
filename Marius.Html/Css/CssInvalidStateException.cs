@@ -32,6 +32,9 @@ using System.Text;
 
 namespace Marius.Html.Css
 {
+    // basically this exception means that something unexpected (bug) happened
+    // mistake of a dev
+    // maybe later will go through exceptions to make it more .NETtish
     [Serializable]
     public class CssInvalidStateException: Exception
     {

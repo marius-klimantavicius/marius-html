@@ -119,5 +119,52 @@ namespace Marius.Html.Css.Properties
                 return MatchAny(expression, new[] { CssKeywords.Top, CssKeywords.Center, CssKeywords.Bottom }, ref v); // ignore value - optional
             }
         }
+
+        public override CssValue Compute(Box.CssBox box)
+        {
+            var specified = GetValue(box.Properties);
+
+            if (specified == null)
+                return base.Compute(box);
+
+            if (specified.ValueType == CssValueType.BackgroundPosition)
+            {
+                CssBackgroundPosition value = (CssBackgroundPosition)specified;
+
+                CssValue v, h;
+                CssValue vresult, hresult;
+
+                vresult = v = value.Vertical;
+                hresult = h = value.Horizontal;
+
+                if (v.ValueGroup == CssValueGroup.Identifier)
+                {
+                    if (CssKeywords.Top.Equals(v))
+                        vresult = CssPercentage.Zero;
+                    else if (CssKeywords.Center.Equals(v))
+                        vresult = CssPercentage.Fifty;
+                    else if (CssKeywords.Bottom.Equals(v))
+                        vresult = CssPercentage.Hundred;
+                    else
+                        throw new CssInvalidStateException();
+                }
+
+                if (h.ValueGroup == CssValueGroup.Identifier)
+                {
+                    if (CssKeywords.Left.Equals(h))
+                        hresult = CssPercentage.Zero;
+                    else if (CssKeywords.Center.Equals(h))
+                        hresult = CssPercentage.Fifty;
+                    else if (CssKeywords.Right.Equals(h))
+                        hresult = CssPercentage.Hundred;
+                    else
+                        throw new CssInvalidStateException();
+                }
+
+                return new CssBackgroundPosition(v, h);
+            }
+
+            return base.Compute(box);
+        }
     }
 }

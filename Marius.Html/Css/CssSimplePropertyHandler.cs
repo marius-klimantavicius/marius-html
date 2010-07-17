@@ -74,18 +74,22 @@ namespace Marius.Html.Css
         {
             var value = GetValue(box.Properties);
             if ((value == null && IsInherited) || CssKeywords.Inherit.Equals(value))
-            {
-                if (box.InheritanceParent != null)
-                    return Compute(box.InheritanceParent);
-                if (box.Parent != null)
-                    return Compute(box.Parent);
-                return Initial;
-            }
+                return Inherited(box);
 
             if (value == null)
                 return Initial;
 
             return value;
+        }
+
+        protected virtual CssValue Inherited(CssBox box)
+        {
+            if (box.InheritanceParent != null)
+                return Compute(box.InheritanceParent);
+            if (box.Parent != null)
+                return Compute(box.Parent);
+
+            return Initial;
         }
     }
 }
