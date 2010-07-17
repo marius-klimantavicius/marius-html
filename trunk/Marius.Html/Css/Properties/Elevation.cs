@@ -28,6 +28,7 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using Marius.Html.Css.Values;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Properties
 {
@@ -58,6 +59,69 @@ namespace Marius.Html.Css.Properties
                 return result;
 
             return MatchInherit(expression);
+        }
+
+        public override CssValue Compute(Box.CssBox box)
+        {
+            var specified = GetValue(box.Properties);
+            if (specified == null)
+                return base.Compute(box);
+
+            if (specified.ValueGroup == CssValueGroup.Angle)
+            {
+                CssAngle value = (CssAngle)specified;
+                if (value.Units == CssUnits.Deg && value.Value >= -90 && value.Value <= 90)
+                    return value;
+
+                double angle = Utils.ToDegrees(value);
+                return Normalize(angle);
+            }
+            else if (specified.ValueGroup == CssValueGroup.Identifier)
+            {
+                if (CssKeywords.Below.Equals(specified))
+                    return new CssAngle(-90, CssUnits.Deg);
+                else if (CssKeywords.Level.Equals(specified))
+                    return new CssAngle(0, CssUnits.Deg);
+                else if (CssKeywords.Above.Equals(specified))
+                    return new CssAngle(90, CssUnits.Deg);
+                else if (CssKeywords.Higher.Equals(specified) || CssKeywords.Lower.Equals(specified))
+                {
+                    var inherited = Inherited(box);
+                    if (inherited.ValueGroup != CssValueGroup.Angle)
+                        throw new CssInvalidStateException();
+
+                    double angle = Utils.ToDegrees((CssAngle)inherited);
+                    if (CssKeywords.Higher.Equals(specified))
+                        angle += 10;
+                    else if (CssKeywords.Lower.Equals(specified))
+                        angle -= 10;
+
+                    return Normalize(angle);
+                }
+            }
+
+            return base.Compute(box);
+        }
+
+        private CssValue Normalize(double angle)
+        {
+            if (double.IsInfinity(angle) || double.IsNaN(angle))
+                throw new CssInvalidStateException();
+
+            if (angle < -1000000 || angle > 1000000)
+                throw new CssInvalidStateException();
+
+            while (angle < -90)
+            {
+                angle += 90;
+            }
+
+            while (angle > 90)
+            {
+                angle -= 90;
+            }
+
+            return new CssAngle(angle, CssUnits.Deg);
         }
     }
 }

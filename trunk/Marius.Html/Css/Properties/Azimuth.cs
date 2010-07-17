@@ -31,11 +31,15 @@ using System.Text;
 using System.Linq;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
+using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Properties
 {
     public partial class Azimuth: CssSimplePropertyHandler
     {
+        private static Dictionary<CssIdentifier, double> _angles;
+        private static Dictionary<CssIdentifier, double> _behindAngles;
+
         public override bool IsInherited
         {
             get { return true; }
@@ -46,6 +50,31 @@ namespace Marius.Html.Css.Properties
             get { return CssKeywords.Center; }
         }
 
+        static Azimuth()
+        {
+            _angles = new Dictionary<CssIdentifier, double>();
+            _angles.Add(CssKeywords.LeftSide, 270);
+            _angles.Add(CssKeywords.FarLeft, 300);
+            _angles.Add(CssKeywords.Left, 320);
+            _angles.Add(CssKeywords.CenterLeft, 340);
+            _angles.Add(CssKeywords.Center, 0);
+            _angles.Add(CssKeywords.CenterRight, 20);
+            _angles.Add(CssKeywords.Right, 40);
+            _angles.Add(CssKeywords.FarRight, 60);
+            _angles.Add(CssKeywords.RightSide, 90);
+
+            _behindAngles = new Dictionary<CssIdentifier, double>();
+            _behindAngles.Add(CssKeywords.LeftSide, 270);
+            _behindAngles.Add(CssKeywords.FarLeft, 240);
+            _behindAngles.Add(CssKeywords.Left, 220);
+            _behindAngles.Add(CssKeywords.CenterLeft, 200);
+            _behindAngles.Add(CssKeywords.Center, 180);
+            _behindAngles.Add(CssKeywords.CenterRight, 160);
+            _behindAngles.Add(CssKeywords.Right, 140);
+            _behindAngles.Add(CssKeywords.FarRight, 120);
+            _behindAngles.Add(CssKeywords.RightSide, 90);
+        }
+
         public Azimuth(CssContext context)
             : base(context)
         {
@@ -54,11 +83,11 @@ namespace Marius.Html.Css.Properties
         public override CssValue Parse(CssExpression expression)
         {
             if (Match(expression, CssKeywords.Inherit))
-                    return CssKeywords.Inherit;
+                return CssKeywords.Inherit;
 
             CssValue value = null;
             if (MatchAny(expression, new[] { CssKeywords.Leftwards, CssKeywords.Rightwards }, ref value))
-                    return value;
+                return value;
 
             if (MatchAngle(expression, ref value))
                 return value;
@@ -88,6 +117,73 @@ namespace Marius.Html.Css.Properties
             }
 
             return null;
+        }
+
+        public override CssValue Compute(Box.CssBox box)
+        {
+            var specified = GetValue(box.Properties);
+
+            if (specified == null)
+                return base.Compute(box);
+
+            if (specified.ValueGroup == CssValueGroup.Angle)
+            {
+                CssAngle value = (CssAngle)specified;
+                if (value.Units == CssUnits.Deg && value.Value >= -360 && value.Value <= 360)
+                    return value;
+
+                return Normalize(Utils.ToDegrees(value));
+            }
+
+            if (specified.ValueGroup == CssValueGroup.Identifier)
+            {
+                CssIdentifier value = (CssIdentifier)specified;
+
+                double angle = 0;
+                if (_angles.TryGetValue(value, out angle))
+                    return new CssAngle(angle, CssUnits.Deg);
+
+                if (CssKeywords.Leftwards.Equals(value) || CssKeywords.Rightwards.Equals(value))
+                {
+                    var inherited = Inherited(box);
+                    if (inherited.ValueGroup != CssValueGroup.Angle)
+                        throw new CssInvalidStateException();
+
+                    angle = Utils.ToDegrees((CssAngle)inherited);
+
+                    if (CssKeywords.Leftwards.Equals(value))
+                        angle -= 20;
+                    else if (CssKeywords.Rightwards.Equals(value))
+                        angle += 20;
+
+                    return Normalize(angle);
+                }
+            }
+
+            // fall back to inherit or just return specified value
+            // haven't yet decided what to do in case of invalid/unexpected values
+            return base.Compute(box);
+        }
+
+        private CssValue Normalize(double angle)
+        {
+            if (double.IsInfinity(angle) || double.IsNaN(angle))
+                throw new CssInvalidStateException();
+
+            if (angle < -1000000 || angle > 1000000)
+                throw new CssInvalidStateException();
+
+            while (angle < -360)
+            {
+                angle += 360;
+            }
+
+            while (angle > 360)
+            {
+                angle -= 360;
+            }
+
+            return new CssAngle(angle, CssUnits.Deg);
         }
     }
 }
