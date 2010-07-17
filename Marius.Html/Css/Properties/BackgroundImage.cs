@@ -50,11 +50,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BackgroundImage = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
@@ -66,11 +61,6 @@ namespace Marius.Html.Css.Properties
                 return CssKeywords.None;
 
             return MatchInherit(expression);
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            return AsSpecified(box, box.Properties.BackgroundImage); // TODO: according to spec this should be absolute url
         }
     }
 }

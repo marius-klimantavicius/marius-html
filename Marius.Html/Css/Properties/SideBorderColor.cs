@@ -69,11 +69,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderTopColor = value;
-        }
     }
 
     public partial class BorderRightColor: SideBorderColor
@@ -81,11 +76,6 @@ namespace Marius.Html.Css.Properties
         public BorderRightColor(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderRightColor = value;
         }
     }
 
@@ -95,11 +85,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderBottomColor = value;
-        }
     }
 
     public partial class BorderLeftColor: SideBorderColor
@@ -107,11 +92,6 @@ namespace Marius.Html.Css.Properties
         public BorderLeftColor(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderLeftColor = value;
         }
     }
 

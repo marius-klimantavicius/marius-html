@@ -99,8 +99,9 @@ namespace Marius.Html.Css.Cascade
         {
             for (int i = 0; i < list.Count; i++)
             {
-                list[i].Value.Reset();
-                _context.Properties[list[i].Property].Apply(box, list[i].Value);
+                var decl = list[i];
+                decl.Value.Reset();
+                _context.Properties[decl.Property].Apply(box, decl.Value);
             }
         }
 

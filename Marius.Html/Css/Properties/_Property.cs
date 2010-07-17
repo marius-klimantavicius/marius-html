@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Properties
 {
@@ -37,6 +38,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Azimuth; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Azimuth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Azimuth;
         }
     }
 
@@ -54,6 +65,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BackgroundAttachment; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BackgroundAttachment = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BackgroundAttachment;
+        }
     }
 
     public partial class BackgroundColor
@@ -61,6 +82,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BackgroundColor; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BackgroundColor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BackgroundColor;
         }
     }
 
@@ -70,6 +101,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BackgroundImage; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BackgroundImage = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BackgroundImage;
+        }
     }
 
     public partial class BackgroundPosition
@@ -78,6 +119,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BackgroundPosition; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BackgroundPosition = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BackgroundPosition;
+        }
     }
 
     public partial class BackgroundRepeat
@@ -85,6 +136,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BackgroundRepeat; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BackgroundRepeat = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BackgroundRepeat;
         }
     }
 
@@ -102,6 +163,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderCollapse; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderCollapse = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderCollapse;
+        }
     }
 
     public partial class BorderColor
@@ -118,6 +189,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderTopColor; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderTopColor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderTopColor;
+        }
     }
 
     public partial class BorderRightColor
@@ -125,6 +206,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BorderRightColor; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderRightColor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderRightColor;
         }
     }
 
@@ -134,6 +225,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderBottomColor; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderBottomColor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderBottomColor;
+        }
     }
 
     public partial class BorderLeftColor
@@ -142,6 +243,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderLeftColor; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderLeftColor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderLeftColor;
+        }
     }
 
     public partial class BorderSpacing
@@ -149,6 +260,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BorderSpacing; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderSpacing = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderSpacing;
         }
     }
 
@@ -166,6 +287,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderTopStyle; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderTopStyle = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderTopStyle;
+        }
     }
 
     public partial class BorderRightStyle
@@ -173,6 +304,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BorderRightStyle; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderRightStyle = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderRightStyle;
         }
     }
 
@@ -182,6 +323,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderBottomStyle; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderBottomStyle = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderBottomStyle;
+        }
     }
 
     public partial class BorderLeftStyle
@@ -189,6 +340,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BorderLeftStyle; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderLeftStyle = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderLeftStyle;
         }
     }
 
@@ -206,6 +367,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderTopWidth; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderTopWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderTopWidth;
+        }
     }
 
     public partial class BorderRightWidth
@@ -213,6 +384,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BorderRightWidth; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderRightWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderRightWidth;
         }
     }
 
@@ -222,6 +403,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.BorderBottomWidth; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderBottomWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderBottomWidth;
+        }
     }
 
     public partial class BorderLeftWidth
@@ -229,6 +420,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.BorderLeftWidth; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.BorderLeftWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.BorderLeftWidth;
         }
     }
 
@@ -238,6 +439,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Bottom; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Bottom = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Bottom;
+        }
     }
 
     public partial class CaptionSide
@@ -245,6 +456,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.CaptionSide; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.CaptionSide = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.CaptionSide;
         }
     }
 
@@ -254,6 +475,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Clear; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Clear = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Clear;
+        }
     }
 
     public partial class Clip
@@ -261,6 +492,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Clip; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Clip = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Clip;
         }
     }
 
@@ -270,6 +511,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Color; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Color = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Color;
+        }
     }
 
     public partial class Content
@@ -277,6 +528,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Content; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Content = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Content;
         }
     }
 
@@ -286,6 +547,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.CounterReset; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.CounterReset = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.CounterReset;
+        }
     }
 
     public partial class CounterIncrement
@@ -293,6 +564,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.CounterIncrement; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.CounterIncrement = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.CounterIncrement;
         }
     }
 
@@ -310,6 +591,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.CueAfter; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.CueAfter = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.CueAfter;
+        }
     }
 
     public partial class CueBefore
@@ -317,6 +608,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.CueBefore; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.CueBefore = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.CueBefore;
         }
     }
 
@@ -326,6 +627,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Cursor; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Cursor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Cursor;
+        }
     }
 
     public partial class Direction
@@ -333,6 +644,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Direction; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Direction = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Direction;
         }
     }
 
@@ -342,6 +663,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Display; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Display = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Display;
+        }
     }
 
     public partial class Elevation
@@ -349,6 +680,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Elevation; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Elevation = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Elevation;
         }
     }
 
@@ -358,6 +699,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.EmptyCells; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.EmptyCells = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.EmptyCells;
+        }
     }
 
     public partial class Float
@@ -365,6 +716,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Float; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Float = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Float;
         }
     }
 
@@ -382,6 +743,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.FontFamily; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.FontFamily = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.FontFamily;
+        }
     }
 
     public partial class FontSize
@@ -389,6 +760,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.FontSize; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.FontSize = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.FontSize;
         }
     }
 
@@ -398,6 +779,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.FontStyle; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.FontStyle = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.FontStyle;
+        }
     }
 
     public partial class FontVariant
@@ -405,6 +796,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.FontVariant; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.FontVariant = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.FontVariant;
         }
     }
 
@@ -414,6 +815,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.FontWeight; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.FontWeight = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.FontWeight;
+        }
     }
 
     public partial class Height
@@ -421,6 +832,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Height; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Height = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Height;
         }
     }
 
@@ -430,6 +851,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Left; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Left = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Left;
+        }
     }
 
     public partial class LetterSpacing
@@ -438,6 +869,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.LetterSpacing; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.LetterSpacing = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.LetterSpacing;
+        }
     }
 
     public partial class LineHeight
@@ -445,6 +886,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.LineHeight; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.LineHeight = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.LineHeight;
         }
     }
 
@@ -462,6 +913,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.ListStyleImage; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.ListStyleImage = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.ListStyleImage;
+        }
     }
 
     public partial class ListStylePosition
@@ -470,6 +931,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.ListStylePosition; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.ListStylePosition = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.ListStylePosition;
+        }
     }
 
     public partial class ListStyleType
@@ -477,6 +948,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.ListStyleType; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.ListStyleType = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.ListStyleType;
         }
     }
 
@@ -494,6 +975,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.MarginTop; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MarginTop = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MarginTop;
+        }
     }
 
     public partial class MarginRight
@@ -501,6 +992,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.MarginRight; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MarginRight = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MarginRight;
         }
     }
 
@@ -510,6 +1011,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.MarginBottom; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MarginBottom = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MarginBottom;
+        }
     }
 
     public partial class MarginLeft
@@ -517,6 +1028,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.MarginLeft; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MarginLeft = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MarginLeft;
         }
     }
 
@@ -526,6 +1047,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.MaxHeight; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MaxHeight = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MaxHeight;
+        }
     }
 
     public partial class MaxWidth
@@ -533,6 +1064,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.MaxWidth; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MaxWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MaxWidth;
         }
     }
 
@@ -542,6 +1083,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.MinHeight; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MinHeight = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MinHeight;
+        }
     }
 
     public partial class MinWidth
@@ -550,6 +1101,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.MinWidth; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.MinWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.MinWidth;
+        }
     }
 
     public partial class Orphans
@@ -557,6 +1118,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Orphans; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Orphans = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Orphans;
         }
     }
 
@@ -574,6 +1145,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.OutlineColor; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.OutlineColor = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.OutlineColor;
+        }
     }
 
     public partial class OutlineStyle
@@ -581,6 +1162,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.OutlineStyle; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.OutlineStyle = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.OutlineStyle;
         }
     }
 
@@ -590,6 +1181,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.OutlineWidth; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.OutlineWidth = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.OutlineWidth;
+        }
     }
 
     public partial class Overflow
@@ -597,6 +1198,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Overflow; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Overflow = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Overflow;
         }
     }
 
@@ -614,6 +1225,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.PaddingTop; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PaddingTop = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PaddingTop;
+        }
     }
 
     public partial class PaddingRight
@@ -621,6 +1242,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.PaddingRight; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PaddingRight = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PaddingRight;
         }
     }
 
@@ -630,6 +1261,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.PaddingBottom; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PaddingBottom = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PaddingBottom;
+        }
     }
 
     public partial class PaddingLeft
@@ -637,6 +1278,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.PaddingLeft; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PaddingLeft = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PaddingLeft;
         }
     }
 
@@ -646,6 +1297,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.PageBreakAfter; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PageBreakAfter = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PageBreakAfter;
+        }
     }
 
     public partial class PageBreakBefore
@@ -654,6 +1315,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.PageBreakBefore; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PageBreakBefore = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PageBreakBefore;
+        }
     }
 
     public partial class PageBreakInside
@@ -661,6 +1332,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.PageBreakInside; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PageBreakInside = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PageBreakInside;
         }
     }
 
@@ -678,6 +1359,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.PauseAfter; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PauseAfter = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PauseAfter;
+        }
     }
 
     public partial class PauseBefore
@@ -685,6 +1376,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.PauseBefore; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PauseBefore = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PauseBefore;
         }
     }
 
@@ -694,6 +1395,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Pitch; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Pitch = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Pitch;
+        }
     }
 
     public partial class PitchRange
@@ -701,6 +1412,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.PitchRange; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PitchRange = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PitchRange;
         }
     }
 
@@ -710,6 +1431,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.PlayDuring; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.PlayDuring = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.PlayDuring;
+        }
     }
 
     public partial class Position
@@ -717,6 +1448,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Position; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Position = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Position;
         }
     }
 
@@ -726,6 +1467,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Quotes; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Quotes = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Quotes;
+        }
     }
 
     public partial class Richness
@@ -733,6 +1484,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Richness; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Richness = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Richness;
         }
     }
 
@@ -742,6 +1503,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Right; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Right = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Right;
+        }
     }
 
     public partial class Speak
@@ -749,6 +1520,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Speak; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Speak = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Speak;
         }
     }
 
@@ -758,6 +1539,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.SpeakHeader; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.SpeakHeader = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.SpeakHeader;
+        }
     }
 
     public partial class SpeakNumeral
@@ -765,6 +1556,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.SpeakNumeral; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.SpeakNumeral = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.SpeakNumeral;
         }
     }
 
@@ -774,6 +1575,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.SpeakPunctuation; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.SpeakPunctuation = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.SpeakPunctuation;
+        }
     }
 
     public partial class SpeechRate
@@ -781,6 +1592,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.SpeechRate; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.SpeechRate = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.SpeechRate;
         }
     }
 
@@ -790,6 +1611,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Stress; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Stress = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Stress;
+        }
     }
 
     public partial class TableLayout
@@ -797,6 +1628,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.TableLayout; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.TableLayout = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.TableLayout;
         }
     }
 
@@ -806,6 +1647,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.TextAlign; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.TextAlign = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.TextAlign;
+        }
     }
 
     public partial class TextDecoration
@@ -813,6 +1664,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.TextDecoration; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.TextDecoration = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.TextDecoration;
         }
     }
 
@@ -822,6 +1683,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.TextIndent; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.TextIndent = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.TextIndent;
+        }
     }
 
     public partial class TextTransform
@@ -829,6 +1700,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.TextTransform; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.TextTransform = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.TextTransform;
         }
     }
 
@@ -838,6 +1719,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Top; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Top = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Top;
+        }
     }
 
     public partial class UnicodeBidi
@@ -845,6 +1736,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.UnicodeBidi; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.UnicodeBidi = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.UnicodeBidi;
         }
     }
 
@@ -854,6 +1755,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.VerticalAlign; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.VerticalAlign = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.VerticalAlign;
+        }
     }
 
     public partial class Visibility
@@ -861,6 +1772,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Visibility; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Visibility = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Visibility;
         }
     }
 
@@ -870,6 +1791,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.VoiceFamily; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.VoiceFamily = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.VoiceFamily;
+        }
     }
 
     public partial class Volume
@@ -877,6 +1808,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Volume; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Volume = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Volume;
         }
     }
 
@@ -886,6 +1827,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.WhiteSpace; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.WhiteSpace = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.WhiteSpace;
+        }
     }
 
     public partial class Widows
@@ -893,6 +1844,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.Widows; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Widows = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Widows;
         }
     }
 
@@ -902,6 +1863,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.Width; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.Width = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.Width;
+        }
     }
 
     public partial class WordSpacing
@@ -910,6 +1881,16 @@ namespace Marius.Html.Css.Properties
         {
             get { return CssProperty.WordSpacing; }
         }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.WordSpacing = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.WordSpacing;
+        }
     }
 
     public partial class ZIndex
@@ -917,6 +1898,16 @@ namespace Marius.Html.Css.Properties
         public sealed override string Property
         {
             get { return CssProperty.ZIndex; }
+        }
+
+        public sealed override void SetValue(IWithStyle box, CssValue value)
+        {
+            box.ZIndex = value;
+        }
+
+        public sealed override CssValue GetValue(IWithStyle box)
+        {
+            return box.ZIndex;
         }
     }
 

@@ -74,11 +74,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderTopWidth = value;
-        }
     }
 
     public partial class BorderRightWidth: SideBorderWidth
@@ -86,11 +81,6 @@ namespace Marius.Html.Css.Properties
         public BorderRightWidth(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderRightWidth = value;
         }
     }
 
@@ -100,11 +90,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderBottomWidth = value;
-        }
     }
 
     public partial class BorderLeftWidth: SideBorderWidth
@@ -112,11 +97,6 @@ namespace Marius.Html.Css.Properties
         public BorderLeftWidth(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BorderLeftWidth = value;
         }
     }
 

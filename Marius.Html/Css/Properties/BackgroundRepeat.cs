@@ -50,11 +50,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BackgroundRepeat = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             CssValue result = null;
@@ -62,11 +57,6 @@ namespace Marius.Html.Css.Properties
                 return result;
 
             return MatchInherit(expression);
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            return AsSpecified(box, box.Properties.BackgroundRepeat);
         }
     }
 }

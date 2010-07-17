@@ -47,11 +47,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.CueAfter = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             if (Match(expression, CssKeywords.None))

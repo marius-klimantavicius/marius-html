@@ -50,11 +50,6 @@ namespace Marius.Html.Css.Properties
         {
         }
 
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BackgroundPosition = value;
-        }
-
         public override CssValue Parse(CssExpression expression)
         {
             /* 	
@@ -123,44 +118,6 @@ namespace Marius.Html.Css.Properties
             {
                 return MatchAny(expression, new[] { CssKeywords.Top, CssKeywords.Center, CssKeywords.Bottom }, ref v); // ignore value - optional
             }
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            var specified = box.Properties.BackgroundPosition;
-
-            if (specified is CssBackgroundPosition)
-            {
-                CssBackgroundPosition value = (CssBackgroundPosition)specified;
-
-                var horizontal = value.Horizontal;
-                var vertical = value.Vertical;
-
-                if (vertical.ValueGroup != CssValueGroup.Length && vertical.ValueGroup != CssValueGroup.Percentage)
-                {
-                    if (CssKeywords.Top.Equals(vertical))
-                        vertical = CssPercentage.Zero;
-                    else if (CssKeywords.Bottom.Equals(vertical))
-                        vertical = CssPercentage.Hundred;
-                    else if (CssKeywords.Center.Equals(vertical))
-                        vertical = CssPercentage.Fifty;
-                }
-
-                if (horizontal.ValueGroup != CssValueGroup.Length && horizontal.ValueGroup != CssValueGroup.Percentage)
-                {
-                    if (CssKeywords.Left.Equals(horizontal))
-                        horizontal = CssPercentage.Zero;
-                    else if (CssKeywords.Right.Equals(horizontal))
-                        horizontal = CssPercentage.Hundred;
-                    else if (CssKeywords.Center.Equals(horizontal))
-                        horizontal = CssPercentage.Fifty;
-                }
-
-                // TODO: validate that percentage or length is here
-                return new CssBackgroundPosition(vertical, horizontal);
-            }
-
-            return Inherit(box, specified);
         }
     }
 }

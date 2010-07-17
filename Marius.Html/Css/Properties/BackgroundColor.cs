@@ -49,11 +49,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-        
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.BackgroundColor = value;
-        }
 
         public override CssValue Parse(CssExpression expression)
         {
@@ -65,11 +60,6 @@ namespace Marius.Html.Css.Properties
                 return result;
 
             return MatchInherit(expression);
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            return AsSpecified(box, box.Properties.BackgroundColor);
         }
     }
 }

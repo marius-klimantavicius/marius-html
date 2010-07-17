@@ -70,11 +70,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.MarginTop = value;
-        }
     }
 
     public partial class MarginRight: SideMargin
@@ -82,11 +77,6 @@ namespace Marius.Html.Css.Properties
         public MarginRight(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.MarginRight = value;
         }
     }
 
@@ -96,11 +86,6 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.MarginBottom = value;
-        }
     }
 
     public partial class MarginLeft: SideMargin
@@ -108,11 +93,6 @@ namespace Marius.Html.Css.Properties
         public MarginLeft(CssContext context)
             : base(context)
         {
-        }
-
-        public override void Apply(IWithStyle box, CssValue value)
-        {
-            box.MarginLeft = value;
         }
     }
 }
