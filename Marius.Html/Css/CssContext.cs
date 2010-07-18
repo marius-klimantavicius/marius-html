@@ -39,6 +39,7 @@ using Marius.Html.Dom;
 using Marius.Html.Internal;
 using Marius.Html.Css.Box;
 using Marius.Html.Css.Layout;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css
 {

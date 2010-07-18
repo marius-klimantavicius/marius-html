@@ -139,7 +139,7 @@ namespace Marius.Html.Css.Layout
             {
                 CssBox next = current.NextSibling;
 
-                var display = current.Properties.Computed(CssProperty.Display);
+                var display = current.Computed.Display;
                 if (display.Equals(CssKeywords.RunIn))
                 {
                     bool rfixed = false;
@@ -154,8 +154,8 @@ namespace Marius.Html.Css.Layout
                     //2. If a sibling block box (that does not float and is not absolutely positioned) follows the run-in box, the run-in box becomes the first inline box of the block box. A run-in cannot run in to a block that already starts with a run-in or that itself is a run-in.
                     if (!rfixed && next != null && IsBlockBox(next))
                     {
-                        var nfloat = next.Properties.Computed(CssProperty.Float);
-                        var npos = next.Properties.Computed(CssProperty.Position);
+                        var nfloat = next.Computed.Float;
+                        var npos = next.Computed.Position;
 
                         if (nfloat.Equals(CssKeywords.None)
                             && !(npos.Equals(CssKeywords.Absolute) || npos.Equals(CssKeywords.Fixed)))
@@ -349,7 +349,7 @@ namespace Marius.Html.Css.Layout
         {
             // TODO: performance, this method might be called frequently and might need optimizations
             // for now leaving as is as it is simpler and no one knows if this code survives for long
-            var display = box.Properties.Computed(CssProperty.Display);
+            var display = box.Computed.Display;
             return display.Equals(CssKeywords.Block)
                 || display.Equals(CssKeywords.ListItem)
                 || display.Equals(CssKeywords.Table);

@@ -49,15 +49,19 @@ namespace Marius.Html.Css.Box
         private CssPropertyValueDictionary _firstLineProperties;
         private CssPropertyValueDictionary _firstLetterProperties;
 
+        private CssComputedValueDictionary _computed;
+
         public CssBox(CssContext context)
         {
             _context = context;
 
             _inheritedChildren = new LinkedList<CssBox>();
 
-            _properties = new CssPropertyValueDictionary(this);
-            _firstLineProperties = new CssPropertyValueDictionary(this);
-            _firstLetterProperties = new CssPropertyValueDictionary(this);
+            _properties = new CssPropertyValueDictionary();
+            _firstLineProperties = new CssPropertyValueDictionary();
+            _firstLetterProperties = new CssPropertyValueDictionary();
+
+            _computed = new CssComputedValueDictionary(this);
         }
 
         public CssContext Context { get { return _context; } }
@@ -86,6 +90,8 @@ namespace Marius.Html.Css.Box
         public CssBox PreviousSibling { get; private set; }
 
         public CssPropertyValueDictionary Properties { get { return _properties; } }
+        public CssComputedValueDictionary Computed { get { return _computed; } }
+
         public CssPropertyValueDictionary FirstLineProperties { get { return _firstLineProperties; } }
         public CssPropertyValueDictionary FirstLetterProperties { get { return _firstLetterProperties; } }
 
