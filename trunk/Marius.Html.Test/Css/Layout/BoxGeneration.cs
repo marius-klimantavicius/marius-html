@@ -136,7 +136,7 @@ body, span { display: inline }
 
         private static bool IsBlockBox(CssBox box)
         {
-            var display = box.Properties.Computed(CssProperty.Display);
+            var display = box.Computed.Display;
             return display.Equals(CssKeywords.Block)
                 || display.Equals(CssKeywords.ListItem)
                 || display.Equals(CssKeywords.Table);

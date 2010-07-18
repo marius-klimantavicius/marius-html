@@ -61,6 +61,7 @@
     <Compile Include="Css\Cascade\StyleCacheManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
+    <Compile Include="Css\CssComputedValueDictionary.cs" />
     <Compile Include="Css\CssContext.Properties.cs" />
     <Compile Include="Css\CssProperty.cs" />
     <Compile Include="Css\CssPropertyDictionary.cs" />
@@ -194,7 +195,6 @@
     <Compile Include="Css\Selectors\CssSimpleSelector.cs" />
     <Compile Include="Css\Selectors\CssSpecifity.cs" />
     <Compile Include="Css\Selectors\CssUniversalSelector.cs" />
-    <Compile Include="Css\StyleHolder.cs" />
     <Compile Include="Css\Values\CssAngle.cs" />
     <Compile Include="Css\Dom\CssCharset.cs" />
     <Compile Include="Css\Values\CssAzimuth.cs" />
