@@ -43,11 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Css\Box\CssBox.Visual.cs" />
+    <Compile Include="Css\Box\CssBox.Tree.cs" />
     <Compile Include="Css\Box\CssAnonymousBlockBox.cs" />
     <Compile Include="Css\Box\CssAnonymousInlineBox.cs" />
     <Compile Include="Css\Box\CssAnonymousSpaceBox.cs" />
     <Compile Include="Css\Box\CssBox.cs" />
     <Compile Include="Css\Box\CssGeneratedBox.cs" />
+    <Compile Include="Css\Box\CssImageBox.cs" />
     <Compile Include="Css\Box\CssInitialBox.cs" />
     <Compile Include="Css\Box\CssSplitBox.cs" />
     <Compile Include="Css\Box\CssSplitPart.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\IWithStyle.cs" />
+    <Compile Include="Css\Layout\CssBoxBorder.cs" />
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
     <Compile Include="Css\Parser\FunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
@@ -252,6 +256,7 @@
     <Compile Include="Css\Parser\CssDimensionToken.cs" />
     <Compile Include="Dom\IAttributeCollection.cs" />
     <Compile Include="Dom\IElementNode.cs" />
+    <Compile Include="Dom\IImageNode.cs" />
     <Compile Include="Dom\INode.cs" />
     <Compile Include="Dom\ITextNode.cs" />
     <Compile Include="Dom\NodeType.cs" />
