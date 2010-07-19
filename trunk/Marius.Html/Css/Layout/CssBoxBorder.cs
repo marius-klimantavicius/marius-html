@@ -30,12 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Marius.Html.Dom
+namespace Marius.Html.Css.Layout
 {
-    public enum NodeType
+    public class CssBoxBorder
     {
-        Element,
-        Text,
-        Image,
+        public double Width { get; private set; }
     }
 }

@@ -29,13 +29,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing.Imaging;
 
 namespace Marius.Html.Dom
 {
-    public enum NodeType
+    public interface IImageNode: INode
     {
-        Element,
-        Text,
-        Image,
+        ImageFormat ImageFormat { get; }
+        byte[] Image { get; }
     }
 }

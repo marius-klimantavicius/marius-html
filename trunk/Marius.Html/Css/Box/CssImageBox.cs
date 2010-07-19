@@ -25,42 +25,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Marius.Html.Css.Box
 {
-    public partial class CssBox: ITreeNode<CssBox>
+    public class CssImageBox: CssBox
     {
-        private CssContext _context;
-
-        private CssPropertyValueDictionary _properties;
-        private CssPropertyValueDictionary _firstLineProperties;
-        private CssPropertyValueDictionary _firstLetterProperties;
-
-        private CssComputedValueDictionary _computed;
-
-        public CssBox(CssContext context)
+        public CssImageBox(CssContext context)
+            : base(context)
         {
-            _context = context;
-
-            _inheritedChildren = new LinkedList<CssBox>();
-
-            _properties = new CssPropertyValueDictionary();
-            _firstLineProperties = new CssPropertyValueDictionary();
-            _firstLetterProperties = new CssPropertyValueDictionary();
-
-            _computed = new CssComputedValueDictionary(this);
         }
 
-        public CssContext Context { get { return _context; } }
-
-        public CssPropertyValueDictionary Properties { get { return _properties; } }
-        public CssComputedValueDictionary Computed { get { return _computed; } }
-
-        public CssPropertyValueDictionary FirstLineProperties { get { return _firstLineProperties; } }
-        public CssPropertyValueDictionary FirstLetterProperties { get { return _firstLetterProperties; } }
-
-        public bool IsRunIn { get; set; }
-        public virtual bool IsReplaced { get { return false; } }
+        public override bool IsReplaced { get { return true; } }
     }
 }
