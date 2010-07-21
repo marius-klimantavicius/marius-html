@@ -61,5 +61,15 @@ namespace Marius.Html.Css.Properties
 
             return MatchInherit(expression);
         }
+
+        public override CssValue Compute(Box.CssBox box)
+        {
+            var position = box.Computed.Position;
+
+            if (CssKeywords.Absolute.Equals(position) || CssKeywords.Fixed.Equals(position))
+                return CssKeywords.None;
+
+            return base.Compute(box);
+        }
     }
 }

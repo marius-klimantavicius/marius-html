@@ -59,5 +59,33 @@ namespace Marius.Html.Css.Properties
 
             return MatchInherit(expression);
         }
+
+        public override CssValue Compute(Box.CssBox box)
+        {
+            var position = box.Computed.Position;
+            var cssFloat = box.Computed.Float;
+
+            var display = base.Compute(box);    // specified value
+            if (CssKeywords.Absolute.Equals(position) || CssKeywords.Fixed.Equals(position) || !cssFloat.Equals(CssKeywords.None) || box.Parent == null)
+            {
+                if (CssKeywords.InlineTable.Equals(display))
+                    return CssKeywords.Table;
+                // inline, run-in, table-row-group, table-column, table-column-group, table-header-group, table-footer-group, table-row, table-cell, table-caption, inline-block
+                if (CssKeywords.Inline.Equals(display)
+                    || CssKeywords.RunIn.Equals(display)
+                    || CssKeywords.TableRowGroup.Equals(display)
+                    || CssKeywords.TableColumn.Equals(display)
+                    || CssKeywords.TableColumnGroup.Equals(display)
+                    || CssKeywords.TableHeaderGroup.Equals(display)
+                    || CssKeywords.TableFooterGroup.Equals(display)
+                    || CssKeywords.TableRow.Equals(display)
+                    || CssKeywords.TableCell.Equals(display)
+                    || CssKeywords.TableCaption.Equals(display)
+                    || CssKeywords.InlineBlock.Equals(display))
+                    return CssKeywords.Block;
+            }
+
+            return base.Compute(box);
+        }
     }
 }
