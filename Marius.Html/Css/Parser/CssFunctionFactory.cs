@@ -34,7 +34,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Parser
 {
-    public class FunctionFactory
+    public class CssFunctionFactory
     {
         public virtual CssValue Function(string name, CssExpression args)
         {

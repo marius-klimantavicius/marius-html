@@ -33,7 +33,7 @@ using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Parser
 {
-    public static class ParserHelper
+    public static class CssParserHelper
     {
         public static bool SkipBatch(this TokenBuffer scanner, Func<bool> until, bool strict, int nestingBrace = 0, int nestingBracket = 0, int nestingParen = 0)
         {

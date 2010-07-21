@@ -33,9 +33,9 @@ using Marius.Html.Css.Dom;
 
 namespace Marius.Html.Css.Cascade
 {
-    public class DefaultStyleComparer: IComparer<CssPreparedStyle>
+    public class CssStyleComparer: IComparer<CssPreparedStyle>
     {
-        public static readonly DefaultStyleComparer Instance = new DefaultStyleComparer();
+        public static readonly CssStyleComparer Instance = new CssStyleComparer();
 
         public int Compare(CssPreparedStyle x, CssPreparedStyle y)
         {

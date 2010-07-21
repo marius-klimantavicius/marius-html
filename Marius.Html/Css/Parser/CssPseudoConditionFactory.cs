@@ -35,7 +35,7 @@ using Marius.Html.Css.Selectors;
 
 namespace Marius.Html.Css.Parser
 {
-    public class PseudoConditionFactory
+    public class CssPseudoConditionFactory
     {
         public static readonly CssPseudoIdentifier FirstChild = new CssPseudoIdentifier("first-child");
         public static readonly CssPseudoIdentifier Link = new CssPseudoIdentifier("link");

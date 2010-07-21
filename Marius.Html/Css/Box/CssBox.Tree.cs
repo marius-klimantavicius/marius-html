@@ -29,7 +29,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Marius.Html.Css.Box.Debug;
 using Marius.Html.Internal;
 
 namespace Marius.Html.Css.Box
@@ -301,14 +300,6 @@ namespace Marius.Html.Css.Box
             }
 
             parent = left;
-        }
-
-        [Conditional("DEBUG")]
-        public virtual void Debug()
-        {
-            BoxDebugDisplay debug = new BoxDebugDisplay();
-            debug.Box = this;
-            debug.ShowDialog();
         }
 
         public void RecurseTree(Action<CssBox> onItem)

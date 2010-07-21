@@ -33,7 +33,7 @@ using Marius.Html.Css.Dom;
 
 namespace Marius.Html.Css.Cascade
 {
-    public sealed class StyleCacheManager
+    public sealed class CssStyleManager
     {
         private int _index;
         private CssContext _context;
@@ -41,7 +41,7 @@ namespace Marius.Html.Css.Cascade
         private int _importDepth;
         private List<CssPreparedStyle> _styles;
 
-        public StyleCacheManager(CssContext context, CssStylesheet[] stylesheets)
+        public CssStyleManager(CssContext context, CssStylesheet[] stylesheets)
         {
             _context = context;
             _stylesheets = stylesheets;
