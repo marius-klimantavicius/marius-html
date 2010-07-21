@@ -34,6 +34,7 @@ using System.Net;
 using System.IO;
 using Marius.Html.Css.Selectors;
 using Marius.Html.Dom;
+using Marius.Html.Css.Parser;
 
 namespace Marius.Html.Css.Cascade
 {
@@ -62,10 +63,9 @@ namespace Marius.Html.Css.Cascade
 
         public virtual void Apply(INode box)
         {
+            // TODO: add inline style and maybe node attribute support
             for (int i = 0; i < _styles.Length; i++)
-            {
                 Apply(_styles[i], box);
-            }
         }
 
         protected virtual void Apply(CssPreparedStyle style, INode box)
@@ -197,7 +197,7 @@ namespace Marius.Html.Css.Cascade
 
         protected virtual CssStyleTarget MatchesPseudoClass(CssPseudoClassCondition condition, INode box)
         {
-            // currently pseudo elements and classes are not implemented
+            // TODO: currently pseudo elements and classes are not implemented
             return CssStyleTarget.None;
         }
 
