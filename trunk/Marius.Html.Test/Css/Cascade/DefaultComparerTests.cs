@@ -33,7 +33,6 @@ using NUnit.Framework;
 using Marius.Html.Css;
 using Marius.Html.Css.Dom;
 using Marius.Html.Css.Values;
-using Marius.Html.Hap;
 using Marius.Html.Dom;
 using System.Linq.Expressions;
 using Marius.Html.Tests.Support;

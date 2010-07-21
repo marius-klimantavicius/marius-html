@@ -54,14 +54,8 @@
     <Compile Include="Css\Box\CssInitialBox.cs" />
     <Compile Include="Css\Box\CssSplitBox.cs" />
     <Compile Include="Css\Box\CssSplitPart.cs" />
-    <Compile Include="Css\Box\Debug\BoxDebugDisplay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Css\Box\Debug\BoxDebugDisplay.Designer.cs">
-      <DependentUpon>BoxDebugDisplay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Css\Cascade\DefaultStyleComparer.cs" />
-    <Compile Include="Css\Cascade\StyleCacheManager.cs" />
+    <Compile Include="Css\Cascade\CssStyleComparer.cs" />
+    <Compile Include="Css\Cascade\CssStyleManager.cs" />
     <Compile Include="Css\Cascade\CssPreparedStyle.cs" />
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
     <Compile Include="Css\CssComputedValueDictionary.cs" />
@@ -76,7 +70,7 @@
     <Compile Include="Css\IWithStyle.cs" />
     <Compile Include="Css\Layout\CssBoxBorder.cs" />
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
-    <Compile Include="Css\Parser\FunctionFactory.cs" />
+    <Compile Include="Css\Parser\CssFunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />
     <Compile Include="Css\Properties\BackgroundPosition.cs" />
@@ -174,11 +168,11 @@
     <Compile Include="Css\Selectors\CssPseudoClassCondition.cs" />
     <Compile Include="Css\Selectors\CssPseudoFunction.cs" />
     <Compile Include="Css\Selectors\CssPseudoIdentifier.cs" />
-    <Compile Include="Css\Parser\PseudoConditionFactory.cs" />
+    <Compile Include="Css\Parser\CssPseudoConditionFactory.cs" />
     <Compile Include="Css\CssInvalidStateException.cs" />
     <Compile Include="Css\Parser\CssParsingException.cs" />
     <Compile Include="Css\Parser\CssSelectorCombinator.cs" />
-    <Compile Include="Css\Parser\ParserHelper.cs" />
+    <Compile Include="Css\Parser\CssParserHelper.cs" />
     <Compile Include="Css\Parser\TokenBuffer.cs" />
     <Compile Include="Css\Selectors\CssAttributeCondition.cs" />
     <Compile Include="Css\Selectors\CssBeginHyphenAttributeCondition.cs" />
@@ -241,7 +235,6 @@
     <Compile Include="Css\Dom\CssStylesheet.cs" />
     <Compile Include="Css\Values\CssTime.cs" />
     <Compile Include="Css\Values\CssUnits.cs" />
-    <Compile Include="Css\Dom\CssUnknown.cs" />
     <Compile Include="Css\Values\CssUri.cs" />
     <Compile Include="Css\Selectors\CssSelector.cs" />
     <Compile Include="Css\Properties\Azimuth.cs" />
@@ -260,49 +253,12 @@
     <Compile Include="Dom\INode.cs" />
     <Compile Include="Dom\ITextNode.cs" />
     <Compile Include="Dom\NodeType.cs" />
-    <Compile Include="Hap\Crc32.cs" />
-    <Compile Include="Hap\EncodingFoundException.cs" />
-    <Compile Include="Hap\HtmlAttribute.cs" />
-    <Compile Include="Hap\HtmlAttributeCollection.cs" />
-    <Compile Include="Hap\HtmlCmdLine.cs" />
-    <Compile Include="Hap\HtmlCommentNode.cs" />
-    <Compile Include="Hap\HtmlConsoleListener.cs" />
-    <Compile Include="Hap\HtmlDocument.cs" />
-    <Compile Include="Hap\HtmlElementFlag.cs" />
-    <Compile Include="Hap\HtmlEntity.cs" />
-    <Compile Include="Hap\HtmlNameTable.cs" />
-    <Compile Include="Hap\HtmlNode.cs" />
-    <Compile Include="Hap\HtmlNodeCollection.cs" />
-    <Compile Include="Hap\HtmlNodeNavigator.cs" />
-    <Compile Include="Hap\HtmlNodeType.cs" />
-    <Compile Include="Hap\HtmlParseError.cs" />
-    <Compile Include="Hap\HtmlParseErrorCode.cs" />
-    <Compile Include="Hap\HtmlTextNode.cs" />
-    <Compile Include="Hap\HtmlWeb.cs" />
-    <Compile Include="Hap\HtmlWebException.cs" />
-    <Compile Include="Hap\IOLibrary.cs" />
-    <Compile Include="Hap\MixedCodeDocument.cs" />
-    <Compile Include="Hap\MixedCodeDocumentCodeFragment.cs" />
-    <Compile Include="Hap\MixedCodeDocumentFragment.cs" />
-    <Compile Include="Hap\MixedCodeDocumentFragmentList.cs" />
-    <Compile Include="Hap\MixedCodeDocumentFragmentType.cs" />
-    <Compile Include="Hap\MixedCodeDocumentTextFragment.cs" />
-    <Compile Include="Hap\NameValuePair.cs" />
-    <Compile Include="Hap\NameValuePairList.cs" />
     <Compile Include="Internal\Utils.cs" />
     <Compile Include="ITreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Hap\License.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Css\Box\Debug\BoxDebugDisplay.resx">
-      <DependentUpon>BoxDebugDisplay.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -50,18 +50,18 @@ namespace Marius.Html.Css
 
         public CssContext()
         {
-            FunctionFactory = new FunctionFactory();
-            PseudoConditionFactory = new PseudoConditionFactory();
+            FunctionFactory = new CssFunctionFactory();
+            PseudoConditionFactory = new CssPseudoConditionFactory();
 
             Properties = new CssPropertyDictionary();
             InitProperties();
         }
 
         public virtual CssPropertyDictionary Properties { get; private set; }
-        public virtual FunctionFactory FunctionFactory { get; set; }
-        public virtual PseudoConditionFactory PseudoConditionFactory { get; set; }
+        public virtual CssFunctionFactory FunctionFactory { get; set; }
+        public virtual CssPseudoConditionFactory PseudoConditionFactory { get; set; }
         public virtual int MaxImportDepth { get { return 20; } }
-        public virtual IComparer<CssPreparedStyle> StyleComparer { get { return DefaultStyleComparer.Instance; } }
+        public virtual IComparer<CssPreparedStyle> StyleComparer { get { return CssStyleComparer.Instance; } }
 
         public virtual CssStylesheet ParseStylesheet(string source)
         {
@@ -116,7 +116,7 @@ namespace Marius.Html.Css
 
         public virtual CssPreparedStylesheet PrepareStylesheets(params CssStylesheet[] stylesheets)
         {
-            StyleCacheManager manager = new StyleCacheManager(this, stylesheets);
+            CssStyleManager manager = new CssStyleManager(this, stylesheets);
             return manager.Prepare();
         }
 
