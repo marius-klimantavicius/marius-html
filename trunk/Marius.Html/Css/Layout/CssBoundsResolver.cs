@@ -27,51 +27,45 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Marius.Html.Css.Box;
 using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Layout
 {
-    public partial class Height: CssSimplePropertyHandler
+    public class CssBoundsResolver
     {
-        public override bool IsInherited
+        public virtual void ResolveWidth(CssBox box)
         {
-            get { return false; }
+            if (CssUtils.IsInline(box) && !box.IsReplaced)
+                InlineNonReplacedMargins(box); // width does not apply
+
+            if (CssUtils.IsInline(box) && box.IsReplaced)
+                InlineReplacedWidth(box as CssReplacedBox);
         }
 
-        public override CssValue Initial
+        protected virtual void InlineReplacedWidth(CssReplacedBox box)
         {
-            get { return CssKeywords.Auto; }
+            if (box == null)
+                throw new CssInvalidStateException();
+
+            if (CssUtils.IsAuto(box.Computed.MarginLeft))
+                box.MarginLeft = 0;
+
+            if (CssUtils.IsAuto(box.Computed.MarginRight))
+                box.MarginRight = 0;
+
+            throw new NotImplementedException();
         }
 
-        public Height(CssContext context)
-            : base(context)
+        protected virtual void InlineNonReplacedMargins(CssBox box)
         {
-        }
+            if (CssUtils.IsAuto(box.Computed.MarginLeft))
+                box.MarginLeft = 0;
 
-        public override CssValue Parse(CssExpression expression)
-        {
-            CssValue result = null;
-            if (MatchLength(expression, ref result))
-                return result;
-
-            if (MatchPercentage(expression, ref result))
-                return result;
-
-            if (Match(expression, CssKeywords.Auto))
-                return CssKeywords.Auto;
-
-            return MatchInherit(expression);
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            var parent = box.Parent;
-            var value = base.Compute(box);
-
-            if (value.ValueGroup == CssValueGroup.Percentage && !CssUtils.IsAbsolutelyPositioned(box) && (parent == null || CssKeywords.Auto.Equals(parent.Computed.Height)))
-                return CssKeywords.Auto;
-
-            return value;
+            if (CssUtils.IsAuto(box.Computed.MarginRight))
+                box.MarginRight = 0;
         }
     }
 }

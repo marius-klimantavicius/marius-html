@@ -32,13 +32,11 @@ using System.Text;
 
 namespace Marius.Html.Css.Box
 {
-    public class CssImageBox: CssBox
+    public class CssImageBox: CssReplacedBox
     {
         public CssImageBox(CssContext context)
             : base(context)
         {
         }
-
-        public override bool IsReplaced { get { return true; } }
     }
 }

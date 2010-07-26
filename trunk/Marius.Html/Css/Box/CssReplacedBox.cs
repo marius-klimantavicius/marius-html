@@ -27,51 +27,24 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Box
 {
-    public partial class Height: CssSimplePropertyHandler
+    public abstract class CssReplacedBox: CssBox
     {
-        public override bool IsInherited
-        {
-            get { return false; }
-        }
-
-        public override CssValue Initial
-        {
-            get { return CssKeywords.Auto; }
-        }
-
-        public Height(CssContext context)
+        public CssReplacedBox(CssContext context)
             : base(context)
         {
         }
 
-        public override CssValue Parse(CssExpression expression)
-        {
-            CssValue result = null;
-            if (MatchLength(expression, ref result))
-                return result;
+        public sealed override bool IsReplaced { get { return true; } }
 
-            if (MatchPercentage(expression, ref result))
-                return result;
-
-            if (Match(expression, CssKeywords.Auto))
-                return CssKeywords.Auto;
-
-            return MatchInherit(expression);
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            var parent = box.Parent;
-            var value = base.Compute(box);
-
-            if (value.ValueGroup == CssValueGroup.Percentage && !CssUtils.IsAbsolutelyPositioned(box) && (parent == null || CssKeywords.Auto.Equals(parent.Computed.Height)))
-                return CssKeywords.Auto;
-
-            return value;
-        }
+        // for now these cannot be set via sheet 
+        public CssValue IntrinsicWidth { get { return Properties[CssProperty.IntrinsicWidth]; } set { Properties[CssProperty.IntrinsicWidth] = value; } }
+        public CssValue IntrinsicHeight { get { return Properties[CssProperty.IntrinsicHeight]; } set { Properties[CssProperty.IntrinsicHeight] = value; } }
+        public CssValue IntrinsicRatio { get { return Properties[CssProperty.IntrinsicRatio]; } set { Properties[CssProperty.IntrinsicRatio] = value; } }
     }
 }

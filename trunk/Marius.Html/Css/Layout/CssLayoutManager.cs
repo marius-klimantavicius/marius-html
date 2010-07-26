@@ -27,51 +27,27 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Marius.Html.Css.Box;
 using Marius.Html.Css.Values;
+using System.Runtime.CompilerServices;
 
-namespace Marius.Html.Css.Properties
+namespace Marius.Html.Css.Layout
 {
-    public partial class Height: CssSimplePropertyHandler
+    public class CssLayoutManager
     {
-        public override bool IsInherited
+        public virtual CssBoundsResolver BoundsResolver { get; private set; }
+
+        public CssLayoutManager()
         {
-            get { return false; }
+            BoundsResolver = new CssBoundsResolver();
         }
 
-        public override CssValue Initial
+        public void Layout(CssBox box)
         {
-            get { return CssKeywords.Auto; }
-        }
-
-        public Height(CssContext context)
-            : base(context)
-        {
-        }
-
-        public override CssValue Parse(CssExpression expression)
-        {
-            CssValue result = null;
-            if (MatchLength(expression, ref result))
-                return result;
-
-            if (MatchPercentage(expression, ref result))
-                return result;
-
-            if (Match(expression, CssKeywords.Auto))
-                return CssKeywords.Auto;
-
-            return MatchInherit(expression);
-        }
-
-        public override CssValue Compute(Box.CssBox box)
-        {
-            var parent = box.Parent;
-            var value = base.Compute(box);
-
-            if (value.ValueGroup == CssValueGroup.Percentage && !CssUtils.IsAbsolutelyPositioned(box) && (parent == null || CssKeywords.Auto.Equals(parent.Computed.Height)))
-                return CssKeywords.Auto;
-
-            return value;
+            // we need to know the width of current box
+            BoundsResolver.ResolveWidth(box);
         }
     }
 }

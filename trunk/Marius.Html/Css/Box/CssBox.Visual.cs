@@ -26,38 +26,51 @@ THE SOFTWARE.
 */
 #endregion
 using Marius.Html.Css.Layout;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Box
 {
     // the actual values given during layout
     public partial class CssBox
     {
-        // position
-        public double Top { get; private set; }
-        public double Right { get; private set; }
-        public double Bottom { get; private set; }
-        public double Left { get; private set; }
+        private CssBox _coordinateParent;
+
+        // position (in parent coordinate system)
+        public virtual CssBox CoordinateParent
+        {
+            get { return _coordinateParent ?? Parent; }
+            set { _coordinateParent = value; }
+        }
+
+        public virtual double X { get; set; }
+        public virtual double Y { get; set; }
+
+        // location
+        public virtual double Top { get; set; }
+        public virtual double Right { get; set; }
+        public virtual double Bottom { get; set; }
+        public virtual double Left { get; set; }
 
         // content
-        public double Width { get; private set; }
-        public double Heigth { get; private set; }
+        public virtual double Width { get; set; }
+        public virtual double Heigth { get; set; }
 
         // padding
-        public double PaddingTop { get; private set; }
-        public double PaddingRight { get; private set; }
-        public double PaddingBottom { get; private set; }
-        public double PaddingLeft { get; private set; }
+        public virtual double PaddingTop { get; set; }
+        public virtual double PaddingRight { get; set; }
+        public virtual double PaddingBottom { get; set; }
+        public virtual double PaddingLeft { get; set; }
 
         // margin
-        public double MarginTop { get; private set; }
-        public double MarginRight { get; private set; }
-        public double MarginBottom { get; private set; }
-        public double MarginLeft { get; private set; }
+        public virtual double MarginTop { get; set; }
+        public virtual double MarginRight { get; set; }
+        public virtual double MarginBottom { get; set; }
+        public virtual double MarginLeft { get; set; }
 
         // border
-        public CssBoxBorder BorderTop { get; private set; }
-        public CssBoxBorder BorderRight { get; private set; }
-        public CssBoxBorder BorderBottom { get; private set; }
-        public CssBoxBorder BorderLeft { get; private set; }
+        public virtual CssBoxBorder BorderTop { get; set; }
+        public virtual CssBoxBorder BorderRight { get; set; }
+        public virtual CssBoxBorder BorderBottom { get; set; }
+        public virtual CssBoxBorder BorderLeft { get; set; }
     }
 }

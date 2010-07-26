@@ -48,6 +48,8 @@ namespace Marius.Html.Css
         public const string All = "all";
         public const string Screen = "screen";
 
+        private CssLayoutContext _layoutContext = null;
+
         public CssContext()
         {
             FunctionFactory = new CssFunctionFactory();
@@ -62,6 +64,8 @@ namespace Marius.Html.Css
         public virtual CssPseudoConditionFactory PseudoConditionFactory { get; set; }
         public virtual int MaxImportDepth { get { return 20; } }
         public virtual IComparer<CssPreparedStyle> StyleComparer { get { return CssStyleComparer.Instance; } }
+
+        public virtual CssLayoutContext LayoutContext { get { return _layoutContext; } }
 
         public virtual CssStylesheet ParseStylesheet(string source)
         {
