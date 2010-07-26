@@ -182,7 +182,7 @@ namespace Marius.Html.Css.Layout
                     }
 
                     //2. If a sibling block box (that does not float and is not absolutely positioned) follows the run-in box, the run-in box becomes the first inline box of the block box. A run-in cannot run in to a block that already starts with a run-in or that itself is a run-in.
-                    if (!rfixed && next != null && IsBlockBox(next))
+                    if (!rfixed && next != null && CssUtils.IsBlock(next))
                     {
                         var nfloat = next.Computed.Float;
                         var npos = next.Computed.Position;
@@ -223,7 +223,7 @@ namespace Marius.Html.Css.Layout
                 current = current.NextSibling;
             }
 
-            if (IsBlockBox(box))
+            if (CssUtils.IsBlock(box))
                 FixBlockBox(box);
         }
 
@@ -239,7 +239,7 @@ namespace Marius.Html.Css.Layout
             {
                 CssBox next = current.NextSibling;
 
-                if (IsBlockBox(current))
+                if (CssUtils.IsBlock(current))
                 {
                     hasBlock = true;
                     if (start != null)
@@ -277,7 +277,7 @@ namespace Marius.Html.Css.Layout
             while (current != null)
             {
                 var next = current.NextSibling;
-                if (!IsBlockBox(current))
+                if (!CssUtils.IsBlock(current))
                     FixInlineBoxes(current);
                 current = next;
             }
@@ -285,7 +285,7 @@ namespace Marius.Html.Css.Layout
             current = box.FirstChild;
             while (current != null)
             {
-                if (!IsBlockBox(current))
+                if (!CssUtils.IsBlock(current))
                     SplitInlineBox(ref current);
 
                 current = current.NextSibling;
@@ -304,7 +304,7 @@ namespace Marius.Html.Css.Layout
             CssBox current = box.FirstChild;
             while (current != null)
             {
-                if (!IsBlockBox(current))
+                if (!CssUtils.IsBlock(current))
                     SplitInlineBox(ref current);
                 current = current.NextSibling;
             }
@@ -313,7 +313,7 @@ namespace Marius.Html.Css.Layout
             current = box.FirstChild;
             while (current != null)
             {
-                if (IsBlockBox(current))
+                if (CssUtils.IsBlock(current))
                 {
                     block = current;
                     current = current.NextSibling;
@@ -352,7 +352,7 @@ namespace Marius.Html.Css.Layout
             CssBox current = box.FirstChild;
             while (current != null)
             {
-                if (IsBlockBox(current))
+                if (CssUtils.IsBlock(current))
                 {
                     _hasBlock.Add(box, true);
                     return true;
@@ -373,16 +373,6 @@ namespace Marius.Html.Css.Layout
             }
 
             return false;
-        }
-
-        private bool IsBlockBox(CssBox box)
-        {
-            // TODO: performance, this method might be called frequently and might need optimizations
-            // for now leaving as is as it is simpler and no one knows if this code survives for long
-            var display = box.Computed.Display;
-            return display.Equals(CssKeywords.Block)
-                || display.Equals(CssKeywords.ListItem)
-                || display.Equals(CssKeywords.Table);
         }
     }
 }

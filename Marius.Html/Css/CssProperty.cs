@@ -145,5 +145,10 @@ namespace Marius.Html.Css
         public const string Width = "width";
         public const string WordSpacing = "word-spacing";
         public const string ZIndex = "z-index";
+
+        // vendor specific properties
+        public const string IntrinsicWidth = "-marius-intrinsic-width";
+        public const string IntrinsicHeight = "-marius-intrinsic-height";
+        public const string IntrinsicRatio = "-marius-intrinsic-ratio";
     }
 }

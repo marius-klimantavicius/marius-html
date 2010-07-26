@@ -29,24 +29,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Values;
 
-namespace Marius.Html.Css.Box
+namespace Marius.Html.Css.Layout
 {
-    public class CssInitialBox: CssBox
+    /// <summary>
+    /// Provides graphics context to do layout in
+    /// </summary>
+    public class CssLayoutContext
     {
-        public CssInitialBox(CssContext context)
-            : base(context)
-        {
-            Properties.Display = CssKeywords.Block;
-
-            var layoutContext = context.LayoutContext;
-
-            if (layoutContext != null)
-            {
-                Properties.Width = new CssLength(layoutContext.Width, CssUnits.Px);
-                Properties.Height = new CssLength(layoutContext.Height, CssUnits.Px);
-            }
-        }
+        public virtual double Width { get; private set; }
+        public virtual double Height { get; private set; }
     }
 }

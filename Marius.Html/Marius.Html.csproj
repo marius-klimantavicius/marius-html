@@ -52,6 +52,7 @@
     <Compile Include="Css\Box\CssGeneratedBox.cs" />
     <Compile Include="Css\Box\CssImageBox.cs" />
     <Compile Include="Css\Box\CssInitialBox.cs" />
+    <Compile Include="Css\Box\CssReplacedBox.cs" />
     <Compile Include="Css\Box\CssSplitBox.cs" />
     <Compile Include="Css\Box\CssSplitPart.cs" />
     <Compile Include="Css\Cascade\CssStyleComparer.cs" />
@@ -65,11 +66,16 @@
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
     <Compile Include="Css\CssPropertyValueDictionary.cs" />
+    <Compile Include="Css\CssUtils.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\IWithStyle.cs" />
     <Compile Include="Css\Layout\CssBoxBorder.cs" />
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
+    <Compile Include="Css\Layout\CssFloatRoot.cs" />
+    <Compile Include="Css\Layout\CssLayoutContext.cs" />
+    <Compile Include="Css\Layout\CssLayoutManager.cs" />
+    <Compile Include="Css\Layout\CssBoundsResolver.cs" />
     <Compile Include="Css\Parser\CssFunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />
