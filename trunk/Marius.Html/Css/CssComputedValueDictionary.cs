@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
 using Marius.Html.Css.Box;
+using System.Diagnostics;
 
 namespace Marius.Html.Css
 {
@@ -49,9 +50,11 @@ namespace Marius.Html.Css
             {
                 CssSimplePropertyHandler handler = _box.Context.Properties[property] as CssSimplePropertyHandler;
                 if (handler == null)
-                    return CssNull.Value;
+                    return null;
 
-                return handler.Compute(_box);
+                CssValue computed = handler.Compute(_box);
+                Debug.Assert(computed != null);
+                return computed;
             }
         }
 

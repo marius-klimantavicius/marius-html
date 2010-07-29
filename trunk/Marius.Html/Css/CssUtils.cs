@@ -44,15 +44,15 @@ namespace Marius.Html.Css
         public static bool IsBlock(CssBox box)
         {
             var display = box.Computed.Display;
-            return display.Equals(CssKeywords.Block)
-                || display.Equals(CssKeywords.ListItem)
-                || display.Equals(CssKeywords.Table);
+            return CssKeywords.Block.Equals(display)
+                || CssKeywords.ListItem.Equals(display)
+                || CssKeywords.Table.Equals(display);
         }
 
         public static bool IsInline(CssBox box)
         {
             var display = box.Computed.Display;
-            return CssKeywords.Inline.Equals(display);
+            return CssKeywords.Inline.Equals(display) || CssKeywords.InlineBlock.Equals(display) || CssKeywords.InlineTable.Equals(display); // run-ins should have been already fixed
         }
 
         public static bool IsAbsolutelyPositioned(CssBox box)
@@ -64,7 +64,7 @@ namespace Marius.Html.Css
         public static bool IsFloat(CssBox box)
         {
             var cssFloat = box.Computed.Float;
-            return CssKeywords.Left.Equals(cssFloat) || CssKeywords.Right.Equals(cssFloat);
+            return !CssKeywords.None.Equals(cssFloat);
         }
 
         public static bool IsFloatRoot(CssBox box)
@@ -81,6 +81,13 @@ namespace Marius.Html.Css
 
             var overflow = box.Computed.Overflow;
             return !CssKeywords.Visible.Equals(overflow);
+        }
+
+        public static bool IsInlineBlock(CssBox box)
+        {
+            var display = box.Computed.Display;
+
+            return CssKeywords.InlineBlock.Equals(box);
         }
     }
 }

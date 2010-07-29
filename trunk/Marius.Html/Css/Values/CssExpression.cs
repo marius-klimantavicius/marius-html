@@ -44,7 +44,7 @@ namespace Marius.Html.Css.Values
             get
             {
                 if (_currentIndex >= Items.Length)
-                    return CssNull.Value;
+                    return null;
                 return Items[_currentIndex];
             }
         }
@@ -62,14 +62,10 @@ namespace Marius.Html.Css.Values
             Items = items;
         }
 
-        public bool MoveNext()
+        public void MoveNext()
         {
-            _currentIndex++;
-
-            if (_currentIndex >= Items.Length)
-                return false;
-            
-            return true;
+            if (_currentIndex <= Items.Length)
+                _currentIndex++;
         }
 
         public void Reset()

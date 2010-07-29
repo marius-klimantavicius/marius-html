@@ -40,7 +40,7 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Initial
         {
-            get { return CssNull.Value; }
+            get { return CssKeywords.Serif; }
         }
 
         public FontFamily(CssContext context)
