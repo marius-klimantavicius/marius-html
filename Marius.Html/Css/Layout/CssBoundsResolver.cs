@@ -38,34 +38,90 @@ namespace Marius.Html.Css.Layout
     {
         public virtual void ResolveWidth(CssBox box)
         {
-            if (CssUtils.IsInline(box) && !box.IsReplaced)
-                InlineNonReplacedMargins(box); // width does not apply
+            // display, position, float (and replaceness) determines the algorithm for bounds calculation
 
-            if (CssUtils.IsInline(box) && box.IsReplaced)
-                InlineReplacedWidth(box as CssReplacedBox);
+            bool isBlock = CssUtils.IsBlock(box);
+            bool isInline = CssUtils.IsInline(box);
+            bool isInlineBlock = CssUtils.IsInlineBlock(box);
+            bool isAbsolute = CssUtils.IsAbsolutelyPositioned(box);
+            bool isFloat = CssUtils.IsFloat(box);
+
+            if (CssUtils.IsInline(box) && !box.IsReplaced)
+                InlineNonReplaced(box); // width does not apply
+            else if ((CssUtils.IsInline(box) || CssUtils.IsInlineBlock(box)) && box.IsReplaced)
+                InlineReplaced(box as CssReplacedBox);
+
+            throw new NotImplementedException();
         }
 
-        protected virtual void InlineReplacedWidth(CssReplacedBox box)
+        protected virtual void InlineNonReplaced(CssBox box)
+        {
+            if (CssUtils.IsAuto(box.Computed.MarginLeft))
+                box.MarginLeft = CssNumber.Zero;
+
+            if (CssUtils.IsAuto(box.Computed.MarginRight))
+                box.MarginRight = CssNumber.Zero;
+        }
+
+        protected virtual void InlineReplaced(CssReplacedBox box)
         {
             if (box == null)
                 throw new CssInvalidStateException();
 
             if (CssUtils.IsAuto(box.Computed.MarginLeft))
-                box.MarginLeft = 0;
+                box.MarginLeft = CssNumber.Zero;
 
             if (CssUtils.IsAuto(box.Computed.MarginRight))
-                box.MarginRight = 0;
+                box.MarginRight = CssNumber.Zero;
 
-            throw new NotImplementedException();
+            bool autoWidth = CssUtils.IsAuto(box.Computed.Width);
+            bool autoHeight = CssUtils.IsAuto(box.Computed.Height);
+
+            if (!autoWidth)
+            {
+                box.Width = box.Computed.Width;
+                return;
+            }
+
+            if (autoWidth && autoHeight)
+            {
+                if (box.IntrinsicWidth != null)
+                {
+                    box.Width = box.IntrinsicWidth;
+                    return;
+                }
+
+                if (box.IntrinsicHeight != null && box.IntrinsicRatio != null)
+                {
+                    box.Width = CssValue.Multiply(box.IntrinsicHeight, box.IntrinsicRatio);
+                    return;
+                }
+            }
+
+            if (autoWidth && !autoHeight && box.IntrinsicRatio != null)
+            {
+                box.Width = CssValue.Multiply(box.Computed.Height, box.IntrinsicRatio);
+                return;
+            }
+
+            if (autoWidth && autoHeight && box.IntrinsicRatio != null)
+            {
+                BlockNonReplaced(box);
+                return;
+            }
+
+            if (autoWidth && box.IntrinsicWidth != null)
+            {
+                box.Width = box.IntrinsicWidth;
+                return;
+            }
+
+            box.Width = new CssLength(300, CssUnits.Px);
         }
 
-        protected virtual void InlineNonReplacedMargins(CssBox box)
+        protected virtual void BlockNonReplaced(CssBox box)
         {
-            if (CssUtils.IsAuto(box.Computed.MarginLeft))
-                box.MarginLeft = 0;
-
-            if (CssUtils.IsAuto(box.Computed.MarginRight))
-                box.MarginRight = 0;
+            throw new NotImplementedException();
         }
     }
 }

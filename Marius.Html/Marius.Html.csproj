@@ -211,7 +211,6 @@
     <Compile Include="Css\Values\CssDimension.cs" />
     <Compile Include="Css\Values\CssFontFamily.cs" />
     <Compile Include="Css\Values\CssKeywords.cs" />
-    <Compile Include="Css\Values\CssNull.cs" />
     <Compile Include="Css\Values\CssExpression.cs" />
     <Compile Include="Css\Values\CssFrequency.cs" />
     <Compile Include="Css\Values\CssFunction.cs" />

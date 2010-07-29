@@ -116,9 +116,9 @@ namespace Marius.Html.Css.Values
             return Equals((CssValue)obj);
         }
 
-        public virtual bool IsNull()
+        public static CssValue Multiply(CssValue a, CssValue b)
         {
-            return false;
+            throw new NotImplementedException();
         }
     }
 }

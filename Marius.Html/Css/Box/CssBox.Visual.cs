@@ -30,7 +30,7 @@ using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Box
 {
-    // the actual values given during layout
+    // the used values given during layout
     public partial class CssBox
     {
         private CssBox _coordinateParent;
@@ -42,30 +42,30 @@ namespace Marius.Html.Css.Box
             set { _coordinateParent = value; }
         }
 
-        public virtual double X { get; set; }
-        public virtual double Y { get; set; }
-
-        // location
-        public virtual double Top { get; set; }
-        public virtual double Right { get; set; }
-        public virtual double Bottom { get; set; }
-        public virtual double Left { get; set; }
-
-        // content
-        public virtual double Width { get; set; }
-        public virtual double Heigth { get; set; }
-
-        // padding
-        public virtual double PaddingTop { get; set; }
-        public virtual double PaddingRight { get; set; }
-        public virtual double PaddingBottom { get; set; }
-        public virtual double PaddingLeft { get; set; }
-
-        // margin
-        public virtual double MarginTop { get; set; }
-        public virtual double MarginRight { get; set; }
-        public virtual double MarginBottom { get; set; }
-        public virtual double MarginLeft { get; set; }
+        public virtual CssValue X { get; set; }
+        public virtual CssValue Y { get; set; }
+                             
+        // location          
+        public virtual CssValue Top { get; set; }
+        public virtual CssValue Right { get; set; }
+        public virtual CssValue Bottom { get; set; }
+        public virtual CssValue Left { get; set; }
+                             
+        // content           
+        public virtual CssValue Width { get; set; }
+        public virtual CssValue Heigth { get; set; }
+                             
+        // padding           
+        public virtual CssValue PaddingTop { get; set; }
+        public virtual CssValue PaddingRight { get; set; }
+        public virtual CssValue PaddingBottom { get; set; }
+        public virtual CssValue PaddingLeft { get; set; }
+                             
+        // margin            
+        public virtual CssValue MarginTop { get; set; }
+        public virtual CssValue MarginRight { get; set; }
+        public virtual CssValue MarginBottom { get; set; }
+        public virtual CssValue MarginLeft { get; set; }
 
         // border
         public virtual CssBoxBorder BorderTop { get; set; }
