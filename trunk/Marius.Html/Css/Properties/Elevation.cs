@@ -61,11 +61,11 @@ namespace Marius.Html.Css.Properties
             return MatchInherit(expression);
         }
 
-        public override CssValue Compute(Box.CssBox box)
+        public override CssValue GetComputedValue(Box.CssBox box)
         {
             var specified = GetValue(box.Properties);
             if (specified == null)
-                return base.Compute(box);
+                return specified;
 
             if (specified.ValueGroup == CssValueGroup.Angle)
             {
@@ -100,7 +100,7 @@ namespace Marius.Html.Css.Properties
                 }
             }
 
-            return base.Compute(box);
+            return specified;
         }
 
         private CssValue Normalize(double angle)

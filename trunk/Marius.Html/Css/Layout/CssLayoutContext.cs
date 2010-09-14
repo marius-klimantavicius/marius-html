@@ -37,6 +37,7 @@ namespace Marius.Html.Css.Layout
     /// </summary>
     public class CssLayoutContext
     {
+        // Width and Height of initial container (normally the canvas size)
         public virtual double Width { get; private set; }
         public virtual double Height { get; private set; }
     }

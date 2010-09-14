@@ -59,10 +59,16 @@ namespace Marius.Html.Css.Layout
             RunInBoxes(result);
             FixInlineBoxes(result);
             FixBlockBoxes(result);
+            RemoveEmptySpaces(result);
 
             _hasBlock = null;
 
             return result;
+        }
+
+        private void RemoveEmptySpaces(CssInitialBox result)
+        {
+            // TODO: implement, we need to remove boxes containing only spaces if box does not have property to preserve spaces
         }
 
         protected virtual void AddNode(CssBox parent, INode node)

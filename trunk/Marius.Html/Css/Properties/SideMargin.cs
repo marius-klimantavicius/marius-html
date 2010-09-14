@@ -50,7 +50,7 @@ namespace Marius.Html.Css.Properties
 
         public override CssValue Parse(CssExpression expression)
         {
-            CssValue result=null;
+            CssValue result = null;
             if (MatchLength(expression, ref result))
                 return result;
 

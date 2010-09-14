@@ -120,12 +120,12 @@ namespace Marius.Html.Css.Properties
             }
         }
 
-        public override CssValue Compute(Box.CssBox box)
+        public override CssValue GetComputedValue(Box.CssBox box)
         {
             var specified = GetValue(box.Properties);
 
             if (specified == null)
-                return base.Compute(box);
+                return specified;
 
             if (specified.ValueType == CssValueType.BackgroundPosition)
             {
@@ -164,7 +164,7 @@ namespace Marius.Html.Css.Properties
                 return new CssBackgroundPosition(v, h);
             }
 
-            return base.Compute(box);
+            return specified;
         }
     }
 }
