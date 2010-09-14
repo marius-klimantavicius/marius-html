@@ -63,10 +63,13 @@ namespace Marius.Html.Css.Properties
             return MatchInherit(expression);
         }
 
-        public override CssValue Compute(Box.CssBox box)
+        public override CssValue GetComputedValue(Box.CssBox box)
         {
             var parent = box.Parent;
-            var value = base.Compute(box);
+            var value = GetValue(box.Properties);
+
+            if (value == null)
+                return value;
 
             if (value.ValueGroup == CssValueGroup.Percentage && !CssUtils.IsAbsolutelyPositioned(box) && (parent == null || CssKeywords.Auto.Equals(parent.Computed.Height)))
                 return CssKeywords.Auto;

@@ -41,31 +41,28 @@ namespace Marius.Html.Css.Box
             get { return _coordinateParent ?? Parent; }
             set { _coordinateParent = value; }
         }
-
-        public virtual CssValue X { get; set; }
-        public virtual CssValue Y { get; set; }
                              
-        // location          
-        public virtual CssValue Top { get; set; }
-        public virtual CssValue Right { get; set; }
-        public virtual CssValue Bottom { get; set; }
-        public virtual CssValue Left { get; set; }
+        // location (in px?) 
+        public virtual float Top { get; set; }
+        public virtual float Right { get; set; }
+        public virtual float Bottom { get; set; }
+        public virtual float Left { get; set; }
                              
         // content           
-        public virtual CssValue Width { get; set; }
-        public virtual CssValue Heigth { get; set; }
+        public virtual float Width { get; set; }
+        public virtual float Heigth { get; set; }
                              
         // padding           
-        public virtual CssValue PaddingTop { get; set; }
-        public virtual CssValue PaddingRight { get; set; }
-        public virtual CssValue PaddingBottom { get; set; }
-        public virtual CssValue PaddingLeft { get; set; }
+        public virtual float PaddingTop { get; set; }
+        public virtual float PaddingRight { get; set; }
+        public virtual float PaddingBottom { get; set; }
+        public virtual float PaddingLeft { get; set; }
                              
         // margin            
-        public virtual CssValue MarginTop { get; set; }
-        public virtual CssValue MarginRight { get; set; }
-        public virtual CssValue MarginBottom { get; set; }
-        public virtual CssValue MarginLeft { get; set; }
+        public virtual float MarginTop { get; set; }
+        public virtual float MarginRight { get; set; }
+        public virtual float MarginBottom { get; set; }
+        public virtual float MarginLeft { get; set; }
 
         // border
         public virtual CssBoxBorder BorderTop { get; set; }

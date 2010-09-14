@@ -60,12 +60,12 @@ namespace Marius.Html.Css.Properties
             return MatchInherit(expression);
         }
 
-        public override CssValue Compute(Box.CssBox box)
+        public override CssValue GetComputedValue(Box.CssBox box)
         {
             var position = box.Computed.Position;
             var cssFloat = box.Computed.Float;
 
-            var display = base.Compute(box);    // specified value
+            var display = GetValue(box.Properties);    // specified value
             if (CssKeywords.Absolute.Equals(position) || CssKeywords.Fixed.Equals(position) || !cssFloat.Equals(CssKeywords.None) || box.Parent == null)
             {
                 if (CssKeywords.InlineTable.Equals(display))
@@ -85,7 +85,7 @@ namespace Marius.Html.Css.Properties
                     return CssKeywords.Block;
             }
 
-            return base.Compute(box);
+            return display;
         }
     }
 }

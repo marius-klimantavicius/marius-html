@@ -39,14 +39,6 @@ namespace Marius.Html.Css.Box
             : base(context)
         {
             Properties.Display = CssKeywords.Block;
-
-            var layoutContext = context.LayoutContext;
-
-            if (layoutContext != null)
-            {
-                Properties.Width = new CssLength(layoutContext.Width, CssUnits.Px);
-                Properties.Height = new CssLength(layoutContext.Height, CssUnits.Px);
-            }
         }
     }
 }

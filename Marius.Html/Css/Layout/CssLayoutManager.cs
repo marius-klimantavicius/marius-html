@@ -37,17 +37,24 @@ namespace Marius.Html.Css.Layout
 {
     public class CssLayoutManager
     {
-        public virtual CssBoundsResolver BoundsResolver { get; private set; }
+        private CssLayoutContext _layoutContext;
 
-        public CssLayoutManager()
+        public CssLayoutManager(CssLayoutContext layoutContext)
         {
-            BoundsResolver = new CssBoundsResolver();
+            _layoutContext = layoutContext;
         }
 
-        public void Layout(CssBox box)
+        public void Layout(CssInitialBox box)
         {
-            // we need to know the width of current box
-            BoundsResolver.ResolveWidth(box);
+            box.Properties.Width = new CssLength(_layoutContext.Width, CssUnits.Px);
+            box.Properties.Height = new CssLength(_layoutContext.Height, CssUnits.Px);
+
+            PerformLayout(box);
+        }
+
+        protected virtual void PerformLayout(CssBox box)
+        {
+
         }
     }
 }
