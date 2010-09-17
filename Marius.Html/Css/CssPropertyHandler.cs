@@ -175,8 +175,9 @@ namespace Marius.Html.Css
                 CssNumber value = (CssNumber)expression.Current;
                 if (value.Value != 0)
                     return false;
-
-                result = value;
+                
+                // for simplicity lets assume that 0 mean 0px (this should not have impact as 0px = 0pt = 0em = 0ex = ...)
+                result = CssLength.ZeroPx;
                 expression.MoveNext();
                 return true;
             }

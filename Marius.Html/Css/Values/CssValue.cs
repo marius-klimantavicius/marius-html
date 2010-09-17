@@ -91,8 +91,6 @@ namespace Marius.Html.Css.Values
                         return CssValueGroup.TextAlignInitial;
                     case CssValueType.ValueList:
                         return CssValueGroup.ValueList;
-                    case CssValueType.Null:
-                        return CssValueGroup.Null;
                     case CssValueType.Azimuth:
                     case CssValueType.BackgroundPosition:
                     case CssValueType.BorderSpacing:

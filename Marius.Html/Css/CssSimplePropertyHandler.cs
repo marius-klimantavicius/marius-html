@@ -76,9 +76,12 @@ namespace Marius.Html.Css
 
         protected virtual CssValue PostCompute(CssBox box, CssValue computed)
         {
+            if (computed.ValueType == CssValueType.Em || computed.ValueType == CssValueType.Ex)
+                return RelativeToAbsoluteLength(box, computed);
+
             return computed;
         }
-        
+
         public CssValue Compute(CssBox box)
         {
             var value = PreCompute(box);
@@ -99,6 +102,38 @@ namespace Marius.Html.Css
                 return Compute(box.Parent);
 
             return Initial;
+        }
+
+        protected CssValue RelativeToAbsoluteLength(CssBox box, CssValue computed)
+        {
+            CssLength baseSize = null;
+            if (computed.ValueType == CssValueType.Em)
+            {
+                CssValue size = box.Computed.FontSize;
+                if (size.ValueGroup != CssValueGroup.Length)
+                    throw new CssInvalidStateException();
+
+                baseSize = (CssLength)size;
+            }
+            else if (computed.ValueType == CssValueType.Ex)
+            {
+                var size = box.Computed.FontSize;
+                var family = box.Computed.FontFamily;
+                var variant = box.Computed.FontVariant;
+                var weight = box.Computed.FontWeight;
+                var style = box.Computed.FontStyle;
+
+                baseSize = _context.FontXHeight(size, family, variant, weight, style);
+            }
+
+            if (baseSize == null)
+                throw new CssInvalidStateException();
+
+            if (baseSize.Units == CssUnits.Em || baseSize.Units == CssUnits.Ex)
+                throw new CssInvalidStateException();
+
+            CssLength computedSize = (CssLength)computed;
+            return new CssLength(baseSize.Value * computedSize.Value, baseSize.Units);
         }
     }
 }

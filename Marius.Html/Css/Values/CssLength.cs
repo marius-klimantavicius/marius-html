@@ -35,6 +35,8 @@ namespace Marius.Html.Css.Values
 {
     public class CssLength: CssValue
     {
+        public static readonly CssLength ZeroPx = new CssLength(0, CssUnits.Px);
+
         public static readonly CssLength OnePx = new CssLength(1, CssUnits.Px);
         public static readonly CssLength TwoPx = new CssLength(2, CssUnits.Px);
         public static readonly CssLength FourPx = new CssLength(4, CssUnits.Px);
