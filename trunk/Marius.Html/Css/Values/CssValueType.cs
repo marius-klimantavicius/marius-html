@@ -67,7 +67,6 @@ namespace Marius.Html.Css.Values
         TextAlignInitial,
         Rect,
         ValueList,
-        Null,
 
         // custom for specific properties, created ONLY when applying/parsing expressions
         Azimuth,

@@ -135,7 +135,7 @@ namespace Marius.Html.Css
         {
             if (baseSize.ValueGroup != CssValueGroup.Length)
                 throw new CssInvalidStateException();
-            
+
             CssLength value = (CssLength)baseSize;
             return new CssLength(value.Value * 1.2, value.Units);
         }
@@ -174,7 +174,17 @@ namespace Marius.Html.Css
 
         public virtual CssLength FontXHeight(CssValue size, CssValue family, CssValue variant, CssValue weight, CssValue style)
         {
-            throw new NotImplementedException();
+            // lets return 0.5em for the moment. .NET 2.0 does not let to find out real x-height
+
+            if (size.ValueGroup != CssValueGroup.Length)
+                throw new CssInvalidStateException();
+
+            CssLength baseSize = (CssLength)size;
+
+            if (baseSize.ValueType == CssValueType.Em || baseSize.ValueType == CssValueType.Ex)
+                throw new CssInvalidStateException();
+
+            return new CssLength(baseSize.Value * 0.5, baseSize.Units);
         }
     }
 }
