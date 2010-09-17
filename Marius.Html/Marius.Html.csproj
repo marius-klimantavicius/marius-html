@@ -61,6 +61,7 @@
     <Compile Include="Css\Cascade\CssPreparedStylesheet.cs" />
     <Compile Include="Css\CssComputedValueDictionary.cs" />
     <Compile Include="Css\CssContext.Properties.cs" />
+    <Compile Include="Css\CssFontSize.cs" />
     <Compile Include="Css\CssProperty.cs" />
     <Compile Include="Css\CssPropertyDictionary.cs" />
     <Compile Include="Css\CssPropertyHandler.cs" />
@@ -70,8 +71,10 @@
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\IWithStyle.cs" />
+    <Compile Include="Css\Layout\CssBlockLayoutManager.cs" />
     <Compile Include="Css\Layout\CssBoxBorder.cs" />
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
+    <Compile Include="Css\Layout\CssBoxLength.cs" />
     <Compile Include="Css\Layout\CssFloatRoot.cs" />
     <Compile Include="Css\Layout\CssLayoutContext.cs" />
     <Compile Include="Css\Layout\CssLayoutManager.cs" />

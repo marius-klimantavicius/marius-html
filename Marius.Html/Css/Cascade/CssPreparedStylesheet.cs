@@ -107,6 +107,7 @@ namespace Marius.Html.Css.Cascade
 
         public virtual IList<CssDeclaration> GetAplicableDeclarations(INode box)
         {
+            // TODO: make selector responsible for selecting
             List<CssDeclaration> result = new List<CssDeclaration>();
             for (int i = 0; i < _styles.Length; i++)
             {
@@ -128,7 +129,7 @@ namespace Marius.Html.Css.Cascade
                 case CssSelectorType.Sibling:
                     return AppliesSibling((CssSiblingSelector)selector, box);
                 case CssSelectorType.Universal:
-                    return box.NodeType == NodeType.Element ? CssStyleTarget.Style : CssStyleTarget.None;
+                    return box.NodeType == NodeType.Element || box.NodeType == NodeType.Image ? CssStyleTarget.Style : CssStyleTarget.None;
                 case CssSelectorType.Conditional:
                     return AppliesConditional((CssConditionalSelector)selector, box);
                 case CssSelectorType.Element:

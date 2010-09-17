@@ -60,7 +60,7 @@ namespace Marius.Html.Css.Properties
             return MatchInherit(expression);
         }
 
-        public override CssValue GetComputedValue(Box.CssBox box)
+        protected override CssValue PreCompute(Box.CssBox box)
         {
             var position = box.Computed.Position;
             var cssFloat = box.Computed.Float;

@@ -115,10 +115,5 @@ namespace Marius.Html.Css.Values
 
             return Equals((CssValue)obj);
         }
-
-        public static CssValue Multiply(CssValue a, CssValue b)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
