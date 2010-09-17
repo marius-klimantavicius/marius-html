@@ -69,24 +69,29 @@ namespace Marius.Html.Css
         public abstract void SetValue(IWithStyle box, CssValue value);
         public abstract CssValue GetValue(IWithStyle box);
 
-        public virtual CssValue GetComputedValue(CssBox box)
+        protected virtual CssValue PreCompute(CssBox box)
         {
             return GetValue(box.Properties);
+        }
+
+        protected virtual CssValue PostCompute(CssBox box, CssValue computed)
+        {
+            return computed;
         }
         
         public CssValue Compute(CssBox box)
         {
-            var value = GetComputedValue(box);
+            var value = PreCompute(box);
             if ((value == null && IsInherited) || CssKeywords.Inherit.Equals(value))
                 return Inherited(box);
 
             if (value == null)
                 return Initial;
 
-            return value;
+            return PostCompute(box, value);
         }
 
-        protected virtual CssValue Inherited(CssBox box)
+        protected internal CssValue Inherited(CssBox box)
         {
             if (box.InheritanceParent != null)
                 return Compute(box.InheritanceParent);

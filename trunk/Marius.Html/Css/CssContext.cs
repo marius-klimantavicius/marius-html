@@ -120,18 +120,61 @@ namespace Marius.Html.Css
             return manager.Prepare();
         }
 
-        /// <summary>
-        /// Applies recursively in any order
-        /// </summary>
-        public virtual void Apply(CssPreparedStylesheet sheet, INode box)
+        public virtual void Apply(CssPreparedStylesheet sheet, INode node)
         {
-            Utils.RecurseTree(box, current => sheet.Apply(current));
+            Utils.RecurseTree(node, current => sheet.Apply(current));
         }
 
         public virtual CssInitialBox GenerateBoxes(INode root)
         {
             CssBoxGenerator gen = new CssBoxGenerator(this);
             return gen.Generate(root);
+        }
+
+        public virtual CssLength LargerFontSize(CssValue baseSize)
+        {
+            if (baseSize.ValueGroup != CssValueGroup.Length)
+                throw new CssInvalidStateException();
+            
+            CssLength value = (CssLength)baseSize;
+            return new CssLength(value.Value * 1.2, value.Units);
+        }
+
+        public virtual CssLength SmallerFontSize(CssValue baseSize)
+        {
+            if (baseSize.ValueGroup != CssValueGroup.Length)
+                throw new CssInvalidStateException();
+
+            CssLength value = (CssLength)baseSize;
+            return new CssLength(value.Value / 1.2, value.Units);
+        }
+
+        public virtual CssLength TranslateFontSize(CssFontSize fontSize)
+        {
+            switch (fontSize)
+            {
+                case CssFontSize.XXSmall:
+                    return new CssLength(10, CssUnits.Px);
+                case CssFontSize.XSmall:
+                    return new CssLength(12, CssUnits.Px);
+                case CssFontSize.Small:
+                    return new CssLength(14, CssUnits.Px);
+                case CssFontSize.Medium:
+                    return new CssLength(16, CssUnits.Px);
+                case CssFontSize.Large:
+                    return new CssLength(19, CssUnits.Px);
+                case CssFontSize.XLarge:
+                    return new CssLength(24, CssUnits.Px);
+                case CssFontSize.XXLarge:
+                    return new CssLength(32, CssUnits.Px);
+                default:
+                    throw new CssInvalidStateException();
+            }
+        }
+
+        public virtual CssLength FontXHeight(CssValue size, CssValue family, CssValue variant, CssValue weight, CssValue style)
+        {
+            throw new NotImplementedException();
         }
     }
 }

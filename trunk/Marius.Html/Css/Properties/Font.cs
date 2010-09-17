@@ -28,6 +28,7 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css.Properties
 {

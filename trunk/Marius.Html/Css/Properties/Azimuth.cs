@@ -119,7 +119,7 @@ namespace Marius.Html.Css.Properties
             return null;
         }
 
-        public override CssValue GetComputedValue(Box.CssBox box)
+        protected override CssValue PreCompute(Box.CssBox box)
         {
             var specified = GetValue(box.Properties);
 

@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css.Properties
 {
@@ -66,6 +67,33 @@ namespace Marius.Html.Css.Properties
         {
             return Parse(expression);
         }
+
+        protected override CssValue PreCompute(CssBox box)
+        {
+            var style = GetBorderStyle(box);
+            if (CssKeywords.None.Equals(style) || CssKeywords.Hidden.Equals(style))
+                return CssNumber.Zero;
+
+            var value = GetValue(box.Properties);
+            if (value == null)
+                return value;
+
+            if(value.ValueGroup != CssValueGroup.Identifier)
+                return value;
+
+            if (CssKeywords.Thin.Equals(value))
+                return CssLength.OnePx;
+
+            if (CssKeywords.Medium.Equals(value))
+                return CssLength.TwoPx;
+
+            if (CssKeywords.Thick.Equals(value))
+                return CssLength.FourPx;
+
+            return null;
+        }
+
+        protected abstract CssValue GetBorderStyle(CssBox box);
     }
 
     public partial class BorderTopWidth: SideBorderWidth
@@ -73,6 +101,11 @@ namespace Marius.Html.Css.Properties
         public BorderTopWidth(CssContext context)
             : base(context)
         {
+        }
+
+        protected override CssValue GetBorderStyle(CssBox box)
+        {
+            return box.Computed.BorderTopStyle;
         }
     }
 
@@ -82,6 +115,11 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
+
+        protected override CssValue GetBorderStyle(CssBox box)
+        {
+            return box.Computed.BorderRightStyle;
+        }
     }
 
     public partial class BorderBottomWidth: SideBorderWidth
@@ -89,6 +127,11 @@ namespace Marius.Html.Css.Properties
         public BorderBottomWidth(CssContext context)
             : base(context)
         {
+        }
+
+        protected override CssValue GetBorderStyle(CssBox box)
+        {
+            return box.Computed.BorderBottomStyle;
         }
     }
 
@@ -98,6 +141,10 @@ namespace Marius.Html.Css.Properties
             : base(context)
         {
         }
-    }
 
+        protected override CssValue GetBorderStyle(CssBox box)
+        {
+            return box.Computed.BorderLeftStyle;
+        }
+    }
 }

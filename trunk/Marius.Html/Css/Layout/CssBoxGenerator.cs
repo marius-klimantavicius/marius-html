@@ -56,19 +56,55 @@ namespace Marius.Html.Css.Layout
 
             _hasBlock = new Dictionary<CssBox, bool>();
 
+            // TODO: make pipeline
             RunInBoxes(result);
             FixInlineBoxes(result);
             FixBlockBoxes(result);
             RemoveEmptySpaces(result);
+            ExpandGeneratedContent(result);
 
             _hasBlock = null;
 
             return result;
         }
 
-        private void RemoveEmptySpaces(CssInitialBox result)
+        private void ExpandGeneratedContent(CssBox box)
         {
-            // TODO: implement, we need to remove boxes containing only spaces if box does not have property to preserve spaces
+            // TODO: implement, need to expand content in the generated boxes
+        }
+
+        private void RemoveEmptySpaces(CssBox box)
+        {
+            if (box == null)
+                return;
+
+            var current = box.FirstChild;
+            var prev = current;
+            while (current != null)
+            {
+                current = current.NextSibling;
+
+                CssAnonymousSpaceBox space = prev as CssAnonymousSpaceBox;
+                if (space != null)
+                {
+                    var ws = space.Computed.WhiteSpace;
+                    if (CssKeywords.Normal.Equals(ws) || CssKeywords.Nowrap.Equals(ws))
+                        box.Remove(space);
+                    else
+                    {
+                        bool hasNewline = space.Text.IndexOfAny(new[] { '\r', '\n' }) != -1;
+                        if (!hasNewline && CssKeywords.PreLine.Equals(ws))
+                            box.Remove(space);
+                    }
+                }
+                else
+                {
+                    if (prev != null)
+                        RemoveEmptySpaces(prev);
+                }
+
+                prev = current;
+            }
         }
 
         protected virtual void AddNode(CssBox parent, INode node)

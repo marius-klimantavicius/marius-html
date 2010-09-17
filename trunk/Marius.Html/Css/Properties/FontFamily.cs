@@ -28,6 +28,8 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
+using System.Diagnostics;
 
 namespace Marius.Html.Css.Properties
 {
@@ -94,6 +96,20 @@ namespace Marius.Html.Css.Properties
 
             result = new CssValueList(names.ToArray());
             return true;
+        }
+
+        protected override CssValue PreCompute(CssBox box)
+        {
+            var font = box.Properties.Font;
+
+            if (font != null)
+            {
+                Debug.Assert(box.Properties.FontFamily == null);
+
+                return CssKeywords.Serif;   // TODO: implement
+            }
+
+            return base.PreCompute(box);
         }
     }
 }

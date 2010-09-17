@@ -42,27 +42,28 @@ namespace Marius.Html.Css.Box
             set { _coordinateParent = value; }
         }
                              
-        // location (in px?) 
-        public virtual float Top { get; set; }
-        public virtual float Right { get; set; }
-        public virtual float Bottom { get; set; }
-        public virtual float Left { get; set; }
+        // location (in px?)
+        // NOTE: Right - Left == Width, Bottom - Top == Height, do we need all the other properties?
+        public virtual CssBoxLength Top { get; set; }
+        public virtual CssBoxLength Right { get; set; }
+        public virtual CssBoxLength Bottom { get; set; }
+        public virtual CssBoxLength Left { get; set; }
                              
         // content           
-        public virtual float Width { get; set; }
-        public virtual float Heigth { get; set; }
+        public virtual CssBoxLength Width { get; set; }
+        public virtual CssBoxLength Heigth { get; set; }
                              
         // padding           
-        public virtual float PaddingTop { get; set; }
-        public virtual float PaddingRight { get; set; }
-        public virtual float PaddingBottom { get; set; }
-        public virtual float PaddingLeft { get; set; }
+        public virtual CssBoxLength PaddingTop { get; set; }
+        public virtual CssBoxLength PaddingRight { get; set; }
+        public virtual CssBoxLength PaddingBottom { get; set; }
+        public virtual CssBoxLength PaddingLeft { get; set; }
                              
         // margin            
-        public virtual float MarginTop { get; set; }
-        public virtual float MarginRight { get; set; }
-        public virtual float MarginBottom { get; set; }
-        public virtual float MarginLeft { get; set; }
+        public virtual CssBoxLength MarginTop { get; set; }
+        public virtual CssBoxLength MarginRight { get; set; }
+        public virtual CssBoxLength MarginBottom { get; set; }
+        public virtual CssBoxLength MarginLeft { get; set; }
 
         // border
         public virtual CssBoxBorder BorderTop { get; set; }

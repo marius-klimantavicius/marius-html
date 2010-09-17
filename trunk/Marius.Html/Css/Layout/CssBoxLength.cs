@@ -29,26 +29,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Marius.Html.Css.Box;
-using Marius.Html.Css.Values;
-using System.Runtime.CompilerServices;
 
 namespace Marius.Html.Css.Layout
 {
-    // this class and derivatives must be stateless
-    public abstract class CssLayoutManager
+    public class CssBoxLength
     {
-        private CssLayoutContext _layoutContext;
-
-        protected CssLayoutContext LayoutContext { get { return _layoutContext; } }
-
-        public CssLayoutManager(CssLayoutContext layoutContext)
-        {
-            _layoutContext = layoutContext;
-        }
-
-        public abstract void Layout(CssBox box);
-        public abstract bool ContributesWidth(CssBox box);
-        public abstract CssBoxLength ShrinkToFit(CssBox box, CssBoxLength availableSpace);
     }
 }

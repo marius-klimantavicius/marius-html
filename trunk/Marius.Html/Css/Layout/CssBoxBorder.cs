@@ -34,6 +34,6 @@ namespace Marius.Html.Css.Layout
 {
     public class CssBoxBorder
     {
-        public double Width { get; private set; }
+        public CssBoxLength Width { get; private set; }
     }
 }

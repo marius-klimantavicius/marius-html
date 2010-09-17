@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Marius.Html.Css.Values;
 
 namespace Marius.Html.Css.Layout
 {
@@ -38,7 +39,12 @@ namespace Marius.Html.Css.Layout
     public class CssLayoutContext
     {
         // Width and Height of initial container (normally the canvas size)
-        public virtual double Width { get; private set; }
-        public virtual double Height { get; private set; }
+        public virtual CssBoxLength Width { get; private set; }
+        public virtual CssBoxLength Height { get; private set; }
+
+        public virtual CssBoxLength ToLength(CssValue value, CssBoxLength percentageBase = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
