@@ -71,6 +71,12 @@
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />
     <Compile Include="Css\IWithStyle.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\CssExpandGeneratedContentStep.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\CssFixBlockBoxesStep.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\CssFixInlineBoxesStep.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\CssRemoveEmptyBoxesStep.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\CssRunInBoxesStep.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\IGeneratorStep.cs" />
     <Compile Include="Css\Layout\CssBlockLayoutManager.cs" />
     <Compile Include="Css\Layout\CssBoxBorder.cs" />
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
