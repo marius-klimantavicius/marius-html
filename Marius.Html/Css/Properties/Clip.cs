@@ -27,6 +27,7 @@ THE SOFTWARE.
 #endregion
 using System;
 using Marius.Html.Css.Values;
+using Marius.Html.Css.Box;
 
 namespace Marius.Html.Css.Properties
 {
@@ -57,6 +58,34 @@ namespace Marius.Html.Css.Properties
                 return CssKeywords.Auto;
 
             return MatchInherit(expression);
+        }
+
+        protected override CssValue PostCompute(CssBox box, CssValue computed)
+        {
+            if (computed.ValueType == CssValueType.Rect)
+            {
+                CssRect rect = (CssRect)computed;
+                CssValue top = null, left = null, bottom = null, right = null;
+
+                if (rect.Top.ValueType == CssValueType.Em || rect.Top.ValueType == CssValueType.Ex)
+                    top = RelativeToAbsoluteLength(box, rect.Top);
+
+                if (rect.Left.ValueType == CssValueType.Em || rect.Left.ValueType == CssValueType.Ex)
+                    left = RelativeToAbsoluteLength(box, rect.Left);
+
+                if (rect.Bottom.ValueType == CssValueType.Em || rect.Bottom.ValueType == CssValueType.Ex)
+                    bottom = RelativeToAbsoluteLength(box, rect.Bottom);
+
+                if (rect.Right.ValueType == CssValueType.Em || rect.Right.ValueType == CssValueType.Ex)
+                    right = RelativeToAbsoluteLength(box, rect.Right);
+
+                if (top == null && left == null && bottom == null && right == null)
+                    return computed;
+
+                return new CssRect(top, left, bottom, right);
+            }
+
+            return computed;
         }
     }
 }
