@@ -44,9 +44,9 @@ namespace Marius.Html.Css.Parser
         private const string kNonAscii = @"[\u0080-\uFFFF]";
 
         private const string kHex = @"([0-9a-fA-F])";
-        private const string kUnicodeEscape = @"(\\" + kHex + @"{1,6}(\r\n|" + kSingleWhitespace + @")?)";
-        private const string kSimpleEscape = @"(\\[^\n\r\f0-9a-fA-F])";
-        private const string kNewlineEscape = @"(\\" + kNewLine + @")";
+        private const string kUnicodeEscape = @"(?<Unicode>\\" + kHex + @"{1,6}(\r\n|" + kSingleWhitespace + @")?)";
+        private const string kSimpleEscape = @"(?<Simple>\\[^\n\r\f0-9a-fA-F])";
+        private const string kNewlineEscape = @"(?<Newline>\\" + kNewLine + @")";
 
         private const string kNumber = @"([0-9]+|[0-9]*\.[0-9]+)";
         private const string kNameStart = @"([_a-z]|" + kNonAscii + @"|" + kUnicodeEscape + @"|" + kSimpleEscape + @")";
@@ -54,9 +54,7 @@ namespace Marius.Html.Css.Parser
         private const string kIdentifier = @"(-?" + kNameStart + kNameChar + @"*)";
         private const string kDimension = @"((?<number>" + kNumber + @")(?<dimension>" + kIdentifier + @"))";
 
-        private static readonly Regex UnicodeEscape = new Regex(kUnicodeEscape, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
-        private static readonly Regex SimpleEscape = new Regex(kSimpleEscape, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
-        private static readonly Regex NewlineEscape = new Regex(kNewlineEscape, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
+        private static readonly Regex Escape = new Regex(kUnicodeEscape + @"|" + kSimpleEscape + @"|" + kNewlineEscape, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
         private static readonly Regex DimensionRegex = new Regex(kDimension, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 
         private CssTokenizer _tokenizer;
@@ -301,31 +299,37 @@ namespace Marius.Html.Css.Parser
 
         private string Unescape(string value, bool inString)
         {
-            var result = UnicodeEscape.Replace(value, m =>
+            return Escape.Replace(value, m =>
                 {
-                    string val = m.Value.Substring(1).TrimEnd();
-                    try
-                    {
-                        return char.ConvertFromUtf32(Convert.ToInt32(val, 16));
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        return ((char)0xFFFD).ToString();
-                    }
-                });
+                    var uni = m.Groups["Unicode"];
+                    var simple = m.Groups["Simple"];
+                    var nl = m.Groups["Newline"];
 
-            result = SimpleEscape.Replace(result, m =>
-                {
-                    return m.Value.Substring(1);
-                });
+                    if (uni.Success)
+                        return ParseUnicodeEscape(m.Value);
 
-            if (inString)
-                result = NewlineEscape.Replace(result, m =>
-                    {
+                    if (simple.Success)
+                        return m.Value.Substring(1);
+
+                    if (inString && nl.Success)
                         return "";
-                    });
 
-            return result;
+                    // do not unescape, this might happen if not in string
+                    return m.Value;
+                });
+        }
+
+        private string ParseUnicodeEscape(string escape)
+        {
+            string val = escape.Substring(1).TrimEnd();
+            try
+            {
+                return char.ConvertFromUtf32(Convert.ToInt32(val, 16));
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return ((char)0xFFFD).ToString();
+            }
         }
 
         private string UnescapeString(string text)

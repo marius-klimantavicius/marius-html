@@ -35,40 +35,10 @@ namespace Marius.Html.Css.Box
     {
         private CssBox _coordinateParent;
 
-        // position (in parent coordinate system)
         public virtual CssBox CoordinateParent
         {
             get { return _coordinateParent ?? Parent; }
             set { _coordinateParent = value; }
         }
-                             
-        // location (in px?)
-        // NOTE: Right - Left == Width, Bottom - Top == Height, do we need all the other properties?
-        public virtual CssBoxLength Top { get; set; }
-        public virtual CssBoxLength Right { get; set; }
-        public virtual CssBoxLength Bottom { get; set; }
-        public virtual CssBoxLength Left { get; set; }
-                             
-        // content           
-        public virtual CssBoxLength Width { get; set; }
-        public virtual CssBoxLength Heigth { get; set; }
-                             
-        // padding           
-        public virtual CssBoxLength PaddingTop { get; set; }
-        public virtual CssBoxLength PaddingRight { get; set; }
-        public virtual CssBoxLength PaddingBottom { get; set; }
-        public virtual CssBoxLength PaddingLeft { get; set; }
-                             
-        // margin            
-        public virtual CssBoxLength MarginTop { get; set; }
-        public virtual CssBoxLength MarginRight { get; set; }
-        public virtual CssBoxLength MarginBottom { get; set; }
-        public virtual CssBoxLength MarginLeft { get; set; }
-
-        // border
-        public virtual CssBoxBorder BorderTop { get; set; }
-        public virtual CssBoxBorder BorderRight { get; set; }
-        public virtual CssBoxBorder BorderBottom { get; set; }
-        public virtual CssBoxBorder BorderLeft { get; set; }
     }
 }

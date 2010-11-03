@@ -81,6 +81,18 @@ url() URl( http:// asd) \u\072 L(url(progra)
                 U("progra"), W());
         }
 
+        [Test]
+        public void TestEscapesShouldNotBeDoubleDecoded()
+        {
+            CssScanner scanner = new CssScanner();
+            scanner.SetSource(@"\5C 30", 0);
+
+            Expecting(scanner, ID("\\30"));
+
+            scanner.SetSource(@"\\30", 0);
+            Expecting(scanner, ID("\\30"));
+        }
+
         private ExpectedToken U(string url)
         {
             return new ExpectedToken(CssTokens.Uri, url);

@@ -50,50 +50,7 @@ namespace Marius.Html.Css.Layout
 
         private void CalculateWidthAndMargins(CssBox box)
         {
-            //if (box.Parent.Width == null)
-            //    throw new CssInvalidStateException();
-
-            //bool autoWidth = CssUtils.IsAuto(box.Computed.Width);
-
-            //if (!CssUtils.IsAuto(box.Computed.MarginLeft))
-            //    box.MarginLeft = LayoutContext.ToLength(box.Computed.MarginLeft, box.Parent.Width);
-
-            //if (!CssUtils.IsAuto(box.Computed.MarginRight))
-            //    box.MarginRight = LayoutContext.ToLength(box.Computed.MarginRight, box.Parent.Width);
-
-            //box.PaddingLeft = LayoutContext.ToLength(box.Computed.PaddingLeft, box.Parent.Width);
-            //box.PaddingRight = LayoutContext.ToLength(box.Computed.PaddingRight, box.Parent.Width);
-
-            //CssBoxLength borderLeft = LayoutContext.ToLength(box.Computed.BorderLeftWidth);
-            //CssBoxLength borderRight = LayoutContext.ToLength(box.Computed.BorderRightWidth);
-
-            //CssBoxLength sum;
-
-            //if (!autoWidth)
-            //{
-            //    box.Width = LayoutContext.ToLength(box.Computed.Width, box.Parent.Width);
-
-            //    sum = borderLeft + box.PaddingLeft + box.Width + box.PaddingRight + borderRight;
-
-            //    if (box.MarginLeft != null)
-            //        sum = sum + box.MarginLeft;
-            //    if (box.MarginRight != null)
-            //        sum = sum + box.MarginRight;
-            //}
-            //else
-            //{
-            //    if (box.MarginLeft == null)
-            //        box.MarginLeft = CssBoxLength.Zero;
-            //    if (box.MarginRight == null)
-            //        box.MarginRight = CssBoxLength.Zero;
-
-            //    sum = borderLeft + box.PaddingLeft + box.PaddingRight + borderRight + box.MarginLeft + box.MarginRight;
-            //    box.Width = box.Parent.Width - sum;
-
-            //    if (box.Width.IsNegative)
-            //    {
-            //    }
-            //}
+            // TODO:
         }
 
         public override bool ContributesWidth(CssBox box)

@@ -57,7 +57,6 @@ namespace Marius.Html.Css.Layout
             steps.Add(new CssRunInBoxesStep());
             steps.Add(new CssFixInlineBoxesStep());
             steps.Add(new CssFixBlockBoxesStep());
-            steps.Add(new CssRemoveEmptyBoxesStep());
             steps.Add(new CssExpandGeneratedContentStep());
         }
 
