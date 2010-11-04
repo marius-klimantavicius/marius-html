@@ -81,7 +81,7 @@ span { display: inline }
         [Test]
         public void InlineShouldBeBrokenAroundIfContainsBlock()
         {
-            INode root = body(span("span text"), div("div text"), div("div text"), span("middle span"), div("div text"), "simple text");
+            INode root = body(span("span text"), "sis\n   no life", span(""), div("div text"), div("div text"), span("middle span"), div("div text"), "simple text");
             var sheet = _context.ParseStylesheet(@"
 div { display: block }
 body, span { display: inline }
@@ -111,7 +111,7 @@ body, span { display: inline }
                 current = current.NextSibling;
             }
 
-            Assert.True(hasInline && !hasBlock || hasBlock && !hasInline || !hasInline && !hasBlock);
+            Assert.True((hasInline && !hasBlock) || (hasBlock && !hasInline) || (!hasInline && !hasBlock));
 
             current = box.FirstChild;
             while (current != null)

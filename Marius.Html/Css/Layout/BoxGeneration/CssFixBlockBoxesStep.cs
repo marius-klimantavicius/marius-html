@@ -53,7 +53,7 @@ namespace Marius.Html.Css.Layout.BoxGeneration
                 current = current.NextSibling;
             }
 
-            if (CssUtils.IsBlock(box))
+            if (CssUtils.IsBlock(box) || CssUtils.IsInlineBlock(box)) // TODO: inline table??
                 FixBlockBox(box);
         }
 

@@ -58,6 +58,7 @@ namespace Marius.Html.Css.Layout
             steps.Add(new CssFixInlineBoxesStep());
             steps.Add(new CssFixBlockBoxesStep());
             steps.Add(new CssExpandGeneratedContentStep());
+            steps.Add(new CssSplitWordsStep());
         }
 
         public virtual CssInitialBox Generate(INode root)

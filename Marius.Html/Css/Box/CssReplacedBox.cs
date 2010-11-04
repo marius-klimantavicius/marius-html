@@ -41,10 +41,5 @@ namespace Marius.Html.Css.Box
         }
 
         public sealed override bool IsReplaced { get { return true; } }
-
-        // for now these cannot be set via sheet 
-        public CssValue IntrinsicWidth { get { return Properties[CssProperty.IntrinsicWidth]; } set { Properties[CssProperty.IntrinsicWidth] = value; } }
-        public CssValue IntrinsicHeight { get { return Properties[CssProperty.IntrinsicHeight]; } set { Properties[CssProperty.IntrinsicHeight] = value; } }
-        public CssValue IntrinsicRatio { get { return Properties[CssProperty.IntrinsicRatio]; } set { Properties[CssProperty.IntrinsicRatio] = value; } }
     }
 }
