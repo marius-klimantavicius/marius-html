@@ -50,6 +50,7 @@ namespace Marius.Html.Css.Box
             _firstLetterProperties = new CssPropertyValueDictionary();
 
             _computed = new CssComputedValueDictionary(this);
+            RawWords = new List<CssBoxWord>();
         }
 
         public CssContext Context { get { return _context; } }
@@ -62,5 +63,11 @@ namespace Marius.Html.Css.Box
 
         public bool IsRunIn { get; set; }
         public virtual bool IsReplaced { get { return false; } }
+
+        public List<CssBoxWord> RawWords { get; private set; }
+        public void AddRawWords(params CssBoxWord[] words)
+        {
+            RawWords.AddRange(words);
+        }
     }
 }

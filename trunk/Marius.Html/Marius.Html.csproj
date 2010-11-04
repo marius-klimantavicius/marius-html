@@ -75,14 +75,11 @@
     <Compile Include="Css\Layout\BoxGeneration\CssFixBlockBoxesStep.cs" />
     <Compile Include="Css\Layout\BoxGeneration\CssFixInlineBoxesStep.cs" />
     <Compile Include="Css\Layout\BoxGeneration\CssRunInBoxesStep.cs" />
+    <Compile Include="Css\Layout\BoxGeneration\CssSplitWordsStep.cs" />
     <Compile Include="Css\Layout\BoxGeneration\IGeneratorStep.cs" />
-    <Compile Include="Css\Layout\CssBlockLayoutManager.cs" />
-    <Compile Include="Css\Layout\CssBoxBorder.cs" />
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
-    <Compile Include="Css\Layout\CssBoxLength.cs" />
+    <Compile Include="Css\Box\CssBoxWord.cs" />
     <Compile Include="Css\Layout\CssFloatRoot.cs" />
-    <Compile Include="Css\Layout\CssLayoutContext.cs" />
-    <Compile Include="Css\Layout\CssLayoutManager.cs" />
     <Compile Include="Css\Parser\CssFunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />
