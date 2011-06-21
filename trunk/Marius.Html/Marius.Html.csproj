@@ -212,6 +212,7 @@
     <Compile Include="Css\Values\CssColor.cs" />
     <Compile Include="Css\Dom\CssDeclaration.cs" />
     <Compile Include="Css\Values\CssCounterChange.cs" />
+    <Compile Include="Css\Values\CssDeviceUnit.cs" />
     <Compile Include="Css\Values\CssDimension.cs" />
     <Compile Include="Css\Values\CssFontFamily.cs" />
     <Compile Include="Css\Values\CssKeywords.cs" />
