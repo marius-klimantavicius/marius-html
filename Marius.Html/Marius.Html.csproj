@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Css\Box\CssBox.Visual.cs" />
     <Compile Include="Css\Box\CssBox.Tree.cs" />
     <Compile Include="Css\Box\CssAnonymousBlockBox.cs" />
     <Compile Include="Css\Box\CssAnonymousInlineBox.cs" />
@@ -80,6 +79,8 @@
     <Compile Include="Css\Layout\CssBoxGenerator.cs" />
     <Compile Include="Css\Box\CssBoxWord.cs" />
     <Compile Include="Css\Layout\CssFloatRoot.cs" />
+    <Compile Include="Css\Layout\CssLayoutContext.cs" />
+    <Compile Include="Css\Layout\CssLayoutEngine.cs" />
     <Compile Include="Css\Parser\CssFunctionFactory.cs" />
     <Compile Include="Css\Parser\IInputSource.cs" />
     <Compile Include="Css\Properties\Background.cs" />
