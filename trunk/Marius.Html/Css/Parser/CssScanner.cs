@@ -186,7 +186,7 @@ namespace Marius.Html.Css.Parser
         private CssTokens Dimension(string text)
         {
             var match = DimensionRegex.Match(text);
-            var number = double.Parse(match.Groups["number"].Value);
+            var number = float.Parse(match.Groups["number"].Value);
             var dim = match.Groups["dimension"].Value;
 
             switch (dim.ToUpperInvariant())
@@ -229,7 +229,7 @@ namespace Marius.Html.Css.Parser
         private CssTokens Percentage(string text)
         {
             text = text.Substring(0, text.Length - 1);
-            return Token(CssTokens.Percentage, new CssDimensionToken(CssUnits.Percentage, double.Parse(text), "%"));
+            return Token(CssTokens.Percentage, new CssDimensionToken(CssUnits.Percentage, float.Parse(text), "%"));
         }
 
         private CssTokens Function(string text)

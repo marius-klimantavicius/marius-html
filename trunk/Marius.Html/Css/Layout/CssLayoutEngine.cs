@@ -17,6 +17,11 @@ namespace Marius.Html.Css.Layout
 
         private void LayoutBlock(CssBox box)
         {
+            var used = box.Used;
+            var computed = box.Computed;
+
+            used.Update(Context);
+
             var top = Context.ToDeviceUnits(box.Computed.Top);
             var left = Context.ToDeviceUnits(box.Computed.Left);
 
@@ -26,8 +31,6 @@ namespace Marius.Html.Css.Layout
             //    parentWidth = Context.Width;
             //else
             //    parentWidth = box.Parent.Actual.Width;
-
-            var computed = box.Computed;
 
             var paddingLeft = Context.ToDeviceUnits(computed.PaddingLeft);
             var paddingRight = Context.ToDeviceUnits(computed.PaddingRight);
@@ -84,6 +87,73 @@ namespace Marius.Html.Css.Layout
             else
             {
             }
+        }
+
+        private void CalculateBlockWidth(CssBox box)
+        {
+            var computed = box.Computed;
+            var used = box.Used;
+
+            used.Update(Context);
+
+            // parent must have its width
+            var parentWidth = CssDeviceUnit.Zero;
+
+            if (box.Parent == null)
+                parentWidth = Context.Width;
+            else
+                parentWidth = Context.Height;
+
+            used.PaddingTop = CalculateDimension(parentWidth, computed.PaddingTop);
+            used.PaddingLeft = CalculateDimension(parentWidth, computed.PaddingLeft);
+            used.PaddingBottom = CalculateDimension(parentWidth, computed.PaddingBottom);
+            used.PaddingRight = CalculateDimension(parentWidth, computed.PaddingRight);
+
+            used.BorderTopWidth = CalculateBorderWidth(parentWidth, computed.BorderTopStyle, computed.BorderTopWidth);
+            used.BorderLeftWidth = CalculateBorderWidth(parentWidth, computed.BorderLeftStyle, computed.BorderLeftWidth);
+            used.BorderBottomWidth = CalculateBorderWidth(parentWidth, computed.BorderBottomStyle, computed.BorderBottomWidth);
+            used.BorderRightWidth = CalculateBorderWidth(parentWidth, computed.BorderRightStyle, computed.BorderRightWidth);
+
+            var marginLeft = CssDeviceUnit.Zero;
+            var marginRight = CssDeviceUnit.Zero;
+
+            var marginLeftAuto = CssUtils.IsAuto(computed.MarginLeft);
+            var marginRightAuto = CssUtils.IsAuto(computed.MarginRight);
+            var widthAuto = CssUtils.IsAuto(computed.Width);
+
+            if (!marginLeftAuto)
+                marginLeft = CalculateDimension(parentWidth, computed.MarginLeft);
+
+            if (!marginRightAuto)
+                marginRight = CalculateDimension(parentWidth, computed.MarginRight);
+
+            var outerWidth = marginLeft + used.BorderLeftWidth + used.PaddingLeft + used.PaddingRight + used.BorderRightWidth + marginRight;
+
+            if (widthAuto || (parentWidth < outerWidth && !widthAuto))
+            {
+                marginLeftAuto = false;
+                marginRightAuto = false;
+            }
+
+            /*
+             * At this point, we cannot have all three autos
+             */
+        }
+
+        private CssDeviceUnit CalculateBorderWidth(CssDeviceUnit baseWidth, CssValue style, CssValue width)
+        {
+            if (CssKeywords.None.Equals(style))
+                return CssDeviceUnit.Zero;
+
+            return CalculateDimension(baseWidth, width);
+        }
+
+        public CssDeviceUnit CalculateDimension(CssDeviceUnit baseValue, CssValue value)
+        {
+            if (value.ValueType == CssValueType.Percentage)
+                return baseValue * (((CssPercentage)value).Value / 100.0f);
+            else
+                return Context.ToDeviceUnits(value);
         }
     }
 }

@@ -39,14 +39,14 @@ namespace Marius.Html.Css.Values
         public static readonly CssPercentage Fifty = new CssPercentage(50);
         public static readonly CssPercentage Hundred = new CssPercentage(100);
 
-        public double Value { get; private set; }
+        public float Value { get; private set; }
 
         public sealed override CssValueType ValueType
         {
             get { return CssValueType.Percentage; }
         }
 
-        public CssPercentage(double value)
+        public CssPercentage(float value)
         {
             Value = value;
         }
