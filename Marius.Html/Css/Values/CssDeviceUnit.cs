@@ -11,11 +11,11 @@ namespace Marius.Html.Css.Values
     /// </summary>
     public sealed class CssDeviceUnit
     {
-        public static readonly CssDeviceUnit Zero = new CssDeviceUnit(0);
+        public static readonly CssDeviceUnit Zero = new CssDeviceUnit(0.0f);
 
-        public double Value { get; private set; }
+        public float Value { get; private set; }
 
-        public CssDeviceUnit(double value)
+        public CssDeviceUnit(float value)
         {
             Value = value;
         }
@@ -38,6 +38,16 @@ namespace Marius.Html.Css.Values
         public static bool operator <(CssDeviceUnit left, CssDeviceUnit right)
         {
             return left.Value < right.Value;
+        }
+
+        public static CssDeviceUnit operator *(CssDeviceUnit left, float right)
+        {
+            return new CssDeviceUnit(left.Value * right);
+        }
+
+        public static CssDeviceUnit operator /(CssDeviceUnit left, float right)
+        {
+            return new CssDeviceUnit(left.Value / right);
         }
     }
 }

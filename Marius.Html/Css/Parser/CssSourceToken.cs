@@ -47,9 +47,9 @@ namespace Marius.Html.Css.Parser
             get { return (string)_value; }
         }
 
-        public double Double
+        public float Double
         {
-            get { return (double)_value; }
+            get { return (float)_value; }
         }
 
         public CssDimensionToken Dimension

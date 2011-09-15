@@ -66,6 +66,7 @@
     <Compile Include="Css\CssPropertyHandler.cs" />
     <Compile Include="Css\CssContext.cs" />
     <Compile Include="Css\CssPropertyValueDictionary.cs" />
+    <Compile Include="Css\CssUsedValueDictionary.cs" />
     <Compile Include="Css\CssUtils.cs" />
     <Compile Include="Css\Dom\CssStylesheetSource.cs" />
     <Compile Include="Css\CssNullPropertyHandler.cs" />

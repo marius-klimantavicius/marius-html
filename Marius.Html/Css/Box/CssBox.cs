@@ -38,6 +38,7 @@ namespace Marius.Html.Css.Box
         private CssPropertyValueDictionary _firstLetterProperties;
 
         private CssComputedValueDictionary _computed;
+        private CssUsedValueDictionary _used;
 
         public CssBox(CssContext context)
         {
@@ -57,6 +58,7 @@ namespace Marius.Html.Css.Box
 
         public CssPropertyValueDictionary Properties { get { return _properties; } }
         public CssComputedValueDictionary Computed { get { return _computed; } }
+        public CssUsedValueDictionary Used { get { return _used; } }
 
         public CssPropertyValueDictionary FirstLineProperties { get { return _firstLineProperties; } }
         public CssPropertyValueDictionary FirstLetterProperties { get { return _firstLetterProperties; } }

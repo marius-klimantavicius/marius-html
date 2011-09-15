@@ -37,10 +37,10 @@ namespace Marius.Html.Css.Parser
     public class CssDimensionToken
     {
         public CssUnits Units { get; private set; }
-        public double Value { get; private set; }
+        public float Value { get; private set; }
         public string DimensionString { get; private set; }
 
-        public CssDimensionToken(CssUnits units, double value, string dimensionString)
+        public CssDimensionToken(CssUnits units, float value, string dimensionString)
         {
             Units = units;
             Value = value;

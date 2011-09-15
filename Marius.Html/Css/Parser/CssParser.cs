@@ -850,7 +850,7 @@ namespace Marius.Html.Css.Parser
             return result;
         }
 
-        private double Signed(double value, CssSignOperator sign)
+        private float Signed(float value, CssSignOperator sign)
         {
             switch (sign)
             {

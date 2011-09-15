@@ -257,11 +257,11 @@ namespace Marius.Html.Css.Values
         public static readonly CssIdentifier Female = new CssIdentifier("female");
         public static readonly CssIdentifier Child = new CssIdentifier("child");
 
-        public static CssIdentifier Silent = new CssIdentifier("silent");
-        public static CssIdentifier XSoft = new CssIdentifier("x-soft");
-        public static CssIdentifier Soft = new CssIdentifier("soft");
-        public static CssIdentifier Loud = new CssIdentifier("loud");
-        public static CssIdentifier XLoud = new CssIdentifier("x-loud");
+        public static readonly CssIdentifier Silent = new CssIdentifier("silent");
+        public static readonly CssIdentifier XSoft = new CssIdentifier("x-soft");
+        public static readonly CssIdentifier Soft = new CssIdentifier("soft");
+        public static readonly CssIdentifier Loud = new CssIdentifier("loud");
+        public static readonly CssIdentifier XLoud = new CssIdentifier("x-loud");
 
         public static readonly CssIdentifier Pre = new CssIdentifier("pre");
         public static readonly CssIdentifier Nowrap = new CssIdentifier("nowrap");
