@@ -62,6 +62,9 @@ namespace Marius.Html.Css
 
         public CssDeviceUnit TextIndent { get; set; }
 
+        public CssDeviceUnit OffsetX { get; set; }
+        public CssDeviceUnit OffsetY { get; set; }
+
         public void Update(CssLayoutContext Context)
         {
 
