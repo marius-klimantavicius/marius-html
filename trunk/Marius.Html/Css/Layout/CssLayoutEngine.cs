@@ -15,6 +15,10 @@ namespace Marius.Html.Css.Layout
         {
         }
 
+        private void Layout(CssBox box)
+        {
+        }
+
         private void LayoutBlock(CssBox box)
         {
             var used = box.Used;
@@ -22,71 +26,43 @@ namespace Marius.Html.Css.Layout
 
             used.Update(Context);
 
-            var top = Context.ToDeviceUnits(box.Computed.Top);
-            var left = Context.ToDeviceUnits(box.Computed.Left);
+            CalculateBlockWidth(box);
 
-            var parentWidth = CssDeviceUnit.Zero;
+            // basically either this box contains all inlines or blocks
+            // if all boxes
 
-            //if (box.Parent == null)
-            //    parentWidth = Context.Width;
-            //else
-            //    parentWidth = box.Parent.Actual.Width;
+            // top and left are used only in absolute layout
+        }
 
-            var paddingLeft = Context.ToDeviceUnits(computed.PaddingLeft);
-            var paddingRight = Context.ToDeviceUnits(computed.PaddingRight);
+        private void LayoutChildBlocks(CssBox box)
+        {
+            // all children are blocks
+            var used = box.Used;
+            var computed = box.Computed;
 
-            var borderLeft = CssDeviceUnit.Zero;
-            if (!computed.BorderLeftStyle.Equals(CssKeywords.None))
-                borderLeft = Context.ToDeviceUnits(computed.BorderLeftWidth);
-
-            var borderRight = CssDeviceUnit.Zero;
-            if (!computed.BorderRightStyle.Equals(CssKeywords.None))
-                borderRight = Context.ToDeviceUnits(computed.BorderRightWidth);
-
-            var marginLeft = CssDeviceUnit.Zero;
-            var marginRight = CssDeviceUnit.Zero;
-
-            if (!CssUtils.IsAuto(computed.MarginLeft))
-                marginLeft = Context.ToDeviceUnits(computed.MarginLeft);
-
-            if (!CssUtils.IsAuto(computed.MarginRight))
-                marginRight = Context.ToDeviceUnits(computed.MarginRight);
-
-            var outerWidth = borderLeft + paddingLeft + paddingRight + borderRight;
-
-            var width = CssDeviceUnit.Zero;
-
-            if (CssUtils.IsAuto(computed.Width))
+            var clientX = used.OffsetX + used.MarginLeft + used.BorderLeftWidth + used.PaddingLeft;
+            var clientY = used.OffsetY + used.MarginTop + used.BorderTopWidth + used.PaddingTop;
+            for (CssBox current = box.FirstChild; current != null; current = current.NextSibling)
             {
-                // margin-left and margin-right auto becomes 0
-                if (CssUtils.IsAuto(computed.MarginLeft))
-                    marginLeft = CssDeviceUnit.Zero;
-
-                if (CssUtils.IsAuto(computed.MarginRight))
-                    marginRight = CssDeviceUnit.Zero;
-
-                var fullWidth = outerWidth + marginLeft + marginRight;
-                if (fullWidth > parentWidth)
+                if (computed.Position.Equals(CssKeywords.Static) || computed.Position.Equals(CssKeywords.Relative))
                 {
-                    // overconstrained
-                    width = CssDeviceUnit.Zero;
+                    current.Used.OffsetX = clientX;
+                    current.Used.OffsetY = clientY;
 
-                    if (computed.Direction.Equals(CssKeywords.Ltr))
-                    {
-                        marginLeft = CssDeviceUnit.Zero;
-                        marginRight = parentWidth - outerWidth;
-                    }
-                    else
-                    {
-                    }
-                }
-                else
-                {
+                    Layout(current);
+
+                    // current should have calculated its width (ignored) and height
+                    // in this mode, blocks are laid out top to bottom
+                    var borderHeight = BorderBoxHeight(box);
+                    
+                    // the fucking margin collapse
                 }
             }
-            else
-            {
-            }
+        }
+
+        private CssDeviceUnit BorderBoxHeight(CssBox box)
+        {
+            return box.Used.BorderTopWidth + box.Used.PaddingTop + box.Used.Height + box.Used.PaddingBottom + box.Used.BorderBottomWidth;
         }
 
         private void CalculateBlockWidth(CssBox box)
@@ -114,12 +90,16 @@ namespace Marius.Html.Css.Layout
             used.BorderBottomWidth = CalculateBorderWidth(parentWidth, computed.BorderBottomStyle, computed.BorderBottomWidth);
             used.BorderRightWidth = CalculateBorderWidth(parentWidth, computed.BorderRightStyle, computed.BorderRightWidth);
 
+            var width = CssDeviceUnit.Zero;
             var marginLeft = CssDeviceUnit.Zero;
             var marginRight = CssDeviceUnit.Zero;
 
+            var widthAuto = CssUtils.IsAuto(computed.Width);
             var marginLeftAuto = CssUtils.IsAuto(computed.MarginLeft);
             var marginRightAuto = CssUtils.IsAuto(computed.MarginRight);
-            var widthAuto = CssUtils.IsAuto(computed.Width);
+
+            if (!widthAuto)
+                width = CalculateDimension(parentWidth, computed.Width);
 
             if (!marginLeftAuto)
                 marginLeft = CalculateDimension(parentWidth, computed.MarginLeft);
@@ -127,17 +107,33 @@ namespace Marius.Html.Css.Layout
             if (!marginRightAuto)
                 marginRight = CalculateDimension(parentWidth, computed.MarginRight);
 
-            var outerWidth = marginLeft + used.BorderLeftWidth + used.PaddingLeft + used.PaddingRight + used.BorderRightWidth + marginRight;
+            var outerWidth = marginLeft + used.BorderLeftWidth + used.PaddingLeft + width + used.PaddingRight + used.BorderRightWidth + marginRight;
 
+            // if parentWidth < outerWidth the following if will execute always
+            // lets say widthAuto = p and (parentWidth < outerWidth) = true
+            // then (p || (true && !p)) => (p || !p) => true 
             if (widthAuto || (parentWidth < outerWidth && !widthAuto))
             {
                 marginLeftAuto = false;
                 marginRightAuto = false;
             }
 
-            /*
-             * At this point, we cannot have all three autos
-             */
+            if (marginLeftAuto && marginRightAuto)
+                marginLeft = marginRight = (parentWidth - outerWidth) / 2;
+            else if (marginLeftAuto)
+                marginLeft = parentWidth - outerWidth;
+            else if (marginRightAuto)
+                marginRight = parentWidth - outerWidth;
+            else if (widthAuto)
+                width = parentWidth - outerWidth;
+            else if (CssKeywords.Ltr.Equals(computed.Direction)) // overconstrained
+                marginRight = parentWidth - outerWidth; // ignore margin-right
+            else
+                marginLeft = parentWidth - outerWidth; // ignore margin-left
+
+            used.Width = width;
+            used.MarginLeft = marginLeft;
+            used.MarginRight = marginRight;
         }
 
         private CssDeviceUnit CalculateBorderWidth(CssDeviceUnit baseWidth, CssValue style, CssValue width)
