@@ -36,7 +36,7 @@ namespace Marius.Html.Css.Layout
 
         private void LayoutChildBlocks(CssBox box)
         {
-            // all children are blocks
+            // all children are blocks (not line boxes)
             var used = box.Used;
             var computed = box.Computed;
 
@@ -54,8 +54,43 @@ namespace Marius.Html.Css.Layout
                     // current should have calculated its width (ignored) and height
                     // in this mode, blocks are laid out top to bottom
                     var borderHeight = BorderBoxHeight(box);
-
+                     
                     // the fucking margin collapse
+                    /*
+                     * There are basically two cases: 
+                     *      margin-top collapses with bottom of previous sibling or margin-top of ancestor
+                     *      margin-bottom collapses with margin-bottom of container
+                     *  
+                     * Because margins only specifies the offset from top/left... where to start rendering
+                     * We can contain a context (block formatting context) specific variable having value of current margin (top)
+                     * 
+                     * Idea:
+                     * 
+                     * var contextMargin = ...;
+                     * var marginTop = element.margin-top
+                     * 
+                     * var newmargin;
+                     * if ((marginTop > 0) == (contextMargin > 0))
+                     * {
+                     *  newmargin = absolute-max(marginTop, contextMargin);
+                     *  
+                     *  // will it work with negative margins?
+                     *  if(marginTop > contextMargin)
+                     *  {
+                     *      // child has bigger margin
+                     *      element.top -= (marginTop - contextMargin);
+                     *  }
+                     *  else
+                     *  {
+                     *      element.top += (contextMargin - marginTop);
+                     *  }
+                     * }
+                     * else
+                     * {
+                     *  newmargin = marginTop + contextMargin;
+                     * }
+                     * 
+                     */
                 }
             }
         }
