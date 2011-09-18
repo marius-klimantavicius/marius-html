@@ -54,7 +54,7 @@ namespace Marius.Html.Css.Layout
                     // current should have calculated its width (ignored) and height
                     // in this mode, blocks are laid out top to bottom
                     var borderHeight = BorderBoxHeight(box);
-                    
+
                     // the fucking margin collapse
                 }
             }
@@ -78,7 +78,7 @@ namespace Marius.Html.Css.Layout
             if (box.Parent == null)
                 parentWidth = Context.Width;
             else
-                parentWidth = Context.Height;
+                parentWidth = box.Parent.Used.Height;
 
             used.PaddingTop = CalculateDimension(parentWidth, computed.PaddingTop);
             used.PaddingLeft = CalculateDimension(parentWidth, computed.PaddingLeft);
@@ -126,11 +126,15 @@ namespace Marius.Html.Css.Layout
                 marginRight = parentWidth - outerWidth;
             else if (widthAuto)
                 width = parentWidth - outerWidth;
-            else if (CssKeywords.Ltr.Equals(computed.Direction)) // overconstrained
-                marginRight = parentWidth - outerWidth; // ignore margin-right
-            else
-                marginLeft = parentWidth - outerWidth; // ignore margin-left
+            else  // overconstrained
+            {
+                outerWidth = used.BorderLeftWidth + used.PaddingLeft + width + used.PaddingRight + used.BorderRightWidth;
 
+                if (CssKeywords.Ltr.Equals(computed.Direction))
+                    marginRight = parentWidth - outerWidth - marginLeft; // ignore margin-right
+                else
+                    marginLeft = parentWidth - outerWidth - marginRight; // ignore margin-left
+            }
             used.Width = width;
             used.MarginLeft = marginLeft;
             used.MarginRight = marginRight;
