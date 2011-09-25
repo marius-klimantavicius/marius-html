@@ -8,9 +8,9 @@ namespace Marius.Html.Css.Layout
 {
     public abstract class CssLayoutContext
     {
-        public abstract CssDeviceUnit Width { get; }
-        public abstract CssDeviceUnit Height { get; }
+        public abstract float Width { get; }
+        public abstract float Height { get; }
 
-        public abstract CssDeviceUnit ToDeviceUnits(CssValue value);
+        public abstract float ToDeviceUnits(CssValue value);
     }
 }
