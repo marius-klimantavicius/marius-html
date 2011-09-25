@@ -24,14 +24,87 @@ namespace Marius.Html.Css.Layout
             var used = box.Used;
             var computed = box.Computed;
 
-            used.Update(Context);
-
             CalculateBlockWidth(box);
 
             // basically either this box contains all inlines or blocks
             // if all boxes
 
+            CalculateBlockTopMargin(box);
+
+            if (IsBlocContext(box))
+                LayoutChildBlocks(box);
+            else
+                LayoutChildInlines(box);
+
             // top and left are used only in absolute layout
+        }
+
+        private void CalculateBlockTopMargin(CssBox box)
+        {
+            // block margins collapse
+            // I am going to implement this via used.MarginTop/used.MarginBottom
+            // ie. used value might be different from specified in case of margin collapse
+            // idea: set top margins in such a way, so sum of collapsible margins was equal to the collapsed margin
+
+            // get formatting context
+            dynamic context = GetBlockFormattingContext(box);
+            var positiveMargin = context.PositiveMargin;
+            var negativeMargin = context.NegativeMargin;
+
+            var computed = box.Computed;
+            var used = box.Used;
+
+            var marginTop = 0.0f;
+
+            if (!CssUtils.IsAuto(computed.MarginTop))
+                marginTop = CalculateDimension(used.Width, computed.MarginTop);
+
+            if (marginTop >= 0)
+            {
+                if (positiveMargin > marginTop)
+                {
+                    marginTop = 0;
+                }
+                else
+                {
+                    var old = positiveMargin;
+                    positiveMargin = marginTop;
+                    marginTop = marginTop - old;
+                }
+            }
+            else
+            {
+                if (negativeMargin < marginTop)
+                {
+                    marginTop = 0;
+                }
+                else
+                {
+                    var old = negativeMargin;
+                    negativeMargin = marginTop;
+                    marginTop = marginTop - old;
+                }
+            }
+
+            used.MarginTop = marginTop;
+
+            context.PositiveMargin = positiveMargin;
+            context.NegativeMargin = negativeMargin;
+        }
+
+        private object GetBlockFormattingContext(CssBox box)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LayoutChildInlines(CssBox box)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool IsBlocContext(CssBox box)
+        {
+            throw new NotImplementedException();
         }
 
         private void LayoutChildBlocks(CssBox box)
@@ -54,7 +127,7 @@ namespace Marius.Html.Css.Layout
                     // current should have calculated its width (ignored) and height
                     // in this mode, blocks are laid out top to bottom
                     var borderHeight = BorderBoxHeight(box);
-                     
+
                     // the fucking margin collapse
                     /*
                      * There are basically two cases: 
@@ -95,7 +168,7 @@ namespace Marius.Html.Css.Layout
             }
         }
 
-        private CssDeviceUnit BorderBoxHeight(CssBox box)
+        private float BorderBoxHeight(CssBox box)
         {
             return box.Used.BorderTopWidth + box.Used.PaddingTop + box.Used.Height + box.Used.PaddingBottom + box.Used.BorderBottomWidth;
         }
@@ -105,10 +178,8 @@ namespace Marius.Html.Css.Layout
             var computed = box.Computed;
             var used = box.Used;
 
-            used.Update(Context);
-
             // parent must have its width
-            var parentWidth = CssDeviceUnit.Zero;
+            var parentWidth = 0.0f;
 
             if (box.Parent == null)
                 parentWidth = Context.Width;
@@ -125,9 +196,9 @@ namespace Marius.Html.Css.Layout
             used.BorderBottomWidth = CalculateBorderWidth(parentWidth, computed.BorderBottomStyle, computed.BorderBottomWidth);
             used.BorderRightWidth = CalculateBorderWidth(parentWidth, computed.BorderRightStyle, computed.BorderRightWidth);
 
-            var width = CssDeviceUnit.Zero;
-            var marginLeft = CssDeviceUnit.Zero;
-            var marginRight = CssDeviceUnit.Zero;
+            var width = 0.0f;
+            var marginLeft = 0.0f;
+            var marginRight = 0.0f;
 
             var widthAuto = CssUtils.IsAuto(computed.Width);
             var marginLeftAuto = CssUtils.IsAuto(computed.MarginLeft);
@@ -175,15 +246,24 @@ namespace Marius.Html.Css.Layout
             used.MarginRight = marginRight;
         }
 
-        private CssDeviceUnit CalculateBorderWidth(CssDeviceUnit baseWidth, CssValue style, CssValue width)
+        private float Clamp(float value, float min, float max)
+        {
+            if (value < min)
+                return min;
+            if (value > max)
+                return max;
+            return value;
+        }
+
+        private float CalculateBorderWidth(float baseWidth, CssValue style, CssValue width)
         {
             if (CssKeywords.None.Equals(style))
-                return CssDeviceUnit.Zero;
+                return 0;
 
             return CalculateDimension(baseWidth, width);
         }
 
-        public CssDeviceUnit CalculateDimension(CssDeviceUnit baseValue, CssValue value)
+        public float CalculateDimension(float baseValue, CssValue value)
         {
             if (value.ValueType == CssValueType.Percentage)
                 return baseValue * (((CssPercentage)value).Value / 100.0f);
